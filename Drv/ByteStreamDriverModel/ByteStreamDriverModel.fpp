@@ -40,7 +40,7 @@ module Drv {
 
     output port $recv: Drv.ByteStreamRecv
 
-    guarded input port send: Drv.ByteStreamSend
+    guarded input port $send: Drv.ByteStreamSend
 
     guarded input port poll: Drv.ByteStreamPoll
 

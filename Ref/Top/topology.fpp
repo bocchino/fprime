@@ -83,7 +83,7 @@ module Ref {
       fileDownlink.bufferSendOut -> downlink.bufferIn
 
       downlink.framedAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.downlink]
-      downlink.framedOut -> comm.send
+      downlink.framedOut -> comm.$send
       downlink.bufferDeallocate -> fileDownlink.bufferReturn
 
       comm.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.downlink]

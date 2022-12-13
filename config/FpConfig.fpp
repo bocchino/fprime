@@ -1,5 +1,7 @@
 type FwBuffSizeType
 type FwChanIdType
+type FwDpBuffSizeType
+type FwDpIdType
 type FwEnumStoreType
 type FwEventIdType
 type FwIndexType

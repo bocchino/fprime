@@ -13,7 +13,7 @@ module Drv {
     output port $recv: Drv.ByteStreamRecv
 
     @ Takes data to transmit out the UART device
-    guarded input port send: Drv.ByteStreamSend
+    guarded input port $send: Drv.ByteStreamSend
 
     @ Allocation port used for allocating memory in the receive task
     output port allocate: Fw.BufferGet
