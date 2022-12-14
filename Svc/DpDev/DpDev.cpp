@@ -25,7 +25,7 @@ namespace Svc {
         const NATIVE_INT_TYPE instance
     )
   {
-    DpDevDpComponentBase::init(queueDepth, instance);
+    DpDevComponentBase::init(queueDepth, instance);
   }
 
   DpDev ::
