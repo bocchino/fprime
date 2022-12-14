@@ -7,7 +7,7 @@
 #ifndef Svc_DpDev_HPP
 #define Svc_DpDev_HPP
 
-#include "Svc/DpDev/DpDevComponentAc.hpp"
+#include "Svc/DpDev/DpDevDpComponentBase.hpp"
 
 namespace Svc {
 

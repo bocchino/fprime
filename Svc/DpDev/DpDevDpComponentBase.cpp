@@ -1,10 +1,11 @@
 // ======================================================================
-// \title  DpDev.cpp
+// \title  DpDevDpComponentBase.cpp
 // \author bocchino
-// \brief  cpp file for DpDev component implementation class
+// \brief  cpp file for DpDev Dp component base (to be auto-generated)
 // ======================================================================
 
-#include "Svc/DpDev/DpDev.hpp"
+#include "FpConfig.hpp"
+#include "Svc/DpDev/DpDevDpComponentBase.hpp"
 
 namespace Svc {
 
@@ -12,41 +13,24 @@ namespace Svc {
   // Construction, initialization, and destruction
   // ----------------------------------------------------------------------
 
-  DpDev ::
-    DpDev(
+  DpDevDpComponentBase ::
+    DpDevDpComponentBase(
         const char *const compName
     ) : DpDevComponentBase(compName)
   {
 
   }
 
-  void DpDev ::
-    init(
-        const NATIVE_INT_TYPE queueDepth,
-        const NATIVE_INT_TYPE instance
-    )
-  {
-    DpDevComponentBase::init(queueDepth, instance);
-  }
-
-  DpDev ::
-    ~DpDev()
+  DpDevDpComponentBase ::
+    ~DpDevDpComponentBase()
   {
 
   }
 
   // ----------------------------------------------------------------------
-  // Handler implementations for user-defined typed input ports
+  // Dp handling functions
   // ----------------------------------------------------------------------
 
-  void DpDev ::
-    productRecvIn_handler(
-        const NATIVE_INT_TYPE portNum,
-        FwDpIdType id,
-        const Fw::Buffer &buffer
-    )
-  {
-    // TODO
-  }
+  // TODO
 
 } // end namespace Svc
