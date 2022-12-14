@@ -12,7 +12,7 @@
 namespace Svc {
 
   class DpDev :
-    public DpDevComponentBase
+    public DpDevDpComponentBase
   {
 
     public:
@@ -44,13 +44,7 @@ namespace Svc {
       // Handler implementations for user-defined typed input ports
       // ----------------------------------------------------------------------
 
-      //! Handler implementation for productRecvIn
-      //!
-      void productRecvIn_handler(
-          const NATIVE_INT_TYPE portNum, //!< The port number
-          FwDpIdType id, //!< The buffer ID. Matches the container ID.
-          const Fw::Buffer &buffer //!< The buffer
-      );
+      // TODO
 
     };
 

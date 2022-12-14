@@ -28,15 +28,30 @@ namespace Svc {
           const char *const compName //!< The component name
       );
 
-      //! Destroy object DpDev
+      //! Initialize object DpDevDpComponentBase
+      //!
+      virtual void init(
+          const NATIVE_INT_TYPE queueDepth, //!< The queue depth
+          const NATIVE_INT_TYPE instance = 0 //!< The instance number
+      );
+
+      //! Destroy object DpDevDpComponentBase
       //!
       virtual ~DpDevDpComponentBase();
 
-    PROTECTED:
+    PRIVATE:
 
       // ----------------------------------------------------------------------
-      // Dp handling functions
+      // Private Dp handling functions
       // ----------------------------------------------------------------------
+
+      //! Handler implementation for productRecvIn
+      //!
+      void productRecvIn_handler(
+          const NATIVE_INT_TYPE portNum, //!< The port number
+          FwDpIdType id, //!< The buffer ID. Matches the container ID.
+          const Fw::Buffer &buffer //!< The buffer
+      ) override;
 
       // TODO
 

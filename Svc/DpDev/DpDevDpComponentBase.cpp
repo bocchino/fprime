@@ -21,6 +21,15 @@ namespace Svc {
 
   }
 
+  void DpDevDpComponentBase ::
+    init(
+        const NATIVE_INT_TYPE queueDepth,
+        const NATIVE_INT_TYPE instance
+    )
+  {
+    DpDevComponentBase::init(queueDepth, instance);
+  }
+
   DpDevDpComponentBase ::
     ~DpDevDpComponentBase()
   {
@@ -28,9 +37,17 @@ namespace Svc {
   }
 
   // ----------------------------------------------------------------------
-  // Dp handling functions
+  // Private Dp handling functions
   // ----------------------------------------------------------------------
 
-  // TODO
+  void DpDevDpComponentBase ::
+    productRecvIn_handler(
+        const NATIVE_INT_TYPE portNum,
+        FwDpIdType id,
+        const Fw::Buffer &buffer
+    )
+  {
+    // TODO
+  }
 
 } // end namespace Svc

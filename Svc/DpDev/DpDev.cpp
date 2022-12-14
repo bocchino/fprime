@@ -13,9 +13,8 @@ namespace Svc {
   // ----------------------------------------------------------------------
 
   DpDev ::
-    DpDev(
-        const char *const compName
-    ) : DpDevComponentBase(compName)
+    DpDev(const char *const compName) :
+      DpDevDpComponentBase(compName)
   {
 
   }
@@ -26,7 +25,7 @@ namespace Svc {
         const NATIVE_INT_TYPE instance
     )
   {
-    DpDevComponentBase::init(queueDepth, instance);
+    DpDevDpComponentBase::init(queueDepth, instance);
   }
 
   DpDev ::
@@ -39,14 +38,7 @@ namespace Svc {
   // Handler implementations for user-defined typed input ports
   // ----------------------------------------------------------------------
 
-  void DpDev ::
-    productRecvIn_handler(
-        const NATIVE_INT_TYPE portNum,
-        FwDpIdType id,
-        const Fw::Buffer &buffer
-    )
-  {
-    // TODO
-  }
+  // TODO
+
 
 } // end namespace Svc
