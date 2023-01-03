@@ -1,10 +1,7 @@
 type FwBuffSizeType
 type FwChanIdType
-<<<<<<< HEAD
 type FwDpBuffSizeType
 type FwDpIdType
-=======
->>>>>>> upstream/devel
 type FwEnumStoreType
 type FwEventIdType
 type FwIndexType
