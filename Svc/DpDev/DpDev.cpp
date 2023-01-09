@@ -40,5 +40,18 @@ namespace Svc {
 
   // TODO
 
+  // ---------------------------------------------------------------------- 
+  // Implementations of data product handlers
+  // ---------------------------------------------------------------------- 
+
+  Fw::SerializeStatus DpDev ::
+    Dp_Write_handler(
+        ContainerId::t containerId,
+        Fw::Buffer& buffer
+    )
+  {
+    // TODO
+    return Fw:: FW_SERIALIZE_OK;
+  }
 
 } // end namespace Svc

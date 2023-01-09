@@ -8,6 +8,7 @@
 #define Svc_DpDevDpComponentBase_HPP
 
 #include "FpConfig.hpp"
+#include "Fw/Buffer/Buffer.hpp"
 #include "Svc/DpDev/DpDevComponentAc.hpp"
 
 namespace Svc {
@@ -15,6 +16,20 @@ namespace Svc {
   class DpDevDpComponentBase :
     public DpDevComponentBase
   {
+
+    public:
+
+      // ----------------------------------------------------------------------
+      // Constants 
+      // ----------------------------------------------------------------------
+
+      //! The container Ids
+      struct ContainerId {
+        enum t {
+          Container1 = 0,
+          Container2 = 1,
+        };
+      };
 
     public:
 
@@ -31,6 +46,17 @@ namespace Svc {
       //! Destroy object DpDevDpComponentBase
       //!
       virtual ~DpDevDpComponentBase();
+
+    PROTECTED:
+
+      //! ---------------------------------------------------------------------- 
+      //! Pure virtual functions to implement
+      //! ---------------------------------------------------------------------- 
+
+      virtual Fw::SerializeStatus Dp_Write_handler(
+          ContainerId::t containerId, //!< The container Id
+          Fw::Buffer& buffer //!< The data product buffer
+      ) = 0;
 
     PRIVATE:
 

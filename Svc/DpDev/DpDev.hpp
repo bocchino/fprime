@@ -46,7 +46,18 @@ namespace Svc {
 
       // TODO
 
-    };
+    PRIVATE:
+
+      // ---------------------------------------------------------------------- 
+      // Implementations of data product handlers
+      // ---------------------------------------------------------------------- 
+ 
+      Fw::SerializeStatus Dp_Write_handler(
+          ContainerId::t containerId, //!< The container Id
+          Fw::Buffer& buffer //!< The data product buffer
+      ) override;
+
+  };
 
 } // end namespace Svc
 

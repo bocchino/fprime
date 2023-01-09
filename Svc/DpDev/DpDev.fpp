@@ -17,6 +17,17 @@ module Svc {
     @ Data product send port
     output port productSendOut: Fw.DpBufferSend
 
+    # ----------------------------------------------------------------------
+    # Containers
+    # Commented out for now because we don't have the special ports in place
+    # ----------------------------------------------------------------------
+
+    #@ Container 1
+    #product container Container1
+
+    #@ Container 2
+    #product container Container2
+
   }
 
 }
