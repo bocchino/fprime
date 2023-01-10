@@ -5,28 +5,26 @@ module Svc {
 
     # ----------------------------------------------------------------------
     # Data product ports
-    # Once we have the code gen in place, these will be special ports
     # ----------------------------------------------------------------------
 
     @ Data product request port
-    output port productRequestOut: Fw.DpBufferRequest
+    product request port productRequestOut
 
     @ Data product receive port
-    async input port productRecvIn: Fw.DpBufferSend
+    async product recv port productRecvIn
 
     @ Data product send port
-    output port productSendOut: Fw.DpBufferSend
+    product send port productSendOut
 
     # ----------------------------------------------------------------------
     # Containers
-    # Commented out for now because we don't have the special ports in place
     # ----------------------------------------------------------------------
 
-    #@ Container 1
-    #product container Container1
+    @ Container 1
+    product container Container1
 
-    #@ Container 2
-    #product container Container2
+    @ Container 2
+    product container Container2
 
   }
 
