@@ -47,29 +47,24 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     //! ----------------------------------------------------------------------
 
     //! The user-implemented handler for writing data products
-    //! \return The serialization status
-    virtual Fw::SerializeStatus Dp_Write_handler(ContainerId::T containerId,  //!< The container Id
-                                                 Fw::Buffer& buffer           //!< The data product buffer
-                                                 ) = 0;
+    virtual void Dp_Write_handler(ContainerId::T containerId,          //!< The container id
+                                  Fw::Buffer& buffer,                  //!< The data product buffer
+                                  Fw::SerializeBufferBase& serialRepr  //!< The serial representation of the buffer
+                                  ) = 0;
 
   PROTECTED:
     //! ----------------------------------------------------------------------
     //! Functions for managing data products
     //! ----------------------------------------------------------------------
 
-    //! Serialize a U32 element into a U32Record
-    //! \return The serialization status
-    Fw::SerializeStatus Dp_SerializeRecord_U32Record(Fw::Buffer& buffer,  //!< The data product buffer
-                                                     U32 element          //!< The U32 element
+    //! Request a data product buffer.  On receipt of the buffer, call the
+    //! user-implemented Dp_Write_handler
+    void Dp_RequestBuffer(ContainerId::T containerId,  //!< The container id
+                          FwSizeType size              //!< The buffer size
     );
 
-    //! Serialize a Data element into a DataRecord
-    //! \return The serialization status
-    Fw::SerializeStatus Dp_SerializeRecord_DataRecord(Fw::Buffer& buffer,        //!< The data product buffer
-                                                      const DpDev_Data& element  //!< The Data element
-    );
-
-    //! Write a data product
+    //! Write a data product.  Typically this function is called in the
+    //! user-implemented Dp_Write_handler.
     void Dp_WriteProduct(ContainerId::T containerId,  //!< The container ID
                          Fw::Buffer& buffer           //!< The data product buffer
     );

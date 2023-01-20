@@ -32,9 +32,8 @@ void DpDev ::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE con
 // Implementations of data product handlers
 // ----------------------------------------------------------------------
 
-Fw::SerializeStatus DpDev ::Dp_Write_handler(ContainerId::T containerId, Fw::Buffer& buffer) {
+void DpDev ::Dp_Write_handler(ContainerId::T containerId, Fw::Buffer& buffer, Fw::SerializeBufferBase& serialRepr) {
     // TODO
-    return Fw::FW_SERIALIZE_OK;
 }
 
 }  // end namespace Svc
