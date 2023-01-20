@@ -9,36 +9,22 @@
 
 namespace Svc {
 
-  // ----------------------------------------------------------------------
-  // Construction, initialization, and destruction
-  // ----------------------------------------------------------------------
+// ----------------------------------------------------------------------
+// Construction, initialization, and destruction
+// ----------------------------------------------------------------------
 
-  DpDevDpComponentBase ::
-    DpDevDpComponentBase(
-        const char *const compName
-    ) : DpDevComponentBase(compName)
-  {
+DpDevDpComponentBase ::DpDevDpComponentBase(const char* const compName) : DpDevComponentBase(compName) {}
 
-  }
+DpDevDpComponentBase ::~DpDevDpComponentBase() {}
 
-  DpDevDpComponentBase ::
-    ~DpDevDpComponentBase()
-  {
+// ----------------------------------------------------------------------
+// Private Dp handling functions
+// ----------------------------------------------------------------------
 
-  }
-
-  // ----------------------------------------------------------------------
-  // Private Dp handling functions
-  // ----------------------------------------------------------------------
-
-  void DpDevDpComponentBase ::
-    productRecvIn_handler(
-        const NATIVE_INT_TYPE portNum,
-        FwDpIdType id,
-        const Fw::Buffer &buffer
-    )
-  {
+void DpDevDpComponentBase ::productRecvIn_handler(const NATIVE_INT_TYPE portNum,
+                                                  FwDpIdType id,
+                                                  const Fw::Buffer& buffer) {
     // TODO
-  }
+}
 
-} // end namespace Svc
+}  // end namespace Svc
