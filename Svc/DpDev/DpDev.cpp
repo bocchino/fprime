@@ -65,7 +65,7 @@ Fw::SerializeStatus DpDev ::fillContainer1(Container& container) const {
     for (FwSizeType i = 0; i < CONTAINER_1_SIZE; ++i) {
         status = container.serializeRecord_U32Record(this->u32Data);
         if (status != Fw::FW_SERIALIZE_OK) {
-          break;
+            break;
         }
     }
     if (status == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
@@ -81,7 +81,7 @@ Fw::SerializeStatus DpDev ::fillContainer2(Container& container) const {
     for (FwSizeType i = 0; i < CONTAINER_2_SIZE; ++i) {
         status = container.serializeRecord_DataRecord(dataRecord);
         if (status != Fw::FW_SERIALIZE_OK) {
-          break;
+            break;
         }
     }
     if (status == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
