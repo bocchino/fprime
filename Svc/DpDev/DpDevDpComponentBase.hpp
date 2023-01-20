@@ -14,17 +14,60 @@
 namespace Svc {
 
 class DpDevDpComponentBase : public DpDevComponentBase {
-  public:
+  PROTECTED:
     // ----------------------------------------------------------------------
-    // Constants
+    // Types
     // ----------------------------------------------------------------------
 
-    //! The container Ids
+    //! The container ids
     struct ContainerId {
-        enum T {
+        enum T : FwDpIdType {
             Container1 = 0,
             Container2 = 1,
         };
+    };
+
+    //! The record ids
+    struct RecordId {
+        enum T : FwDpIdType {
+            U32Record = 0,
+            DataRecord = 1,
+        };
+    };
+
+    //! A container
+    struct Container {
+        //! Constructor
+        Container(ContainerId::T id,        //!< The container id
+                  const Fw::Buffer& buffer  //!< The buffer
+                  )
+            : id(id), buffer(buffer) {}
+        //! Serialize a U32Record into the container
+        //! \return The serialize status
+        Fw::SerializeStatus serializeRecord_U32Record(U32 elt  //! The element
+        ) {
+            auto& serializeRepr = buffer.getSerializeRepr();
+            auto status = serializeRepr.serialize(static_cast<FwDpIdType>(RecordId::U32Record));
+            if (status == Fw::FW_SERIALIZE_OK) {
+                status = serializeRepr.serialize(elt);
+            }
+            return status;
+        }
+        //! Serialize a DataRecord into the container
+        //! \return The serialize status
+        Fw::SerializeStatus serializeRecord_DataRecord(const DpDev_Data& elt  //! The element
+        ) {
+            auto& serializeRepr = buffer.getSerializeRepr();
+            auto status = serializeRepr.serialize(static_cast<FwDpIdType>(RecordId::DataRecord));
+            if (status == Fw::FW_SERIALIZE_OK) {
+                status = serializeRepr.serialize(elt);
+            }
+            return status;
+        }
+        //! The container id
+        const ContainerId::T id;
+        //! The buffer
+        Fw::Buffer buffer;
     };
 
   public:
@@ -46,27 +89,23 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     //! Pure virtual functions to implement
     //! ----------------------------------------------------------------------
 
-    //! The user-implemented handler for writing data products
-    virtual void Dp_Write_handler(ContainerId::T containerId,          //!< The container id
-                                  Fw::Buffer& buffer,                  //!< The data product buffer
-                                  Fw::SerializeBufferBase& serialRepr  //!< The serial representation of the buffer
-                                  ) = 0;
+    //! The handler for receiving a data product buffer
+    virtual void Dp_Recv_handler(Container& container  //!< The container
+                                 ) = 0;
 
   PROTECTED:
     //! ----------------------------------------------------------------------
     //! Functions for managing data products
     //! ----------------------------------------------------------------------
 
-    //! Request a data product buffer.  On receipt of the buffer, call the
-    //! user-implemented Dp_Write_handler
-    void Dp_RequestBuffer(ContainerId::T containerId,  //!< The container id
-                          FwDpBuffSizeType size        //!< The buffer size
+    //! Request a data product buffer
+    void Dp_Request(ContainerId::T containerId,  //!< The container id
+                    FwDpBuffSizeType size        //!< The buffer size
     );
 
-    //! Write a data product.  Typically this function is called in the
-    //! user-implemented Dp_Write_handler.
-    void Dp_WriteProduct(ContainerId::T containerId,  //!< The container ID
-                         Fw::Buffer buffer           //!< The data product buffer
+    //! Write a data product. Typically this function is called in the
+    //! user-implemented Dp_RecvBuffer_handler.
+    void Dp_Write(Container& container  //!< The container
     );
 
   PRIVATE:
@@ -80,7 +119,6 @@ class DpDevDpComponentBase : public DpDevComponentBase {
                                FwDpIdType id,                  //!< The buffer ID. Matches the container ID.
                                const Fw::Buffer& buffer        //!< The buffer
                                ) override;
-
 };
 
 }  // end namespace Svc

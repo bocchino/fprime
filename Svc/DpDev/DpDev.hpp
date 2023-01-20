@@ -12,6 +12,14 @@
 namespace Svc {
 
 class DpDev : public DpDevDpComponentBase {
+  PRIVATE:
+    // ----------------------------------------------------------------------
+    // Constants
+    // ----------------------------------------------------------------------
+
+    static constexpr FwSizeType CONTAINER_1_SIZE = 100;
+    static constexpr FwSizeType CONTAINER_2_SIZE = 1000;
+
   public:
     // ----------------------------------------------------------------------
     // Construction, initialization, and destruction
@@ -44,11 +52,24 @@ class DpDev : public DpDevDpComponentBase {
     // Implementation of the data product write handler
     // ----------------------------------------------------------------------
 
-    //! Construct and write a data product
-    void Dp_Write_handler(ContainerId::T containerId,          //!< The container Id
-                          Fw::Buffer& buffer,                  //!< The data product buffer
-                          Fw::SerializeBufferBase& serialRepr  //!< The serial representation of the buffer
-                          ) override;
+    //! Receive a data product buffer
+    void Dp_Recv_handler(Container& container  //!< The container
+                         ) override;
+
+  PRIVATE:
+    // ----------------------------------------------------------------------
+    // Private helper functions
+    // ----------------------------------------------------------------------
+
+    //! Fill Container 1
+    //! \return Serialize status
+    Fw::SerializeStatus fillContainer1(Container& container  //!< The container
+    ) const;
+
+    //! Fill Container 2
+    //! \return Serialize status
+    Fw::SerializeStatus fillContainer2(Container& container  //!< The container
+    ) const;
 
   PRIVATE:
     // ----------------------------------------------------------------------

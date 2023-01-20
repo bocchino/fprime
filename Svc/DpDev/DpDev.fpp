@@ -38,20 +38,20 @@ module Svc {
     # ---------------------------------------------------------------------- 
 
     @ Record 1
-    product record U32Record: U32
+    product record U32Record: U32 id 100
 
     @ Record 2
-    product record DataRecord: Data
+    product record DataRecord: Data id 200
 
     # ----------------------------------------------------------------------
     # Containers
     # ----------------------------------------------------------------------
 
     @ Container 1
-    product container Container1
+    product container Container1 id 300
 
     @ Container 2
-    product container Container2
+    product container Container2 id 400
 
   }
 
