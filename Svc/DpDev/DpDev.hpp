@@ -49,6 +49,14 @@ class DpDev : public DpDevDpComponentBase {
                           Fw::Buffer& buffer,                  //!< The data product buffer
                           Fw::SerializeBufferBase& serialRepr  //!< The serial representation of the buffer
                           ) override;
+
+  PRIVATE:
+    // ----------------------------------------------------------------------
+    // Private member variables
+    // ----------------------------------------------------------------------
+
+    //! U32 data
+    U32 u32Data;
 };
 
 }  // end namespace Svc

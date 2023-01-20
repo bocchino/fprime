@@ -12,7 +12,7 @@ namespace Svc {
 // Construction, initialization, and destruction
 // ----------------------------------------------------------------------
 
-DpDev ::DpDev(const char* const compName) : DpDevDpComponentBase(compName) {}
+DpDev ::DpDev(const char* const compName) : DpDevDpComponentBase(compName), u32Data(0) {}
 
 void DpDev ::init(const NATIVE_INT_TYPE queueDepth, const NATIVE_INT_TYPE instance) {
     DpDevComponentBase::init(queueDepth, instance);
@@ -25,7 +25,8 @@ DpDev ::~DpDev() {}
 // ----------------------------------------------------------------------
 
 void DpDev ::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
-    // TODO
+    // TODO: Request buffers
+    ++this->u32Data;
 }
 
 // ----------------------------------------------------------------------
