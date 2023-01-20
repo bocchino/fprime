@@ -8,50 +8,31 @@
 
 namespace Svc {
 
-  // ----------------------------------------------------------------------
-  // Construction, initialization, and destruction
-  // ----------------------------------------------------------------------
+// ----------------------------------------------------------------------
+// Construction, initialization, and destruction
+// ----------------------------------------------------------------------
 
-  DpDev ::
-    DpDev(const char *const compName) :
-      DpDevDpComponentBase(compName)
-  {
+DpDev ::DpDev(const char* const compName) : DpDevDpComponentBase(compName) {}
 
-  }
-
-  void DpDev ::
-    init(
-        const NATIVE_INT_TYPE queueDepth,
-        const NATIVE_INT_TYPE instance
-    )
-  {
+void DpDev ::init(const NATIVE_INT_TYPE queueDepth, const NATIVE_INT_TYPE instance) {
     DpDevComponentBase::init(queueDepth, instance);
-  }
+}
 
-  DpDev ::
-    ~DpDev()
-  {
+DpDev ::~DpDev() {}
 
-  }
+// ----------------------------------------------------------------------
+// Handler implementations for user-defined typed input ports
+// ----------------------------------------------------------------------
 
-  // ----------------------------------------------------------------------
-  // Handler implementations for user-defined typed input ports
-  // ----------------------------------------------------------------------
+// TODO
 
-  // TODO
+// ----------------------------------------------------------------------
+// Implementations of data product handlers
+// ----------------------------------------------------------------------
 
-  // ---------------------------------------------------------------------- 
-  // Implementations of data product handlers
-  // ---------------------------------------------------------------------- 
-
-  Fw::SerializeStatus DpDev ::
-    Dp_Write_handler(
-        ContainerId::t containerId,
-        Fw::Buffer& buffer
-    )
-  {
+Fw::SerializeStatus DpDev ::Dp_Write_handler(ContainerId::T containerId, Fw::Buffer& buffer) {
     // TODO
-    return Fw:: FW_SERIALIZE_OK;
-  }
+    return Fw::FW_SERIALIZE_OK;
+}
 
-} // end namespace Svc
+}  // end namespace Svc

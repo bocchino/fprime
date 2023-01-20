@@ -25,7 +25,7 @@ namespace Svc {
 
       //! The container Ids
       struct ContainerId {
-        enum t {
+        enum T {
           Container1 = 0,
           Container2 = 1,
         };
@@ -53,10 +53,38 @@ namespace Svc {
       //! Pure virtual functions to implement
       //! ---------------------------------------------------------------------- 
 
+      //! The user-implemented handler for writing data products
+      //! \return The serialization status
       virtual Fw::SerializeStatus Dp_Write_handler(
-          ContainerId::t containerId, //!< The container Id
+          ContainerId::T containerId, //!< The container Id
           Fw::Buffer& buffer //!< The data product buffer
       ) = 0;
+
+    PROTECTED:
+
+      //! ---------------------------------------------------------------------- 
+      //! Functions for managing data products
+      //! ---------------------------------------------------------------------- 
+
+      //! Serialize a U32 element into a U32Record
+      //! \return The serialization status
+      Fw::SerializeStatus Dp_SerializeRecord_U32Record(
+          Fw::Buffer& buffer, //!< The data product buffer
+          U32 element //!< The U32 element
+      );
+
+      //! Serialize a Data element into a DataRecord
+      //! \return The serialization status
+      Fw::SerializeStatus Dp_SerializeRecord_DataRecord(
+          Fw::Buffer& buffer, //!< The data product buffer
+          const DpDev_Data& element //!< The Data element
+      );
+
+      //! Write a data product
+      void Dp_WriteProduct(
+          ContainerId::T containerId, //!< The container ID
+          Fw::Buffer& buffer //!< The data product buffer
+      );
 
     PRIVATE:
 

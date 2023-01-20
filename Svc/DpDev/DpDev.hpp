@@ -11,54 +11,44 @@
 
 namespace Svc {
 
-  class DpDev :
-    public DpDevDpComponentBase
-  {
+class DpDev : public DpDevDpComponentBase {
+  public:
+    // ----------------------------------------------------------------------
+    // Construction, initialization, and destruction
+    // ----------------------------------------------------------------------
 
-    public:
+    //! Construct object DpDev
+    //!
+    DpDev(const char* const compName  //!< The component name
+    );
 
-      // ----------------------------------------------------------------------
-      // Construction, initialization, and destruction
-      // ----------------------------------------------------------------------
+    //! Initialize object DpDev
+    //!
+    void init(const NATIVE_INT_TYPE queueDepth,   //!< The queue depth
+              const NATIVE_INT_TYPE instance = 0  //!< The instance number
+    );
 
-      //! Construct object DpDev
-      //!
-      DpDev(
-          const char *const compName //!< The component name
-      );
+    //! Destroy object DpDev
+    //!
+    ~DpDev();
 
-      //! Initialize object DpDev
-      //!
-      void init(
-          const NATIVE_INT_TYPE queueDepth, //!< The queue depth
-          const NATIVE_INT_TYPE instance = 0 //!< The instance number
-      );
+  PRIVATE:
+    // ----------------------------------------------------------------------
+    // Handler implementations for user-defined typed input ports
+    // ----------------------------------------------------------------------
 
-      //! Destroy object DpDev
-      //!
-      ~DpDev();
+    // TODO
 
-    PRIVATE:
+  PRIVATE:
+    // ----------------------------------------------------------------------
+    // Implementations of data product handlers
+    // ----------------------------------------------------------------------
 
-      // ----------------------------------------------------------------------
-      // Handler implementations for user-defined typed input ports
-      // ----------------------------------------------------------------------
+    Fw::SerializeStatus Dp_Write_handler(ContainerId::T containerId,  //!< The container Id
+                                         Fw::Buffer& buffer           //!< The data product buffer
+                                         ) override;
+};
 
-      // TODO
-
-    PRIVATE:
-
-      // ---------------------------------------------------------------------- 
-      // Implementations of data product handlers
-      // ---------------------------------------------------------------------- 
- 
-      Fw::SerializeStatus Dp_Write_handler(
-          ContainerId::t containerId, //!< The container Id
-          Fw::Buffer& buffer //!< The data product buffer
-      ) override;
-
-  };
-
-} // end namespace Svc
+}  // end namespace Svc
 
 #endif
