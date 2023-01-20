@@ -37,11 +37,15 @@ class DpDev : public DpDevDpComponentBase {
     // Handler implementations for user-defined typed input ports
     // ----------------------------------------------------------------------
 
-    // TODO
+    //! Handler implementation for schedIn
+    //!
+    void schedIn_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
+                         NATIVE_UINT_TYPE context        //!< The call order
+                         ) override;
 
   PRIVATE:
     // ----------------------------------------------------------------------
-    // Implementations of data product handlers
+    // Implementation of data product write handler
     // ----------------------------------------------------------------------
 
     Fw::SerializeStatus Dp_Write_handler(ContainerId::T containerId,  //!< The container Id

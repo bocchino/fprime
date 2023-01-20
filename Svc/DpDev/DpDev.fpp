@@ -9,8 +9,8 @@ module Svc {
 
     @ Data for a DataRecord
     struct Data {
-      @ An F32 field
-      field1: F32
+      @ A U32 field
+      u32Field: U32
     }
 
     # ----------------------------------------------------------------------
@@ -25,6 +25,13 @@ module Svc {
 
     @ Data product send port
     product send port productSendOut
+
+    # ---------------------------------------------------------------------- 
+    # General ports
+    # ---------------------------------------------------------------------- 
+
+    @ A schedIn port to run the data product generation
+    async input port schedIn: Svc.Sched
 
     # ---------------------------------------------------------------------- 
     # Records

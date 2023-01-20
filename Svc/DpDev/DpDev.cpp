@@ -24,7 +24,9 @@ DpDev ::~DpDev() {}
 // Handler implementations for user-defined typed input ports
 // ----------------------------------------------------------------------
 
-// TODO
+void DpDev ::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
+    // TODO
+}
 
 // ----------------------------------------------------------------------
 // Implementations of data product handlers
