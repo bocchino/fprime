@@ -13,7 +13,8 @@ namespace Svc {
 // Construction, initialization, and destruction
 // ----------------------------------------------------------------------
 
-DpDev ::DpDev(const char* const compName) : DpDevDpComponentBase(compName), u32Data(0) {}
+DpDev ::DpDev(const char* const compName, U32 u32RecordData, U32 dataRecordData)
+    : DpDevDpComponentBase(compName), u32RecordData(u32RecordData), dataRecordData(dataRecordData) {}
 
 void DpDev ::init(const NATIVE_INT_TYPE queueDepth, const NATIVE_INT_TYPE instance) {
     DpDevComponentBase::init(queueDepth, instance);
@@ -30,8 +31,6 @@ void DpDev ::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE con
     this->Dp_Request(ContainerId::Container1, CONTAINER_1_SIZE);
     // Request a buffer for Container 2
     this->Dp_Request(ContainerId::Container2, CONTAINER_2_SIZE);
-    // Increment the test data
-    ++this->u32Data;
 }
 
 // ----------------------------------------------------------------------
@@ -63,7 +62,7 @@ void DpDev ::Dp_Recv_handler(Container& container) {
 Fw::SerializeStatus DpDev ::fillContainer1(Container& container) const {
     auto status = Fw::FW_SERIALIZE_OK;
     for (FwSizeType i = 0; i < CONTAINER_1_SIZE; ++i) {
-        status = container.serializeRecord_U32Record(this->u32Data);
+        status = container.serializeRecord_U32Record(this->u32RecordData);
         if (status != Fw::FW_SERIALIZE_OK) {
             break;
         }
@@ -76,7 +75,7 @@ Fw::SerializeStatus DpDev ::fillContainer1(Container& container) const {
 }
 
 Fw::SerializeStatus DpDev ::fillContainer2(Container& container) const {
-    const DpDev_Data dataRecord(this->u32Data);
+    const DpDev_Data dataRecord(this->dataRecordData);
     auto status = Fw::FW_SERIALIZE_OK;
     for (FwSizeType i = 0; i < CONTAINER_2_SIZE; ++i) {
         status = container.serializeRecord_DataRecord(dataRecord);

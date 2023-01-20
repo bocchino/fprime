@@ -26,7 +26,9 @@ class DpDev : public DpDevDpComponentBase {
     // ----------------------------------------------------------------------
 
     //! Construct object DpDev
-    DpDev(const char* const compName  //!< The component name
+    DpDev(const char* const compName,  //!< The component name
+          U32 u32RecordData,           //!< The U32Record data
+          U32 dataRecordData           //!< The DataRecord data
     );
 
     //! Initialize object DpDev
@@ -76,8 +78,11 @@ class DpDev : public DpDevDpComponentBase {
     // Private member variables
     // ----------------------------------------------------------------------
 
-    //! U32 data
-    U32 u32Data;
+    //! U32Record data
+    const U32 u32RecordData;
+
+    //! DataRecord data
+    const U32 dataRecordData;
 };
 
 }  // end namespace Svc
