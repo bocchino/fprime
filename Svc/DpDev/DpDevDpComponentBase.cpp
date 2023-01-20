@@ -17,6 +17,25 @@ DpDevDpComponentBase ::DpDevDpComponentBase(const char* const compName) : DpDevC
 
 DpDevDpComponentBase ::~DpDevDpComponentBase() {}
 
+//! ----------------------------------------------------------------------
+//! Functions for managing data products
+//! ----------------------------------------------------------------------
+
+Fw::SerializeStatus DpDevDpComponentBase ::Dp_SerializeRecord_U32Record(Fw::Buffer& buffer, U32 element) {
+    // TODO
+    return Fw::FW_SERIALIZE_OK;
+}
+
+Fw::SerializeStatus DpDevDpComponentBase ::Dp_SerializeRecord_DataRecord(Fw::Buffer& buffer,
+                                                                         const DpDev_Data& element) {
+    // TODO
+    return Fw::FW_SERIALIZE_OK;
+}
+
+void DpDevDpComponentBase ::Dp_WriteProduct(ContainerId::T containerId, Fw::Buffer& buffer) {
+    // TODO
+}
+
 // ----------------------------------------------------------------------
 // Private Dp handling functions
 // ----------------------------------------------------------------------
