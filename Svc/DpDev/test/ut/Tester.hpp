@@ -22,11 +22,11 @@ namespace Svc {
 
     public:
       // Maximum size of histories storing events, telemetry, and port outputs
-      static const NATIVE_INT_TYPE MAX_HISTORY_SIZE = 10;
+      static constexpr FwSizeType MAX_HISTORY_SIZE = 10;
       // Instance ID supplied to the component instance under test
-      static const NATIVE_INT_TYPE TEST_INSTANCE_ID = 0;
+      static constexpr FwSizeType TEST_INSTANCE_ID = 0;
       // Queue depth supplied to component instance under test
-      static const NATIVE_INT_TYPE TEST_INSTANCE_QUEUE_DEPTH = 10;
+      static constexpr FwSizeType TEST_INSTANCE_QUEUE_DEPTH = 10;
 
       //! Construct object Tester
       //!
@@ -42,9 +42,8 @@ namespace Svc {
       // Tests
       // ----------------------------------------------------------------------
 
-      //! To do
-      //!
-      void toDo();
+      //! Test schedIn
+      void testSchedIn();
 
     private:
 
@@ -55,25 +54,17 @@ namespace Svc {
       //! Handler for from_productRequestOut
       //!
       void from_productRequestOut_handler(
-          const NATIVE_INT_TYPE portNum, /*!< The port number*/
-          FwDpIdType id, /*!< 
-      The buffer ID. Matches the container ID.
-      */
-          FwDpBuffSizeType size /*!< 
-      The size of the requested buffer
-      */
+          const NATIVE_INT_TYPE portNum, //!< The port number
+          FwDpIdType id, //!< The container ID
+          FwDpBuffSizeType size //!< The size of the requested buffer
       );
 
       //! Handler for from_productSendOut
       //!
       void from_productSendOut_handler(
-          const NATIVE_INT_TYPE portNum, /*!< The port number*/
-          FwDpIdType id, /*!< 
-      The buffer ID. Matches the container ID.
-      */
-          const Fw::Buffer &buffer /*!< 
-      The buffer
-      */
+          const NATIVE_INT_TYPE portNum, //!< The port number
+          FwDpIdType id, //!< The container ID
+          const Fw::Buffer &buffer //!< The buffer
       );
 
     private:

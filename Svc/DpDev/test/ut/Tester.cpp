@@ -4,7 +4,8 @@
 // \brief  cpp file for DpDev test harness implementation class
 // ======================================================================
 
-#include "Tester.hpp"
+#include "STest/Pick/Pick.hpp"
+#include "Svc/DpDev/test/ut/Tester.hpp"
 
 namespace Svc {
 
@@ -15,7 +16,7 @@ namespace Svc {
   Tester ::
     Tester() :
       DpDevGTestBase("Tester", Tester::MAX_HISTORY_SIZE),
-      component("DpDev")
+      component("DpDev", STest::Pick::any(), STest::Pick::any())
   {
     this->initComponents();
     this->connectPorts();
@@ -32,7 +33,7 @@ namespace Svc {
   // ----------------------------------------------------------------------
 
   void Tester ::
-    toDo()
+    testSchedIn()
   {
     // TODO
   }
