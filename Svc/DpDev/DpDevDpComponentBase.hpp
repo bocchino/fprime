@@ -60,13 +60,13 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     //! Request a data product buffer.  On receipt of the buffer, call the
     //! user-implemented Dp_Write_handler
     void Dp_RequestBuffer(ContainerId::T containerId,  //!< The container id
-                          FwSizeType size              //!< The buffer size
+                          FwDpBuffSizeType size        //!< The buffer size
     );
 
     //! Write a data product.  Typically this function is called in the
     //! user-implemented Dp_Write_handler.
     void Dp_WriteProduct(ContainerId::T containerId,  //!< The container ID
-                         Fw::Buffer& buffer           //!< The data product buffer
+                         Fw::Buffer buffer           //!< The data product buffer
     );
 
   PRIVATE:
@@ -81,7 +81,6 @@ class DpDevDpComponentBase : public DpDevComponentBase {
                                const Fw::Buffer& buffer        //!< The buffer
                                ) override;
 
-    // TODO
 };
 
 }  // end namespace Svc

@@ -21,12 +21,12 @@ DpDevDpComponentBase ::~DpDevDpComponentBase() {}
 //! Functions for managing data products
 //! ----------------------------------------------------------------------
 
-void DpDevDpComponentBase ::Dp_RequestBuffer(ContainerId::T containerId, FwSizeType size) {
-    // TODO
+void DpDevDpComponentBase ::Dp_RequestBuffer(ContainerId::T containerId, FwDpBuffSizeType size) {
+    this->productRequestOut_out(0, containerId, size);
 }
 
-void DpDevDpComponentBase ::Dp_WriteProduct(ContainerId::T containerId, Fw::Buffer& buffer) {
-    // TODO
+void DpDevDpComponentBase ::Dp_WriteProduct(ContainerId::T containerId, Fw::Buffer buffer) {
+    this->productSendOut_out(0, containerId, buffer);
 }
 
 // ----------------------------------------------------------------------
@@ -36,7 +36,7 @@ void DpDevDpComponentBase ::Dp_WriteProduct(ContainerId::T containerId, Fw::Buff
 void DpDevDpComponentBase ::productRecvIn_handler(const NATIVE_INT_TYPE portNum,
                                                   FwDpIdType id,
                                                   const Fw::Buffer& buffer) {
-    // TODO
+    this->Dp_WriteProduct(static_cast<ContainerId::T>(id), buffer);
 }
 
 }  // end namespace Svc
