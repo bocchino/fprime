@@ -9,44 +9,27 @@
 #include "Tester.hpp"
 
 namespace Svc {
-  // ----------------------------------------------------------------------
-  // Helper methods
-  // ----------------------------------------------------------------------
+// ----------------------------------------------------------------------
+// Helper methods
+// ----------------------------------------------------------------------
 
-  void Tester ::
-    connectPorts()
-  {
-
+void Tester ::connectPorts() {
     // productRecvIn
-    this->connect_to_productRecvIn(
-        0,
-        this->component.get_productRecvIn_InputPort(0)
-    );
+    this->connect_to_productRecvIn(0, this->component.get_productRecvIn_InputPort(0));
+
+    // schedIn
+    this->connect_to_schedIn(0, this->component.get_schedIn_InputPort(0));
 
     // productRequestOut
-    this->component.set_productRequestOut_OutputPort(
-        0,
-        this->get_from_productRequestOut(0)
-    );
+    this->component.set_productRequestOut_OutputPort(0, this->get_from_productRequestOut(0));
 
     // productSendOut
-    this->component.set_productSendOut_OutputPort(
-        0,
-        this->get_from_productSendOut(0)
-    );
+    this->component.set_productSendOut_OutputPort(0, this->get_from_productSendOut(0));
+}
 
-
-
-
-  }
-
-  void Tester ::
-    initComponents()
-  {
+void Tester ::initComponents() {
     this->init();
-    this->component.init(
-        Tester::TEST_INSTANCE_QUEUE_DEPTH, Tester::TEST_INSTANCE_ID
-    );
-  }
+    this->component.init(Tester::TEST_INSTANCE_QUEUE_DEPTH, Tester::TEST_INSTANCE_ID);
+}
 
-} // end namespace Svc
+}  // end namespace Svc

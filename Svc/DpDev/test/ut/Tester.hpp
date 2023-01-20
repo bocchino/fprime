@@ -12,87 +12,77 @@
 
 namespace Svc {
 
-  class Tester :
-    public DpDevGTestBase
-  {
+class Tester : public DpDevGTestBase {
+    // ----------------------------------------------------------------------
+    // Construction and destruction
+    // ----------------------------------------------------------------------
 
-      // ----------------------------------------------------------------------
-      // Construction and destruction
-      // ----------------------------------------------------------------------
+  public:
+    // Maximum size of histories storing events, telemetry, and port outputs
+    static constexpr FwSizeType MAX_HISTORY_SIZE = 10;
+    // Instance ID supplied to the component instance under test
+    static constexpr FwSizeType TEST_INSTANCE_ID = 0;
+    // Queue depth supplied to component instance under test
+    static constexpr FwSizeType TEST_INSTANCE_QUEUE_DEPTH = 10;
 
-    public:
-      // Maximum size of histories storing events, telemetry, and port outputs
-      static constexpr FwSizeType MAX_HISTORY_SIZE = 10;
-      // Instance ID supplied to the component instance under test
-      static constexpr FwSizeType TEST_INSTANCE_ID = 0;
-      // Queue depth supplied to component instance under test
-      static constexpr FwSizeType TEST_INSTANCE_QUEUE_DEPTH = 10;
+    //! Construct object Tester
+    //!
+    Tester();
 
-      //! Construct object Tester
-      //!
-      Tester();
+    //! Destroy object Tester
+    //!
+    ~Tester();
 
-      //! Destroy object Tester
-      //!
-      ~Tester();
+  public:
+    // ----------------------------------------------------------------------
+    // Tests
+    // ----------------------------------------------------------------------
 
-    public:
+    //! Test schedIn
+    void testSchedIn();
 
-      // ----------------------------------------------------------------------
-      // Tests
-      // ----------------------------------------------------------------------
+  PRIVATE:
+    // ----------------------------------------------------------------------
+    // Handlers for typed from ports
+    // ----------------------------------------------------------------------
 
-      //! Test schedIn
-      void testSchedIn();
+    //! Handler for from_productRequestOut
+    //!
+    void from_productRequestOut_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
+                                        FwDpIdType id,                  //!< The container ID
+                                        FwDpBuffSizeType size           //!< The size of the requested buffer
+    );
 
-    private:
+    //! Handler for from_productSendOut
+    //!
+    void from_productSendOut_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
+                                     FwDpIdType id,                  //!< The container ID
+                                     const Fw::Buffer& buffer        //!< The buffer
+    );
 
-      // ----------------------------------------------------------------------
-      // Handlers for typed from ports
-      // ----------------------------------------------------------------------
+  PRIVATE:
+    // ----------------------------------------------------------------------
+    // Helper methods
+    // ----------------------------------------------------------------------
 
-      //! Handler for from_productRequestOut
-      //!
-      void from_productRequestOut_handler(
-          const NATIVE_INT_TYPE portNum, //!< The port number
-          FwDpIdType id, //!< The container ID
-          FwDpBuffSizeType size //!< The size of the requested buffer
-      );
+    //! Connect ports
+    //!
+    void connectPorts();
 
-      //! Handler for from_productSendOut
-      //!
-      void from_productSendOut_handler(
-          const NATIVE_INT_TYPE portNum, //!< The port number
-          FwDpIdType id, //!< The container ID
-          const Fw::Buffer &buffer //!< The buffer
-      );
+    //! Initialize components
+    //!
+    void initComponents();
 
-    private:
+  PRIVATE:
+    // ----------------------------------------------------------------------
+    // Variables
+    // ----------------------------------------------------------------------
 
-      // ----------------------------------------------------------------------
-      // Helper methods
-      // ----------------------------------------------------------------------
+    //! The component under test
+    //!
+    DpDev component;
+};
 
-      //! Connect ports
-      //!
-      void connectPorts();
-
-      //! Initialize components
-      //!
-      void initComponents();
-
-    private:
-
-      // ----------------------------------------------------------------------
-      // Variables
-      // ----------------------------------------------------------------------
-
-      //! The component under test
-      //!
-      DpDev component;
-
-  };
-
-} // end namespace Svc
+}  // end namespace Svc
 
 #endif
