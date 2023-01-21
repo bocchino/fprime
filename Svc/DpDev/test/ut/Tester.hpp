@@ -24,6 +24,8 @@ class Tester : public DpDevGTestBase {
     static constexpr FwSizeType TEST_INSTANCE_ID = 0;
     // Queue depth supplied to component instance under test
     static constexpr FwSizeType TEST_INSTANCE_QUEUE_DEPTH = 10;
+    // The id base
+    static constexpr FwDpIdType ID_BASE = 100;
 
     //! Construct object Tester
     //!
@@ -43,7 +45,7 @@ class Tester : public DpDevGTestBase {
 
     //! productRecvIn with Container 1 OK
     void productRecvIn_Container1OK() {
-        const auto containerId = DpDev::ContainerId::Container1;
+        const auto containerId = ID_BASE + DpDev::ContainerId::Container1;
         const auto containerBuffer = this->container1Buffer;
         // Invoke the productRecvIn port
         this->invoke_to_productRecvIn(0, containerId, containerBuffer);

@@ -36,66 +36,54 @@ void DpDev ::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE con
 }
 
 // ----------------------------------------------------------------------
-// Implementation of the data product receive handler
+// Data product handler impelentations
 // ----------------------------------------------------------------------
 
+// TODO: Move this switch statement into the auto-generated code
 void DpDev ::Dp_Recv_handler(DpPacket& dpPacket) {
-    if (dpPacket.isValid) {
-        auto status = Fw::FW_SERIALIZE_OK;
-        switch (dpPacket.id) {
-            case ContainerId::Container1:
-                status = this->fillContainer1(dpPacket);
-                FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
-                break;
-            case ContainerId::Container2:
-                status = this->fillContainer2(dpPacket);
-                FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
-                break;
-            default:
-                FW_ASSERT(0);
-                break;
-        }
-        status = this->Dp_Write(dpPacket);
-        FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
-    }
-    else {
-        // TODO
+    // Convert global id to local id
+    const auto idBase = this->getIdBase();
+    FW_ASSERT(dpPacket.id >= idBase);
+    const auto localId = dpPacket.id - idBase;
+    // Switch on the local id
+    switch (localId) {
+        case ContainerId::Container1:
+            this->Dp_Recv_Container1_handler(dpPacket);
+            break;
+        case ContainerId::Container2:
+            this->Dp_Recv_Container2_handler(dpPacket);
+            break;
+        default:
+            FW_ASSERT(0);
+            break;
     }
 }
 
-// ----------------------------------------------------------------------
-// Private helper functions
-// ----------------------------------------------------------------------
-
-Fw::SerializeStatus DpDev ::fillContainer1(DpPacket& dpPacket) const {
+void DpDev ::Dp_Recv_Container1_handler(DpPacket& dpPacket) {
     auto status = Fw::FW_SERIALIZE_OK;
     for (FwSizeType i = 0; i < CONTAINER_1_SIZE; ++i) {
         status = dpPacket.serializeRecord_U32Record(this->u32RecordData);
-        if (status != Fw::FW_SERIALIZE_OK) {
+        if (status == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
             break;
         }
+        FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
     }
-    if (status == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
-        // This just means we ran out of room
-        status = Fw::FW_SERIALIZE_OK;
-    }
-    return status;
+    status = this->Dp_Write(dpPacket);
+    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
 }
 
-Fw::SerializeStatus DpDev ::fillContainer2(DpPacket& dpPacket) const {
+void DpDev ::Dp_Recv_Container2_handler(DpPacket& dpPacket) {
     const DpDev_Data dataRecord(this->dataRecordData);
     auto status = Fw::FW_SERIALIZE_OK;
     for (FwSizeType i = 0; i < CONTAINER_2_SIZE; ++i) {
         status = dpPacket.serializeRecord_DataRecord(dataRecord);
-        if (status != Fw::FW_SERIALIZE_OK) {
+        if (status == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
             break;
         }
+        FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
     }
-    if (status == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
-        // This just means we ran out of room
-        status = Fw::FW_SERIALIZE_OK;
-    }
-    return status;
+    status = this->Dp_Write(dpPacket);
+    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
 }
 
 }  // end namespace Svc

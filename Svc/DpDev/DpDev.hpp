@@ -51,27 +51,22 @@ class DpDev : public DpDevDpComponentBase {
 
   PRIVATE:
     // ----------------------------------------------------------------------
-    // Implementation of the data product write handler
+    // Data product handler implementations
     // ----------------------------------------------------------------------
 
     //! Receive a data product buffer
     void Dp_Recv_handler(DpPacket& dpPacket  //!< The data product packet
                          ) override;
 
-  PRIVATE:
-    // ----------------------------------------------------------------------
-    // Private helper functions
-    // ----------------------------------------------------------------------
-
-    //! Fill a data product packet for Container 1
+    //! Receive a data product buffer for Container1
     //! \return Serialize status
-    Fw::SerializeStatus fillContainer1(DpPacket& dpPacket  //!< The data product packet
-    ) const;
+    void Dp_Recv_Container1_handler(DpPacket& dpPacket  //!< The data product packet
+    );
 
-    //! Fill a data product packet for Container 2
+    //! Receive a data product buffer for Container2
     //! \return Serialize status
-    Fw::SerializeStatus fillContainer2(DpPacket& dpPacket  //!< The data product packet
-    ) const;
+    void Dp_Recv_Container2_handler(DpPacket& dpPacket  //!< The data product packet
+    );
 
   PRIVATE:
     // ----------------------------------------------------------------------

@@ -10,6 +10,7 @@
 #include "FpConfig.hpp"
 #include "Fw/Buffer/Buffer.hpp"
 #include "Fw/Com/ComPacket.hpp"
+#include "Fw/Dp/DpPacket.hpp"
 #include "Svc/DpDev/DpDevComponentAc.hpp"
 
 namespace Svc {
@@ -37,52 +38,13 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     };
 
     //! A data product packet
-    struct DpPacket {
-        struct Header {
-            //! The header size
-            static constexpr FwDpBuffSizeType SIZE =
-                sizeof(FwPacketDescriptorType) + sizeof(FwDpIdType) + sizeof(FwDpBuffSizeType);
-            //! The packet descriptor offset
-            static constexpr FwDpBuffSizeType PACKET_DESCRIPTOR_OFFSET = 0;
-            //! The id offset
-            static constexpr FwDpBuffSizeType ID_OFFSET = PACKET_DESCRIPTOR_OFFSET + sizeof(FwPacketDescriptorType);
-            //! The data size offset
-            static constexpr FwDpBuffSizeType DATA_SIZE_OFFSET = ID_OFFSET + sizeof(FwDpIdType);
-        };
+    struct DpPacket : public Fw::DpPacket {
 
         //! Constructor
-        DpPacket(ContainerId::T id,        //!< The container id
+        DpPacket(FwDpIdType id,            //!< The container id
                  const Fw::Buffer& buffer  //!< The buffer
                  )
-            : isValid(false), id(id), buffer(buffer), dataSize(0) {
-            // Check buffer for validity
-            if ((this->buffer.getData()) != nullptr && (this->buffer.getSize() > 0)) {
-                // Write the packet header
-                const auto status = this->writeHeader();
-                if (status == Fw::FW_SERIALIZE_OK) {
-                    this->isValid = true;
-                }
-            }
-        }
-
-        //! Write the packet header
-        //! \return The serialize status
-        Fw::SerializeStatus writeHeader() {
-            auto& serializeRepr = this->buffer.getSerializeRepr();
-            // Reset serialization
-            serializeRepr.resetSer();
-            // Store the packet type
-            auto status = serializeRepr.serialize(static_cast<FwPacketDescriptorType>(Fw::ComPacket::FW_PACKET_DP));
-            // Store the container id
-            if (status == Fw::FW_SERIALIZE_OK) {
-                status = serializeRepr.serialize(this->id);
-            }
-            // Store the data size
-            if (status == Fw::FW_SERIALIZE_OK) {
-                status = serializeRepr.serialize(this->dataSize);
-            }
-            return status;
-        }
+            : Fw::DpPacket(id, buffer) {}
 
         //! Serialize a U32Record into the packet
         //! \return The serialize status
@@ -116,22 +78,6 @@ class DpDevDpComponentBase : public DpDevComponentBase {
             return status;
         }
 
-        //! Get the buffer size corresponding to the data size
-        FwDpBuffSizeType getBufferSize() {
-          return Header::SIZE + this->dataSize;
-        }
-
-        //! Whether the packet is valid
-        bool isValid;
-
-        //! The container id
-        const FwDpIdType id;
-
-        //! The buffer
-        Fw::Buffer buffer;
-
-        //! The data size
-        FwDpBuffSizeType dataSize;
     };
 
   public:

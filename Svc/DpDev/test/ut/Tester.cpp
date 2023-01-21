@@ -25,6 +25,7 @@ Tester ::Tester()
     memset(this->container2Data, 0, sizeof this->container2Data);
     this->initComponents();
     this->connectPorts();
+    this->component.setIdBase(ID_BASE);
 }
 
 Tester ::~Tester() {}
@@ -38,8 +39,8 @@ void Tester ::schedIn_OK() {
     this->component.doDispatch();
     ASSERT_FROM_PORT_HISTORY_SIZE(2);
     ASSERT_from_productRequestOut_SIZE(2);
-    ASSERT_from_productRequestOut(0, DpDev::ContainerId::Container1, FwDpBuffSizeType(DpDev::CONTAINER_1_SIZE));
-    ASSERT_from_productRequestOut(1, DpDev::ContainerId::Container2, FwDpBuffSizeType(DpDev::CONTAINER_2_SIZE));
+    ASSERT_from_productRequestOut(0, ID_BASE + DpDev::ContainerId::Container1, FwDpBuffSizeType(DpDev::CONTAINER_1_SIZE));
+    ASSERT_from_productRequestOut(1, ID_BASE + DpDev::ContainerId::Container2, FwDpBuffSizeType(DpDev::CONTAINER_2_SIZE));
 }
 
 // ----------------------------------------------------------------------

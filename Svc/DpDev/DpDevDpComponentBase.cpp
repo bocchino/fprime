@@ -23,7 +23,8 @@ DpDevDpComponentBase ::~DpDevDpComponentBase() {}
 //! ----------------------------------------------------------------------
 
 void DpDevDpComponentBase ::Dp_Request(ContainerId::T containerId, FwDpBuffSizeType size) {
-    this->productRequestOut_out(0, containerId, size);
+    const auto globalId = this->getIdBase() + containerId;
+    this->productRequestOut_out(0, globalId, size);
 }
 
 Fw::SerializeStatus DpDevDpComponentBase ::Dp_Write(DpPacket& dpPacket) {
@@ -50,7 +51,7 @@ Fw::SerializeStatus DpDevDpComponentBase ::Dp_Write(DpPacket& dpPacket) {
 void DpDevDpComponentBase ::productRecvIn_handler(const NATIVE_INT_TYPE portNum,
                                                   FwDpIdType id,
                                                   const Fw::Buffer& buffer) {
-    DpPacket dpPacket(static_cast<ContainerId::T>(id), buffer);
+    DpPacket dpPacket(id, buffer);
     this->Dp_Recv_handler(dpPacket);
 }
 
