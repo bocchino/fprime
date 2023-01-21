@@ -42,16 +42,61 @@ class Tester : public DpDevGTestBase {
     void schedIn_OK();
 
     //! productRecvIn with Container 1 OK
-#if 0
-    void productRecvIn_Container1OK();
-#else
     void productRecvIn_Container1OK() {
-      this->productRecvIn_OK(
-        DpDev::ContainerId::Container1,
-        this->container1Buffer
-      );
+        const auto containerId = DpDev::ContainerId::Container1;
+        const auto containerBuffer = this->container1Buffer;
+        // Invoke the productRecvIn port
+        this->invoke_to_productRecvIn(0, containerId, containerBuffer);
+        this->component.doDispatch();
+        // Check the port history size
+        ASSERT_FROM_PORT_HISTORY_SIZE(1);
+        ASSERT_from_productSendOut_SIZE(1);
+        // Get the history entry
+        const auto entry = this->fromPortHistory_productSendOut->at(0);
+        // Check the container id
+        ASSERT_EQ(entry.id, containerId);
+        // Check the buffer
+        Fw::Buffer entryBuffer = entry.buffer;
+        ASSERT_EQ(entryBuffer, containerBuffer);
+        // Check the buffer size
+        const auto bufferSize = entryBuffer.getSize();
+        ASSERT_GE(bufferSize, FwDpBuffSizeType(DpDev::DpPacket::Header::SIZE));
+        // Check the packet descriptor type
+        auto& serialRepr = entryBuffer.getSerializeRepr();
+        serialRepr.setBuffLen(bufferSize);
+        FwPacketDescriptorType packetType = 0;
+        auto status = serialRepr.deserialize(packetType);
+        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+        ASSERT_EQ(packetType, Fw::ComPacket::FW_PACKET_DP);
+        // Get the container id
+        FwDpIdType packetContainerId = 0;
+        status = serialRepr.deserialize(packetContainerId);
+        ASSERT_EQ(packetContainerId, containerId);
+        // Get the data size
+        FwDpBuffSizeType dataSize = 0;
+        status = serialRepr.deserialize(dataSize);
+        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+        // Check the data size
+        const auto dataCapacity = bufferSize - DpDev::DpPacket::Header::SIZE;
+        const auto eltSize = sizeof(FwDpIdType) + sizeof(U32);
+        const auto expectedNumElts = dataCapacity / eltSize;
+        const auto expectedDataSize = expectedNumElts * eltSize;
+        ASSERT_EQ(dataSize, expectedDataSize);
+        // Check the buffer size
+        const auto expectedBufferSize = DpDev::DpPacket::Header::SIZE + expectedDataSize;
+        ASSERT_EQ(bufferSize, expectedBufferSize);
+        // Check the data
+        for (FwDpBuffSizeType i = 0; i < expectedNumElts; ++i) {
+            FwDpIdType id;
+            U32 elt;
+            status = serialRepr.deserialize(id);
+            ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+            ASSERT_EQ(id, DpDev::RecordId::U32Record);
+            status = serialRepr.deserialize(elt);
+            ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+            ASSERT_EQ(elt, this->component.u32RecordData);
+        }
     }
-#endif
 
   PRIVATE:
     // ----------------------------------------------------------------------
@@ -105,66 +150,6 @@ class Tester : public DpDevGTestBase {
 
     //! Buffer for Container 2
     const Fw::Buffer container2Buffer;
-
-PRIVATE:
-    // ----------------------------------------------------------------------
-    // Private helper functions 
-    // ----------------------------------------------------------------------
-
-    void productRecvIn_OK(
-        FwDpIdType containerId,
-        const Fw::Buffer& containerBuffer
-    ) {
-      // Invoke the productRecvIn port
-      this->invoke_to_productRecvIn(0, containerId, containerBuffer);
-      this->component.doDispatch();
-      // Check the port history size
-      ASSERT_FROM_PORT_HISTORY_SIZE(1);
-      ASSERT_from_productSendOut_SIZE(1);
-      // Get the history entry
-      const auto entry = this->fromPortHistory_productSendOut->at(0);
-      // Check the container id
-      ASSERT_EQ(entry.id, containerId);
-      // Check the buffer size
-      auto entryBuffer = entry.buffer;
-      const auto bufferSize = entryBuffer.getSize();
-      ASSERT_GE(bufferSize, FwDpBuffSizeType(DpDev::DpPacket::Header::SIZE));
-      // Check the packet descriptor type
-      auto& serialRepr = entryBuffer.getSerializeRepr();
-      serialRepr.setBuffLen(bufferSize);
-      FwPacketDescriptorType packetType = 0;
-      auto status = serialRepr.deserialize(packetType);
-      ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-      ASSERT_EQ(packetType, Fw::ComPacket::FW_PACKET_DP);
-      // Get the container id
-      FwDpIdType packetContainerId = 0;
-      status = serialRepr.deserialize(packetContainerId);
-      ASSERT_EQ(packetContainerId, containerId);
-      // Get the data size
-      FwDpBuffSizeType dataSize = 0;
-      status = serialRepr.deserialize(dataSize);
-      ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-      // Check the data size
-      const auto dataCapacity = bufferSize - DpDev::DpPacket::Header::SIZE;
-      const auto eltSize = sizeof(FwDpIdType) + sizeof(U32);
-      const auto expectedNumElts = dataCapacity / eltSize;
-      const auto expectedDataSize = expectedNumElts * eltSize;
-      ASSERT_EQ(dataSize, expectedDataSize);
-      // Check the buffer size
-      // TODO: Check actual packet size
-      ASSERT_EQ(bufferSize, FwDpBuffSizeType(DpDev::CONTAINER_1_SIZE));
-      // Check the data
-      for (FwDpBuffSizeType i = 0; i < expectedNumElts; ++i) {
-        FwDpIdType id;
-        U32 elt;
-        status = serialRepr.deserialize(id);
-        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-        ASSERT_EQ(id, DpDev::RecordId::U32Record);
-        status = serialRepr.deserialize(elt);
-        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-        ASSERT_EQ(elt, this->component.u32RecordData);
-      }
-    }
 };
 
 }  // end namespace Svc
