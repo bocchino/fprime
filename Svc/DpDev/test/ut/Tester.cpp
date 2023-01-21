@@ -70,7 +70,9 @@ void Tester ::productRecvIn_Container1OK() {
     ASSERT_EQ(dataSize, expectedDataSize);
     // Check the data
     for (FwDpBuffSizeType i = 0; i < expectedNumElts; ++i) {
-      // TODO
+      // TODO: Deserialize
+      // TODO: Check deserialize status
+      // TODO: Compare with expected value
     }
 }
 
