@@ -103,6 +103,16 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     virtual void Dp_Recv_handler(DpPacket& dpPacket  //!< The data product packet
                                  ) = 0;
 
+    //! Receive a data product buffer for Container1
+    //! \return Serialize status
+    virtual void Dp_Recv_Container1_handler(DpPacket& dpPacket  //!< The data product packet
+    ) = 0;
+
+    //! Receive a data product buffer for Container2
+    //! \return Serialize status
+    virtual void Dp_Recv_Container2_handler(DpPacket& dpPacket  //!< The data product packet
+    ) = 0;
+
   PROTECTED:
     //! ----------------------------------------------------------------------
     //! Functions for managing data products
