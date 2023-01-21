@@ -181,7 +181,7 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     //! Handler implementation for productRecvIn
     //!
     void productRecvIn_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
-                               FwDpIdType id,                  //!< The buffer ID. Matches the container ID.
+                               FwDpIdType id,                  //!< The container ID
                                const Fw::Buffer& buffer        //!< The buffer
                                ) override;
 };
