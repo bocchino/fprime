@@ -38,8 +38,11 @@ class Tester : public DpDevGTestBase {
     // Tests
     // ----------------------------------------------------------------------
 
-    //! Test schedIn
-    void testSchedIn();
+    //! schedIn OK
+    void schedIn_OK();
+
+    //! productRecvIn with Container 1 OK
+    void productRecvIn_Container1OK();
 
   PRIVATE:
     // ----------------------------------------------------------------------
@@ -81,6 +84,18 @@ class Tester : public DpDevGTestBase {
     //! The component under test
     //!
     DpDev component;
+
+    //! Buffer data for Container 1
+    U8 container1Data[DpDev::CONTAINER_1_SIZE];
+
+    //! Buffer for Container 1
+    const Fw::Buffer container1Buffer;
+
+    //! Buffer data for Container 2
+    U8 container2Data[DpDev::CONTAINER_2_SIZE];
+
+    //! Buffer for Container 2
+    const Fw::Buffer container2Buffer;
 };
 
 }  // end namespace Svc

@@ -4,6 +4,8 @@
 // \brief  cpp file for DpDev component implementation class
 // ======================================================================
 
+#include <cstdio>
+
 #include "Fw/Types/Assert.hpp"
 #include "Svc/DpDev/DpDev.hpp"
 
@@ -34,7 +36,7 @@ void DpDev ::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE con
 }
 
 // ----------------------------------------------------------------------
-// Implementation of the data product write handler
+// Implementation of the data product receive handler
 // ----------------------------------------------------------------------
 
 void DpDev ::Dp_Recv_handler(Container& container) {
@@ -51,7 +53,13 @@ void DpDev ::Dp_Recv_handler(Container& container) {
             break;
     }
     if (status == Fw::FW_SERIALIZE_OK) {
-        this->Dp_Write(container);
+        status = this->Dp_Write(container);
+    }
+    else {
+      // TODO
+    }
+    if (status != Fw::FW_SERIALIZE_OK) {
+      // TODO
     }
 }
 

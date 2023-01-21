@@ -25,8 +25,17 @@ void DpDevDpComponentBase ::Dp_Request(ContainerId::T containerId, FwDpBuffSizeT
     this->productRequestOut_out(0, containerId, size);
 }
 
-void DpDevDpComponentBase ::Dp_Write(Container& container) {
-    this->productSendOut_out(0, container.id, container.buffer);
+Fw::SerializeStatus DpDevDpComponentBase ::Dp_Write(Container& container) {
+    // Store the data length into the buffer
+    auto& serialRepr = container.buffer.getSerializeRepr();
+    serialRepr.resetSer();
+    auto status = serialRepr.serialize(static_cast<FwDpBuffSizeType>(container.dataSize));
+    // If everything is OK, send the buffer
+    if (status == Fw::FW_SERIALIZE_OK) {
+      this->productSendOut_out(0, container.id, container.buffer);
+    }
+    // Return the status
+    return status;
 }
 
 // ----------------------------------------------------------------------

@@ -41,7 +41,12 @@ class DpDevDpComponentBase : public DpDevComponentBase {
         Container(ContainerId::T id,        //!< The container id
                   const Fw::Buffer& buffer  //!< The buffer
                   )
-            : id(id), buffer(buffer) {}
+            : id(id), buffer(buffer), dataSize(0)
+        {
+          // Reserve space to store the data size
+          auto& serializeRepr = this->buffer.getSerializeRepr();
+          (void) serializeRepr.serialize(static_cast<FwDpBuffSizeType>(0));
+        }
         //! Serialize a U32Record into the container
         //! \return The serialize status
         Fw::SerializeStatus serializeRecord_U32Record(U32 elt  //! The element
@@ -50,6 +55,10 @@ class DpDevDpComponentBase : public DpDevComponentBase {
             auto status = serializeRepr.serialize(static_cast<FwDpIdType>(RecordId::U32Record));
             if (status == Fw::FW_SERIALIZE_OK) {
                 status = serializeRepr.serialize(elt);
+            }
+            if (status == Fw::FW_SERIALIZE_OK) {
+                this->dataSize += sizeof(FwDpIdType);
+                this->dataSize += sizeof elt;
             }
             return status;
         }
@@ -62,12 +71,18 @@ class DpDevDpComponentBase : public DpDevComponentBase {
             if (status == Fw::FW_SERIALIZE_OK) {
                 status = serializeRepr.serialize(elt);
             }
+            if (status == Fw::FW_SERIALIZE_OK) {
+                this->dataSize += sizeof(FwDpIdType);
+                this->dataSize += sizeof elt;
+            }
             return status;
         }
         //! The container id
         const ContainerId::T id;
         //! The buffer
         Fw::Buffer buffer;
+        //! The data size
+        FwDpBuffSizeType dataSize;
     };
 
   public:
@@ -105,7 +120,8 @@ class DpDevDpComponentBase : public DpDevComponentBase {
 
     //! Write a data product. Typically this function is called in the
     //! user-implemented Dp_RecvBuffer_handler.
-    void Dp_Write(Container& container  //!< The container
+    //! \return The status after serializing the data length
+    Fw::SerializeStatus Dp_Write(Container& container  //!< The container
     );
 
   PRIVATE:

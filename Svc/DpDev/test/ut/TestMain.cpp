@@ -5,9 +5,16 @@
 #include "STest/Random/Random.hpp"
 #include "Svc/DpDev/test/ut/Tester.hpp"
 
-TEST(Nominal, ToDo) {
-    Svc::Tester tester;
-    tester.testSchedIn();
+using namespace Svc;
+
+TEST(schedIn, OK) {
+    Tester tester;
+    tester.schedIn_OK();
+}
+
+TEST(productRecvIn, Container1OK) {
+    Tester tester;
+    tester.productRecvIn_Container1OK();
 }
 
 int main(int argc, char** argv) {
