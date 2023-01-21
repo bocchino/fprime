@@ -35,10 +35,11 @@ class DpDevDpComponentBase : public DpDevComponentBase {
         };
     };
 
-    //! A container
-    struct Container {
+    //! A data product packet
+    struct DpPacket {
+
         //! Constructor
-        Container(ContainerId::T id,        //!< The container id
+        DpPacket(ContainerId::T id,        //!< The container id
                   const Fw::Buffer& buffer  //!< The buffer
                   )
             : id(id), buffer(buffer), dataSize(0)
@@ -47,7 +48,8 @@ class DpDevDpComponentBase : public DpDevComponentBase {
           auto& serializeRepr = this->buffer.getSerializeRepr();
           (void) serializeRepr.serialize(static_cast<FwDpBuffSizeType>(0));
         }
-        //! Serialize a U32Record into the container
+
+        //! Serialize a U32Record into the packet
         //! \return The serialize status
         Fw::SerializeStatus serializeRecord_U32Record(U32 elt  //! The element
         ) {
@@ -62,7 +64,8 @@ class DpDevDpComponentBase : public DpDevComponentBase {
             }
             return status;
         }
-        //! Serialize a DataRecord into the container
+
+        //! Serialize a DataRecord into the packet
         //! \return The serialize status
         Fw::SerializeStatus serializeRecord_DataRecord(const DpDev_Data& elt  //! The element
         ) {
@@ -77,12 +80,16 @@ class DpDevDpComponentBase : public DpDevComponentBase {
             }
             return status;
         }
+
         //! The container id
         const ContainerId::T id;
+
         //! The buffer
         Fw::Buffer buffer;
+
         //! The data size
         FwDpBuffSizeType dataSize;
+
     };
 
   public:
@@ -105,7 +112,7 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     //! ----------------------------------------------------------------------
 
     //! The handler for receiving a data product buffer
-    virtual void Dp_Recv_handler(Container& container  //!< The container
+    virtual void Dp_Recv_handler(DpPacket& dpPacket  //!< The data product packet
                                  ) = 0;
 
   PROTECTED:
@@ -121,7 +128,7 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     //! Write a data product. Typically this function is called in the
     //! user-implemented Dp_RecvBuffer_handler.
     //! \return The status after serializing the data length
-    Fw::SerializeStatus Dp_Write(Container& container  //!< The container
+    Fw::SerializeStatus Dp_Write(DpPacket& dpPacket  //!< The data product packet
     );
 
   PRIVATE:

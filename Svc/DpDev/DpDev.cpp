@@ -39,21 +39,21 @@ void DpDev ::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE con
 // Implementation of the data product receive handler
 // ----------------------------------------------------------------------
 
-void DpDev ::Dp_Recv_handler(Container& container) {
+void DpDev ::Dp_Recv_handler(DpPacket& dpPacket) {
     auto status = Fw::FW_SERIALIZE_OK;
-    switch (container.id) {
+    switch (dpPacket.id) {
         case ContainerId::Container1:
-            status = this->fillContainer1(container);
+            status = this->fillContainer1(dpPacket);
             break;
         case ContainerId::Container2:
-            status = this->fillContainer2(container);
+            status = this->fillContainer2(dpPacket);
             break;
         default:
             FW_ASSERT(0);
             break;
     }
     if (status == Fw::FW_SERIALIZE_OK) {
-        status = this->Dp_Write(container);
+        status = this->Dp_Write(dpPacket);
     }
     else {
       // TODO
@@ -67,10 +67,10 @@ void DpDev ::Dp_Recv_handler(Container& container) {
 // Private helper functions
 // ----------------------------------------------------------------------
 
-Fw::SerializeStatus DpDev ::fillContainer1(Container& container) const {
+Fw::SerializeStatus DpDev ::fillContainer1(DpPacket& dpPacket) const {
     auto status = Fw::FW_SERIALIZE_OK;
     for (FwSizeType i = 0; i < CONTAINER_1_SIZE; ++i) {
-        status = container.serializeRecord_U32Record(this->u32RecordData);
+        status = dpPacket.serializeRecord_U32Record(this->u32RecordData);
         if (status != Fw::FW_SERIALIZE_OK) {
             break;
         }
@@ -82,11 +82,11 @@ Fw::SerializeStatus DpDev ::fillContainer1(Container& container) const {
     return status;
 }
 
-Fw::SerializeStatus DpDev ::fillContainer2(Container& container) const {
+Fw::SerializeStatus DpDev ::fillContainer2(DpPacket& dpPacket) const {
     const DpDev_Data dataRecord(this->dataRecordData);
     auto status = Fw::FW_SERIALIZE_OK;
     for (FwSizeType i = 0; i < CONTAINER_2_SIZE; ++i) {
-        status = container.serializeRecord_DataRecord(dataRecord);
+        status = dpPacket.serializeRecord_DataRecord(dataRecord);
         if (status != Fw::FW_SERIALIZE_OK) {
             break;
         }

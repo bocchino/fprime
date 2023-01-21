@@ -55,7 +55,7 @@ class DpDev : public DpDevDpComponentBase {
     // ----------------------------------------------------------------------
 
     //! Receive a data product buffer
-    void Dp_Recv_handler(Container& container  //!< The container
+    void Dp_Recv_handler(DpPacket& dpPacket  //!< The data product packet
                          ) override;
 
   PRIVATE:
@@ -63,14 +63,14 @@ class DpDev : public DpDevDpComponentBase {
     // Private helper functions
     // ----------------------------------------------------------------------
 
-    //! Fill Container 1
+    //! Fill a data product packet for Container 1
     //! \return Serialize status
-    Fw::SerializeStatus fillContainer1(Container& container  //!< The container
+    Fw::SerializeStatus fillContainer1(DpPacket& dpPacket  //!< The data product packet
     ) const;
 
-    //! Fill Container 2
+    //! Fill a data product packet for Container 2
     //! \return Serialize status
-    Fw::SerializeStatus fillContainer2(Container& container  //!< The container
+    Fw::SerializeStatus fillContainer2(DpPacket& dpPacket  //!< The data product packet
     ) const;
 
   PRIVATE:

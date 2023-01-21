@@ -25,14 +25,14 @@ void DpDevDpComponentBase ::Dp_Request(ContainerId::T containerId, FwDpBuffSizeT
     this->productRequestOut_out(0, containerId, size);
 }
 
-Fw::SerializeStatus DpDevDpComponentBase ::Dp_Write(Container& container) {
+Fw::SerializeStatus DpDevDpComponentBase ::Dp_Write(DpPacket& dpPacket) {
     // Store the data length into the buffer
-    auto& serialRepr = container.buffer.getSerializeRepr();
+    auto& serialRepr = dpPacket.buffer.getSerializeRepr();
     serialRepr.resetSer();
-    auto status = serialRepr.serialize(static_cast<FwDpBuffSizeType>(container.dataSize));
+    auto status = serialRepr.serialize(static_cast<FwDpBuffSizeType>(dpPacket.dataSize));
     // If everything is OK, send the buffer
     if (status == Fw::FW_SERIALIZE_OK) {
-      this->productSendOut_out(0, container.id, container.buffer);
+      this->productSendOut_out(0, dpPacket.id, dpPacket.buffer);
     }
     // Return the status
     return status;
@@ -45,8 +45,8 @@ Fw::SerializeStatus DpDevDpComponentBase ::Dp_Write(Container& container) {
 void DpDevDpComponentBase ::productRecvIn_handler(const NATIVE_INT_TYPE portNum,
                                                   FwDpIdType id,
                                                   const Fw::Buffer& buffer) {
-    Container container(static_cast<ContainerId::T>(id), buffer);
-    this->Dp_Recv_handler(container);
+    DpPacket dpPacket(static_cast<ContainerId::T>(id), buffer);
+    this->Dp_Recv_handler(dpPacket);
 }
 
 }  // end namespace Svc
