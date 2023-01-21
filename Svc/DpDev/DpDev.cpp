@@ -39,26 +39,6 @@ void DpDev ::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE con
 // Data product handler impelentations
 // ----------------------------------------------------------------------
 
-// TODO: Move this switch statement into the auto-generated code
-void DpDev ::Dp_Recv_handler(DpPacket& dpPacket) {
-    // Convert global id to local id
-    const auto idBase = this->getIdBase();
-    FW_ASSERT(dpPacket.id >= idBase);
-    const auto localId = dpPacket.id - idBase;
-    // Switch on the local id
-    switch (localId) {
-        case ContainerId::Container1:
-            this->Dp_Recv_Container1_handler(dpPacket);
-            break;
-        case ContainerId::Container2:
-            this->Dp_Recv_Container2_handler(dpPacket);
-            break;
-        default:
-            FW_ASSERT(0);
-            break;
-    }
-}
-
 void DpDev ::Dp_Recv_Container1_handler(DpPacket& dpPacket) {
     auto status = Fw::FW_SERIALIZE_OK;
     for (FwSizeType i = 0; i < CONTAINER_1_SIZE; ++i) {
@@ -68,8 +48,7 @@ void DpDev ::Dp_Recv_Container1_handler(DpPacket& dpPacket) {
         }
         FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
     }
-    status = this->Dp_Write(dpPacket);
-    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+    this->Dp_Write(dpPacket);
 }
 
 void DpDev ::Dp_Recv_Container2_handler(DpPacket& dpPacket) {
@@ -82,8 +61,7 @@ void DpDev ::Dp_Recv_Container2_handler(DpPacket& dpPacket) {
         }
         FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
     }
-    status = this->Dp_Write(dpPacket);
-    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+    this->Dp_Write(dpPacket);
 }
 
 }  // end namespace Svc

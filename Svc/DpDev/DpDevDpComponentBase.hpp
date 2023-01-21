@@ -39,7 +39,6 @@ class DpDevDpComponentBase : public DpDevComponentBase {
 
     //! A data product packet
     struct DpPacket : public Fw::DpPacket {
-
         //! Constructor
         DpPacket(FwDpIdType id,            //!< The container id
                  const Fw::Buffer& buffer  //!< The buffer
@@ -77,7 +76,6 @@ class DpDevDpComponentBase : public DpDevComponentBase {
             }
             return status;
         }
-
     };
 
   public:
@@ -99,19 +97,15 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     //! Pure virtual functions to implement
     //! ----------------------------------------------------------------------
 
-    //! The handler for receiving a data product buffer
-    virtual void Dp_Recv_handler(DpPacket& dpPacket  //!< The data product packet
-                                 ) = 0;
-
     //! Receive a data product buffer for Container1
     //! \return Serialize status
     virtual void Dp_Recv_Container1_handler(DpPacket& dpPacket  //!< The data product packet
-    ) = 0;
+                                            ) = 0;
 
     //! Receive a data product buffer for Container2
     //! \return Serialize status
     virtual void Dp_Recv_Container2_handler(DpPacket& dpPacket  //!< The data product packet
-    ) = 0;
+                                            ) = 0;
 
   PROTECTED:
     //! ----------------------------------------------------------------------
@@ -125,8 +119,7 @@ class DpDevDpComponentBase : public DpDevComponentBase {
 
     //! Write a data product. Typically this function is called in the
     //! user-implemented Dp_RecvBuffer_handler.
-    //! \return The status after serializing the data length
-    Fw::SerializeStatus Dp_Write(DpPacket& dpPacket  //!< The data product packet
+    void Dp_Write(DpPacket& dpPacket  //!< The data product packet
     );
 
   PRIVATE:
@@ -140,6 +133,27 @@ class DpDevDpComponentBase : public DpDevComponentBase {
                                FwDpIdType id,                  //!< The container ID
                                const Fw::Buffer& buffer        //!< The buffer
                                ) override;
+
+    //! The handler for receiving a data product buffer
+    void Dp_Recv_handler(DpPacket& dpPacket  //!< The data product packet
+    ) {
+        // Convert global id to local id
+        const auto idBase = this->getIdBase();
+        FW_ASSERT(dpPacket.id >= idBase);
+        const auto localId = dpPacket.id - idBase;
+        // Switch on the local id
+        switch (localId) {
+            case ContainerId::Container1:
+                this->Dp_Recv_Container1_handler(dpPacket);
+                break;
+            case ContainerId::Container2:
+                this->Dp_Recv_Container2_handler(dpPacket);
+                break;
+            default:
+                FW_ASSERT(0);
+                break;
+        }
+    }
 };
 
 }  // end namespace Svc
