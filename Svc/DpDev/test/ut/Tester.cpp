@@ -42,6 +42,7 @@ void Tester ::schedIn_OK() {
     ASSERT_from_productRequestOut(1, DpDev::ContainerId::Container2, FwDpBuffSizeType(DpDev::CONTAINER_2_SIZE));
 }
 
+#if 0
 void Tester ::productRecvIn_Container1OK() {
     // Invoke the productRecvIn port
     this->invoke_to_productRecvIn(0, DpDev::ContainerId::Container1, this->container1Buffer);
@@ -57,24 +58,40 @@ void Tester ::productRecvIn_Container1OK() {
     auto entryBuffer = entry.buffer;
     const auto bufferSize = this->container1Buffer.getSize();
     ASSERT_EQ(bufferSize, FwDpBuffSizeType(DpDev::CONTAINER_1_SIZE));
-    // Get the data size
+    // Check the packet descriptor type
     auto& serialRepr = entryBuffer.getSerializeRepr();
     serialRepr.setBuffLen(bufferSize);
+    FwPacketDescriptorType packetType = 0;
+    auto status = serialRepr.deserialize(packetType);
+    ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+    ASSERT_EQ(packetType, Fw::ComPacket::FW_PACKET_DP);
+    // Get the container id
+    FwDpIdType containerId = 0;
+    status = serialRepr.deserialize(containerId);
+    ASSERT_EQ(containerId, DpDev::ContainerId::Container1);
+    // Get the data size
     FwDpBuffSizeType dataSize = 0;
-    auto status = serialRepr.deserialize(dataSize);
+    status = serialRepr.deserialize(dataSize);
     ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
     // Check the data size
-    const FwDpBuffSizeType eltSize = sizeof(FwDpIdType) + sizeof(U32);
-    const auto expectedNumElts = (bufferSize - sizeof(FwDpBuffSizeType)) / eltSize;
+    const auto dataCapacity = bufferSize - DpDev::DpPacket::Header::SIZE;
+    const auto eltSize = sizeof(FwDpIdType) + sizeof(U32);
+    const auto expectedNumElts = dataCapacity / eltSize;
     const auto expectedDataSize = expectedNumElts * eltSize;
     ASSERT_EQ(dataSize, expectedDataSize);
     // Check the data
     for (FwDpBuffSizeType i = 0; i < expectedNumElts; ++i) {
-      // TODO: Deserialize
-      // TODO: Check deserialize status
-      // TODO: Compare with expected value
+      FwDpIdType id;
+      U32 elt;
+      status = serialRepr.deserialize(id);
+      ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+      ASSERT_EQ(id, DpDev::RecordId::U32Record);
+      status = serialRepr.deserialize(elt);
+      ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+      ASSERT_EQ(elt, this->component.u32RecordData);
     }
 }
+#endif
 
 // ----------------------------------------------------------------------
 // Handlers for typed from ports

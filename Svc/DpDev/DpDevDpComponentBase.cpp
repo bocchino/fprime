@@ -5,6 +5,7 @@
 // ======================================================================
 
 #include "FpConfig.hpp"
+#include "Fw/Types/Assert.hpp"
 #include "Svc/DpDev/DpDevDpComponentBase.hpp"
 
 namespace Svc {
@@ -26,12 +27,16 @@ void DpDevDpComponentBase ::Dp_Request(ContainerId::T containerId, FwDpBuffSizeT
 }
 
 Fw::SerializeStatus DpDevDpComponentBase ::Dp_Write(DpPacket& dpPacket) {
-    // Store the data length into the buffer
-    auto& serialRepr = dpPacket.buffer.getSerializeRepr();
-    serialRepr.resetSer();
-    auto status = serialRepr.serialize(static_cast<FwDpBuffSizeType>(dpPacket.dataSize));
+    // Write the header into the packet again
+    // This time we have the data length
+    auto status = dpPacket.writeHeader();
     // If everything is OK, send the buffer
     if (status == Fw::FW_SERIALIZE_OK) {
+      // Update the size of the buffer according to the data size
+      const auto bufferSize = dpPacket.getBufferSize();
+      FW_ASSERT(bufferSize <= dpPacket.buffer.getSize());
+      dpPacket.buffer.setSize(bufferSize);
+      // Send the buffer
       this->productSendOut_out(0, dpPacket.id, dpPacket.buffer);
     }
     // Return the status

@@ -40,26 +40,26 @@ void DpDev ::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE con
 // ----------------------------------------------------------------------
 
 void DpDev ::Dp_Recv_handler(DpPacket& dpPacket) {
-    auto status = Fw::FW_SERIALIZE_OK;
-    switch (dpPacket.id) {
-        case ContainerId::Container1:
-            status = this->fillContainer1(dpPacket);
-            break;
-        case ContainerId::Container2:
-            status = this->fillContainer2(dpPacket);
-            break;
-        default:
-            FW_ASSERT(0);
-            break;
-    }
-    if (status == Fw::FW_SERIALIZE_OK) {
+    if (dpPacket.isValid) {
+        auto status = Fw::FW_SERIALIZE_OK;
+        switch (dpPacket.id) {
+            case ContainerId::Container1:
+                status = this->fillContainer1(dpPacket);
+                FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+                break;
+            case ContainerId::Container2:
+                status = this->fillContainer2(dpPacket);
+                FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+                break;
+            default:
+                FW_ASSERT(0);
+                break;
+        }
         status = this->Dp_Write(dpPacket);
+        FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
     }
     else {
-      // TODO
-    }
-    if (status != Fw::FW_SERIALIZE_OK) {
-      // TODO
+        // TODO
     }
 }
 
