@@ -42,16 +42,19 @@ class DpDevDpComponentBase : public DpDevComponentBase {
         //! Constructor
         DpContainer(FwDpIdType id,            //!< The container id
                  FwDpPriorityType priority, //!< The priority
-                 const Fw::Buffer& buffer  //!< The buffer
+                 const Fw::Buffer& buffer,  //!< The packet buffer
+                 FwDpIdType baseId //!< The component base id
                  )
-            : Fw::DpContainer(id, priority, buffer) {}
+            : Fw::DpContainer(id, priority, buffer),
+              baseId(baseId) {}
 
         //! Serialize a U32Record into the packet
         //! \return The serialize status
         Fw::SerializeStatus serializeRecord_U32Record(U32 elt  //! The element
         ) {
             auto& serializeRepr = buffer.getSerializeRepr();
-            auto status = serializeRepr.serialize(static_cast<FwDpIdType>(RecordId::U32Record));
+            const FwDpIdType id = this->baseId + RecordId::U32Record;
+            auto status = serializeRepr.serialize(id);
             if (status == Fw::FW_SERIALIZE_OK) {
                 status = serializeRepr.serialize(elt);
             }
@@ -67,7 +70,8 @@ class DpDevDpComponentBase : public DpDevComponentBase {
         Fw::SerializeStatus serializeRecord_DataRecord(const DpDev_Data& elt  //! The element
         ) {
             auto& serializeRepr = buffer.getSerializeRepr();
-            auto status = serializeRepr.serialize(static_cast<FwDpIdType>(RecordId::DataRecord));
+            const FwDpIdType id = this->baseId + RecordId::DataRecord;
+            auto status = serializeRepr.serialize(id);
             if (status == Fw::FW_SERIALIZE_OK) {
                 status = serializeRepr.serialize(elt);
             }
@@ -77,6 +81,9 @@ class DpDevDpComponentBase : public DpDevComponentBase {
             }
             return status;
         }
+      private:
+        //! The component base id
+        FwDpIdType baseId;
     };
 
   public:

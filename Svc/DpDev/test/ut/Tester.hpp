@@ -93,7 +93,8 @@ class Tester : public DpDevGTestBase {
             U32 elt;
             status = serialRepr.deserialize(id);
             ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-            ASSERT_EQ(id, DpDev::RecordId::U32Record);
+            const FwDpIdType expectedId = this->component.getIdBase() + DpDev::RecordId::U32Record;
+            ASSERT_EQ(id, expectedId);
             status = serialRepr.deserialize(elt);
             ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
             ASSERT_EQ(elt, this->component.u32RecordData);

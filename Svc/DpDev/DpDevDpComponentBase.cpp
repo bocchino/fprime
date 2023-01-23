@@ -48,7 +48,7 @@ void DpDevDpComponentBase ::productRecvIn_handler(const NATIVE_INT_TYPE portNum,
                                                   FwDpIdType id,
                                                   const Fw::Buffer& buffer) {
     const FwDpPriorityType defaultPriority = 0;
-    DpContainer container(id, defaultPriority, buffer);
+    DpContainer container(id, defaultPriority, buffer, this->getIdBase());
     this->Dp_Recv_handler(container);
 }
 
