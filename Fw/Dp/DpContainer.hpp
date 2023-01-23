@@ -34,10 +34,8 @@ struct DpContainer {
 #endif
         //! The data size offset
         static constexpr FwDpBuffSizeType DATA_SIZE_OFFSET = ID_OFFSET + sizeof(FwDpBuffSizeType);
-        //! The data offset
-        static constexpr FwDpBuffSizeType DATA_OFFSET = DATA_SIZE_OFFSET + sizeof(FwDpBuffSizeType);
         //! The header size
-        static constexpr FwDpBuffSizeType SIZE = DATA_OFFSET;
+        static constexpr FwDpBuffSizeType SIZE = DATA_SIZE_OFFSET + sizeof(FwDpBuffSizeType);
     };
 
     // ----------------------------------------------------------------------
@@ -50,8 +48,8 @@ struct DpContainer {
              const Fw::Buffer& buffer  //!< The buffer
              )
         : id(id), priority(priority), dataSize(0), buffer(buffer) {
-        // Write the packet header with an initial data size of zero
-        const auto status = this->writeHeader();
+        // Move the serialization index to the end of the header
+        const auto status = this->moveSerializationToOffset(Header::SIZE);
         FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
     }
 

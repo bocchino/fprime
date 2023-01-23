@@ -579,11 +579,11 @@ namespace Fw {
     {
         Fw::SerializeStatus status = FW_SERIALIZE_OK;
         // compute new deser loc
-        const FwSizeType newDeserLoc = this->m_deserLoc + numBytesToSkip;
+        const FwSizeType newSerLoc = this->m_serLoc + numBytesToSkip;
         // check for room
-        if (newDeserLoc <= this->getBuffLength()) {
+        if (newSerLoc <= this->getBuffCapacity()) {
             // update deser loc
-            this->m_deserLoc = newDeserLoc;
+            this->m_serLoc = newSerLoc;
         }
         else {
             status = FW_SERIALIZE_NO_ROOM_LEFT;
