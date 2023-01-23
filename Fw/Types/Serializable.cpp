@@ -575,7 +575,23 @@ namespace Fw {
         this->m_deserLoc = 0;
     }
 
-    SerializeStatus SerializeBufferBase::deserializeSkip(NATIVE_UINT_TYPE numBytesToSkip)
+    SerializeStatus SerializeBufferBase::serializeSkip(FwSizeType numBytesToSkip)
+    {
+        Fw::SerializeStatus status = FW_SERIALIZE_OK;
+        // compute new deser loc
+        const FwSizeType newDeserLoc = this->m_deserLoc + numBytesToSkip;
+        // check for room
+        if (newDeserLoc <= this->getBuffLength()) {
+            // update deser loc
+            this->m_deserLoc = newDeserLoc;
+        }
+        else {
+            status = FW_SERIALIZE_NO_ROOM_LEFT;
+        }
+        return status;
+    }
+
+    SerializeStatus SerializeBufferBase::deserializeSkip(FwSizeType numBytesToSkip)
     {
         // check for room
         if (this->getBuffLength() == this->m_deserLoc) {
