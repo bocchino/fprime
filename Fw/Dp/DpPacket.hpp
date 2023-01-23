@@ -41,7 +41,7 @@ struct DpPacket {
              const Fw::Buffer& buffer  //!< The buffer
              )
         : id(id), buffer(buffer), dataSize(0) {
-        // Write the packet header
+        // Write the packet header with an initial data size of zero
         const auto status = this->writeHeader();
         FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
     }
@@ -69,8 +69,8 @@ struct DpPacket {
         return status;
     }
 
-    //! Get the buffer size corresponding to the data size
-    FwDpBuffSizeType getBufferSize() { return Header::SIZE + this->dataSize; }
+    //! Get the packet size corresponding to the data size
+    FwDpBuffSizeType getPacketSize() { return Header::SIZE + this->dataSize; }
 
     // ----------------------------------------------------------------------
     // Member variables
