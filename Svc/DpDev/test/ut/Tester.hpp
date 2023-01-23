@@ -62,7 +62,7 @@ class Tester : public DpDevGTestBase {
         ASSERT_EQ(entryBuffer, containerBuffer);
         // Check the buffer size
         const auto bufferSize = entryBuffer.getSize();
-        ASSERT_GE(bufferSize, FwDpBuffSizeType(DpDev::DpPacket::Header::SIZE));
+        ASSERT_GE(bufferSize, FwDpBuffSizeType(DpDev::DpContainer::Header::SIZE));
         // Check the packet descriptor type
         auto& serialRepr = entryBuffer.getSerializeRepr();
         serialRepr.setBuffLen(bufferSize);
@@ -79,13 +79,13 @@ class Tester : public DpDevGTestBase {
         status = serialRepr.deserialize(dataSize);
         ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
         // Check the data size
-        const auto dataCapacity = bufferSize - DpDev::DpPacket::Header::SIZE;
+        const auto dataCapacity = bufferSize - DpDev::DpContainer::Header::SIZE;
         const auto eltSize = sizeof(FwDpIdType) + sizeof(U32);
         const auto expectedNumElts = dataCapacity / eltSize;
         const auto expectedDataSize = expectedNumElts * eltSize;
         ASSERT_EQ(dataSize, expectedDataSize);
         // Check the buffer size
-        const auto expectedBufferSize = DpDev::DpPacket::Header::SIZE + expectedDataSize;
+        const auto expectedBufferSize = DpDev::DpContainer::Header::SIZE + expectedDataSize;
         ASSERT_EQ(bufferSize, expectedBufferSize);
         // Check the data
         for (FwDpBuffSizeType i = 0; i < expectedNumElts; ++i) {

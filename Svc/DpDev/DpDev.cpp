@@ -39,29 +39,29 @@ void DpDev ::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE con
 // Data product handler impelentations
 // ----------------------------------------------------------------------
 
-void DpDev ::Dp_Recv_Container1_handler(DpPacket& dpPacket) {
+void DpDev ::Dp_Recv_Container1_handler(DpContainer& container) {
     auto status = Fw::FW_SERIALIZE_OK;
     for (FwSizeType i = 0; i < CONTAINER_1_SIZE; ++i) {
-        status = dpPacket.serializeRecord_U32Record(this->u32RecordData);
+        status = container.serializeRecord_U32Record(this->u32RecordData);
         if (status == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
             break;
         }
         FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
     }
-    this->Dp_Write(dpPacket);
+    this->Dp_Write(container);
 }
 
-void DpDev ::Dp_Recv_Container2_handler(DpPacket& dpPacket) {
+void DpDev ::Dp_Recv_Container2_handler(DpContainer& container) {
     const DpDev_Data dataRecord(this->dataRecordData);
     auto status = Fw::FW_SERIALIZE_OK;
     for (FwSizeType i = 0; i < CONTAINER_2_SIZE; ++i) {
-        status = dpPacket.serializeRecord_DataRecord(dataRecord);
+        status = container.serializeRecord_DataRecord(dataRecord);
         if (status == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
             break;
         }
         FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
     }
-    this->Dp_Write(dpPacket);
+    this->Dp_Write(container);
 }
 
 }  // end namespace Svc

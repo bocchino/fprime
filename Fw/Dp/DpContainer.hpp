@@ -1,11 +1,11 @@
 // ======================================================================
-// \title  DpPacket.hpp
+// \title  DpContainer.hpp
 // \author bocchino
-// \brief  hpp file for DpPacket
+// \brief  hpp file for DpContainer
 // ======================================================================
 
-#ifndef Fw_DpPacket_HPP
-#define Fw_DpPacket_HPP
+#ifndef Fw_DpContainer_HPP
+#define Fw_DpContainer_HPP
 
 #include "FpConfig.hpp"
 #include "Fw/Buffer/Buffer.hpp"
@@ -13,13 +13,13 @@
 
 namespace Fw {
 
-//! A data product packet
-struct DpPacket {
+//! A data product Container
+struct DpContainer {
     // ----------------------------------------------------------------------
     // Types
     // ----------------------------------------------------------------------
 
-    //! A DpPacket header
+    //! A DpContainer packet header
     struct Header {
         //! The header size
         static constexpr FwDpBuffSizeType SIZE =
@@ -37,7 +37,7 @@ struct DpPacket {
     // ----------------------------------------------------------------------
 
     //! Constructor
-    DpPacket(FwDpIdType id,            //!< The container id
+    DpContainer(FwDpIdType id,            //!< The container id
              const Fw::Buffer& buffer  //!< The buffer
              )
         : id(id), buffer(buffer), dataSize(0) {

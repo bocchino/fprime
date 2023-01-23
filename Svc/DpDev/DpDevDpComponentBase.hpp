@@ -10,7 +10,7 @@
 #include "FpConfig.hpp"
 #include "Fw/Buffer/Buffer.hpp"
 #include "Fw/Com/ComPacket.hpp"
-#include "Fw/Dp/DpPacket.hpp"
+#include "Fw/Dp/DpContainer.hpp"
 #include "Svc/DpDev/DpDevComponentAc.hpp"
 
 namespace Svc {
@@ -38,12 +38,12 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     };
 
     //! A data product packet
-    struct DpPacket : public Fw::DpPacket {
+    struct DpContainer : public Fw::DpContainer {
         //! Constructor
-        DpPacket(FwDpIdType id,            //!< The container id
+        DpContainer(FwDpIdType id,            //!< The container id
                  const Fw::Buffer& buffer  //!< The buffer
                  )
-            : Fw::DpPacket(id, buffer) {}
+            : Fw::DpContainer(id, buffer) {}
 
         //! Serialize a U32Record into the packet
         //! \return The serialize status
@@ -97,14 +97,14 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     //! Pure virtual functions to implement
     //! ----------------------------------------------------------------------
 
-    //! Receive a data product buffer for Container1
+    //! Receive a container of type Container1
     //! \return Serialize status
-    virtual void Dp_Recv_Container1_handler(DpPacket& dpPacket  //!< The data product packet
+    virtual void Dp_Recv_Container1_handler(DpContainer& container  //!< The container
                                             ) = 0;
 
-    //! Receive a data product buffer for Container2
+    //! Receive a container of type Container2
     //! \return Serialize status
-    virtual void Dp_Recv_Container2_handler(DpPacket& dpPacket  //!< The data product packet
+    virtual void Dp_Recv_Container2_handler(DpContainer& container  //!< The container
                                             ) = 0;
 
   PROTECTED:
@@ -119,7 +119,7 @@ class DpDevDpComponentBase : public DpDevComponentBase {
 
     //! Write a data product. Typically this function is called in the
     //! user-implemented Dp_RecvBuffer_handler.
-    void Dp_Write(DpPacket& dpPacket  //!< The data product packet
+    void Dp_Write(DpContainer& container  //!< The data product packet
     );
 
   PRIVATE:
@@ -135,19 +135,19 @@ class DpDevDpComponentBase : public DpDevComponentBase {
                                ) override;
 
     //! The handler for receiving a data product buffer
-    void Dp_Recv_handler(DpPacket& dpPacket  //!< The data product packet
+    void Dp_Recv_handler(DpContainer& container  //!< The data product packet
     ) {
         // Convert global id to local id
         const auto idBase = this->getIdBase();
-        FW_ASSERT(dpPacket.id >= idBase);
-        const auto localId = dpPacket.id - idBase;
+        FW_ASSERT(container.id >= idBase);
+        const auto localId = container.id - idBase;
         // Switch on the local id
         switch (localId) {
             case ContainerId::Container1:
-                this->Dp_Recv_Container1_handler(dpPacket);
+                this->Dp_Recv_Container1_handler(container);
                 break;
             case ContainerId::Container2:
-                this->Dp_Recv_Container2_handler(dpPacket);
+                this->Dp_Recv_Container2_handler(container);
                 break;
             default:
                 FW_ASSERT(0);
