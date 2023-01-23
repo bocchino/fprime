@@ -26,15 +26,11 @@ struct DpContainer {
         static constexpr FwDpBuffSizeType PACKET_DESCRIPTOR_OFFSET = 0;
         //! The id offset
         static constexpr FwDpBuffSizeType ID_OFFSET = PACKET_DESCRIPTOR_OFFSET + sizeof(FwPacketDescriptorType);
-#if 1
         //! The priority
         static constexpr FwDpPriorityType PRIORITY_OFFSET = ID_OFFSET + sizeof(FwDpBuffSizeType);
         //! The data size offset
         static constexpr FwDpBuffSizeType DATA_SIZE_OFFSET = PRIORITY_OFFSET + sizeof(FwDpPriorityType);
-#else
-        //! The data size offset
-        static constexpr FwDpBuffSizeType DATA_SIZE_OFFSET = ID_OFFSET + sizeof(FwDpBuffSizeType);
-#endif
+        // TODO: Add time stamp
         //! The header size
         static constexpr FwDpBuffSizeType SIZE = DATA_SIZE_OFFSET + sizeof(FwDpBuffSizeType);
     };
