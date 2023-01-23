@@ -22,17 +22,22 @@ struct DpContainer {
 
     //! A DpContainer packet header
     struct Header {
-        //! The header size
-        static constexpr FwDpBuffSizeType SIZE =
-            sizeof(FwPacketDescriptorType) + sizeof(FwDpIdType) + sizeof(FwDpBuffSizeType);
         //! The packet descriptor offset
         static constexpr FwDpBuffSizeType PACKET_DESCRIPTOR_OFFSET = 0;
         //! The id offset
         static constexpr FwDpBuffSizeType ID_OFFSET = PACKET_DESCRIPTOR_OFFSET + sizeof(FwPacketDescriptorType);
+#if 0
         //! The priority
         static constexpr FwDpPriorityType PRIORITY_OFFSET = ID_OFFSET + sizeof(FwDpBuffSizeType);
         //! The data size offset
         static constexpr FwDpBuffSizeType DATA_SIZE_OFFSET = PRIORITY_OFFSET + sizeof(FwDpPriorityType);
+#endif
+        //! The data size offset
+        static constexpr FwDpBuffSizeType DATA_SIZE_OFFSET = ID_OFFSET + sizeof(FwDpBuffSizeType);
+        //! The data offset
+        static constexpr FwDpBuffSizeType DATA_OFFSET = DATA_SIZE_OFFSET + sizeof(FwDpBuffSizeType);
+        //! The header size
+        static constexpr FwDpBuffSizeType SIZE = DATA_OFFSET;
     };
 
     // ----------------------------------------------------------------------
@@ -53,6 +58,18 @@ struct DpContainer {
     // ----------------------------------------------------------------------
     // Member functions
     // ----------------------------------------------------------------------
+
+    //! Move the packet serialization to the specified offset
+    //! \return The serialize status
+    Fw::SerializeStatus moveSerializationToOffset(
+        FwDpBuffSizeType offset //!< The offset
+    ) {
+        auto& serializeRepr = this->buffer.getSerializeRepr();
+        // Reset serialization
+        serializeRepr.resetSer();
+        // Advance to offset
+        return serializeRepr.serializeSkip(offset);
+    }
 
     //! Write the packet header
     //! \return The serialize status
