@@ -12,6 +12,7 @@
 #include "Fw/Com/ComPacket.hpp"
 #include "Fw/Dp/DpContainer.hpp"
 #include "Svc/DpDev/DpDevComponentAc.hpp"
+#include "Svc/DpDev/DpDev_PriorityEnumAc.hpp"
 
 namespace Svc {
 
@@ -41,11 +42,10 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     struct DpContainer : public Fw::DpContainer {
         //! Constructor
         DpContainer(FwDpIdType id,              //!< The container id
-                    FwDpPriorityType priority,  //!< The priority
                     const Fw::Buffer& buffer,   //!< The packet buffer
                     FwDpIdType baseId           //!< The component base id
                     )
-            : Fw::DpContainer(id, priority, buffer), baseId(baseId) {}
+            : Fw::DpContainer(id, buffer), baseId(baseId) {}
 
         //! Serialize a U32Record into the packet
         //! \return The serialize status
@@ -151,9 +151,15 @@ class DpDevDpComponentBase : public DpDevComponentBase {
         // Switch on the local id
         switch (localId) {
             case ContainerId::Container1:
+                // Set the priority
+                container.priority = DpDev_Priority::Container1;
+                // Call the handler
                 this->Dp_Recv_Container1_handler(container);
                 break;
             case ContainerId::Container2:
+                // Set the priority
+                container.priority = DpDev_Priority::Container2;
+                // Call the handler
                 this->Dp_Recv_Container2_handler(container);
                 break;
             default:

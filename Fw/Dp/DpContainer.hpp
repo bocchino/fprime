@@ -26,14 +26,15 @@ struct DpContainer {
         static constexpr FwDpBuffSizeType PACKET_DESCRIPTOR_OFFSET = 0;
         //! The id offset
         static constexpr FwDpBuffSizeType ID_OFFSET = PACKET_DESCRIPTOR_OFFSET + sizeof(FwPacketDescriptorType);
-#if 0
+#if 1
         //! The priority
         static constexpr FwDpPriorityType PRIORITY_OFFSET = ID_OFFSET + sizeof(FwDpBuffSizeType);
         //! The data size offset
         static constexpr FwDpBuffSizeType DATA_SIZE_OFFSET = PRIORITY_OFFSET + sizeof(FwDpPriorityType);
-#endif
+#else
         //! The data size offset
         static constexpr FwDpBuffSizeType DATA_SIZE_OFFSET = ID_OFFSET + sizeof(FwDpBuffSizeType);
+#endif
         //! The header size
         static constexpr FwDpBuffSizeType SIZE = DATA_SIZE_OFFSET + sizeof(FwDpBuffSizeType);
     };
@@ -44,10 +45,9 @@ struct DpContainer {
 
     //! Constructor
     DpContainer(FwDpIdType id,            //!< The container id
-             FwDpPriorityType priority, //!< The priority
              const Fw::Buffer& buffer  //!< The buffer
              )
-        : id(id), priority(priority), dataSize(0), buffer(buffer) {
+        : id(id), priority(0), dataSize(0), buffer(buffer) {
         // Move the serialization index to the end of the header
         const auto status = this->moveSerializationToOffset(Header::SIZE);
         FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
@@ -80,6 +80,10 @@ struct DpContainer {
         // Store the container id
         if (status == Fw::FW_SERIALIZE_OK) {
             status = serializeRepr.serialize(this->id);
+        }
+        // Store the priority
+        if (status == Fw::FW_SERIALIZE_OK) {
+            status = serializeRepr.serialize(this->priority);
         }
         // Store the data size
         if (status == Fw::FW_SERIALIZE_OK) {

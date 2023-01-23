@@ -57,10 +57,8 @@ class Tester : public DpDevGTestBase {
         const auto entry = this->fromPortHistory_productSendOut->at(0);
         // Check the container id
         ASSERT_EQ(entry.id, containerId);
-        // Check the buffer
-        Fw::Buffer entryBuffer = entry.buffer;
-        ASSERT_EQ(entryBuffer, containerBuffer);
         // Check the buffer size
+        Fw::Buffer entryBuffer = entry.buffer;
         const auto bufferSize = entryBuffer.getSize();
         ASSERT_GE(bufferSize, FwDpBuffSizeType(DpDev::DpContainer::Header::SIZE));
         // Check the packet descriptor type
@@ -70,10 +68,16 @@ class Tester : public DpDevGTestBase {
         auto status = serialRepr.deserialize(packetType);
         ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
         ASSERT_EQ(packetType, Fw::ComPacket::FW_PACKET_DP);
-        // Get the container id
+        // Check the container id
         FwDpIdType packetContainerId = 0;
         status = serialRepr.deserialize(packetContainerId);
+        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
         ASSERT_EQ(packetContainerId, containerId);
+        // Check the priority
+        FwDpPriorityType packetPriority = 0;
+        status = serialRepr.deserialize(packetPriority);
+        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+        ASSERT_EQ(packetPriority, DpDev_Priority::Container1);
         // Get the data size
         FwDpBuffSizeType dataSize = 0;
         status = serialRepr.deserialize(dataSize);

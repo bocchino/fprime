@@ -4,8 +4,14 @@ module Svc {
   active component DpDev {
 
     # ---------------------------------------------------------------------- 
-    # Types
+    # Constants and type
     # ---------------------------------------------------------------------- 
+
+    @ Priorities
+    enum Priority {
+      Container1 = 10
+      Container2 = 20
+    }
 
     @ Data for a DataRecord
     struct Data {
@@ -48,10 +54,10 @@ module Svc {
     # ----------------------------------------------------------------------
 
     @ Container 1
-    product container Container1 id 300
+    product container Container1 id 300 default priority Priority.Container1
 
     @ Container 2
-    product container Container2 id 400
+    product container Container2 id 400 default priority Priority.Container2
 
   }
 
