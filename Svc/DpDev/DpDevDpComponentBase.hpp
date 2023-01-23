@@ -41,9 +41,10 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     struct DpContainer : public Fw::DpContainer {
         //! Constructor
         DpContainer(FwDpIdType id,            //!< The container id
+                 FwDpPriorityType priority, //!< The priority
                  const Fw::Buffer& buffer  //!< The buffer
                  )
-            : Fw::DpContainer(id, buffer) {}
+            : Fw::DpContainer(id, priority, buffer) {}
 
         //! Serialize a U32Record into the packet
         //! \return The serialize status

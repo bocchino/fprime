@@ -28,8 +28,10 @@ struct DpContainer {
         static constexpr FwDpBuffSizeType PACKET_DESCRIPTOR_OFFSET = 0;
         //! The id offset
         static constexpr FwDpBuffSizeType ID_OFFSET = PACKET_DESCRIPTOR_OFFSET + sizeof(FwPacketDescriptorType);
+        //! The priority
+        static constexpr FwDpPriorityType PRIORITY_OFFSET = ID_OFFSET + sizeof(FwDpBuffSizeType);
         //! The data size offset
-        static constexpr FwDpBuffSizeType DATA_SIZE_OFFSET = ID_OFFSET + sizeof(FwDpIdType);
+        static constexpr FwDpBuffSizeType DATA_SIZE_OFFSET = PRIORITY_OFFSET + sizeof(FwDpPriorityType);
     };
 
     // ----------------------------------------------------------------------
@@ -38,9 +40,10 @@ struct DpContainer {
 
     //! Constructor
     DpContainer(FwDpIdType id,            //!< The container id
+             FwDpPriorityType priority, //!< The priority
              const Fw::Buffer& buffer  //!< The buffer
              )
-        : id(id), buffer(buffer), dataSize(0) {
+        : id(id), priority(priority), dataSize(0), buffer(buffer) {
         // Write the packet header with an initial data size of zero
         const auto status = this->writeHeader();
         FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
@@ -79,11 +82,15 @@ struct DpContainer {
     //! The container id
     const FwDpIdType id;
 
-    //! The buffer
-    Fw::Buffer buffer;
+    //! The priority
+    FwDpPriorityType priority;
 
     //! The data size
     FwDpBuffSizeType dataSize;
+
+    //! The packet buffer
+    Fw::Buffer buffer;
+
 };
 
 }  // end namespace Fw

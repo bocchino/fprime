@@ -75,6 +75,9 @@ typedef U32 FwDpBuffSizeType;
 typedef U32 FwDpIdType;
 #define PRI_FwDpIdType PRIu32
 
+typedef U32 FwDpPriorityType;
+#define PRI_FwDpPriorityType PRIu32
+
 /**
  * FpLimits:
  *
