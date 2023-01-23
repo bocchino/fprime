@@ -10,6 +10,7 @@
 #include "FpConfig.hpp"
 #include "Fw/Buffer/Buffer.hpp"
 #include "Fw/Com/ComPacket.hpp"
+#include "Fw/Types/Assert.hpp"
 
 namespace Fw {
 

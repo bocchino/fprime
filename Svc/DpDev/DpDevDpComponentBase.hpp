@@ -40,13 +40,12 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     //! A data product packet
     struct DpContainer : public Fw::DpContainer {
         //! Constructor
-        DpContainer(FwDpIdType id,            //!< The container id
-                 FwDpPriorityType priority, //!< The priority
-                 const Fw::Buffer& buffer,  //!< The packet buffer
-                 FwDpIdType baseId //!< The component base id
-                 )
-            : Fw::DpContainer(id, priority, buffer),
-              baseId(baseId) {}
+        DpContainer(FwDpIdType id,              //!< The container id
+                    FwDpPriorityType priority,  //!< The priority
+                    const Fw::Buffer& buffer,   //!< The packet buffer
+                    FwDpIdType baseId           //!< The component base id
+                    )
+            : Fw::DpContainer(id, priority, buffer), baseId(baseId) {}
 
         //! Serialize a U32Record into the packet
         //! \return The serialize status
@@ -81,7 +80,8 @@ class DpDevDpComponentBase : public DpDevComponentBase {
             }
             return status;
         }
-      private:
+
+      PRIVATE:
         //! The component base id
         FwDpIdType baseId;
     };

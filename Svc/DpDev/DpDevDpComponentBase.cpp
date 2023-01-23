@@ -4,9 +4,9 @@
 // \brief  cpp file for DpDev Dp component base (to be auto-generated)
 // ======================================================================
 
+#include "Svc/DpDev/DpDevDpComponentBase.hpp"
 #include "FpConfig.hpp"
 #include "Fw/Types/Assert.hpp"
-#include "Svc/DpDev/DpDevDpComponentBase.hpp"
 
 namespace Svc {
 
