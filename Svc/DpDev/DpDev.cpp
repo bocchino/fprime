@@ -48,7 +48,7 @@ void DpDev ::Dp_Recv_Container1_handler(DpContainer& container) {
         }
         FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
     }
-    this->Dp_Write(container);
+    this->Dp_Send(container);
 }
 
 void DpDev ::Dp_Recv_Container2_handler(DpContainer& container) {
@@ -61,7 +61,7 @@ void DpDev ::Dp_Recv_Container2_handler(DpContainer& container) {
         }
         FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
     }
-    this->Dp_Write(container);
+    this->Dp_Send(container);
 }
 
 }  // end namespace Svc

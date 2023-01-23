@@ -120,14 +120,13 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     //! Functions for managing data products
     //! ----------------------------------------------------------------------
 
-    //! Request a data product buffer
+    //! Request a data product container
     void Dp_Request(ContainerId::T containerId,  //!< The container id
                     FwDpBuffSizeType size        //!< The buffer size
     );
 
-    //! Write a data product. Typically this function is called in the
-    //! user-implemented Dp_RecvBuffer_handler.
-    void Dp_Write(DpContainer& container  //!< The data product packet
+    //! Send a data product
+    void Dp_Send(DpContainer& container  //!< The data product packet
     );
 
   PRIVATE:
