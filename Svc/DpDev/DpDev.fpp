@@ -20,7 +20,7 @@ module Svc {
     }
 
     # ----------------------------------------------------------------------
-    # Data product ports
+    # Special ports
     # ----------------------------------------------------------------------
 
     @ Data product request port
@@ -31,6 +31,9 @@ module Svc {
 
     @ Data product send port
     product send port productSendOut
+
+    @ Time get port
+    time get port timeGetOut
 
     # ---------------------------------------------------------------------- 
     # General ports

@@ -28,17 +28,19 @@ void DpDevDpComponentBase ::Dp_Request(ContainerId::T containerId, FwDpBuffSizeT
 }
 
 void DpDevDpComponentBase ::Dp_Send(DpContainer& container) {
-    // Update the time stamp
-    // TODO
+    // Update the time tag
+    const Fw::Time timeTag = this->getTime();
+    container.setTimeTag(timeTag);
     // Serialize the header into the packet
     auto status = container.serializeHeader();
     FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
     // Update the size of the buffer according to the data size
     const auto packetSize = container.getPacketSize();
-    FW_ASSERT(packetSize <= container.buffer.getSize());
-    container.buffer.setSize(packetSize);
+    Fw::Buffer buffer = container.getBuffer();
+    FW_ASSERT(packetSize <= buffer.getSize());
+    buffer.setSize(packetSize);
     // Send the buffer
-    this->productSendOut_out(0, container.getId(), container.buffer);
+    this->productSendOut_out(0, container.getId(), buffer);
 }
 
 // ----------------------------------------------------------------------

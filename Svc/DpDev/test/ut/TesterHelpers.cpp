@@ -25,6 +25,9 @@ void Tester ::connectPorts() {
 
     // productSendOut
     this->component.set_productSendOut_OutputPort(0, this->get_from_productSendOut(0));
+
+    // timeGetOut
+    this->component.set_timeGetOut_OutputPort(0, this->get_from_timeGetOut(0));
 }
 
 void Tester ::initComponents() {

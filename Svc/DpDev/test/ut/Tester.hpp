@@ -9,6 +9,7 @@
 
 #include "Fw/Dp/test/util/DpContainerHeader.hpp"
 #include "GTestBase.hpp"
+#include "STest/Pick/Pick.hpp"
 #include "Svc/DpDev/DpDev.hpp"
 
 namespace Svc {
@@ -25,7 +26,7 @@ class Tester : public DpDevGTestBase {
     static constexpr FwSizeType TEST_INSTANCE_ID = 0;
     // Queue depth supplied to component instance under test
     static constexpr FwSizeType TEST_INSTANCE_QUEUE_DEPTH = 10;
-    // The id base
+    // The component id base
     static constexpr FwDpIdType ID_BASE = 100;
 
     //! Construct object Tester
@@ -48,6 +49,11 @@ class Tester : public DpDevGTestBase {
     void productRecvIn_Container1OK() {
         const auto containerId = ID_BASE + DpDev::ContainerId::Container1;
         const auto containerBuffer = this->container1Buffer;
+        // Set the test time
+        const U32 seconds = STest::Pick::any();
+        const U32 useconds = STest::Pick::startLength(0, 1000000);
+        const Fw::Time timeTag(seconds, useconds);
+        this->setTestTime(timeTag);
         // Invoke the productRecvIn port
         this->invoke_to_productRecvIn(0, containerId, containerBuffer);
         this->component.doDispatch();
@@ -70,7 +76,7 @@ class Tester : public DpDevGTestBase {
         // Check the priority
         ASSERT_EQ(header.priority, DpDev_Priority::Container1);
         // Check the time tag
-        // TODO
+        ASSERT_EQ(header.timeTag, timeTag);
         // Check the data size
         const auto dataCapacity = bufferSize - DpDev::DpContainer::Header::SIZE;
         const auto eltSize = sizeof(FwDpIdType) + sizeof(U32);
