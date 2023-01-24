@@ -54,12 +54,12 @@ class DpDev : public DpDevDpComponentBase {
     // Data product handler implementations
     // ----------------------------------------------------------------------
 
-    //! Receive a container of type Container1
+    //! Receive a data product container of type Container1
     //! \return Serialize status
     void Dp_Recv_Container1_handler(DpContainer& container  //!< The container
                                     ) override;
 
-    //! Receive a container of type Container2
+    //! Receive a data product container of type Container2
     //! \return Serialize status
     void Dp_Recv_Container2_handler(DpContainer& container  //!< The container
                                     ) override;

@@ -80,12 +80,12 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     //! Pure virtual functions to implement
     //! ----------------------------------------------------------------------
 
-    //! Receive a container of type Container1
+    //! Receive a data product container of type Container1
     //! \return Serialize status
     virtual void Dp_Recv_Container1_handler(DpContainer& container  //!< The container
                                             ) = 0;
 
-    //! Receive a container of type Container2
+    //! Receive a data product container of type Container2
     //! \return Serialize status
     virtual void Dp_Recv_Container2_handler(DpContainer& container  //!< The container
                                             ) = 0;
