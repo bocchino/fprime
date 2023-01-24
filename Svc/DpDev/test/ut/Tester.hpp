@@ -78,6 +78,11 @@ class Tester : public DpDevGTestBase {
         status = serialRepr.deserialize(packetPriority);
         ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
         ASSERT_EQ(packetPriority, DpDev_Priority::Container1);
+        // Check the time tag
+        Fw::Time packetTimeTag;
+        status = serialRepr.deserialize(packetTimeTag);
+        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+        // TODO
         // Get the data size
         FwDpBuffSizeType dataSize = 0;
         status = serialRepr.deserialize(dataSize);
