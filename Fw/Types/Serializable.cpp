@@ -604,6 +604,19 @@ namespace Fw {
         return FW_SERIALIZE_OK;
     }
 
+    SerializeStatus SerializeBufferBase::moveSerToOffset(FwSizeType offset) {
+        // Reset serialization
+        this->resetSer();
+        // Advance to offset
+        return this->serializeSkip(offset);
+    }
+    SerializeStatus SerializeBufferBase::moveDeserToOffset(FwSizeType offset) {
+        // Reset deserialization
+        this->resetDeser();
+        // Advance to offset
+        return this->deserializeSkip(offset);
+    }
+
     NATIVE_UINT_TYPE SerializeBufferBase::getBuffLength() const {
         return this->m_serLoc;
     }
