@@ -16,27 +16,29 @@
 namespace Fw {
 
 //! A data product Container
-struct DpContainer {
+class DpContainer {
+  public:
     // ----------------------------------------------------------------------
     // Types
     // ----------------------------------------------------------------------
 
     //! A DpContainer packet header
     struct Header {
-        //! The packet descriptor offset
+        //! The offset for the packet descriptor field
         static constexpr FwDpBuffSizeType PACKET_DESCRIPTOR_OFFSET = 0;
-        //! The id offset
+        //! The offset for the id field
         static constexpr FwDpBuffSizeType ID_OFFSET = PACKET_DESCRIPTOR_OFFSET + sizeof(FwPacketDescriptorType);
-        //! The priority
+        //! The offset for the priority field
         static constexpr FwDpPriorityType PRIORITY_OFFSET = ID_OFFSET + sizeof(FwDpIdType);
-        //! The time tag
+        //! The offset for the time tag field
         static constexpr FwDpBuffSizeType TIME_TAG_OFFSET = PRIORITY_OFFSET + sizeof(FwDpPriorityType);
-        //! The data size offset
+        //! The offset for the data size field
         static constexpr FwDpBuffSizeType DATA_SIZE_OFFSET = TIME_TAG_OFFSET + Fw::Time::SERIALIZED_SIZE;
         //! The header size
         static constexpr FwDpBuffSizeType SIZE = DATA_SIZE_OFFSET + sizeof(FwDpBuffSizeType);
     };
 
+  public:
     // ----------------------------------------------------------------------
     // Constructor
     // ----------------------------------------------------------------------
@@ -51,8 +53,9 @@ struct DpContainer {
         FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
     }
 
+  public:
     // ----------------------------------------------------------------------
-    // Member functions
+    // Public member functions
     // ----------------------------------------------------------------------
 
     //! Move the packet serialization to the specified offset
@@ -66,28 +69,27 @@ struct DpContainer {
         return serializeRepr.serializeSkip(offset);
     }
 
-    //! Write the packet header
+    //! Serialize the header into the packet buffer
     //! \return The serialize status
-    Fw::SerializeStatus writeHeader() {
+    Fw::SerializeStatus serializeHeader() {
         auto& serializeRepr = this->buffer.getSerializeRepr();
         // Reset serialization
         serializeRepr.resetSer();
-        // Store the packet type
+        // Serialize the packet type
         auto status = serializeRepr.serialize(static_cast<FwPacketDescriptorType>(Fw::ComPacket::FW_PACKET_DP));
-        // Store the container id
+        // Serialize the container id
         if (status == Fw::FW_SERIALIZE_OK) {
             status = serializeRepr.serialize(this->id);
         }
-        // Store the priority
+        // Serialize the priority
         if (status == Fw::FW_SERIALIZE_OK) {
             status = serializeRepr.serialize(this->priority);
         }
-        // Store the time tag
-        // TODO
+        // Serialize the time tag
         if (status == Fw::FW_SERIALIZE_OK) {
             status = serializeRepr.serialize(this->timeTag);
         }
-        // Store the data size
+        // Serialize the data size
         if (status == Fw::FW_SERIALIZE_OK) {
             status = serializeRepr.serialize(this->dataSize);
         }
@@ -97,8 +99,41 @@ struct DpContainer {
     //! Get the packet size corresponding to the data size
     FwDpBuffSizeType getPacketSize() { return Header::SIZE + this->dataSize; }
 
+    //! Get the container id
+    //! \return The id
+    FwDpIdType getId() { return this->id; }
+
+    //! Get the priority
+    //! \return The priority
+    FwDpPriorityType getPriority() { return this->priority; }
+
+    //! Set the priority
+    void setPriority(FwDpPriorityType priority  //!< The priority
+    ) {
+        this->priority = priority;
+    }
+
+    //! Set the time tag
+    void setTimeTag(Fw::Time timeTag  //!< The time tag
+    ) {
+        this->timeTag = timeTag;
+    }
+
+    //! Get the time tag
+    //! \return The time tag
+    Fw::Time getTimeTag() { return this->timeTag; }
+
+    //! Get the data size
+    //! \return The data size
+    FwDpBuffSizeType getDataSize() { return this->dataSize; }
+
+    //! Get the packet buffer
+    //! \return The buffer
+    Fw::Buffer getBuffer() { return this->buffer; }
+
+  PROTECTED:
     // ----------------------------------------------------------------------
-    // Member variables
+    // Protected member variables
     // ----------------------------------------------------------------------
 
     //! The container id

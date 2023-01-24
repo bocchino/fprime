@@ -146,19 +146,20 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     ) {
         // Convert global id to local id
         const auto idBase = this->getIdBase();
-        FW_ASSERT(container.id >= idBase);
-        const auto localId = container.id - idBase;
+        const auto id = container.getId();
+        FW_ASSERT(id >= idBase);
+        const auto localId = id - idBase;
         // Switch on the local id
         switch (localId) {
             case ContainerId::Container1:
                 // Set the priority
-                container.priority = DpDev_Priority::Container1;
+                container.setPriority(DpDev_Priority::Container1);
                 // Call the handler
                 this->Dp_Recv_Container1_handler(container);
                 break;
             case ContainerId::Container2:
                 // Set the priority
-                container.priority = DpDev_Priority::Container2;
+                container.setPriority(DpDev_Priority::Container2);
                 // Call the handler
                 this->Dp_Recv_Container2_handler(container);
                 break;
