@@ -9,9 +9,7 @@
 
 #include "FpConfig.hpp"
 #include "Fw/Buffer/Buffer.hpp"
-#include "Fw/Com/ComPacket.hpp"
 #include "Fw/Time/Time.hpp"
-#include "Fw/Types/Assert.hpp"
 
 namespace Fw {
 
@@ -46,66 +44,44 @@ class DpContainer {
     //! Constructor
     DpContainer(FwDpIdType id,            //!< The container id
                 const Fw::Buffer& buffer  //!< The buffer
-                )
-        : id(id), priority(0), dataSize(0), buffer(buffer) {
-        // Move the serialization index to the end of the header
-        const auto status = this->moveSerializationToOffset(Header::SIZE);
-        FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
-    }
+                );
 
   public:
     // ----------------------------------------------------------------------
     // Public member functions
     // ----------------------------------------------------------------------
 
-    //! Move the packet serialization to the specified offset
-    //! \return The serialize status
-    Fw::SerializeStatus moveSerializationToOffset(FwDpBuffSizeType offset  //!< The offset
-    ) {
-        auto& serializeRepr = this->buffer.getSerializeRepr();
-        // Reset serialization
-        serializeRepr.resetSer();
-        // Advance to offset
-        return serializeRepr.serializeSkip(offset);
-    }
-
-    //! Serialize the header into the packet buffer
-    //! \return The serialize status
-    Fw::SerializeStatus serializeHeader() {
-        auto& serializeRepr = this->buffer.getSerializeRepr();
-        // Reset serialization
-        serializeRepr.resetSer();
-        // Serialize the packet type
-        auto status = serializeRepr.serialize(static_cast<FwPacketDescriptorType>(Fw::ComPacket::FW_PACKET_DP));
-        // Serialize the container id
-        if (status == Fw::FW_SERIALIZE_OK) {
-            status = serializeRepr.serialize(this->id);
-        }
-        // Serialize the priority
-        if (status == Fw::FW_SERIALIZE_OK) {
-            status = serializeRepr.serialize(this->priority);
-        }
-        // Serialize the time tag
-        if (status == Fw::FW_SERIALIZE_OK) {
-            status = serializeRepr.serialize(this->timeTag);
-        }
-        // Serialize the data size
-        if (status == Fw::FW_SERIALIZE_OK) {
-            status = serializeRepr.serialize(this->dataSize);
-        }
-        return status;
-    }
-
-    //! Get the packet size corresponding to the data size
-    FwDpBuffSizeType getPacketSize() { return Header::SIZE + this->dataSize; }
-
     //! Get the container id
     //! \return The id
-    FwDpIdType getId() { return this->id; }
+    FwDpIdType getId() const { return this->id; }
+
+    //! Get the data size
+    //! \return The data size
+    FwDpBuffSizeType getDataSize() const { return this->dataSize; }
+
+    //! Get the packet buffer
+    //! \return The buffer
+    Fw::Buffer getBuffer() const { return this->buffer; }
+
+    //! Get the packet size corresponding to the data size
+    FwDpBuffSizeType getPacketSize() const { return Header::SIZE + this->dataSize; }
 
     //! Get the priority
     //! \return The priority
-    FwDpPriorityType getPriority() { return this->priority; }
+    FwDpPriorityType getPriority() const { return this->priority; }
+
+    //! Get the time tag
+    //! \return The time tag
+    Fw::Time getTimeTag() const { return this->timeTag; }
+
+    //! Move the packet serialization to the specified offset
+    //! \return The serialize status
+    Fw::SerializeStatus moveSerializationToOffset(FwDpBuffSizeType offset  //!< The offset
+    );
+
+    //! Serialize the header into the packet buffer
+    //! \return The serialize status
+    Fw::SerializeStatus serializeHeader();
 
     //! Set the priority
     void setPriority(FwDpPriorityType priority  //!< The priority
@@ -118,18 +94,6 @@ class DpContainer {
     ) {
         this->timeTag = timeTag;
     }
-
-    //! Get the time tag
-    //! \return The time tag
-    Fw::Time getTimeTag() { return this->timeTag; }
-
-    //! Get the data size
-    //! \return The data size
-    FwDpBuffSizeType getDataSize() { return this->dataSize; }
-
-    //! Get the packet buffer
-    //! \return The buffer
-    Fw::Buffer getBuffer() { return this->buffer; }
 
   PROTECTED:
     // ----------------------------------------------------------------------
