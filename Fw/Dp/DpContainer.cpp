@@ -17,7 +17,7 @@ namespace Fw {
 //! Constructor
 DpContainer::DpContainer(FwDpIdType id, const Fw::Buffer& buffer) : id(id), priority(0), dataSize(0), buffer(buffer) {
     // Move the serialization index to the end of the header
-    const auto status = this->moveSerializationToOffset(Header::SIZE);
+    const auto status = this->moveSerToOffset(Header::SIZE);
     FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
 }
 
@@ -25,13 +25,10 @@ DpContainer::DpContainer(FwDpIdType id, const Fw::Buffer& buffer) : id(id), prio
 // Public member functions
 // ----------------------------------------------------------------------
 
-Fw::SerializeStatus DpContainer::moveSerializationToOffset(FwDpBuffSizeType offset  //!< The offset
+Fw::SerializeStatus DpContainer::moveSerToOffset(FwDpBuffSizeType offset  //!< The offset
 ) {
     auto& serializeRepr = this->buffer.getSerializeRepr();
-    // Reset serialization
-    serializeRepr.resetSer();
-    // Advance to offset
-    return serializeRepr.serializeSkip(offset);
+    return serializeRepr.moveSerToOffset(offset);
 }
 
 Fw::SerializeStatus DpContainer::serializeHeader() {

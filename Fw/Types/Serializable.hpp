@@ -117,6 +117,21 @@ namespace Fw {
             void resetSer(); //!< reset to beginning of buffer to reuse for serialization
             void resetDeser(); //!< reset deserialization to beginning
 
+            SerializeStatus moveSerToOffset(FwSizeType offset) //!< Moves serialization to the specified offset
+            {
+                // Reset serialization
+                this->resetSer();
+                // Advance to offset
+                return this->serializeSkip(offset);
+            }
+            SerializeStatus moveDeserToOffset(FwSizeType offset) //!< Moves deserialization to the specified offset
+            {
+                // Reset deserialization
+                this->resetDeser();
+                // Advance to offset
+                return this->deserializeSkip(offset);
+            }
+
             SerializeStatus serializeSkip(FwSizeType numBytesToSkip); //!< Skips the number of specified bytes for serialization
             SerializeStatus deserializeSkip(FwSizeType numBytesToSkip); //!< Skips the number of specified bytes for deserialization
             virtual NATIVE_UINT_TYPE getBuffCapacity() const = 0; //!< returns capacity, not current size, of buffer

@@ -76,7 +76,7 @@ class DpContainer {
 
     //! Move the packet serialization to the specified offset
     //! \return The serialize status
-    Fw::SerializeStatus moveSerializationToOffset(FwDpBuffSizeType offset  //!< The offset
+    Fw::SerializeStatus moveSerToOffset(FwDpBuffSizeType offset  //!< The offset
     );
 
     //! Serialize the header into the packet buffer
