@@ -12,9 +12,9 @@ TEST(schedIn, OK) {
     tester.schedIn_OK();
 }
 
-TEST(productRecvIn, Container1OK) {
+TEST(productRecvIn, Container1_OK) {
     Tester tester;
-    tester.productRecvIn_Container1OK();
+    tester.productRecvIn_Container1_OK();
 }
 
 int main(int argc, char** argv) {
