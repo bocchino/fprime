@@ -1,7 +1,7 @@
 // ======================================================================
 // \title  DpContainerHeader.hpp
 // \author bocchino
-// \brief  hpp file for DpContainer header
+// \brief  hpp file for DpContainer header test utility
 // ======================================================================
 
 #ifndef Fw_TestUtil_DpContainerHeader_HPP

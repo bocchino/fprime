@@ -4,9 +4,10 @@
 // \brief  hpp file for DpDev test harness implementation class
 // ======================================================================
 
-#ifndef TESTER_HPP
-#define TESTER_HPP
+#ifndef Svc_DpDev_Tester_HPP
+#define Svc_DpDev_Tester_HPP
 
+#include "Fw/Dp/test/util/DpContainerHeader.hpp"
 #include "GTestBase.hpp"
 #include "Svc/DpDev/DpDev.hpp"
 
@@ -61,46 +62,30 @@ class Tester : public DpDevGTestBase {
         Fw::Buffer entryBuffer = entry.buffer;
         const auto bufferSize = entryBuffer.getSize();
         ASSERT_GE(bufferSize, FwDpBuffSizeType(DpDev::DpContainer::Header::SIZE));
-        // Check the packet descriptor type
-        auto& serialRepr = entryBuffer.getSerializeRepr();
-        serialRepr.setBuffLen(bufferSize);
-        FwPacketDescriptorType packetType = 0;
-        auto status = serialRepr.deserialize(packetType);
-        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-        ASSERT_EQ(packetType, Fw::ComPacket::FW_PACKET_DP);
+        // Deserialize the packet header
+        Fw::TestUtil::DpContainerHeader header;
+        header.deserialize(entryBuffer);
         // Check the container id
-        FwDpIdType packetContainerId = 0;
-        status = serialRepr.deserialize(packetContainerId);
-        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-        ASSERT_EQ(packetContainerId, containerId);
+        ASSERT_EQ(header.id, containerId);
         // Check the priority
-        FwDpPriorityType packetPriority = 0;
-        status = serialRepr.deserialize(packetPriority);
-        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-        ASSERT_EQ(packetPriority, DpDev_Priority::Container1);
+        ASSERT_EQ(header.priority, DpDev_Priority::Container1);
         // Check the time tag
-        Fw::Time packetTimeTag;
-        status = serialRepr.deserialize(packetTimeTag);
-        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
         // TODO
-        // Get the data size
-        FwDpBuffSizeType dataSize = 0;
-        status = serialRepr.deserialize(dataSize);
-        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
         // Check the data size
         const auto dataCapacity = bufferSize - DpDev::DpContainer::Header::SIZE;
         const auto eltSize = sizeof(FwDpIdType) + sizeof(U32);
         const auto expectedNumElts = dataCapacity / eltSize;
         const auto expectedDataSize = expectedNumElts * eltSize;
-        ASSERT_EQ(dataSize, expectedDataSize);
+        ASSERT_EQ(header.dataSize, expectedDataSize);
         // Check the buffer size
         const auto expectedBufferSize = DpDev::DpContainer::Header::SIZE + expectedDataSize;
         ASSERT_EQ(bufferSize, expectedBufferSize);
         // Check the data
+        auto& serialRepr = entryBuffer.getSerializeRepr();
         for (FwDpBuffSizeType i = 0; i < expectedNumElts; ++i) {
             FwDpIdType id;
             U32 elt;
-            status = serialRepr.deserialize(id);
+            auto status = serialRepr.deserialize(id);
             ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
             const FwDpIdType expectedId = this->component.getIdBase() + DpDev::RecordId::U32Record;
             ASSERT_EQ(id, expectedId);
