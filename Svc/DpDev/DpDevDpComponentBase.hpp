@@ -38,48 +38,23 @@ class DpDevDpComponentBase : public DpDevComponentBase {
         };
     };
 
-    //! A data product packet
+    //! A data product container
     struct DpContainer : public Fw::DpContainer {
         //! Constructor
         DpContainer(FwDpIdType id,              //!< The container id
                     const Fw::Buffer& buffer,   //!< The packet buffer
                     FwDpIdType baseId           //!< The component base id
-                    )
-            : Fw::DpContainer(id, buffer), baseId(baseId) {}
+                    );
 
-        //! Serialize a U32Record into the packet
+        //! Serialize a U32Record into the packet buffer
         //! \return The serialize status
         Fw::SerializeStatus serializeRecord_U32Record(U32 elt  //! The element
-        ) {
-            auto& serializeRepr = buffer.getSerializeRepr();
-            const FwDpIdType id = this->baseId + RecordId::U32Record;
-            auto status = serializeRepr.serialize(id);
-            if (status == Fw::FW_SERIALIZE_OK) {
-                status = serializeRepr.serialize(elt);
-            }
-            if (status == Fw::FW_SERIALIZE_OK) {
-                this->dataSize += sizeof(FwDpIdType);
-                this->dataSize += sizeof elt;
-            }
-            return status;
-        }
+        );
 
-        //! Serialize a DataRecord into the packet
+        //! Serialize a DataRecord into the packet buffer
         //! \return The serialize status
         Fw::SerializeStatus serializeRecord_DataRecord(const DpDev_Data& elt  //! The element
-        ) {
-            auto& serializeRepr = buffer.getSerializeRepr();
-            const FwDpIdType id = this->baseId + RecordId::DataRecord;
-            auto status = serializeRepr.serialize(id);
-            if (status == Fw::FW_SERIALIZE_OK) {
-                status = serializeRepr.serialize(elt);
-            }
-            if (status == Fw::FW_SERIALIZE_OK) {
-                this->dataSize += sizeof(FwDpIdType);
-                this->dataSize += sizeof elt;
-            }
-            return status;
-        }
+        );
 
       PRIVATE:
         //! The component base id
@@ -126,7 +101,7 @@ class DpDevDpComponentBase : public DpDevComponentBase {
     );
 
     //! Send a data product
-    void Dp_Send(DpContainer& container  //!< The data product packet
+    void Dp_Send(DpContainer& container  //!< The data product container
     );
 
   PRIVATE:
@@ -142,32 +117,8 @@ class DpDevDpComponentBase : public DpDevComponentBase {
                                ) override;
 
     //! The handler for receiving a data product buffer
-    void Dp_Recv_handler(DpContainer& container  //!< The data product packet
-    ) {
-        // Convert global id to local id
-        const auto idBase = this->getIdBase();
-        const auto id = container.getId();
-        FW_ASSERT(id >= idBase);
-        const auto localId = id - idBase;
-        // Switch on the local id
-        switch (localId) {
-            case ContainerId::Container1:
-                // Set the priority
-                container.setPriority(DpDev_Priority::Container1);
-                // Call the handler
-                this->Dp_Recv_Container1_handler(container);
-                break;
-            case ContainerId::Container2:
-                // Set the priority
-                container.setPriority(DpDev_Priority::Container2);
-                // Call the handler
-                this->Dp_Recv_Container2_handler(container);
-                break;
-            default:
-                FW_ASSERT(0);
-                break;
-        }
-    }
+    void Dp_Recv_handler(DpContainer& container  //!< The data product container
+    );
 };
 
 }  // end namespace Svc
