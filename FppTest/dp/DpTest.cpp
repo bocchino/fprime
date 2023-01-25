@@ -15,7 +15,7 @@ namespace FppTest {
 // Construction, initialization, and destruction
 // ----------------------------------------------------------------------
 
-DpTest ::DpTest(const char* const compName, U32 u32RecordData, U32 dataRecordData)
+DpTest ::DpTest(const char* const compName, U32 u32RecordData, U16 dataRecordData)
     : DpTestDpComponentBase(compName), u32RecordData(u32RecordData), dataRecordData(dataRecordData) {}
 
 void DpTest ::init(const NATIVE_INT_TYPE queueDepth, const NATIVE_INT_TYPE instance) {

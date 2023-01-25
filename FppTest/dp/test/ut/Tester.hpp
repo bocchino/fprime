@@ -112,22 +112,21 @@ class Tester : public DpTestGTestBase {
         Fw::Buffer buffer;
         FwSizeType expectedNumElts;
         // Invoke the port and check the header
-        this->productRecvIn_InvokeAndCheckHeader(DpTest::ContainerId::Container2, DpTest_Data::SERIALIZED_SIZE, buffer, expectedNumElts);
-#if 0
-    // Check the data
-    auto& serialRepr = entryBuffer.getSerializeRepr();
-    for (FwDpBuffSizeType i = 0; i < expectedNumElts; ++i) {
-        FwDpIdType id;
-        U32 elt;
-        auto status = serialRepr.deserialize(id);
-        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-        const FwDpIdType expectedId = this->component.getIdBase() + DpTest::RecordId::U32Record;
-        ASSERT_EQ(id, expectedId);
-        status = serialRepr.deserialize(elt);
-        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-        ASSERT_EQ(elt, this->component.u32RecordData);
-    }
-#endif
+        this->productRecvIn_InvokeAndCheckHeader(DpTest::ContainerId::Container2, DpTest_Data::SERIALIZED_SIZE, buffer,
+                                                 expectedNumElts);
+        // Check the data
+        auto& serialRepr = buffer.getSerializeRepr();
+        for (FwDpBuffSizeType i = 0; i < expectedNumElts; ++i) {
+            FwDpIdType id;
+            DpTest_Data elt;
+            auto status = serialRepr.deserialize(id);
+            ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+            const FwDpIdType expectedId = this->component.getIdBase() + DpTest::RecordId::DataRecord;
+            ASSERT_EQ(id, expectedId);
+            status = serialRepr.deserialize(elt);
+            ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+            ASSERT_EQ(elt.getu16Field(), this->component.dataRecordData);
+        }
     }
 
   PRIVATE:

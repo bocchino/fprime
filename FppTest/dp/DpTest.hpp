@@ -28,7 +28,7 @@ class DpTest : public DpTestDpComponentBase {
     //! Construct object DpTest
     DpTest(const char* const compName,  //!< The component name
           U32 u32RecordData,           //!< The U32Record data
-          U32 dataRecordData           //!< The DataRecord data
+          U16 dataRecordData           //!< The DataRecord data
     );
 
     //! Initialize object DpTest
@@ -73,7 +73,7 @@ class DpTest : public DpTestDpComponentBase {
     const U32 u32RecordData;
 
     //! DataRecord data
-    const U32 dataRecordData;
+    const U16 dataRecordData;
 };
 
 }  // end namespace FppTest
