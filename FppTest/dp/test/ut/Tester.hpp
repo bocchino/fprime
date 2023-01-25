@@ -80,6 +80,10 @@ class Tester : public DpTestGTestBase {
     //!
     void initComponents();
 
+    //! Set and return a random time
+    //! \return The time
+    Fw::Time randomizeTestTime();
+
   PRIVATE:
     // ----------------------------------------------------------------------
     // Variables
