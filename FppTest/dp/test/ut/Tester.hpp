@@ -129,43 +129,7 @@ class Tester : public DpTestGTestBase {
                                             FwSizeType dataEltSize,      //!< The data element size
                                             Fw::Buffer& buffer,          //!< The buffer received
                                             FwSizeType& expectedNumElts  //!< The expected number of elements
-    ) {
-        const auto containerId = ID_BASE + DpTest::ContainerId::Container1;
-        // Set the test time
-        const Fw::Time timeTag = this->randomizeTestTime();
-        // Invoke the productRecvIn port
-        this->invoke_to_productRecvIn(0, containerId, this->container1Buffer);
-        this->component.doDispatch();
-        // Check the port history size
-        ASSERT_FROM_PORT_HISTORY_SIZE(1);
-        ASSERT_from_productSendOut_SIZE(1);
-        // Get the history entry
-        const auto entry = this->fromPortHistory_productSendOut->at(0);
-        // Check the container id
-        ASSERT_EQ(entry.id, containerId);
-        // Check the buffer size
-        buffer = entry.buffer;
-        const auto bufferSize = buffer.getSize();
-        ASSERT_GE(bufferSize, FwDpBuffSizeType(DpTest::DpContainer::Header::SIZE));
-        // Deserialize the packet header
-        Fw::TestUtil::DpContainerHeader header;
-        header.deserialize(buffer);
-        // Check the container id
-        ASSERT_EQ(header.id, containerId);
-        // Check the priority
-        ASSERT_EQ(header.priority, DpTest_Priority::Container1);
-        // Check the time tag
-        ASSERT_EQ(header.timeTag, timeTag);
-        // Check the data size
-        const auto dataCapacity = bufferSize - DpTest::DpContainer::Header::SIZE;
-        const auto eltSize = sizeof(FwDpIdType) + dataEltSize;
-        expectedNumElts = dataCapacity / eltSize;
-        const auto expectedDataSize = expectedNumElts * eltSize;
-        ASSERT_EQ(header.dataSize, expectedDataSize);
-        // Check the buffer size
-        const auto expectedBufferSize = DpTest::DpContainer::Header::SIZE + expectedDataSize;
-        ASSERT_EQ(bufferSize, expectedBufferSize);
-    }
+    );
 
   PRIVATE:
     // ----------------------------------------------------------------------
