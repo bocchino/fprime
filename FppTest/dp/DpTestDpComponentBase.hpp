@@ -4,8 +4,8 @@
 // \brief  hpp file for DpTest Dp component base (to be auto-generated)
 // ======================================================================
 
-#ifndef Svc_DpTestDpComponentBase_HPP
-#define Svc_DpTestDpComponentBase_HPP
+#ifndef FppTest_DpTestDpComponentBase_HPP
+#define FppTest_DpTestDpComponentBase_HPP
 
 #include "FpConfig.hpp"
 #include "FppTest/dp/DpTestComponentAc.hpp"
@@ -14,7 +14,7 @@
 #include "Fw/Com/ComPacket.hpp"
 #include "Fw/Dp/DpContainer.hpp"
 
-namespace Svc {
+namespace FppTest {
 
 class DpTestDpComponentBase : public DpTestComponentBase {
   PROTECTED:
@@ -121,6 +121,6 @@ class DpTestDpComponentBase : public DpTestComponentBase {
     );
 };
 
-}  // end namespace Svc
+}  // end namespace FppTest
 
 #endif

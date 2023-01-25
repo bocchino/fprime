@@ -4,12 +4,12 @@
 // \brief  hpp file for DpTest component implementation class
 // ======================================================================
 
-#ifndef Svc_DpTest_HPP
-#define Svc_DpTest_HPP
+#ifndef FppTest_DpTest_HPP
+#define FppTest_DpTest_HPP
 
 #include "FppTest/dp/DpTestDpComponentBase.hpp"
 
-namespace Svc {
+namespace FppTest {
 
 class DpTest : public DpTestDpComponentBase {
   PRIVATE:
@@ -76,6 +76,6 @@ class DpTest : public DpTestDpComponentBase {
     const U32 dataRecordData;
 };
 
-}  // end namespace Svc
+}  // end namespace FppTest
 
 #endif

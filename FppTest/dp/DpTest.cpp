@@ -9,7 +9,7 @@
 #include "FppTest/dp/DpTest.hpp"
 #include "Fw/Types/Assert.hpp"
 
-namespace Svc {
+namespace FppTest {
 
 // ----------------------------------------------------------------------
 // Construction, initialization, and destruction
@@ -64,4 +64,4 @@ void DpTest ::Dp_Recv_Container2_handler(DpContainer& container) {
     this->Dp_Send(container);
 }
 
-}  // end namespace Svc
+}  // end namespace FppTest

@@ -8,7 +8,7 @@
 #include "FppTest/dp/DpTestDpComponentBase.hpp"
 #include "Fw/Types/Assert.hpp"
 
-namespace Svc {
+namespace FppTest {
 
 // ----------------------------------------------------------------------
 // Types
@@ -116,4 +116,4 @@ void DpTestDpComponentBase::Dp_Recv_handler(DpContainer& container) {
     }
 }
 
-}  // end namespace Svc
+}  // end namespace FppTest
