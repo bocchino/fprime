@@ -26,7 +26,7 @@ Fw::SerializeStatus DpTestDpComponentBase::DpContainer::serializeRecord_U32Recor
     }
     if (status == Fw::FW_SERIALIZE_OK) {
         this->dataSize += sizeof(FwDpIdType);
-        this->dataSize += sizeof elt;
+        this->dataSize += sizeof(U32);
     }
     return status;
 }
@@ -41,7 +41,7 @@ Fw::SerializeStatus DpTestDpComponentBase::DpContainer::serializeRecord_DataReco
     }
     if (status == Fw::FW_SERIALIZE_OK) {
         this->dataSize += sizeof(FwDpIdType);
-        this->dataSize += sizeof elt;
+        this->dataSize += DpTest_Data::SERIALIZED_SIZE;
     }
     return status;
 }
@@ -73,7 +73,7 @@ void DpTestDpComponentBase ::Dp_Send(DpContainer& container) {
     // Update the size of the buffer according to the data size
     const auto packetSize = container.getPacketSize();
     Fw::Buffer buffer = container.getBuffer();
-    FW_ASSERT(packetSize <= buffer.getSize());
+    FW_ASSERT(packetSize <= buffer.getSize(), packetSize, buffer.getSize());
     buffer.setSize(packetSize);
     // Send the buffer
     this->productSendOut_out(0, container.getId(), buffer);
@@ -94,7 +94,7 @@ void DpTestDpComponentBase::Dp_Recv_handler(DpContainer& container) {
     // Convert global id to local id
     const auto idBase = this->getIdBase();
     const auto id = container.getId();
-    FW_ASSERT(id >= idBase);
+    FW_ASSERT(id >= idBase, id, idBase);
     const auto localId = id - idBase;
     // Switch on the local id
     switch (localId) {
