@@ -45,6 +45,53 @@ void Tester::schedIn_OK() {
                                   FwDpBuffSizeType(DpTest::CONTAINER_2_SIZE));
 }
 
+void Tester::productRecvIn_Container1_OK() {
+    Fw::Buffer buffer;
+    FwSizeType expectedNumElts;
+    // Invoke the port and check the header
+    this->productRecvIn_InvokeAndCheckHeader(DpTest::ContainerId::Container1, sizeof(U32), DpTest_Priority::Container1,
+                                             this->container1Buffer, buffer, expectedNumElts);
+#if 0
+    // Check the data
+    auto& serialRepr = buffer.getSerializeRepr();
+    for (FwDpBuffSizeType i = 0; i < expectedNumElts; ++i) {
+        FwDpIdType id;
+        U32 elt;
+        auto status = serialRepr.deserialize(id);
+        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+        const FwDpIdType expectedId = this->component.getIdBase() + DpTest::RecordId::U32Record;
+        ASSERT_EQ(id, expectedId);
+        status = serialRepr.deserialize(elt);
+        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+        ASSERT_EQ(elt, this->component.u32RecordData);
+    }
+#endif
+}
+
+void Tester::productRecvIn_Container2_OK() {
+    Fw::Buffer buffer;
+    FwSizeType expectedNumElts;
+    // Invoke the port and check the header
+    this->productRecvIn_InvokeAndCheckHeader(DpTest::ContainerId::Container2, DpTest_Data::SERIALIZED_SIZE,
+                                             DpTest_Priority::Container2, this->container2Buffer, buffer,
+                                             expectedNumElts);
+#if 0
+    // Check the data
+    auto& serialRepr = buffer.getSerializeRepr();
+    for (FwDpBuffSizeType i = 0; i < expectedNumElts; ++i) {
+        FwDpIdType id;
+        DpTest_Data elt;
+        auto status = serialRepr.deserialize(id);
+        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+        const FwDpIdType expectedId = this->component.getIdBase() + DpTest::RecordId::DataRecord;
+        ASSERT_EQ(id, expectedId);
+        status = serialRepr.deserialize(elt);
+        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+        ASSERT_EQ(elt.getu16Field(), this->component.dataRecordData);
+    }
+#endif
+}
+
 // ----------------------------------------------------------------------
 // Helper methods
 // ----------------------------------------------------------------------
@@ -59,13 +106,15 @@ Fw::Time Tester::randomizeTestTime() {
 
 void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
                                                 FwSizeType dataEltSize,
-                                                Fw::Buffer& buffer,
+                                                FwDpPriorityType priority,
+                                                Fw::Buffer inputBuffer,
+                                                Fw::Buffer& outputBuffer,
                                                 FwSizeType& expectedNumElts) {
-    const auto containerId = ID_BASE + DpTest::ContainerId::Container1;
+    const auto containerId = ID_BASE + id;
     // Set the test time
     const Fw::Time timeTag = this->randomizeTestTime();
     // Invoke the productRecvIn port
-    this->invoke_to_productRecvIn(0, containerId, this->container1Buffer);
+    this->invoke_to_productRecvIn(0, containerId, inputBuffer);
     this->component.doDispatch();
     // Check the port history size
     ASSERT_FROM_PORT_HISTORY_SIZE(1);
@@ -75,16 +124,16 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     // Check the container id
     ASSERT_EQ(entry.id, containerId);
     // Check the buffer size
-    buffer = entry.buffer;
-    const auto bufferSize = buffer.getSize();
+    outputBuffer = entry.buffer;
+    const auto bufferSize = outputBuffer.getSize();
     ASSERT_GE(bufferSize, FwDpBuffSizeType(DpTest::DpContainer::Header::SIZE));
     // Deserialize the packet header
     Fw::TestUtil::DpContainerHeader header;
-    header.deserialize(buffer);
+    header.deserialize(outputBuffer);
     // Check the container id
     ASSERT_EQ(header.id, containerId);
     // Check the priority
-    ASSERT_EQ(header.priority, DpTest_Priority::Container1);
+    ASSERT_EQ(header.priority, priority);
     // Check the time tag
     ASSERT_EQ(header.timeTag, timeTag);
     // Check the data size

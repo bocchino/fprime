@@ -31,8 +31,7 @@ Fw::SerializeStatus DpTestDpComponentBase::DpContainer::serializeRecord_U32Recor
     return status;
 }
 
-Fw::SerializeStatus DpTestDpComponentBase::DpContainer::serializeRecord_DataRecord(const DpTest_Data& elt  //! The element
-) {
+Fw::SerializeStatus DpTestDpComponentBase::DpContainer::serializeRecord_DataRecord(const DpTest_Data& elt) {
     auto& serializeRepr = buffer.getSerializeRepr();
     const FwDpIdType id = this->baseId + RecordId::DataRecord;
     auto status = serializeRepr.serialize(id);
@@ -84,8 +83,8 @@ void DpTestDpComponentBase ::Dp_Send(DpContainer& container) {
 // ----------------------------------------------------------------------
 
 void DpTestDpComponentBase::productRecvIn_handler(const NATIVE_INT_TYPE portNum,
-                                                 FwDpIdType id,
-                                                 const Fw::Buffer& buffer) {
+                                                  FwDpIdType id,
+                                                  const Fw::Buffer& buffer) {
     DpContainer container(id, buffer, this->getIdBase());
     this->Dp_Recv_handler(container);
 }

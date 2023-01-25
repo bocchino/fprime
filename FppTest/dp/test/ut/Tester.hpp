@@ -46,47 +46,10 @@ class Tester : public DpTestGTestBase {
     void schedIn_OK();
 
     //! productRecvIn with Container 1 OK
-    void productRecvIn_Container1_OK() {
-        Fw::Buffer buffer;
-        FwSizeType expectedNumElts;
-        // Invoke the port and check the header
-        this->productRecvIn_InvokeAndCheckHeader(DpTest::ContainerId::Container1, sizeof(U32), buffer, expectedNumElts);
-        // Check the data
-        auto& serialRepr = buffer.getSerializeRepr();
-        for (FwDpBuffSizeType i = 0; i < expectedNumElts; ++i) {
-            FwDpIdType id;
-            U32 elt;
-            auto status = serialRepr.deserialize(id);
-            ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-            const FwDpIdType expectedId = this->component.getIdBase() + DpTest::RecordId::U32Record;
-            ASSERT_EQ(id, expectedId);
-            status = serialRepr.deserialize(elt);
-            ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-            ASSERT_EQ(elt, this->component.u32RecordData);
-        }
-    }
+    void productRecvIn_Container1_OK();
 
     //! productRecvIn with Container 2 OK
-    void productRecvIn_Container2_OK() {
-        Fw::Buffer buffer;
-        FwSizeType expectedNumElts;
-        // Invoke the port and check the header
-        this->productRecvIn_InvokeAndCheckHeader(DpTest::ContainerId::Container2, DpTest_Data::SERIALIZED_SIZE, buffer,
-                                                 expectedNumElts);
-        // Check the data
-        auto& serialRepr = buffer.getSerializeRepr();
-        for (FwDpBuffSizeType i = 0; i < expectedNumElts; ++i) {
-            FwDpIdType id;
-            DpTest_Data elt;
-            auto status = serialRepr.deserialize(id);
-            ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-            const FwDpIdType expectedId = this->component.getIdBase() + DpTest::RecordId::DataRecord;
-            ASSERT_EQ(id, expectedId);
-            status = serialRepr.deserialize(elt);
-            ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-            ASSERT_EQ(elt.getu16Field(), this->component.dataRecordData);
-        }
-    }
+    void productRecvIn_Container2_OK();
 
   PRIVATE:
     // ----------------------------------------------------------------------
@@ -127,8 +90,10 @@ class Tester : public DpTestGTestBase {
     //! Invoke productRecvIn and check header
     void productRecvIn_InvokeAndCheckHeader(FwDpIdType id,               //!< The container id
                                             FwSizeType dataEltSize,      //!< The data element size
-                                            Fw::Buffer& buffer,          //!< The buffer received
-                                            FwSizeType& expectedNumElts  //!< The expected number of elements
+                                            FwDpPriorityType priority,   //!< The priority
+                                            Fw::Buffer inputBuffer,      //!< The buffer to send
+                                            Fw::Buffer& outputBuffer,    //!< The buffer received (output)
+                                            FwSizeType& expectedNumElts  //!< The expected number of elements (output)
     );
 
   PRIVATE:

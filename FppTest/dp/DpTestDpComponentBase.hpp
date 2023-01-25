@@ -33,8 +33,8 @@ class DpTestDpComponentBase : public DpTestComponentBase {
     //! The record ids
     struct RecordId {
         enum T : FwDpIdType {
-            U32Record = 0,
-            DataRecord = 1,
+            U32Record = 100,
+            DataRecord = 200,
         };
     };
 

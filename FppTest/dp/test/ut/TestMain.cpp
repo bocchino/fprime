@@ -20,13 +20,11 @@ TEST(productRecvIn, Container1_OK) {
     tester.productRecvIn_Container1_OK();
 }
 
-#if 0
 TEST(productRecvIn, Container2_OK) {
     COMMENT("Receive Container2 OK");
     Tester tester;
     tester.productRecvIn_Container2_OK();
 }
-#endif
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
