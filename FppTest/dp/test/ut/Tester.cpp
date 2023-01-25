@@ -51,7 +51,6 @@ void Tester::productRecvIn_Container1_OK() {
     // Invoke the port and check the header
     this->productRecvIn_InvokeAndCheckHeader(DpTest::ContainerId::Container1, sizeof(U32), DpTest_Priority::Container1,
                                              this->container1Buffer, buffer, expectedNumElts);
-#if 0
     // Check the data
     auto& serialRepr = buffer.getSerializeRepr();
     for (FwDpBuffSizeType i = 0; i < expectedNumElts; ++i) {
@@ -65,7 +64,6 @@ void Tester::productRecvIn_Container1_OK() {
         ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
         ASSERT_EQ(elt, this->component.u32RecordData);
     }
-#endif
 }
 
 void Tester::productRecvIn_Container2_OK() {
@@ -75,7 +73,6 @@ void Tester::productRecvIn_Container2_OK() {
     this->productRecvIn_InvokeAndCheckHeader(DpTest::ContainerId::Container2, DpTest_Data::SERIALIZED_SIZE,
                                              DpTest_Priority::Container2, this->container2Buffer, buffer,
                                              expectedNumElts);
-#if 0
     // Check the data
     auto& serialRepr = buffer.getSerializeRepr();
     for (FwDpBuffSizeType i = 0; i < expectedNumElts; ++i) {
@@ -89,7 +86,6 @@ void Tester::productRecvIn_Container2_OK() {
         ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
         ASSERT_EQ(elt.getu16Field(), this->component.dataRecordData);
     }
-#endif
 }
 
 // ----------------------------------------------------------------------
