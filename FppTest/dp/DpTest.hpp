@@ -11,7 +11,7 @@
 
 namespace FppTest {
 
-class DpTest : public DpTestDpComponentBase {
+class DpTest : public DpTestDpComponentBaseHc {
   PRIVATE:
     // ----------------------------------------------------------------------
     // Constants

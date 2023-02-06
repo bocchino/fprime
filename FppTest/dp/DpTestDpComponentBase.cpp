@@ -1,5 +1,5 @@
 // ======================================================================
-// \title  DpTestDpComponentBase.cpp
+// \title  DpTestDpComponentBaseHc.cpp
 // \author bocchino
 // \brief  cpp file for DpTest Dp component base (to be auto-generated)
 // ======================================================================
@@ -14,10 +14,10 @@ namespace FppTest {
 // Types
 // ----------------------------------------------------------------------
 
-DpTestDpComponentBase::DpContainer::DpContainer(FwDpIdType id, const Fw::Buffer& buffer, FwDpIdType baseId)
+DpTestDpComponentBaseHc::DpContainer::DpContainer(FwDpIdType id, const Fw::Buffer& buffer, FwDpIdType baseId)
     : Fw::DpContainer(id, buffer), baseId(baseId) {}
 
-Fw::SerializeStatus DpTestDpComponentBase::DpContainer::serializeRecord_U32Record(U32 elt) {
+Fw::SerializeStatus DpTestDpComponentBaseHc::DpContainer::serializeRecord_U32Record(U32 elt) {
     auto& serializeRepr = buffer.getSerializeRepr();
     const FwDpIdType id = this->baseId + RecordId::U32Record;
     auto status = serializeRepr.serialize(id);
@@ -31,7 +31,7 @@ Fw::SerializeStatus DpTestDpComponentBase::DpContainer::serializeRecord_U32Recor
     return status;
 }
 
-Fw::SerializeStatus DpTestDpComponentBase::DpContainer::serializeRecord_DataRecord(const DpTest_Data& elt) {
+Fw::SerializeStatus DpTestDpComponentBaseHc::DpContainer::serializeRecord_DataRecord(const DpTest_Data& elt) {
     auto& serializeRepr = buffer.getSerializeRepr();
     const FwDpIdType id = this->baseId + RecordId::DataRecord;
     auto status = serializeRepr.serialize(id);
@@ -49,20 +49,20 @@ Fw::SerializeStatus DpTestDpComponentBase::DpContainer::serializeRecord_DataReco
 // Construction, initialization, and destruction
 // ----------------------------------------------------------------------
 
-DpTestDpComponentBase ::DpTestDpComponentBase(const char* const compName) : DpTestComponentBase(compName) {}
+DpTestDpComponentBaseHc ::DpTestDpComponentBaseHc(const char* const compName) : DpTestComponentBase(compName) {}
 
-DpTestDpComponentBase ::~DpTestDpComponentBase() {}
+DpTestDpComponentBaseHc ::~DpTestDpComponentBaseHc() {}
 
 //! ----------------------------------------------------------------------
 //! Functions for managing data products
 //! ----------------------------------------------------------------------
 
-void DpTestDpComponentBase ::Dp_Request(ContainerId::T containerId, FwDpBuffSizeType size) {
+void DpTestDpComponentBaseHc ::Dp_Request(ContainerId::T containerId, FwDpBuffSizeType size) {
     const auto globalId = this->getIdBase() + containerId;
     this->productRequestOut_out(0, globalId, size);
 }
 
-void DpTestDpComponentBase ::Dp_Send(DpContainer& container) {
+void DpTestDpComponentBaseHc ::Dp_Send(DpContainer& container) {
     // Update the time tag
     const Fw::Time timeTag = this->getTime();
     container.setTimeTag(timeTag);
@@ -82,14 +82,14 @@ void DpTestDpComponentBase ::Dp_Send(DpContainer& container) {
 // Private Dp handling functions
 // ----------------------------------------------------------------------
 
-void DpTestDpComponentBase::productRecvIn_handler(const NATIVE_INT_TYPE portNum,
+void DpTestDpComponentBaseHc::productRecvIn_handler(const NATIVE_INT_TYPE portNum,
                                                   FwDpIdType id,
                                                   const Fw::Buffer& buffer) {
     DpContainer container(id, buffer, this->getIdBase());
     this->Dp_Recv_handler(container);
 }
 
-void DpTestDpComponentBase::Dp_Recv_handler(DpContainer& container) {
+void DpTestDpComponentBaseHc::Dp_Recv_handler(DpContainer& container) {
     // Convert global id to local id
     const auto idBase = this->getIdBase();
     const auto id = container.getId();

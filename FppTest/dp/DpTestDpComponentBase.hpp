@@ -1,11 +1,11 @@
 // ======================================================================
-// \title  DpTestDpComponentBase.hpp
+// \title  DpTestDpComponentBaseHc.hpp
 // \author bocchino
 // \brief  hpp file for DpTest Dp component base (to be auto-generated)
 // ======================================================================
 
-#ifndef FppTest_DpTestDpComponentBase_HPP
-#define FppTest_DpTestDpComponentBase_HPP
+#ifndef FppTest_DpTestDpComponentBaseHc_HPP
+#define FppTest_DpTestDpComponentBaseHc_HPP
 
 #include "FpConfig.hpp"
 #include "FppTest/dp/DpTestComponentAc.hpp"
@@ -16,7 +16,7 @@
 
 namespace FppTest {
 
-class DpTestDpComponentBase : public DpTestComponentBase {
+class DpTestDpComponentBaseHc : public DpTestComponentBase {
   PROTECTED:
     // ----------------------------------------------------------------------
     // Types
@@ -66,14 +66,14 @@ class DpTestDpComponentBase : public DpTestComponentBase {
     // Construction, initialization, and destruction
     // ----------------------------------------------------------------------
 
-    //! Construct object DpTestDpComponentBase
+    //! Construct object DpTestDpComponentBaseHc
     //!
-    DpTestDpComponentBase(const char* const compName  //!< The component name
+    DpTestDpComponentBaseHc(const char* const compName  //!< The component name
     );
 
-    //! Destroy object DpTestDpComponentBase
+    //! Destroy object DpTestDpComponentBaseHc
     //!
-    virtual ~DpTestDpComponentBase();
+    virtual ~DpTestDpComponentBaseHc();
 
   PROTECTED:
     //! ----------------------------------------------------------------------
