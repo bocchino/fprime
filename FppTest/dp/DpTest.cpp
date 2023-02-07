@@ -16,7 +16,7 @@ namespace FppTest {
 // ----------------------------------------------------------------------
 
 DpTest ::DpTest(const char* const compName, U32 u32RecordData, U16 dataRecordData)
-    : DpTestDpComponentBaseHc(compName), u32RecordData(u32RecordData), dataRecordData(dataRecordData) {}
+    : DpTestDpComponentBase(compName), u32RecordData(u32RecordData), dataRecordData(dataRecordData) {}
 
 void DpTest ::init(const NATIVE_INT_TYPE queueDepth, const NATIVE_INT_TYPE instance) {
     DpTestComponentBase::init(queueDepth, instance);

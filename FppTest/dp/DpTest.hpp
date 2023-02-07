@@ -7,11 +7,11 @@
 #ifndef FppTest_DpTest_HPP
 #define FppTest_DpTest_HPP
 
-#include "FppTest/dp/DpTestDpComponentBaseHc.hpp"
+#include "FppTest/dp/DpTestDpComponentAc.hpp"
 
 namespace FppTest {
 
-class DpTest : public DpTestDpComponentBaseHc {
+class DpTest : public DpTestDpComponentBase {
   PRIVATE:
     // ----------------------------------------------------------------------
     // Constants
