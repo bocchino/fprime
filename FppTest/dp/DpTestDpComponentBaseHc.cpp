@@ -1,7 +1,7 @@
 // ======================================================================
 // \title  DpTestDpComponentBaseHc.cpp
 // \author bocchino
-// \brief  cpp file for DpTest Dp component base (to be auto-generated)
+// \brief  Hand-coded cpp file for DpTest Dp component base (to be auto-generated)
 // ======================================================================
 
 #include "FpConfig.hpp"
@@ -49,7 +49,7 @@ Fw::SerializeStatus DpTestDpComponentBaseHc::DpContainer::serializeRecord_DataRe
 // Construction, initialization, and destruction
 // ----------------------------------------------------------------------
 
-DpTestDpComponentBaseHc ::DpTestDpComponentBaseHc(const char* const compName) : DpTestComponentBase(compName) {}
+DpTestDpComponentBaseHc ::DpTestDpComponentBaseHc(const char* const compName) : DpTestDpComponentBase(compName) {}
 
 DpTestDpComponentBaseHc ::~DpTestDpComponentBaseHc() {}
 

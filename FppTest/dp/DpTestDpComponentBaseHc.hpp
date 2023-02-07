@@ -1,14 +1,14 @@
 // ======================================================================
 // \title  DpTestDpComponentBaseHc.hpp
 // \author bocchino
-// \brief  hpp file for DpTest Dp component base (to be auto-generated)
+// \brief  Hand-coded hpp file for DpTest Dp component base (to be auto-generated)
 // ======================================================================
 
 #ifndef FppTest_DpTestDpComponentBaseHc_HPP
 #define FppTest_DpTestDpComponentBaseHc_HPP
 
 #include "FpConfig.hpp"
-#include "FppTest/dp/DpTestComponentAc.hpp"
+#include "FppTest/dp/DpTestDpComponentAc.hpp"
 #include "FppTest/dp/DpTest_PriorityEnumAc.hpp"
 #include "Fw/Buffer/Buffer.hpp"
 #include "Fw/Com/ComPacket.hpp"
@@ -16,7 +16,7 @@
 
 namespace FppTest {
 
-class DpTestDpComponentBaseHc : public DpTestComponentBase {
+class DpTestDpComponentBaseHc : public DpTestDpComponentBase {
   PROTECTED:
     // ----------------------------------------------------------------------
     // Types
