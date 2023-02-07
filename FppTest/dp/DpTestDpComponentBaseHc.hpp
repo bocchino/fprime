@@ -40,9 +40,6 @@ class DpTestDpComponentBaseHc : public DpTestDpComponentBase {
                                const Fw::Buffer& buffer        //!< The buffer
                                ) override;
 
-    //! The handler for receiving a data product buffer
-    void Dp_Recv_handler(DpContainer& container  //!< The data product container
-    );
 };
 
 }  // end namespace FppTest

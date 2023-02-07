@@ -26,13 +26,8 @@ void DpTestDpComponentBaseHc::productRecvIn_handler(const NATIVE_INT_TYPE portNu
                                                     FwDpIdType id,
                                                     const Fw::Buffer& buffer) {
     DpContainer container(id, buffer, this->getIdBase());
-    this->Dp_Recv_handler(container);
-}
-
-void DpTestDpComponentBaseHc::Dp_Recv_handler(DpContainer& container) {
     // Convert global id to local id
     const auto idBase = this->getIdBase();
-    const auto id = container.getId();
     FW_ASSERT(id >= idBase, id, idBase);
     const auto localId = id - idBase;
     // Switch on the local id
