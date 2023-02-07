@@ -50,8 +50,9 @@ void Tester::productRecvIn_Container1_OK() {
     Fw::Buffer buffer;
     FwSizeType expectedNumElts;
     // Invoke the port and check the header
-    this->productRecvIn_InvokeAndCheckHeader(DpTest::ContainerId::Container1, sizeof(U32), DpTest_Priority::Container1,
-                                             this->container1Buffer, buffer, expectedNumElts);
+    this->productRecvIn_InvokeAndCheckHeader(DpTest::ContainerId::Container1, sizeof(U32),
+                                             DpTest::ContainerPriority::Container1, this->container1Buffer, buffer,
+                                             expectedNumElts);
     // Check the data
     auto& serialRepr = buffer.getSerializeRepr();
     for (FwDpBuffSizeType i = 0; i < expectedNumElts; ++i) {
@@ -72,7 +73,7 @@ void Tester::productRecvIn_Container2_OK() {
     FwSizeType expectedNumElts;
     // Invoke the port and check the header
     this->productRecvIn_InvokeAndCheckHeader(DpTest::ContainerId::Container2, DpTest_Data::SERIALIZED_SIZE,
-                                             DpTest_Priority::Container2, this->container2Buffer, buffer,
+                                             DpTest::ContainerPriority::Container2, this->container2Buffer, buffer,
                                              expectedNumElts);
     // Check the data
     auto& serialRepr = buffer.getSerializeRepr();

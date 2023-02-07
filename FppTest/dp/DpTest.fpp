@@ -7,12 +7,6 @@ module FppTest {
     # Constants and type
     # ---------------------------------------------------------------------- 
 
-    @ Priorities
-    enum Priority {
-      Container1 = 10
-      Container2 = 20
-    }
-
     @ Data for a DataRecord
     struct Data {
       @ A U16 field
@@ -57,10 +51,10 @@ module FppTest {
     # ----------------------------------------------------------------------
 
     @ Container 1
-    product container Container1 id 300 default priority Priority.Container1
+    product container Container1 id 300 default priority 10
 
     @ Container 2
-    product container Container2 id 400 default priority Priority.Container2
+    product container Container2 id 400 default priority 20
 
   }
 
