@@ -5,7 +5,6 @@
 // ======================================================================
 
 #include "FppTest/dp/DpTestDpComponentBaseHc.hpp"
-#include "FppTest/dp/DpTest_PriorityEnumAc.hpp"
 #include "Fw/Types/Assert.hpp"
 
 namespace FppTest {

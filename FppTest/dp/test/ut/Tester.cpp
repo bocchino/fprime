@@ -7,7 +7,6 @@
 #include <cstdio>
 #include <cstring>
 
-#include "FppTest/dp/DpTest_PriorityEnumAc.hpp"
 #include "FppTest/dp/test/ut/Tester.hpp"
 #include "STest/Pick/Pick.hpp"
 
