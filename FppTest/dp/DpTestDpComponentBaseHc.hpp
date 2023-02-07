@@ -29,20 +29,6 @@ class DpTestDpComponentBaseHc : public DpTestDpComponentBase {
     //!
     virtual ~DpTestDpComponentBaseHc();
 
-  PROTECTED:
-    //! ----------------------------------------------------------------------
-    //! Functions for managing data products
-    //! ----------------------------------------------------------------------
-
-    //! Request a data product container
-    void Dp_Request(ContainerId::T containerId,  //!< The container id
-                    FwDpBuffSizeType size        //!< The buffer size
-    );
-
-    //! Send a data product
-    void Dp_Send(DpContainer& container  //!< The data product container
-    );
-
   PRIVATE:
     // ----------------------------------------------------------------------
     // Private Dp handling functions

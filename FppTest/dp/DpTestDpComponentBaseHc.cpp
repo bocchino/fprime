@@ -18,31 +18,6 @@ DpTestDpComponentBaseHc ::DpTestDpComponentBaseHc(const char* const compName) : 
 
 DpTestDpComponentBaseHc ::~DpTestDpComponentBaseHc() {}
 
-//! ----------------------------------------------------------------------
-//! Functions for managing data products
-//! ----------------------------------------------------------------------
-
-void DpTestDpComponentBaseHc ::Dp_Request(ContainerId::T containerId, FwDpBuffSizeType size) {
-    const auto globalId = this->getIdBase() + containerId;
-    this->productRequestOut_out(0, globalId, size);
-}
-
-void DpTestDpComponentBaseHc ::Dp_Send(DpContainer& container) {
-    // Update the time tag
-    const Fw::Time timeTag = this->getTime();
-    container.setTimeTag(timeTag);
-    // Serialize the header into the packet
-    auto status = container.serializeHeader();
-    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
-    // Update the size of the buffer according to the data size
-    const auto packetSize = container.getPacketSize();
-    Fw::Buffer buffer = container.getBuffer();
-    FW_ASSERT(packetSize <= buffer.getSize(), packetSize, buffer.getSize());
-    buffer.setSize(packetSize);
-    // Send the buffer
-    this->productSendOut_out(0, container.getId(), buffer);
-}
-
 // ----------------------------------------------------------------------
 // Private Dp handling functions
 // ----------------------------------------------------------------------
