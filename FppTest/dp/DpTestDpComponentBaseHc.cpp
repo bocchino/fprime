@@ -11,41 +11,6 @@
 namespace FppTest {
 
 // ----------------------------------------------------------------------
-// Types
-// ----------------------------------------------------------------------
-
-DpTestDpComponentBaseHc::DpContainer::DpContainer(FwDpIdType id, const Fw::Buffer& buffer, FwDpIdType baseId)
-    : Fw::DpContainer(id, buffer), baseId(baseId) {}
-
-Fw::SerializeStatus DpTestDpComponentBaseHc::DpContainer::serializeRecord_U32Record(U32 elt) {
-    auto& serializeRepr = buffer.getSerializeRepr();
-    const FwDpIdType id = this->baseId + RecordId::U32Record;
-    auto status = serializeRepr.serialize(id);
-    if (status == Fw::FW_SERIALIZE_OK) {
-        status = serializeRepr.serialize(elt);
-    }
-    if (status == Fw::FW_SERIALIZE_OK) {
-        this->dataSize += sizeof(FwDpIdType);
-        this->dataSize += sizeof(U32);
-    }
-    return status;
-}
-
-Fw::SerializeStatus DpTestDpComponentBaseHc::DpContainer::serializeRecord_DataRecord(const DpTest_Data& elt) {
-    auto& serializeRepr = buffer.getSerializeRepr();
-    const FwDpIdType id = this->baseId + RecordId::DataRecord;
-    auto status = serializeRepr.serialize(id);
-    if (status == Fw::FW_SERIALIZE_OK) {
-        status = serializeRepr.serialize(elt);
-    }
-    if (status == Fw::FW_SERIALIZE_OK) {
-        this->dataSize += sizeof(FwDpIdType);
-        this->dataSize += DpTest_Data::SERIALIZED_SIZE;
-    }
-    return status;
-}
-
-// ----------------------------------------------------------------------
 // Construction, initialization, and destruction
 // ----------------------------------------------------------------------
 

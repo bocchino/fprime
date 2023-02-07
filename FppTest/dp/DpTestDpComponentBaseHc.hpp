@@ -17,36 +17,6 @@
 namespace FppTest {
 
 class DpTestDpComponentBaseHc : public DpTestDpComponentBase {
-  PROTECTED:
-    // ----------------------------------------------------------------------
-    // Types
-    // ----------------------------------------------------------------------
-
-    //! A data product container
-    class DpContainer : public Fw::DpContainer {
-
-      public:
-        //! Constructor
-        DpContainer(FwDpIdType id,              //!< The container id
-                    const Fw::Buffer& buffer,   //!< The packet buffer
-                    FwDpIdType baseId           //!< The component base id
-                    );
-
-      public:
-        //! Serialize a U32Record into the packet buffer
-        //! \return The serialize status
-        Fw::SerializeStatus serializeRecord_U32Record(U32 elt  //! The element
-        );
-
-        //! Serialize a DataRecord into the packet buffer
-        //! \return The serialize status
-        Fw::SerializeStatus serializeRecord_DataRecord(const DpTest_Data& elt  //! The element
-        );
-
-      PRIVATE:
-        //! The component base id
-        FwDpIdType baseId;
-    };
 
   public:
     // ----------------------------------------------------------------------
