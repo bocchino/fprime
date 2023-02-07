@@ -24,6 +24,7 @@ class DpTestDpComponentBaseHc : public DpTestDpComponentBase {
 
     //! A data product container
     class DpContainer : public Fw::DpContainer {
+
       public:
         //! Constructor
         DpContainer(FwDpIdType id,              //!< The container id
