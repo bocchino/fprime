@@ -14,7 +14,6 @@
 namespace FppTest {
 
 class DpTestDpComponentBaseHc : public DpTestDpComponentBase {
-
   public:
     // ----------------------------------------------------------------------
     // Construction, initialization, and destruction

@@ -23,8 +23,8 @@ DpTestDpComponentBaseHc ::~DpTestDpComponentBaseHc() {}
 // ----------------------------------------------------------------------
 
 void DpTestDpComponentBaseHc::productRecvIn_handler(const NATIVE_INT_TYPE portNum,
-                                                  FwDpIdType id,
-                                                  const Fw::Buffer& buffer) {
+                                                    FwDpIdType id,
+                                                    const Fw::Buffer& buffer) {
     DpContainer container(id, buffer, this->getIdBase());
     this->Dp_Recv_handler(container);
 }

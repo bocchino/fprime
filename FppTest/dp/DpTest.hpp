@@ -27,8 +27,8 @@ class DpTest : public DpTestDpComponentBaseHc {
 
     //! Construct object DpTest
     DpTest(const char* const compName,  //!< The component name
-          U32 u32RecordData,           //!< The U32Record data
-          U16 dataRecordData           //!< The DataRecord data
+           U32 u32RecordData,           //!< The U32Record data
+           U16 dataRecordData           //!< The DataRecord data
     );
 
     //! Initialize object DpTest
