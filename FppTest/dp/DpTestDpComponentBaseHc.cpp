@@ -4,8 +4,8 @@
 // \brief  Hand-coded cpp file for DpTest Dp component base (to be auto-generated)
 // ======================================================================
 
-#include "FpConfig.hpp"
 #include "FppTest/dp/DpTestDpComponentBaseHc.hpp"
+#include "FppTest/dp/DpTest_PriorityEnumAc.hpp"
 #include "Fw/Types/Assert.hpp"
 
 namespace FppTest {

@@ -9,10 +9,7 @@
 
 #include "FpConfig.hpp"
 #include "FppTest/dp/DpTestDpComponentAc.hpp"
-#include "FppTest/dp/DpTest_PriorityEnumAc.hpp"
 #include "Fw/Buffer/Buffer.hpp"
-#include "Fw/Com/ComPacket.hpp"
-#include "Fw/Dp/DpContainer.hpp"
 
 namespace FppTest {
 
