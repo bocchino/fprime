@@ -31,21 +31,6 @@ class DpTestDpComponentBaseHc : public DpTestDpComponentBase {
 
   PROTECTED:
     //! ----------------------------------------------------------------------
-    //! Pure virtual functions to implement
-    //! ----------------------------------------------------------------------
-
-    //! Receive a data product container of type Container1
-    //! \return Serialize status
-    virtual void Dp_Recv_Container1_handler(DpContainer& container  //!< The container
-                                            ) = 0;
-
-    //! Receive a data product container of type Container2
-    //! \return Serialize status
-    virtual void Dp_Recv_Container2_handler(DpContainer& container  //!< The container
-                                            ) = 0;
-
-  PROTECTED:
-    //! ----------------------------------------------------------------------
     //! Functions for managing data products
     //! ----------------------------------------------------------------------
 
