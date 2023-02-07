@@ -22,24 +22,9 @@ class DpTestDpComponentBaseHc : public DpTestDpComponentBase {
     // Types
     // ----------------------------------------------------------------------
 
-    //! The container ids
-    struct ContainerId {
-        enum T : FwDpIdType {
-            Container1 = 0,
-            Container2 = 1,
-        };
-    };
-
-    //! The record ids
-    struct RecordId {
-        enum T : FwDpIdType {
-            U32Record = 100,
-            DataRecord = 200,
-        };
-    };
-
     //! A data product container
-    struct DpContainer : public Fw::DpContainer {
+    class DpContainer : public Fw::DpContainer {
+      public:
         //! Constructor
         DpContainer(FwDpIdType id,              //!< The container id
                     const Fw::Buffer& buffer,   //!< The packet buffer
