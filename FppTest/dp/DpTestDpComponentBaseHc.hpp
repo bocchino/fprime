@@ -32,6 +32,7 @@ class DpTestDpComponentBaseHc : public DpTestDpComponentBase {
                     FwDpIdType baseId           //!< The component base id
                     );
 
+      public:
         //! Serialize a U32Record into the packet buffer
         //! \return The serialize status
         Fw::SerializeStatus serializeRecord_U32Record(U32 elt  //! The element
