@@ -5,7 +5,7 @@
 // ======================================================================
 
 #include "FpConfig.hpp"
-#include "FppTest/dp/DpTestDpComponentBase.hpp"
+#include "FppTest/dp/DpTestDpComponentBaseHc.hpp"
 #include "Fw/Types/Assert.hpp"
 
 namespace FppTest {

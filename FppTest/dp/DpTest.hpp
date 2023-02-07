@@ -7,7 +7,7 @@
 #ifndef FppTest_DpTest_HPP
 #define FppTest_DpTest_HPP
 
-#include "FppTest/dp/DpTestDpComponentBase.hpp"
+#include "FppTest/dp/DpTestDpComponentBaseHc.hpp"
 
 namespace FppTest {
 

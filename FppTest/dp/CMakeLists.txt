@@ -1,7 +1,7 @@
 set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/DpTest.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/DpTest.fpp"
-  "${CMAKE_CURRENT_LIST_DIR}/DpTestDpComponentBase.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/DpTestDpComponentBaseHc.cpp"
 )
 
 register_fprime_module()
