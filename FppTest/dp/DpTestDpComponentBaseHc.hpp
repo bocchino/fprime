@@ -28,6 +28,7 @@ class DpTestDpComponentBaseHc : public DpTestDpComponentBase {
     //!
     virtual ~DpTestDpComponentBaseHc();
 
+#if 0
   PRIVATE:
     // ----------------------------------------------------------------------
     // Private Dp handling functions
@@ -39,6 +40,7 @@ class DpTestDpComponentBaseHc : public DpTestDpComponentBase {
                                FwDpIdType id,                  //!< The container ID
                                const Fw::Buffer& buffer        //!< The buffer
                                ) override;
+#endif
 
 };
 

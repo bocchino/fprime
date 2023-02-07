@@ -18,6 +18,7 @@ DpTestDpComponentBaseHc ::DpTestDpComponentBaseHc(const char* const compName) : 
 
 DpTestDpComponentBaseHc ::~DpTestDpComponentBaseHc() {}
 
+#if 0
 // ----------------------------------------------------------------------
 // Private Dp handling functions
 // ----------------------------------------------------------------------
@@ -34,13 +35,13 @@ void DpTestDpComponentBaseHc::productRecvIn_handler(const NATIVE_INT_TYPE portNu
     switch (localId) {
         case ContainerId::Container1:
             // Set the priority
-            container.setPriority(DpTest_Priority::Container1);
+            container.setPriority(10);
             // Call the handler
             this->Dp_Recv_Container1_handler(container);
             break;
         case ContainerId::Container2:
             // Set the priority
-            container.setPriority(DpTest_Priority::Container2);
+            container.setPriority(20);
             // Call the handler
             this->Dp_Recv_Container2_handler(container);
             break;
@@ -49,5 +50,6 @@ void DpTestDpComponentBaseHc::productRecvIn_handler(const NATIVE_INT_TYPE portNu
             break;
     }
 }
+#endif
 
 }  // end namespace FppTest
