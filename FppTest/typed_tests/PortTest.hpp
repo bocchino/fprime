@@ -13,7 +13,6 @@
 #ifndef FPP_TEST_PORT_TEST_HPP
 #define FPP_TEST_PORT_TEST_HPP
 
-#include "Tester.hpp"
 #include "FppTest/port/TypedPortIndexEnumAc.hpp"
 
 #include "gtest/gtest.h"
