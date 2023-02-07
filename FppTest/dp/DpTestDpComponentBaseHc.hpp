@@ -28,20 +28,6 @@ class DpTestDpComponentBaseHc : public DpTestDpComponentBase {
     //!
     virtual ~DpTestDpComponentBaseHc();
 
-#if 0
-  PRIVATE:
-    // ----------------------------------------------------------------------
-    // Private Dp handling functions
-    // ----------------------------------------------------------------------
-
-    //! Handler implementation for productRecvIn
-    //!
-    void productRecvIn_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
-                               FwDpIdType id,                  //!< The container ID
-                               const Fw::Buffer& buffer        //!< The buffer
-                               ) override;
-#endif
-
 };
 
 }  // end namespace FppTest
