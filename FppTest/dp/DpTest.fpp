@@ -4,7 +4,7 @@ module FppTest {
   active component DpTest {
 
     # ---------------------------------------------------------------------- 
-    # Constants and type
+    # Types
     # ---------------------------------------------------------------------- 
 
     @ Data for a DataRecord
