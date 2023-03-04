@@ -1,0 +1,13 @@
+client
+productSendOut
+0
+dpManager
+dpBufferSendIn
+0
+
+dpManager
+bufferSendOut
+0
+bufferLogger
+bufferSendIn
+0

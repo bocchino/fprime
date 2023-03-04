@@ -11,7 +11,7 @@ When a client component _C_ requests a data product buffer, attempt to
 allocate an `Fw::Buffer` from a buffer manager _M_.
 If the attempt does not succeed, then periodically retry.
 When a buffer _B_ is allocated, convert _B_ to a data product buffer
-_P_, and send _P_ to the requesting component so that _C_ can fill it.
+_P_ and send _P_ to the requesting component so that _C_ can fill it.
 
 1. Receive data product buffers filled with data products by
 client components.
