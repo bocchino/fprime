@@ -70,7 +70,7 @@ The `DpManager` header file provides the following configurable constants:
 To set up an instance of `DpManager`, you do the following:
 
 1. Call the constructor and the `init` method in the usual way
-for an F Prime passive component.
+for an F Prime queued component.
 
 1. TODO
 
