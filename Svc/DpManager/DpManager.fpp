@@ -13,14 +13,17 @@ module Svc {
     @ Port for receiving buffer requests
     async input port dpBufferRequestIn: Fw.DpBufferRequest
 
+    @ Port for getting a buffer from a Buffer Manager
+    output port bufferGetOut: Fw.BufferGet
+
     @ Port for sending requested buffers
     output port dpBufferSendOut: Fw.DpBufferSend
 
+    @ Port for receiving data product buffers
+    async input port dpBufferSendIn: Fw.DpBufferSend
+
     @ Port for sending data products
     output port bufferSendOut: Fw.BufferSend
-
-    @ Port for getting a buffer from a Buffer Manager
-    output port bufferGetOut: Fw.BufferGet
 
     # ---------------------------------------------------------------------- 
     # Special ports
