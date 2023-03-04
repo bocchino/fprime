@@ -10,19 +10,19 @@ module Svc {
     @ Schedule in port
     sync input port schedIn: Svc.Sched
 
-    @ Port for receiving buffer requests
+    @ Port for receiving buffer requests from a client component
     async input port dpBufferRequestIn: Fw.DpBufferRequest
 
-    @ Port for getting a buffer from a Buffer Manager
+    @ Port for getting buffers from a Buffer Manager
     output port bufferGetOut: Fw.BufferGet
 
-    @ Port for sending requested buffers
+    @ Port for sending requested buffers to a client component
     output port dpBufferSendOut: Fw.DpBufferSend
 
-    @ Port for receiving data product buffers
+    @ Port for receiving data products from a client component
     async input port dpBufferSendIn: Fw.DpBufferSend
 
-    @ Port for sending data products
+    @ Port for sending data products to a downstream component
     output port bufferSendOut: Fw.BufferSend
 
     # ----------------------------------------------------------------------

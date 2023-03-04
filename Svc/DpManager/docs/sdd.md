@@ -6,16 +6,17 @@
 `Svc::DpManager` is a queued component.
 It does the following:
 
-1. Receive requests for buffers to hold data products.
-When a component _C_ requests a data product buffer, attempt to
-allocate a buffer from a buffer manager _M_.
+1. Receive requests for data product buffers to hold data products.
+When a client component _C_ requests a data product buffer, attempt to
+allocate an `Fw::Buffer` from a buffer manager _M_.
 If the attempt does not succeed, then periodically retry.
-When a buffer is allocated, send it to the requesting component.
+When a buffer _B_ is allocated, convert _B_ to a data product buffer
+_B'_ and send _B'_ to the requesting component so that _C_ can fill it.
 
-1. Receive buffers containing data products.
-When a data product buffer is received, convert the data
-product buffer to a plain `Fw::Buffer` _B_ and send _B_ out
-on a port.
+1. Receive data product buffers filled with data products by
+client components.
+Upon receiving a data product buffer _B_, convert _B_
+to an `Fw::Buffer` _B'_ and send _B'_ out on a port.
 Another component such as a Buffer Accumulator or Buffer Logger
 will process _B_ and then send _B_ back to _M_ for deallocation.
 
@@ -42,11 +43,11 @@ The diagram below shows the `DpManager` component.
 | Kind | Name | Port Type | Usage |
 |------|------|-----------|-------|
 | `sync input` | `schedIn` | `Svc.Sched` | Schedule in port |
-| `async input` | `dpBufferRequestIn` | `Fw.DpBufferRequest` | Port for receiving buffer requests |
-| `output` | `bufferGetOut` | `Fw.BufferGet` | Port for getting a buffer from a Buffer Manager |
-| `output` | `dpBufferSendOut` | `Fw.DpBufferSend` | Port for sending requested buffers |
-| `async input` | `dpBufferSendIn` | `Fw.DpBufferSend` | Port for receiving data product buffers |
-| `output` | `bufferSendOut` | `Fw.BufferSend` | Port for sending data products |
+| `async input` | `dpBufferRequestIn` | `Fw.DpBufferRequest` | Port for receiving buffer requests from a client component |
+| `output` | `bufferGetOut` | `Fw.BufferGet` | Port for getting buffers from a Buffer Manager |
+| `output` | `dpBufferSendOut` | `Fw.DpBufferSend` | Port for sending requested buffers to a client component |
+| `async input` | `dpBufferSendIn` | `Fw.DpBufferSend` | Port for receiving data products from a client component |
+| `output` | `bufferSendOut` | `Fw.BufferSend` | Port for sending data products to a downstream component |
 | `time get` | `timeGetOut` | `Fw.Time` | Time get port |
 | `telemetry` | `tlmOut` | `Fw.Tlm` | Telemetry port |
 | `event` | `eventOut` | `Fw.Log` | Event port |
