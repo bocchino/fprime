@@ -1,5 +1,5 @@
 \page SvcDpManagerComponent Svc::DpManager Component
-# Svc::DpManager (Passive Component)
+# Svc::DpManager (Queued Component)
 
 ## 1. Introduction
 
