@@ -6,17 +6,17 @@
 `Svc::DpManager` is a queued component.
 It does the following:
 
-1. Receive requests for data product buffers to hold data products.
+1. Receive requests for buffers to hold data products.
 When a client component _C_ requests a data product buffer, attempt to
 allocate an `Fw::Buffer` from a buffer manager _M_.
 If the attempt does not succeed, then periodically retry.
 When a buffer _B_ is allocated, convert _B_ to a data product buffer
-_B'_ and send _B'_ to the requesting component so that _C_ can fill it.
+_P_, and send _P_ to the requesting component so that _C_ can fill it.
 
 1. Receive data product buffers filled with data products by
 client components.
-Upon receiving a data product buffer _B_, convert _B_
-to an `Fw::Buffer` _B'_ and send _B'_ out on a port.
+Upon receiving a data product buffer _P_, convert _P_
+to an `Fw::Buffer` _B_ and send _B_ out on a port.
 Another component such as a Buffer Accumulator or Buffer Logger
 will process _B_ and then send _B_ back to _M_ for deallocation.
 
