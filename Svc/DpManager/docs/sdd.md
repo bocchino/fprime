@@ -3,7 +3,7 @@
 
 ## 1. Introduction
 
-`Svc::DpManager` is a queued component.
+`Svc::DpManager` is a queued component for managing data products.
 It does the following:
 
 1. Receive requests for buffers to hold data products.
@@ -107,7 +107,29 @@ TODO
 <a name="top-diagrams"></a>
 ### 5.1. Topology Diagrams
 
-TODO
+The following topology diagrams show how to connect `Svc::DpManager`
+to a client component, a buffer manager, and a buffer logger.
+The diagrams use the following instances:
+
+* `client`: A client component that generates data products.
+
+* `bufferManager`: An instance of [`Svc::BufferManager`](../../BufferManager/docs/sdd.md)
+
+* `bufferManager`: An instance of [`Svc::DpManager`]
+
+* `bufferLogger`: An instance of [`Svc::BufferLogger`](../../BufferLogger)
+
+**Managing data product buffers:**
+
+<div>
+<img src="img/top/buffer-request.png" width=1000/>
+</div>
+
+**Sending data products:**
+
+<div>
+<img src="img/top/product-send.png" width=1000/>
+</div>
 
 ### 5.2. Sequence Diagrams
 
