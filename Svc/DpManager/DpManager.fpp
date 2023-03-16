@@ -1,14 +1,11 @@
 module Svc {
 
   @ A component for managing data products
-  queued component DpManager {
+  active component DpManager {
 
     # ----------------------------------------------------------------------
     # General ports
     # ----------------------------------------------------------------------
-
-    @ Schedule in port
-    sync input port schedIn: Svc.Sched
 
     @ Port for receiving buffer requests from a client component
     async input port dpBufferRequestIn: Fw.DpBufferRequest

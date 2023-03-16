@@ -1,9 +1,9 @@
 \page SvcDpManagerComponent Svc::DpManager Component
-# Svc::DpManager (Queued Component)
+# Svc::DpManager (Active Component)
 
 ## 1. Introduction
 
-`Svc::DpManager` is a queued component for managing data products.
+`Svc::DpManager` is an active component for managing data products.
 It does the following:
 
 1. Receive requests for buffers to hold data products.
@@ -42,7 +42,6 @@ The diagram below shows the `DpManager` component.
 
 | Kind | Name | Port Type | Usage |
 |------|------|-----------|-------|
-| `sync input` | `schedIn` | `Svc.Sched` | Schedule in port |
 | `async input` | `dpBufferRequestIn` | `Fw.DpBufferRequest` | Port for receiving buffer requests from a client component |
 | `output` | `bufferGetOut` | `Fw.BufferGet` | Port for getting buffers from a Buffer Manager |
 | `output` | `dpBufferSendOut` | `Fw.DpBufferSend` | Port for sending requested buffers to a client component |
@@ -111,8 +110,6 @@ The following topology diagrams show how to connect `Svc::DpManager`
 to a client component, a buffer manager, and a buffer logger.
 The diagrams use the following instances:
 
-* `activeRateGroup`: An instance of [`Svc::ActiveRateGroup`](../../ActiveRateGroup/docs/sdd.md).
-
 * `client`: A client component that generates data products.
 `productRequestOut` is the special `product request` port.
 `productRecvIn` is the special `product recv` port.
@@ -122,10 +119,6 @@ The diagrams use the following instances:
 * `bufferManager`: An instance of `Svc::DpManager`.
 
 * `bufferLogger`: An instance of [`Svc::BufferLogger`](../../BufferLogger).
-
-#### Driving the schedIn Port
-
-TODO
 
 #### 5.1.1. Requesting Data Product Buffers
 
@@ -147,15 +140,12 @@ TODO
 
 ```mermaid
 sequenceDiagram
-    activate activeRateGroup
     activate client
     client->>dpManager: Request DP buffer P [dpBufferRequestIn]
     dpManager-->>client: Return
-    activeRateGroup-->>dpManager: Invoke schedIn
     dpManager->>bufferManager: Request Fw::Buffer B
     bufferManager-->>dpManager: Return B
     deactivate client
-    deactivate activeRateGroup
 ```
 
 #### Sending a Data Product
