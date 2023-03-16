@@ -99,9 +99,9 @@ TODO
 
 TODO
 
-### 3.8 Public Functions
+### 3.8. Public Functions
 
-#### 3.8.1 configure
+#### 3.8.1. configure
 
 The `configure` function sets the values of `numRetry` and `waitTimeTicks`.
 
@@ -134,19 +134,13 @@ The diagrams use the following instances:
 
 * `dpManager`: An instance of `Svc::DpManager`.
 
-#### 5.1.1. Driving the schedIn Port
-
-<div>
-<img src="img/top/sched-in.png" width=600/>
-</div>
-
-#### 5.1.2. Requesting Data Product Buffers
+#### 5.1.1. Requesting Data Product Buffers
 
 <div>
 <img src="img/top/buffer-request.png" width=800/>
 </div>
 
-#### 5.1.3. Sending Data Products
+#### 5.1.2. Sending Data Products
 
 <div>
 <img src="img/top/product-send.png" width=1000/>
@@ -173,11 +167,13 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     activate client
+    activate dpManager
     activate bufferLogger
     client-)dpManager: Send DP buffer [dpBufferSendIn]
     dpManager-)bufferLogger: Send Fw::Buffer
     bufferLogger->>bufferManager: Deallocate buffer
     bufferManager-->>bufferLogger: Return
     deactivate bufferLogger
+    deactivate dpManager
     deactivate client
 ```
