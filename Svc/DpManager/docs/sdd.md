@@ -119,13 +119,13 @@ The diagrams use the following instances:
 
 * `bufferLogger`: An instance of [`Svc::BufferLogger`](../../BufferLogger)
 
-**Managing data product buffers:**
+#### 5.1.1. Requesting Data Product Buffers
 
 <div>
 <img src="img/top/buffer-request.png" width=1000/>
 </div>
 
-**Sending data products:**
+#### 5.1.2. Sending Data Products
 
 <div>
 <img src="img/top/product-send.png" width=1000/>
