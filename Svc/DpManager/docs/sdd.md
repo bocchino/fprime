@@ -164,7 +164,7 @@ sequenceDiagram
     activate activeRateGroup
     activate client
     client-)dpManager: Request DP buffer P [dpBufferRequestIn]
-    activeRateGroup->>dpManager Invoke schedIn
+    activeRateGroup-->>dpManager Invoke schedIn
     dpManager->>bufferManager: Request Fw::Buffer B [bufferGetOut]
     bufferManager-->>dpManager: Return B
     dpManager-)client: Send P [dpBufferSendOut]
