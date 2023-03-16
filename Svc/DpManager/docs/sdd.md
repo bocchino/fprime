@@ -136,7 +136,7 @@ The diagrams use the following instances:
 #### 5.1.3. Deallocating Data Product Buffers
 
 <div>
-<img src="img/top/buffer-deallocate.png" width=600/>
+<img src="img/top/buffer-deallocate.png" width=750/>
 </div>
 
 ### 5.2. Sequence Diagrams
