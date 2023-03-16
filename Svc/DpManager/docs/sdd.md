@@ -57,17 +57,19 @@ The diagram below shows the `DpManager` component.
 
 `DpManager` maintains the following state:
 
-1. TODO
+1. `numRetry: FwIndexType`: The number of times to retry a buffer
+request before giving up and returning an invalid buffer.
+
+2. `waitTimeTicks: FwIndexType`: The number of `schedIn` ticks
+to wait before retrying a failed buffer request.
 
 ### 3.4. Header File Configuration
 
 The `DpManager` header file provides the following configurable constants:
 
-1. `DEFAULT_NUM_RETRY`: The default number of times to retry a buffer
-request before giving up and returning an invalid buffer.
+1. `DEFAULT_NUM_RETRY`: The default value of `numRetry`.
 
-2. `DEFAULT_WAIT_TIME_MS`: The default wait time between buffer
-request attempts.
+2. `DEFAULT_RETRY_WAIT_TIME_TICKS`: The default value of `waitTimeTicks`.
 
 ### 3.5. Runtime Setup
 
@@ -76,7 +78,8 @@ To set up an instance of `DpManager`, you do the following:
 1. Call the constructor and the `init` method in the usual way
 for an F Prime queued component.
 
-1. TODO
+1. Optionally call the `configure` function to override
+default settings.
 
 ### 3.6. Port Handlers
 
@@ -95,6 +98,12 @@ TODO
 ### 3.7. Helper Functions
 
 TODO
+
+### 3.8 Public Functions
+
+#### 3.8.1 configure
+
+The `configure` function sets the values of `numRetry` and `waitTimeTicks`.
 
 ## 4. Ground Interface
 
