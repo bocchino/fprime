@@ -134,7 +134,7 @@ The diagrams use the following instances:
 
 ### 5.2. Sequence Diagrams
 
-#### Requesting a Data Product Buffer
+#### 5.2.1. Requesting a Data Product Buffer
 
 ```mermaid
 sequenceDiagram
@@ -148,6 +148,17 @@ sequenceDiagram
     deactivate client
 ```
 
-#### Sending a Data Product
+#### 5.2.2. Sending a Data Product
 
-TODO
+```mermaid
+sequenceDiagram
+    activate client
+    activate dpManager
+    activate bufferLogger
+    client-)dpManager: Send DP buffer [dpBufferSendIn]
+    dpManager-)bufferLogger: Send Fw::Buffer
+    bufferLogger->>bufferManager: Deallocate buffer
+    deactivate bufferLogger
+    deactivate dpManager
+    deactivate client
+```
