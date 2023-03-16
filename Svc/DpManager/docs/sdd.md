@@ -128,16 +128,16 @@ The diagrams use the following instances:
 #### 5.1.1. Driving the schedIn Port
 
 <div>
-<img src="img/top/sched-in.png" width=500/>
+<img src="img/top/sched-in.png" width=600/>
 </div>
 
-#### 5.1.1. Requesting Data Product Buffers
+#### 5.1.2. Requesting Data Product Buffers
 
 <div>
 <img src="img/top/buffer-request.png" width=800/>
 </div>
 
-#### 5.1.2. Sending Data Products
+#### 5.1.3. Sending Data Products
 
 <div>
 <img src="img/top/product-send.png" width=1000/>
