@@ -133,10 +133,10 @@ The diagrams use the following instances:
 <img src="img/top/product-send.png" width=1000/>
 </div>
 
-#### Deallocating Data Product Buffers
+#### 5.1.3. Deallocating Data Product Buffers
 
 <div>
-<img src="img/top/buffer-deallocate.png" width=800/>
+<img src="img/top/buffer-deallocate.png" width=600/>
 </div>
 
 ### 5.2. Sequence Diagrams
