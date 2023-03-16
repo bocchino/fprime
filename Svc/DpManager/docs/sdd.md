@@ -75,15 +75,11 @@ for an F Prime queued component.
 
 ### 3.6. Port Handlers
 
-#### 3.6.1. schedIn
+#### 3.6.1. dpBufferRequestIn
 
 TODO
 
-#### 3.6.2. dpBufferRequestIn
-
-TODO
-
-#### 3.6.3. dpBufferSendIn
+#### 3.6.2. dpBufferSendIn
 
 TODO
 
