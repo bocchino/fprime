@@ -136,15 +136,15 @@ The diagrams use the following instances:
 
 #### Requesting a Data Product Buffer
 
-TODO
-
 ```mermaid
 sequenceDiagram
     activate client
-    client->>dpManager: Request DP buffer P [dpBufferRequestIn]
-    dpManager-->>client: Return
-    dpManager->>bufferManager: Request Fw::Buffer B
+    activate dpManager
+    client-)dpManager: Request DP buffer P [dpBufferRequestIn]
+    dpManager->>bufferManager: Request Fw::Buffer B [bufferGetOut]
     bufferManager-->>dpManager: Return B
+    dpManager-)client: Send P [dpBufferSendOut]
+    deactivate dpManager
     deactivate client
 ```
 
