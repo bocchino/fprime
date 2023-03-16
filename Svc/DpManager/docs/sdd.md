@@ -141,26 +141,21 @@ TODO
 
 ```mermaid
 sequenceDiagram
-    activate activeComm
-    activeComm->>buffMgr: Allocate frame buffer FB
-    buffMgr-->>activeComm: Return FB
-    activeComm->>activeComm: Fill FB with framed data
-    activeComm->>deframer: Send FB[framedIn]
-    deframer->>buffMgr: Allocate packet buffer PB [bufferAllocate]
-    buffMgr-->>deframer: Return PB
-    deframer->>deframer: Deframe FB into PB
-    deframer->>deframer: Copy PB into a command packet C
-    deframer-)cmdDisp: Send C [comOut]
-    deframer->>buffMgr: Deallocate PB [bufferDeallocate]
-    buffMgr-->>deframer: 
-    deframer->>buffMgr: Deallocate FB [framedDeallocate]
-    buffMgr-->>deframer: 
-    deframer-->>activeComm: 
-    deactivate  activeComm 
-    activate cmdDisp
-    cmdDisp->>deframer: Send cmd response [cmdResponseIn]
-    deframer-->>cmdDisp: 
-    deactivate cmdDisp
+    activate client
+    client->>dpManager: Allocate frame buffer FB
+    dpManager-->>client: Return FB
+    client->>client: Fill FB with framed data
+    client->>bufferManager: Send FB[framedIn]
+    bufferManager->>dpManager: Allocate packet buffer PB [bufferAllocate]
+    dpManager-->>bufferManager: Return PB
+    bufferManager->>bufferManager: Deframe FB into PB
+    bufferManager->>bufferManager: Copy PB into a command packet C
+    bufferManager->>dpManager: Deallocate PB [bufferDeallocate]
+    dpManager-->>bufferManager: 
+    bufferManager->>dpManager: Deallocate FB [framedDeallocate]
+    dpManager-->>bufferManager: 
+    bufferManager-->>client: 
+    deactivate  client 
 ```
 
 #### Sending a Data Product
