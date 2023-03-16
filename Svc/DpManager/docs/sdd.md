@@ -63,6 +63,11 @@ request before giving up and returning an invalid buffer.
 2. `waitTimeTicks: FwIndexType`: The number of `schedIn` ticks
 to wait before retrying a failed buffer request.
 
+3. `bufferRequestSet`: The set of outstanding buffer requests.
+Initially the set is empty.
+
+4. `retryCountTicks`: The current retry count, in `schedIn` ticks.
+
 ### 3.4. Header File Configuration
 
 The `DpManager` header file provides the following configurable constants:
@@ -70,6 +75,8 @@ The `DpManager` header file provides the following configurable constants:
 1. `DEFAULT_NUM_RETRY`: The default value of `numRetry`.
 
 2. `DEFAULT_RETRY_WAIT_TIME_TICKS`: The default value of `waitTimeTicks`.
+
+3. `BUFFER_REQUEST_SET_MAX_SIZE`: The maximum size of `bufferRequestSet`.
 
 ### 3.5. Runtime Setup
 
@@ -93,7 +100,8 @@ TODO
 
 #### 3.6.3. dpBufferSendIn
 
-TODO
+This port receives a data product ID _I_ and a buffer _B_.
+It sends _B_ on `bufferSendOut`.
 
 ### 3.7. Helper Functions
 
