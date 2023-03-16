@@ -115,11 +115,11 @@ The diagrams use the following instances:
 `productRequestOut` is the special `product request` port.
 `productRecvIn` is the special `product recv` port.
 
-* `bufferManager`: An instance of [`Svc::BufferManager`](../../BufferManager/docs/sdd.md)
+* `bufferManager`: An instance of [`Svc::BufferManager`](../../BufferManager/docs/sdd.md).
 
 * `bufferManager`: An instance of `Svc::DpManager`.
 
-* `bufferLogger`: An instance of [`Svc::BufferLogger`](../../BufferLogger)
+* `bufferLogger`: An instance of [`Svc::BufferLogger`](../../BufferLogger).
 
 #### 5.1.1. Requesting Data Product Buffers
 
@@ -133,12 +133,36 @@ The diagrams use the following instances:
 <img src="img/top/product-send.png" width=1000/>
 </div>
 
-#### 5.1.3. Deallocating Data Product Buffers
-
-<div>
-<img src="img/top/buffer-deallocate.png" width=750/>
-</div>
-
 ### 5.2. Sequence Diagrams
+
+#### Requesting a Data Product Buffer
+
+TODO
+
+```mermaid
+sequenceDiagram
+    activate activeComm
+    activeComm->>buffMgr: Allocate frame buffer FB
+    buffMgr-->>activeComm: Return FB
+    activeComm->>activeComm: Fill FB with framed data
+    activeComm->>deframer: Send FB[framedIn]
+    deframer->>buffMgr: Allocate packet buffer PB [bufferAllocate]
+    buffMgr-->>deframer: Return PB
+    deframer->>deframer: Deframe FB into PB
+    deframer->>deframer: Copy PB into a command packet C
+    deframer-)cmdDisp: Send C [comOut]
+    deframer->>buffMgr: Deallocate PB [bufferDeallocate]
+    buffMgr-->>deframer: 
+    deframer->>buffMgr: Deallocate FB [framedDeallocate]
+    buffMgr-->>deframer: 
+    deframer-->>activeComm: 
+    deactivate  activeComm 
+    activate cmdDisp
+    cmdDisp->>deframer: Send cmd response [cmdResponseIn]
+    deframer-->>cmdDisp: 
+    deactivate cmdDisp
+```
+
+#### Sending a Data Product
 
 TODO

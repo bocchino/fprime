@@ -46,6 +46,27 @@
             ]
           }
         ],
+        "outputPorts" : [
+          {
+            "name" : "bufferSendOut",
+            "portNumbers" : [
+              0
+            ]
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "instanceName" : "bufferManager",
+        "inputPorts" : [
+          {
+            "name" : "bufferSendIn",
+            "portNumbers" : [
+              0
+            ]
+          }
+        ],
         "outputPorts" : []
       }
     ]
@@ -74,6 +95,20 @@
       ],
       [
         2,
+        0,
+        0,
+        0
+      ]
+    ],
+    [
+      [
+        2,
+        0,
+        0,
+        0
+      ],
+      [
+        3,
         0,
         0,
         0
