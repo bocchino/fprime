@@ -1,9 +1,9 @@
 \page SvcDpManagerComponent Svc::DpManager Component
-# Svc::DpManager (Queued Component)
+# Svc::DpManager (Active Component)
 
 ## 1. Introduction
 
-`Svc::DpManager` is a queued component for managing data products.
+`Svc::DpManager` is a active component for managing data products.
 It does the following:
 
 1. Receive requests for buffers to hold data products.
@@ -42,7 +42,7 @@ The diagram below shows the `DpManager` component.
 
 | Kind | Name | Port Type | Usage |
 |------|------|-----------|-------|
-| `sync input` | `schedIn` | `Svc.Sched` | Schedule in port |
+| `async input` | `schedIn` | `Svc.Sched` | Schedule in port |
 | `async input` | `dpBufferRequestIn` | `Fw.DpBufferRequest` | Port for receiving buffer requests from a client component |
 | `output` | `bufferGetOut` | `Fw.BufferGet` | Port for getting buffers from a Buffer Manager |
 | `output` | `dpBufferSendOut` | `Fw.DpBufferSend` | Port for sending requested buffers to a client component |
@@ -124,9 +124,6 @@ The following topology diagrams show how to connect `Svc::DpManager`
 to a client component, a buffer manager, and a buffer logger.
 The diagrams use the following instances:
 
-* `activeRateGroup`: An instance of
-[`Svc::ActiveRateGroup`](../../ActiveRateGroup/docs/sdd.md).
-
 * `bufferLogger`: An instance of [`Svc::BufferLogger`](../../BufferLogger).
 
 * `bufferManager`: An instance of [`Svc::BufferManager`](../../BufferManager/docs/sdd.md).
@@ -161,16 +158,14 @@ The diagrams use the following instances:
 
 ```mermaid
 sequenceDiagram
-    activate activeRateGroup
     activate client
+    activate dpManager
     client-)dpManager: Request DP buffer P [dpBufferRequestIn]
-    activeRateGroup->>dpManager: Invoke schedIn
     dpManager->>bufferManager: Request Fw::Buffer B [bufferGetOut]
     bufferManager-->>dpManager: Return B
     dpManager-)client: Send P [dpBufferSendOut]
-    dpManager-->>activeRateGroup: Return
+    deactivate dpManager
     deactivate client
-    deactivate activeRateGroup
 ```
 
 #### 5.2.2. Sending a Data Product
