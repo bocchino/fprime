@@ -1,9 +1,9 @@
 \page SvcDpManagerComponent Svc::DpManager Component
-# Svc::DpManager (Active Component)
+# Svc::DpManager (Queued Component)
 
 ## 1. Introduction
 
-`Svc::DpManager` is an active component for managing data products.
+`Svc::DpManager` is a queued component for managing data products.
 It does the following:
 
 1. Receive requests for buffers to hold data products.
@@ -42,6 +42,7 @@ The diagram below shows the `DpManager` component.
 
 | Kind | Name | Port Type | Usage |
 |------|------|-----------|-------|
+| `sync input` | `schedIn` | `Svc.Sched` | Schedule in port |
 | `async input` | `dpBufferRequestIn` | `Fw.DpBufferRequest` | Port for receiving buffer requests from a client component |
 | `output` | `bufferGetOut` | `Fw.BufferGet` | Port for getting buffers from a Buffer Manager |
 | `output` | `dpBufferSendOut` | `Fw.DpBufferSend` | Port for sending requested buffers to a client component |
@@ -62,7 +63,11 @@ The diagram below shows the `DpManager` component.
 
 The `DpManager` header file provides the following configurable constants:
 
-1. TODO
+1. `DEFAULT_NUM_RETRY`: The default number of times to retry a buffer
+request before giving up and returning an invalid buffer.
+
+2. `DEFAULT_WAIT_TIME_MS`: The default wait time between buffer
+request attempts.
 
 ### 3.5. Runtime Setup
 
@@ -75,11 +80,15 @@ for an F Prime queued component.
 
 ### 3.6. Port Handlers
 
-#### 3.6.1. dpBufferRequestIn
+#### 3.6.1. schedIn
 
 TODO
 
-#### 3.6.2. dpBufferSendIn
+#### 3.6.2. dpBufferRequestIn
+
+TODO
+
+#### 3.6.3. dpBufferSendIn
 
 TODO
 
@@ -116,6 +125,12 @@ The diagrams use the following instances:
 
 * `bufferLogger`: An instance of [`Svc::BufferLogger`](../../BufferLogger).
 
+#### 5.1.1. Driving the schedIn Port
+
+<div>
+<img src="img/top/sched-in.png" width=500/>
+</div>
+
 #### 5.1.1. Requesting Data Product Buffers
 
 <div>
@@ -135,12 +150,10 @@ The diagrams use the following instances:
 ```mermaid
 sequenceDiagram
     activate client
-    activate dpManager
     client-)dpManager: Request DP buffer P [dpBufferRequestIn]
     dpManager->>bufferManager: Request Fw::Buffer B [bufferGetOut]
     bufferManager-->>dpManager: Return B
     dpManager-)client: Send P [dpBufferSendOut]
-    deactivate dpManager
     deactivate client
 ```
 
@@ -149,13 +162,11 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     activate client
-    activate dpManager
     activate bufferLogger
     client-)dpManager: Send DP buffer [dpBufferSendIn]
     dpManager-)bufferLogger: Send Fw::Buffer
     bufferLogger->>bufferManager: Deallocate buffer
     bufferManager-->>bufferLogger: Return
     deactivate bufferLogger
-    deactivate dpManager
     deactivate client
 ```
