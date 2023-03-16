@@ -158,6 +158,7 @@ sequenceDiagram
     client-)dpManager: Send DP buffer [dpBufferSendIn]
     dpManager-)bufferLogger: Send Fw::Buffer
     bufferLogger->>bufferManager: Deallocate buffer
+    bufferManager-->>bufferLogger: Return
     deactivate bufferLogger
     deactivate dpManager
     deactivate client
