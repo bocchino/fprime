@@ -115,15 +115,18 @@ The following topology diagrams show how to connect `Svc::DpManager`
 to a client component, a buffer manager, and a buffer logger.
 The diagrams use the following instances:
 
+* `activeRateGroup`: An instance of
+[`Svc::ActiveRateGroup`](../../ActiveRateGroup/docs/sdd.md).
+
+* `bufferLogger`: An instance of [`Svc::BufferLogger`](../../BufferLogger).
+
+* `bufferManager`: An instance of [`Svc::BufferManager`](../../BufferManager/docs/sdd.md).
+
 * `client`: A client component that generates data products.
 `productRequestOut` is the special `product request` port.
 `productRecvIn` is the special `product recv` port.
 
-* `bufferManager`: An instance of [`Svc::BufferManager`](../../BufferManager/docs/sdd.md).
-
-* `bufferManager`: An instance of `Svc::DpManager`.
-
-* `bufferLogger`: An instance of [`Svc::BufferLogger`](../../BufferLogger).
+* `dpManager`: An instance of `Svc::DpManager`.
 
 #### 5.1.1. Driving the schedIn Port
 
