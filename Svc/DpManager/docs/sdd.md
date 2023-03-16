@@ -78,7 +78,7 @@ To set up an instance of `DpManager`, you do the following:
 1. Call the constructor and the `init` method in the usual way
 for an F Prime queued component.
 
-1. Optionally call the `configure` function to override
+1. Optionally call the `configure` function to override the
 default settings.
 
 ### 3.6. Port Handlers
@@ -161,12 +161,16 @@ The diagrams use the following instances:
 
 ```mermaid
 sequenceDiagram
+    activate activeRateGroup
     activate client
     client-)dpManager: Request DP buffer P [dpBufferRequestIn]
+    activeRateGroup->>dpManager Invoke schedIn
     dpManager->>bufferManager: Request Fw::Buffer B [bufferGetOut]
     bufferManager-->>dpManager: Return B
     dpManager-)client: Send P [dpBufferSendOut]
+    dpManager-->>activeRateGroup: Return
     deactivate client
+    deactivate activeRateGroup
 ```
 
 #### 5.2.2. Sending a Data Product
