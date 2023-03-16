@@ -112,10 +112,12 @@ to a client component, a buffer manager, and a buffer logger.
 The diagrams use the following instances:
 
 * `client`: A client component that generates data products.
+`productRequestOut` is the special `product request` port.
+`productRecvIn` is the special `product recv` port.
 
 * `bufferManager`: An instance of [`Svc::BufferManager`](../../BufferManager/docs/sdd.md)
 
-* `bufferManager`: An instance of [`Svc::DpManager`]
+* `bufferManager`: An instance of `Svc::DpManager`.
 
 * `bufferLogger`: An instance of [`Svc::BufferLogger`](../../BufferLogger)
 
@@ -129,6 +131,12 @@ The diagrams use the following instances:
 
 <div>
 <img src="img/top/product-send.png" width=1000/>
+</div>
+
+#### Deallocating Data Product Buffers
+
+<div>
+<img src="img/top/buffer-deallocate.png" width=1000/>
 </div>
 
 ### 5.2. Sequence Diagrams

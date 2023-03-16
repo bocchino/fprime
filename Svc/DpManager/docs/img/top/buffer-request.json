@@ -53,7 +53,7 @@
         "instanceName" : "bufferManager",
         "inputPorts" : [
           {
-            "name" : "bufferGetIn",
+            "name" : "bufferGetCallee",
             "portNumbers" : [
               0
             ]
