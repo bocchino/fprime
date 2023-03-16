@@ -124,7 +124,7 @@ The diagrams use the following instances:
 #### 5.1.1. Requesting Data Product Buffers
 
 <div>
-<img src="img/top/buffer-request.png" width=1000/>
+<img src="img/top/buffer-request.png" width=800/>
 </div>
 
 #### 5.1.2. Sending Data Products
@@ -142,19 +142,10 @@ TODO
 ```mermaid
 sequenceDiagram
     activate client
-    client->>dpManager: Allocate frame buffer FB
-    dpManager-->>client: Return FB
-    client->>client: Fill FB with framed data
-    client->>bufferManager: Send FB[framedIn]
-    bufferManager->>dpManager: Allocate packet buffer PB [bufferAllocate]
-    dpManager-->>bufferManager: Return PB
-    bufferManager->>bufferManager: Deframe FB into PB
-    bufferManager->>bufferManager: Copy PB into a command packet C
-    bufferManager->>dpManager: Deallocate PB [bufferDeallocate]
-    dpManager-->>bufferManager: 
-    bufferManager->>dpManager: Deallocate FB [framedDeallocate]
-    dpManager-->>bufferManager: 
-    bufferManager-->>client: 
+    client->>dpManager: Request DP buffer P [dpBufferRequestIn]
+    dpManager ->>bufferManager: Request Fw::Buffer B
+    bufferManager-->>dpManager: Return B
+    dpManager-->>client: Return P
     deactivate  client 
 ```
 
