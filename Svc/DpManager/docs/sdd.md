@@ -24,7 +24,7 @@ will process _B_ and then send _B_ back to _M_ for deallocation.
 
 Requirement | Description | Rationale | Verification Method
 ----------- | ----------- | ----------| -------------------
-SVC-DPMANAGER-001 | `Svc::DpManager` shall service requests for data product buffers via asynchronous request-response. | One purpose of the component is to provide data product buffers to clients. The asynchronous request-response permits retrying of failed buffer allocations. | Unit test
+SVC-DPMANAGER-001 | `Svc::DpManager` shall receive and asynchronously respond to  requests for data product buffers. | One purpose of the component is to provide data product buffers to clients. The asynchronous request-response permits retrying of failed buffer allocations. | Unit test
 SVC-DPMANAGER-002 | When a buffer allocation fails, `Svc::DpManager` shall retry the allocation up to a configurable number of times, at a configurable interval. | Retrying failed buffer requests provides a level of robustness in the client interface. If retrying is not desired, the retry count can be set to zero. | Unit test
 SVC-DPMANAGER-003 | `Svc::DpManager` shall receive data product buffers, convert them to `Fw::Buffer` objects, and send the `Fw::Buffer` objects. | This requirement provides a pass-through capability that converts data product buffers to `Fw::Buffer` objects used by downstream components, e.g., `Svc::BufferLogger`. | Unit test
 
