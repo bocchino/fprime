@@ -57,16 +57,16 @@ The diagram below shows the `DpManager` component.
 
 `DpManager` maintains the following state:
 
-1. `numRetry: FwIndexType`: The number of times to retry a buffer
+1. `numRetry`: The number of times to retry a buffer
 request before giving up and returning an invalid buffer.
 
-2. `waitTimeTicks: FwIndexType`: The number of `schedIn` ticks
+2. `waitTimeTicks`: The number of `schedIn` ticks
 to wait before retrying a failed buffer request.
 
 3. `bufferRequestSet`: The set of outstanding buffer requests.
+Each request is a triple consisting of a container ID, a retry count,
+and a wait count.
 Initially the set is empty.
-
-4. `retryCountTicks`: The current retry count, in `schedIn` ticks.
 
 ### 3.4. Header File Configuration
 
@@ -80,7 +80,7 @@ The `DpManager` header file provides the following configurable constants:
 
 ### 3.5. Runtime Setup
 
-To set up an instance of `DpManager`, you do the following:
+To set up an instance of `DpManager`, do the following:
 
 1. Call the constructor and the `init` method in the usual way
 for an F Prime queued component.
@@ -92,7 +92,21 @@ default settings.
 
 #### 3.6.1. schedIn
 
-TODO
+For each triple _P = (id, retryCount, waitCount)_ in `bufferRequestSet` do:
+
+1. If _waitCount == 0_ and _retryCount == 0_ then emit a warning event and
+remove _P_ from the set.
+
+1. Otherwise if _waitCount == 0_
+
+   1. Invoke `bufferGetOut` to get a buffer _B_.
+
+   1. If _B_ is valid, then send it on `bufferSendOut` and
+      remove _P_ from the set.
+
+   1. Otherwise decrement _retryCount_ and set _waitCount = waitTimeTicks_.
+
+1. Otherwise decement _waitCount_.
 
 #### 3.6.2. dpBufferRequestIn
 
