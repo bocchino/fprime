@@ -124,8 +124,11 @@ It does the following:D
 
 1. If _B_ is valid, then send _(id, B)_ on `dpBufferSendOut`.
 
-1. Otherwise if there is no room left in `bufferRequestSet` then emit
-a warning event.
+1. Otherwise if there is no room left in `bufferRequestSet` then
+
+   1. Emit a warning event.
+
+   1. Let _B_ be an invalid buffer. Send _(id, B)_ on `dpBufferSendOut`.
 
 1. Otherwise add _(id, numRetry, retryWaitTimeTicks)_ to `bufferRequestSet`.
 
