@@ -9,7 +9,7 @@ It does the following:
 1. Receive requests for buffers to hold data products.
 When a client component _C_ requests a data product buffer, attempt to
 allocate an `Fw::Buffer` from a buffer manager _M_.
-If the attempt fails, then periodically retry.
+If the attempt fails, then periodically retry the allocation.
 When a buffer _B_ is allocated, convert _B_ to a data product buffer
 _P_ and send _P_ to _C_ so that _C_ can fill it.
 
@@ -112,7 +112,17 @@ remove _R_ from the set.
 
 #### 3.6.2. dpBufferRequestIn
 
-TODO
+This port receives container ID _id_ and a requested buffer size _size_.
+It does the following:D
+
+1. Invoke `bufferGetOut` to get a buffer _B_.
+
+1. If _B_ is valid, then send _(id, B)_ on `dpBufferSendOut`.
+
+1. Otherwise if there is no room left in `bufferRequestSet` then emit
+a warning event.
+
+1. Otherwise add _(id, numRetry, retryWaitTimeTicks)_ to `bufferRequestSet`.
 
 #### 3.6.3. dpBufferSendIn
 
