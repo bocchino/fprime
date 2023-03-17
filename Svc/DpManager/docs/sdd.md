@@ -96,8 +96,13 @@ default settings.
 
 For each triple _R = (id, retryCount, waitCount)_ in `bufferRequestSet` do:
 
-1. If _waitCount == 0_ and _retryCount == 0_ then emit a warning event and
-remove _R_ from the set.
+1. If _waitCount == 0_ and _retryCount == 0_ then
+
+   1. Emit a warning event.
+
+   1. Let _B_ be an invalid buffer. Send _(id, B)_ on `dpBufferSendOut`.
+
+   1. Remove _R_ from the set.
 
 1. Otherwise if _waitCount == 0_
 
