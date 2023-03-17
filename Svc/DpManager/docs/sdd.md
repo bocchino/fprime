@@ -85,7 +85,7 @@ The `DpManager` header file provides the following configurable constants:
 To set up an instance of `DpManager`, do the following:
 
 1. Call the constructor and the `init` method in the usual way
-for an F Prime queued component.
+for an active component.
 
 1. Optionally call the `configure` function to override the
 default settings.
@@ -147,7 +147,10 @@ TODO
 
 ### 4.2. Events
 
-TODO
+| Name | Description |
+|------|-------------|
+| `BufferAllocationFailed` | Buffer allocation failed |
+| `BufferRequestSetFull` | Buffer request set is full |
 
 ## 5. Example Uses
 

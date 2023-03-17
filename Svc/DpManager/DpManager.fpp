@@ -45,7 +45,19 @@ module Svc {
     # Events
     # ----------------------------------------------------------------------
 
-    # TODO
+    @ Buffer allocation failed
+    event BufferAllocationFailed(
+        $id: U32 @< The container ID
+    ) \
+      severity warning high \
+      format "Buffer allocation failed for container id {}"
+
+    @ Buffer request set is full
+    event BufferRequestSetFull(
+        $id: U32 @< The container ID
+    ) \
+      severity warning high \
+      format "Buffer request set is full for container id {}"
 
     # ----------------------------------------------------------------------
     # Telemetry
