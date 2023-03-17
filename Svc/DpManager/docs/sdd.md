@@ -158,10 +158,10 @@ The `configure` function sets the values of `numRetry` and `retryWaitTimeTicks`.
 
 ### 4.2. Events
 
-| Name | Description |
-|------|-------------|
-| `BufferAllocationFailed` | Buffer allocation failed |
-| `BufferRequestSetFull` | Buffer request set is full |
+| Name | Severity | Description |
+|------|----------|-------------|
+| `BufferAllocationFailed` | `warning high` | Buffer allocation failed |
+| `BufferRequestSetFull` | `warning high` | Buffer request set is full |
 
 ## 5. Example Uses
 
