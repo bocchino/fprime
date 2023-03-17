@@ -3,7 +3,7 @@
 
 ## 1. Introduction
 
-`Svc::DpManager` is a active component for managing data products.
+`Svc::DpManager` is an active component for managing data products.
 It does the following:
 
 1. Receive requests for buffers to hold data products.
@@ -26,7 +26,7 @@ Requirement | Description | Rationale | Verification Method
 ----------- | ----------- | ----------| -------------------
 SVC-DPMANAGER-001 | `Svc::DpManager` shall service requests for data product buffers via asynchronous request-response | One purpose of the component is to provide data product buffers to clients. The asynchronous request-response permits retrying of failed buffer allocations. | Unit test
 SVC-DPMANAGER-002 | When a buffer allocation fails, `Svc::DpManager` shall retry the allocation up to a configurable number of times, at a configurable interval | Retrying failed buffer requests provides a level of robustness in the client interface. If retrying is not desired, the retry count can be set to zero. | Unit test
-SVC-DPMANAGER-003 | `Svc::DpManager` shall receive data product buffers, convert them to `Fw::Buffer` objects, and send the `Fw::Buffer` objects. | This requirement provides a pass-through capability that converts data buffers to `Fw::Buffer` objects used by downstream components, e.g., `Svc::BufferLogger`. | Unit test
+SVC-DPMANAGER-003 | `Svc::DpManager` shall receive data product buffers, convert them to `Fw::Buffer` objects, and send the `Fw::Buffer` objects. | This requirement provides a pass-through capability that converts data product buffers to `Fw::Buffer` objects used by downstream components, e.g., `Svc::BufferLogger`. | Unit test
 
 ## 3. Design
 
@@ -103,7 +103,7 @@ remove _P_ from the set.
 
    1. Invoke `bufferGetOut` to get a buffer _B_.
 
-   1. If _B_ is valid, then send it on `bufferSendOut` and
+   1. If _B_ is valid, then send _(id, B)_ on `dpBufferSendOut` and
       remove _P_ from the set.
 
    1. Otherwise decrement _retryCount_ and set _waitCount = waitTimeTicks_.
