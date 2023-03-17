@@ -151,7 +151,10 @@ The `configure` function sets the values of `numRetry` and `retryWaitTimeTicks`.
 
 ### 4.1. Telemetry
 
-TODO
+| Name | Type | Description |
+|------|------|-------------|
+| `NumSuccessfulAllocations` | `U32` | The number of successful buffer allocations |
+| `NumFailedAllocations` | `U32` | The number of failed buffer allocations |
 
 ### 4.2. Events
 
