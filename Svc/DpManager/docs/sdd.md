@@ -7,16 +7,13 @@
 It does the following:
 
 1. Receive requests for buffers to hold data products.
-When a client component _C_ requests a data product buffer, attempt to
-allocate an `Fw::Buffer` from a buffer manager _M_.
-If the attempt fails, then periodically retry the allocation.
-When a buffer _B_ is allocated, convert _B_ to a data product buffer
-_P_ and send _P_ to _C_ so that _C_ can fill it.
+When a client component _C_ requests a data product buffer, 
+request an `Fw::Buffer` _B_ from a buffer manager.
+Send _B_ to _C_ so that _C_ can fill it.
 
-1. Receive data product buffers filled with data products by
+1. Receive buffers filled with data products by
 client components.
-Upon receiving a data product buffer _P_, convert _P_
-to an `Fw::Buffer` _B_ and send _B_ out on a port.
+Upon receiving a buffer _B_, send _B_ on a port.
 Another component such as a Buffer Accumulator or Buffer Logger
 will process _B_ and then send _B_ back to _M_ for deallocation.
 
@@ -24,9 +21,8 @@ will process _B_ and then send _B_ back to _M_ for deallocation.
 
 Requirement | Description | Rationale | Verification Method
 ----------- | ----------- | ----------| -------------------
-SVC-DPMANAGER-001 | `Svc::DpManager` shall receive and asynchronously respond to  requests for data product buffers. | One purpose of the component is to provide data product buffers to clients. The asynchronous request-response permits retrying of failed buffer allocations. | Unit test
-SVC-DPMANAGER-002 | When a buffer allocation fails, `Svc::DpManager` shall retry the allocation up to a configurable number of times, at a configurable interval. | Retrying failed buffer requests provides a level of robustness in the client interface. If retrying is not desired, the retry count can be set to zero. | Unit test
-SVC-DPMANAGER-003 | `Svc::DpManager` shall receive data product buffers, convert them to `Fw::Buffer` objects, and send the `Fw::Buffer` objects. | This requirement provides a pass-through capability that converts data product buffers to `Fw::Buffer` objects used by downstream components, e.g., `Svc::BufferLogger`. | Unit test
+SVC-DPMANAGER-001 | `Svc::DpManager` shall receive and asynchronously respond to  requests for data product buffers. | One purpose of the component is to provide data product buffers to clients. The asynchronous request-response prevents the client component from blocking on a guarded port. | Unit test
+SVC-DPMANAGER-002 | `Svc::DpManager` shall receive data product buffers and forward them for further processing. | This requirement provides a pass-through capability that converts data product buffers to `Fw::Buffer` objects used by downstream components, e.g., `Svc::BufferLogger`. The `DpManager` converts the coming in on an `Fw::DpBufferSend` port and converts it to output on the port type `Fw::BufferSend` that is used by standard F Prime components for managing and logging data. | Unit test
 
 ## 3. Design
 
@@ -59,93 +55,41 @@ The diagram below shows the `DpManager` component.
 
 `DpManager` maintains the following state:
 
-1. `numRetry`: The number of times to retry a buffer
-request before giving up and returning an invalid buffer.
+1. `numSuccessfulAllocations`: The number of successful buffer allocations.
 
-2. `retryWaitTimeTicks`: The number of `schedIn` ticks
-to wait before retrying a failed buffer request.
+1. `numFailedAllocations: The number of failed buffer allocations.
 
-3. `bufferRequestSet`: The set of outstanding buffer requests.
-Each request is a triple consisting of a container ID, a retry count,
-and a wait count.
-Initially the set is empty.
+1. `numDataProducts`: The number of data products handled.
 
-### 3.4. Header File Configuration
+1. `numBytes:` The number of bytes handled.
 
-The `DpManager` header file provides the following configurable constants:
+### 3.4. Runtime Setup
 
-1. `DEFAULT_NUM_RETRY`: The default value of `numRetry`.
+No special runtime setup is required.
 
-2. `DEFAULT_RETRY_WAIT_TIME_TICKS`: The default value of `retryWaitTimeTicks`.
+### 3.5. Port Handlers
 
-3. `BUFFER_REQUEST_SET_MAX_SIZE`: The maximum size of `bufferRequestSet`.
+#### 3.5.1. schedIn
 
-### 3.5. Runtime Setup
+The handler for this port sends out the state variables as telemetry.
 
-To set up an instance of `DpManager`, do the following:
-
-1. Call the constructor and the `init` method in the usual way
-for an active component.
-
-1. Optionally call the `configure` function to override the
-default settings.
-
-### 3.6. Port Handlers
-
-#### 3.6.1. schedIn
-
-For each triple _R = (id, retryCount, waitCount)_ in `bufferRequestSet` do:
-
-1. If _waitCount == 0_ and _retryCount == 0_ then
-
-   1. Emit a warning event.
-
-   1. Let _B_ be an invalid buffer. Send _(id, B)_ on `dpBufferSendOut`.
-
-   1. Remove _R_ from the set.
-
-1. Otherwise if _waitCount == 0_
-
-   1. Invoke `bufferGetOut` to get a buffer _B_.
-
-   1. If _B_ is valid, then send _(id, B)_ on `dpBufferSendOut` and
-      remove _P_ from the set.
-
-   1. Otherwise decrement _retryCount_ and set _waitCount = retryWaitTimeTicks_.
-
-1. Otherwise decrement _waitCount_.
-
-#### 3.6.2. dpBufferRequestIn
+#### 3.5.2. dpBufferRequestIn
 
 This port receives container ID _id_ and a requested buffer size _size_.
 It does the following:D
 
 1. Invoke `bufferGetOut` to get a buffer _B_.
 
-1. If _B_ is valid, then send _(id, B)_ on `dpBufferSendOut`.
+1. If _B_ is valid, then increment `numAllocations`
 
-1. Otherwise if there is no room left in `bufferRequestSet` then
+1. Otherwise increment `numFailedAllocations` and emit a warning event.
 
-   1. Emit a warning event.
+1. send _(id, B)_ on `dpBufferSendOut`.
 
-   1. Let _B_ be an invalid buffer. Send _(id, B)_ on `dpBufferSendOut`.
-
-1. Otherwise add _(id, numRetry, retryWaitTimeTicks)_ to `bufferRequestSet`.
-
-#### 3.6.3. dpBufferSendIn
+#### 3.5.3. dpBufferSendIn
 
 This port receives a data product ID _I_ and a buffer _B_.
 It sends _B_ on `bufferSendOut`.
-
-### 3.7. Helper Functions
-
-TODO
-
-### 3.8. Public Functions
-
-#### 3.8.1. configure
-
-The `configure` function sets the values of `numRetry` and `retryWaitTimeTicks`.
 
 ## 4. Ground Interface
 
@@ -155,13 +99,14 @@ The `configure` function sets the values of `numRetry` and `retryWaitTimeTicks`.
 |------|------|-------------|
 | `NumSuccessfulAllocations` | `U32` | The number of successful buffer allocations |
 | `NumFailedAllocations` | `U32` | The number of failed buffer allocations |
+| `NumDataProds` | `U32` | Number of data products handled |
+| `NumBytes` | `U32` | Number of bytes handled |
 
 ### 4.2. Events
 
 | Name | Severity | Description |
 |------|----------|-------------|
 | `BufferAllocationFailed` | `warning high` | Buffer allocation failed |
-| `BufferRequestSetFull` | `warning high` | Buffer request set is full |
 
 ## 5. Example Uses
 
