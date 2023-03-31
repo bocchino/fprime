@@ -57,7 +57,7 @@ The diagram below shows the `DpManager` component.
 
 1. `numSuccessfulAllocations`: The number of successful buffer allocations.
 
-1. `numFailedAllocations: The number of failed buffer allocations.
+1. `numFailedAllocations`: The number of failed buffer allocations.
 
 1. `numDataProducts`: The number of data products handled.
 
