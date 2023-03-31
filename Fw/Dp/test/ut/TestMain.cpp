@@ -2,6 +2,8 @@
 // TestMain.cpp
 // ----------------------------------------------------------------------
 
+#include <limits>
+
 #include "gtest/gtest.h"
 
 #include "Fw/Dp/DpContainer.hpp"
@@ -20,15 +22,14 @@ TEST(Header, OK) {
     // Create a buffer
     Fw::Buffer buffer(bufferData, sizeof bufferData);
     // Use the buffer to create a container
-    const FwDpIdType id = STest::Pick::lowerUpper(0, FpLimits::FwDpIdType_MAX);
+    const FwDpIdType id = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpIdType>::max());
     DpContainer container(id, buffer);
     // Check the packet size
     // Packet size should be header size because there is no data
     const auto headerSize = DpContainer::Header::SIZE;
     ASSERT_EQ(container.getPacketSize(), headerSize);
     // Set the priority
-    const FwDpPriorityType priority =
-        STest::Pick::lowerUpper(0, FpLimits::FwDpPriorityType_MAX);
+    const FwDpPriorityType priority = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpPriorityType>::max());
     container.setPriority(priority);
     // Set the time tag
     const U32 seconds = STest::Pick::any();
