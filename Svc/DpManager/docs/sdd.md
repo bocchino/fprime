@@ -15,7 +15,8 @@ Send _B_ to _C_ so that _C_ can fill it.
 client components.
 Upon receiving a buffer _B_, send _B_ on a port.
 Another component such as a Buffer Accumulator or Buffer Logger
-will process _B_ and then send _B_ back to _M_ for deallocation.
+will process _B_ and then send _B_ back to the buffer manager
+for deallocation.
 
 ## 2. Requirements
 
