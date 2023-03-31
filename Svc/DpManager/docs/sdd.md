@@ -44,8 +44,8 @@ The diagram below shows the `DpManager` component.
 | `async input` | `productRequestIn` | `Fw.DpBufferRequest` | Port for receiving data product buffer requests from a client component |
 | `output` | `bufferGetOut` | `Fw.BufferGet` | Port for getting buffers from a Buffer Manager |
 | `output` | `productResponseOut` | `Fw.DpBufferSend` | Port for sending requested data product buffers to a client component |
-| `async input` | `productIn` | `Fw.DpBufferSend` | Port for receiving filled data product buffers from a client component |
-| `output` | `productOut` | `Fw.BufferSend` | Port for sending filled data product buffers to a downstream component |
+| `async input` | `productSendIn` | `Fw.DpBufferSend` | Port for receiving filled data product buffers from a client component |
+| `output` | `productSendOut` | `Fw.BufferSend` | Port for sending filled data product buffers to a downstream component |
 | `time get` | `timeGetOut` | `Fw.Time` | Time get port |
 | `telemetry` | `tlmOut` | `Fw.Tlm` | Telemetry port |
 | `event` | `eventOut` | `Fw.Log` | Event port |
@@ -86,10 +86,10 @@ It does the following:D
 
 1. send _(id, B)_ on `productResponseOut`.
 
-#### 3.5.3. productIn
+#### 3.5.3. productSendIn
 
 This port receives a data product ID _I_ and a buffer _B_.
-It sends _B_ on `productOut`.
+It sends _B_ on `productSendOut`.
 
 ## 4. Ground Interface
 
@@ -162,8 +162,8 @@ sequenceDiagram
     activate client
     activate dpManager
     activate bufferLogger
-    client-)dpManager: Send DP buffer [productIn]
-    dpManager-)bufferLogger: Send Fw::Buffer [productOut]
+    client-)dpManager: Send DP buffer [productSendIn]
+    dpManager-)bufferLogger: Send Fw::Buffer [productSendOut]
     bufferLogger->>bufferManager: Deallocate buffer
     bufferManager-->>bufferLogger: Return
     deactivate bufferLogger

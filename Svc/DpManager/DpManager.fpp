@@ -20,10 +20,10 @@ module Svc {
     output port productResponseOut: Fw.DpBufferSend
 
     @ Port for receiving filled data product buffers from a client component
-    async input port productIn: Fw.DpBufferSend
+    async input port productSendIn: Fw.DpBufferSend
 
     @ Port for sending filled data product buffers to a downstream component
-    output port productOut: Fw.BufferSend
+    output port productSendOut: Fw.BufferSend
 
     # ----------------------------------------------------------------------
     # Special ports

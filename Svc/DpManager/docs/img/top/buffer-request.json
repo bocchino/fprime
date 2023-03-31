@@ -26,7 +26,7 @@
         "instanceName" : "dpManager",
         "inputPorts" : [
           {
-            "name" : "bufferRequestIn",
+            "name" : "productRequestIn",
             "portNumbers" : [
               0
             ]
@@ -40,7 +40,7 @@
             ]
           },
           {
-            "name" : "bufferResponseOut",
+            "name" : "productResponseOut",
             "portNumbers" : [
               0
             ]

@@ -2,11 +2,11 @@ client
 productSendOut
 0
 dpManager
-dpBufferSendIn
+productSendIn
 0
 
 dpManager
-bufferSendOut
+productSendOut
 0
 bufferLogger
 bufferSendIn
