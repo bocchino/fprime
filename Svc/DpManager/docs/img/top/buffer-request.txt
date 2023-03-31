@@ -2,7 +2,7 @@ client
 productRequestOut
 0
 dpManager
-dpBufferRequestIn
+bufferRequestIn
 0
 
 dpManager
@@ -13,7 +13,7 @@ bufferGetCallee
 0
 
 dpManager
-dpBufferSendOut
+bufferResponseOut
 0
 client
 productRecvIn

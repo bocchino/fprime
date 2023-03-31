@@ -41,11 +41,11 @@ The diagram below shows the `DpManager` component.
 | Kind | Name | Port Type | Usage |
 |------|------|-----------|-------|
 | `async input` | `schedIn` | `Svc.Sched` | Schedule in port |
-| `async input` | `bufferRequestIn` | `Fw.DpBufferRequest` | Port for receiving buffer requests from a client component |
+| `async input` | `productRequestIn` | `Fw.DpBufferRequest` | Port for receiving data product buffer requests from a client component |
 | `output` | `bufferGetOut` | `Fw.BufferGet` | Port for getting buffers from a Buffer Manager |
-| `output` | `bufferResponseOut` | `Fw.DpBufferSend` | Port for sending requested buffers to a client component |
-| `async input` | `dpIn` | `Fw.DpBufferSend` | Port for receiving filled data product buffers from a client component |
-| `output` | `dpOut` | `Fw.BufferSend` | Port for sending filled data product buffers to a downstream component |
+| `output` | `productResponseOut` | `Fw.DpBufferSend` | Port for sending requested data product buffers to a client component |
+| `async input` | `productIn` | `Fw.DpBufferSend` | Port for receiving filled data product buffers from a client component |
+| `output` | `productOut` | `Fw.BufferSend` | Port for sending filled data product buffers to a downstream component |
 | `time get` | `timeGetOut` | `Fw.Time` | Time get port |
 | `telemetry` | `tlmOut` | `Fw.Tlm` | Telemetry port |
 | `event` | `eventOut` | `Fw.Log` | Event port |
