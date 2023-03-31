@@ -19,7 +19,7 @@
         "instanceName" : "dpManager",
         "inputPorts" : [
           {
-            "name" : "dpBufferSendIn",
+            "name" : "productSendIn",
             "portNumbers" : [
               0
             ]
@@ -27,7 +27,7 @@
         ],
         "outputPorts" : [
           {
-            "name" : "bufferSendOut",
+            "name" : "productSendOut",
             "portNumbers" : [
               0
             ]
