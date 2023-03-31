@@ -22,7 +22,7 @@ will process _B_ and then send _B_ back to _M_ for deallocation.
 Requirement | Description | Rationale | Verification Method
 ----------- | ----------- | ----------| -------------------
 SVC-DPMANAGER-001 | `Svc::DpManager` shall receive and asynchronously respond to  requests for data product buffers. | One purpose of the component is to provide data product buffers to clients. The asynchronous request-response prevents the client component from blocking on a guarded port. | Unit test
-SVC-DPMANAGER-002 | `Svc::DpManager` shall receive data product buffers and forward them for further processing. | This requirement provides a pass-through capability that converts data product buffers to `Fw::Buffer` objects used by downstream components, e.g., `Svc::BufferLogger`. The `DpManager` converts the coming in on an `Fw::DpBufferSend` port and converts it to output on the port type `Fw::BufferSend` that is used by standard F Prime components for managing and logging data. | Unit test
+SVC-DPMANAGER-002 | `Svc::DpManager` shall receive data product buffers and forward them for further processing. | This requirement provides a pass-through capability for sending data product buffers to downstream data handling components, e.g., `Svc::BufferLogger`. `Svc::DpManager` receives data product input on a port of type  `Fw::DpBufferSend`. It strips off the container ID and sends just the buffer on a port of type `Fw::BufferSend`. This type is used by the standard F Prime components for managing and logging data. | Unit test
 
 ## 3. Design
 
