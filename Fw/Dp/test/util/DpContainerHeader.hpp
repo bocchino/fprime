@@ -23,7 +23,7 @@ struct DpContainerHeader {
 
     //! Move the buffer deserialization to the specified offset
     static void moveDeserToOffset(Buffer& buffer,          //!< The buffer
-                                            FwDpBuffSizeType offset  //!< The offset
+                                            FwSizeType offset  //!< The offset
     ) {
         auto& serializeRepr = buffer.getSerializeRepr();
         const auto status = serializeRepr.moveDeserToOffset(offset);
@@ -77,7 +77,7 @@ struct DpContainerHeader {
     Fw::Time timeTag;
 
     //! The data size
-    FwDpBuffSizeType dataSize;
+    FwSizeType dataSize;
 };
 
 }  // namespace TestUtil

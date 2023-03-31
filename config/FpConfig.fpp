@@ -1,7 +1,5 @@
 type FwBuffSizeType
 type FwChanIdType
-# TODO: Eliminate this type. Use FwSizeType instead.
-type FwDpBuffSizeType
 type FwDpIdType
 type FwDpPriorityType
 type FwEnumStoreType

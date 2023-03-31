@@ -6,7 +6,7 @@ module Fw {
       @ The container ID
       $id: FwDpIdType
       @ The size of the requested buffer
-      $size: FwDpBuffSizeType
+      $size: FwSizeType
   )
 
   @ Port for sending a data product buffer

@@ -12,7 +12,7 @@
 
 using namespace Fw;
 
-constexpr FwDpBuffSizeType BUFFER_SIZE = 100;
+constexpr FwSizeType BUFFER_SIZE = 100;
 U8 bufferData[BUFFER_SIZE];
 
 TEST(Header, OK) {
