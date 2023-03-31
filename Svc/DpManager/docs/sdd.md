@@ -73,7 +73,7 @@ No special runtime setup is required.
 
 The handler for this port sends out the state variables as telemetry.
 
-#### 3.5.2. dpBufferRequestIn
+#### 3.5.2. bufferRequestIn
 
 This port receives container ID _id_ and a requested buffer size _size_.
 It does the following:D
@@ -84,12 +84,12 @@ It does the following:D
 
 1. Otherwise increment `numFailedAllocations` and emit a warning event.
 
-1. send _(id, B)_ on `dpBufferSendOut`.
+1. send _(id, B)_ on `bufferResponseOut`.
 
-#### 3.5.3. dpBufferSendIn
+#### 3.5.3. dpIn
 
 This port receives a data product ID _I_ and a buffer _B_.
-It sends _B_ on `bufferSendOut`.
+It sends _B_ on `dpOut`.
 
 ## 4. Ground Interface
 
@@ -147,10 +147,10 @@ The diagrams use the following instances:
 sequenceDiagram
     activate client
     activate dpManager
-    client-)dpManager: Request DP buffer P [dpBufferRequestIn]
+    client-)dpManager: Request DP buffer P [bufferRequestIn]
     dpManager->>bufferManager: Request Fw::Buffer B [bufferGetOut]
     bufferManager-->>dpManager: Return B
-    dpManager-)client: Send P [dpBufferSendOut]
+    dpManager-)client: Send P [bufferResponseOut]
     deactivate dpManager
     deactivate client
 ```
@@ -162,8 +162,8 @@ sequenceDiagram
     activate client
     activate dpManager
     activate bufferLogger
-    client-)dpManager: Send DP buffer [dpBufferSendIn]
-    dpManager-)bufferLogger: Send Fw::Buffer
+    client-)dpManager: Send DP buffer [dpIn]
+    dpManager-)bufferLogger: Send Fw::Buffer [dpOut]
     bufferLogger->>bufferManager: Deallocate buffer
     bufferManager-->>bufferLogger: Return
     deactivate bufferLogger
