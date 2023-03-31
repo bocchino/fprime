@@ -43,7 +43,7 @@ The diagram below shows the `DpManager` component.
 | `async input` | `schedIn` | `Svc.Sched` | Schedule in port |
 | `async input` | `bufferRequestIn` | `Fw.DpBufferRequest` | Port for receiving buffer requests from a client component |
 | `output` | `bufferGetOut` | `Fw.BufferGet` | Port for getting buffers from a Buffer Manager |
-| `output` | `requestedBufferOut` | `Fw.DpBufferSend` | Port for sending requested buffers to a client component |
+| `output` | `bufferResponseOut` | `Fw.DpBufferSend` | Port for sending requested buffers to a client component |
 | `async input` | `dpIn` | `Fw.DpBufferSend` | Port for receiving filled data product buffers from a client component |
 | `output` | `dpOut` | `Fw.BufferSend` | Port for sending filled data product buffers to a downstream component |
 | `time get` | `timeGetOut` | `Fw.Time` | Time get port |
