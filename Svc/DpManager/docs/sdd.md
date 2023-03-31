@@ -147,10 +147,10 @@ The diagrams use the following instances:
 sequenceDiagram
     activate client
     activate dpManager
-    client-)dpManager: Request DP buffer P [productRequestIn]
-    dpManager->>bufferManager: Request Fw::Buffer B [bufferGetOut]
+    client-)dpManager: Request buffer [productRequestIn]
+    dpManager->>bufferManager: Request buffer B [bufferGetOut]
     bufferManager-->>dpManager: Return B
-    dpManager-)client: Send P [productResponseOut]
+    dpManager-)client: Send B [productResponseOut]
     deactivate dpManager
     deactivate client
 ```
@@ -162,9 +162,9 @@ sequenceDiagram
     activate client
     activate dpManager
     activate bufferLogger
-    client-)dpManager: Send DP buffer [productSendIn]
-    dpManager-)bufferLogger: Send Fw::Buffer [productSendOut]
-    bufferLogger->>bufferManager: Deallocate buffer
+    client-)dpManager: Send buffer B [productSendIn]
+    dpManager-)bufferLogger: Send B [productSendOut]
+    bufferLogger->>bufferManager: Deallocate B
     bufferManager-->>bufferLogger: Return
     deactivate bufferLogger
     deactivate dpManager
