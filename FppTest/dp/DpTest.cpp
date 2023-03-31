@@ -39,6 +39,7 @@ void DpTest ::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE co
 // Data product handler impelentations
 // ----------------------------------------------------------------------
 
+// TODO: Pass status into handler
 void DpTest ::Dp_Recv_Container1_handler(DpContainer& container) {
     auto status = Fw::FW_SERIALIZE_OK;
     for (FwSizeType i = 0; i < CONTAINER_1_SIZE; ++i) {

@@ -69,6 +69,12 @@ module Svc {
     @ The number of failed buffer allocations
     telemetry NumFailedAllocations: U32 update on change
 
+    @ Number of data products handled
+    telemetry NumDataProds: U32 update on change
+
+    @ Number of bytes handled
+    telemetry NumBytes: U32 update on change
+
   }
 
 }

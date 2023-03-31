@@ -15,6 +15,9 @@ module Fw {
       $id: FwDpIdType
       @ The buffer
       buffer: Fw.Buffer
+      # TODO: Add status
+      #@ Status
+      #status: Fw.Success
   )
 
 }
