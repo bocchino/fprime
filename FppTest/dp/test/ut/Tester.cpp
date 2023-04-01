@@ -39,10 +39,8 @@ void Tester::schedIn_OK() {
     this->component.doDispatch();
     ASSERT_FROM_PORT_HISTORY_SIZE(2);
     ASSERT_from_productRequestOut_SIZE(2);
-    ASSERT_from_productRequestOut(0, ID_BASE + DpTest::ContainerId::Container1,
-                                  FwDpBuffSizeType(DpTest::CONTAINER_1_SIZE));
-    ASSERT_from_productRequestOut(1, ID_BASE + DpTest::ContainerId::Container2,
-                                  FwDpBuffSizeType(DpTest::CONTAINER_2_SIZE));
+    ASSERT_from_productRequestOut(0, ID_BASE + DpTest::ContainerId::Container1, FwSizeType(DpTest::CONTAINER_1_SIZE));
+    ASSERT_from_productRequestOut(1, ID_BASE + DpTest::ContainerId::Container2, FwSizeType(DpTest::CONTAINER_2_SIZE));
 }
 
 void Tester::productRecvIn_Container1_OK() {
@@ -54,7 +52,7 @@ void Tester::productRecvIn_Container1_OK() {
                                              expectedNumElts);
     // Check the data
     auto& serialRepr = buffer.getSerializeRepr();
-    for (FwDpBuffSizeType i = 0; i < expectedNumElts; ++i) {
+    for (FwSizeType i = 0; i < expectedNumElts; ++i) {
         FwDpIdType id;
         U32 elt;
         auto status = serialRepr.deserialize(id);
@@ -76,7 +74,7 @@ void Tester::productRecvIn_Container2_OK() {
                                              expectedNumElts);
     // Check the data
     auto& serialRepr = buffer.getSerializeRepr();
-    for (FwDpBuffSizeType i = 0; i < expectedNumElts; ++i) {
+    for (FwSizeType i = 0; i < expectedNumElts; ++i) {
         FwDpIdType id;
         DpTest_Data elt;
         auto status = serialRepr.deserialize(id);
@@ -123,7 +121,7 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     // Check the buffer size
     outputBuffer = entry.buffer;
     const auto bufferSize = outputBuffer.getSize();
-    ASSERT_GE(bufferSize, FwDpBuffSizeType(DpTest::DpContainer::Header::SIZE));
+    ASSERT_GE(bufferSize, FwSizeType(DpTest::DpContainer::Header::SIZE));
     // Deserialize the packet header
     Fw::TestUtil::DpContainerHeader header;
     header.deserialize(outputBuffer);
@@ -148,7 +146,7 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
 // Handlers for typed from ports
 // ----------------------------------------------------------------------
 
-void Tester::from_productRequestOut_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, FwDpBuffSizeType size) {
+void Tester::from_productRequestOut_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, FwSizeType size) {
     this->pushFromPortEntry_productRequestOut(id, size);
 }
 

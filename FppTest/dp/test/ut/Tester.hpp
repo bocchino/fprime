@@ -60,7 +60,7 @@ class Tester : public DpTestGTestBase {
     //!
     void from_productRequestOut_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
                                         FwDpIdType id,                  //!< The container ID
-                                        FwDpBuffSizeType size           //!< The size of the requested buffer
+                                        FwSizeType size                 //!< The size of the requested buffer
     );
 
     //! Handler for from_productSendOut
