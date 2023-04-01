@@ -2,7 +2,7 @@ module Fw {
 
   @ Port for sending a request for a data product buffer to
   @ back a data product container
-  port DpBufferRequest(
+  port DpRequest(
       @ The container ID
       $id: FwDpIdType
       @ The size of the requested buffer
@@ -10,7 +10,7 @@ module Fw {
   )
 
   @ Port for receiving a response to a buffer request
-  port DpBufferResponse(
+  port DpResponse(
       @ The container ID
       $id: FwDpIdType
       @ The buffer
@@ -20,7 +20,7 @@ module Fw {
   )
 
   @ Port for sending a data product buffer
-  port DpBufferSend(
+  port DpSend(
       @ The container ID
       $id: FwDpIdType
       @ The buffer
