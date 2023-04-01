@@ -9,15 +9,22 @@ module Fw {
       $size: FwSizeType
   )
 
+  @ Port for receiving a response to a buffer request
+  port DpBufferResponse(
+      @ The container ID
+      $id: FwDpIdType
+      @ The buffer
+      buffer: Fw.Buffer
+      @ The status
+      status: Fw.Success
+  )
+
   @ Port for sending a data product buffer
   port DpBufferSend(
       @ The container ID
       $id: FwDpIdType
       @ The buffer
       buffer: Fw.Buffer
-      # TODO: Add status
-      #@ Status
-      #status: Fw.Success
   )
 
 }
