@@ -56,12 +56,14 @@ class DpTest : public DpTestDpComponentBase {
 
     //! Receive a data product container of type Container1
     //! \return Serialize status
-    void Dp_Recv_Container1_handler(DpContainer& container  //!< The container
+    void Dp_Recv_Container1_handler(DpContainer& container,  //!< The container
+                                    Fw::Success::T           //!< The container status
                                     ) override;
 
     //! Receive a data product container of type Container2
     //! \return Serialize status
-    void Dp_Recv_Container2_handler(DpContainer& container  //!< The container
+    void Dp_Recv_Container2_handler(DpContainer& container,  //!< The container
+                                    Fw::Success::T           //!< The container status
                                     ) override;
 
   PRIVATE:

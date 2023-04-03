@@ -40,27 +40,27 @@ void DpTest ::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE co
 // ----------------------------------------------------------------------
 
 // TODO: Pass status into handler
-void DpTest ::Dp_Recv_Container1_handler(DpContainer& container) {
-    auto status = Fw::FW_SERIALIZE_OK;
+void DpTest ::Dp_Recv_Container1_handler(DpContainer& container, Fw::Success::T status) {
+    auto serializeStatus = Fw::FW_SERIALIZE_OK;
     for (FwSizeType i = 0; i < CONTAINER_1_SIZE; ++i) {
-        status = container.serializeRecord_U32Record(this->u32RecordData);
-        if (status == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
+        serializeStatus = container.serializeRecord_U32Record(this->u32RecordData);
+        if (serializeStatus == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
             break;
         }
-        FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+        FW_ASSERT(serializeStatus == Fw::FW_SERIALIZE_OK, status);
     }
     this->Dp_Send(container);
 }
 
-void DpTest ::Dp_Recv_Container2_handler(DpContainer& container) {
+void DpTest ::Dp_Recv_Container2_handler(DpContainer& container, Fw::Success::T status) {
     const DpTest_Data dataRecord(this->dataRecordData);
-    auto status = Fw::FW_SERIALIZE_OK;
+    auto serializeStatus = Fw::FW_SERIALIZE_OK;
     for (FwSizeType i = 0; i < CONTAINER_2_SIZE; ++i) {
-        status = container.serializeRecord_DataRecord(dataRecord);
-        if (status == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
+        serializeStatus = container.serializeRecord_DataRecord(dataRecord);
+        if (serializeStatus == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
             break;
         }
-        FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+        FW_ASSERT(serializeStatus == Fw::FW_SERIALIZE_OK, status);
     }
     this->Dp_Send(container);
 }
