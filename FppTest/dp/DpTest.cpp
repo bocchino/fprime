@@ -39,30 +39,33 @@ void DpTest ::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE co
 // Data product handler impelentations
 // ----------------------------------------------------------------------
 
-// TODO: Pass status into handler
 void DpTest ::Dp_Recv_Container1_handler(DpContainer& container, Fw::Success::T status) {
-    auto serializeStatus = Fw::FW_SERIALIZE_OK;
-    for (FwSizeType i = 0; i < CONTAINER_1_SIZE; ++i) {
-        serializeStatus = container.serializeRecord_U32Record(this->u32RecordData);
-        if (serializeStatus == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
-            break;
+    if (status == Fw::Success::SUCCESS) {
+        auto serializeStatus = Fw::FW_SERIALIZE_OK;
+        for (FwSizeType i = 0; i < CONTAINER_1_SIZE; ++i) {
+            serializeStatus = container.serializeRecord_U32Record(this->u32RecordData);
+            if (serializeStatus == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
+                break;
+            }
+            FW_ASSERT(serializeStatus == Fw::FW_SERIALIZE_OK, status);
         }
-        FW_ASSERT(serializeStatus == Fw::FW_SERIALIZE_OK, status);
+        this->Dp_Send(container);
     }
-    this->Dp_Send(container);
 }
 
 void DpTest ::Dp_Recv_Container2_handler(DpContainer& container, Fw::Success::T status) {
-    const DpTest_Data dataRecord(this->dataRecordData);
-    auto serializeStatus = Fw::FW_SERIALIZE_OK;
-    for (FwSizeType i = 0; i < CONTAINER_2_SIZE; ++i) {
-        serializeStatus = container.serializeRecord_DataRecord(dataRecord);
-        if (serializeStatus == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
-            break;
+    if (status == Fw::Success::SUCCESS) {
+        const DpTest_Data dataRecord(this->dataRecordData);
+        auto serializeStatus = Fw::FW_SERIALIZE_OK;
+        for (FwSizeType i = 0; i < CONTAINER_2_SIZE; ++i) {
+            serializeStatus = container.serializeRecord_DataRecord(dataRecord);
+            if (serializeStatus == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
+                break;
+            }
+            FW_ASSERT(serializeStatus == Fw::FW_SERIALIZE_OK, status);
         }
-        FW_ASSERT(serializeStatus == Fw::FW_SERIALIZE_OK, status);
+        this->Dp_Send(container);
     }
-    this->Dp_Send(container);
 }
 
 }  // end namespace FppTest
