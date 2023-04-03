@@ -39,6 +39,14 @@ class DpTest : public DpTestDpComponentBase {
     //! Destroy object DpTest
     ~DpTest();
 
+  public:
+    // ----------------------------------------------------------------------
+    // Public interface methods
+    // ----------------------------------------------------------------------
+
+    //! Set the send time
+    void setSendTime(Fw::Time time) { this->sendTime = time; }
+
   PRIVATE:
     // ----------------------------------------------------------------------
     // Handler implementations for user-defined typed input ports
@@ -76,6 +84,9 @@ class DpTest : public DpTestDpComponentBase {
 
     //! DataRecord data
     const U16 dataRecordData;
+
+    //! Send time for testing
+    Fw::Time sendTime;
 };
 
 }  // end namespace FppTest

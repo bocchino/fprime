@@ -104,6 +104,7 @@ Fw::Time Tester::randomizeTestTime() {
     const U32 useconds = STest::Pick::startLength(0, 1000000);
     const Fw::Time time(seconds, useconds);
     this->setTestTime(time);
+    this->component.setSendTime(time);
     return time;
 }
 

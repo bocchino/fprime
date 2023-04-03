@@ -16,7 +16,10 @@ namespace FppTest {
 // ----------------------------------------------------------------------
 
 DpTest ::DpTest(const char* const compName, U32 u32RecordData, U16 dataRecordData)
-    : DpTestDpComponentBase(compName), u32RecordData(u32RecordData), dataRecordData(dataRecordData) {}
+    : DpTestDpComponentBase(compName),
+      u32RecordData(u32RecordData),
+      dataRecordData(dataRecordData),
+      sendTime(Fw::ZERO_TIME) {}
 
 void DpTest ::init(const NATIVE_INT_TYPE queueDepth, const NATIVE_INT_TYPE instance) {
     DpTestComponentBase::init(queueDepth, instance);
@@ -49,6 +52,7 @@ void DpTest ::Dp_Recv_Container1_handler(DpContainer& container, Fw::Success::T 
             }
             FW_ASSERT(serializeStatus == Fw::FW_SERIALIZE_OK, status);
         }
+        // Use the time stamp from the time get port
         this->Dp_Send(container);
     }
 }
@@ -64,7 +68,8 @@ void DpTest ::Dp_Recv_Container2_handler(DpContainer& container, Fw::Success::T 
             }
             FW_ASSERT(serializeStatus == Fw::FW_SERIALIZE_OK, status);
         }
-        this->Dp_Send(container);
+        // Provide an explicit time stamp
+        this->Dp_Send(container, this->sendTime);
     }
 }
 
