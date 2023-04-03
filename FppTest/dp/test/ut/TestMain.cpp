@@ -23,13 +23,19 @@ TEST(productRecvIn, Container1_SUCCESS) {
 TEST(productRecvIn, Container1_FAILURE) {
     COMMENT("Receive Container1 FAILURE");
     Tester tester;
-    tester.productRecvIn_Container1_SUCCESS();
+    tester.productRecvIn_Container1_FAILURE();
 }
 
 TEST(productRecvIn, Container2_SUCCESS) {
     COMMENT("Receive Container2 SUCCESS");
     Tester tester;
     tester.productRecvIn_Container2_SUCCESS();
+}
+
+TEST(productRecvIn, Container2_FAILURE) {
+    COMMENT("Receive Container2 FAILURE");
+    Tester tester;
+    tester.productRecvIn_Container2_FAILURE();
 }
 
 int main(int argc, char** argv) {

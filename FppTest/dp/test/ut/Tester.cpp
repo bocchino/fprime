@@ -65,6 +65,10 @@ void Tester::productRecvIn_Container1_SUCCESS() {
     }
 }
 
+void Tester::productRecvIn_Container1_FAILURE() {
+    productRecvIn_CheckFailure(DpTest::ContainerId::Container1, this->container1Buffer);
+}
+
 void Tester::productRecvIn_Container2_SUCCESS() {
     Fw::Buffer buffer;
     FwSizeType expectedNumElts;
@@ -87,6 +91,10 @@ void Tester::productRecvIn_Container2_SUCCESS() {
     }
 }
 
+void Tester::productRecvIn_Container2_FAILURE() {
+    productRecvIn_CheckFailure(DpTest::ContainerId::Container2, this->container2Buffer);
+}
+
 // ----------------------------------------------------------------------
 // Helper methods
 // ----------------------------------------------------------------------
@@ -105,11 +113,11 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
                                                 Fw::Buffer inputBuffer,
                                                 Fw::Buffer& outputBuffer,
                                                 FwSizeType& expectedNumElts) {
-    const auto containerId = ID_BASE + id;
+    const auto globalId = ID_BASE + id;
     // Set the test time
     const Fw::Time timeTag = this->randomizeTestTime();
     // Invoke the productRecvIn port
-    this->invoke_to_productRecvIn(0, containerId, inputBuffer, Fw::Success::SUCCESS);
+    this->invoke_to_productRecvIn(0, globalId, inputBuffer, Fw::Success::SUCCESS);
     this->component.doDispatch();
     // Check the port history size
     ASSERT_FROM_PORT_HISTORY_SIZE(1);
@@ -117,7 +125,7 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     // Get the history entry
     const auto entry = this->fromPortHistory_productSendOut->at(0);
     // Check the container id
-    ASSERT_EQ(entry.id, containerId);
+    ASSERT_EQ(entry.id, globalId);
     // Check the buffer size
     outputBuffer = entry.buffer;
     const auto bufferSize = outputBuffer.getSize();
@@ -126,7 +134,7 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     Fw::TestUtil::DpContainerHeader header;
     header.deserialize(outputBuffer);
     // Check the container id
-    ASSERT_EQ(header.id, containerId);
+    ASSERT_EQ(header.id, globalId);
     // Check the priority
     ASSERT_EQ(header.priority, priority);
     // Check the time tag
@@ -140,6 +148,16 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     // Check the buffer size
     const auto expectedBufferSize = DpTest::DpContainer::Header::SIZE + expectedDataSize;
     ASSERT_EQ(bufferSize, expectedBufferSize);
+}
+
+void Tester::productRecvIn_CheckFailure(FwDpIdType id, Fw::Buffer buffer) {
+    // Invoke the port
+    const auto globalId = ID_BASE + id;
+    this->invoke_to_productRecvIn(0, globalId, buffer, Fw::Success::FAILURE);
+    this->component.doDispatch();
+    // Check the port history size
+    ASSERT_FROM_PORT_HISTORY_SIZE(0);
+    ASSERT_from_productSendOut_SIZE(0);
 }
 
 // ----------------------------------------------------------------------

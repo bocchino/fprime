@@ -48,8 +48,14 @@ class Tester : public DpTestGTestBase {
     //! productRecvIn with Container 1 (SUCCESS)
     void productRecvIn_Container1_SUCCESS();
 
+    //! productRecvIn with Container 1 (FAILURE)
+    void productRecvIn_Container1_FAILURE();
+
     //! productRecvIn with Container 2 (SUCCESS)
     void productRecvIn_Container2_SUCCESS();
+
+    //! productRecvIn with Container 2 (FAILURE)
+    void productRecvIn_Container2_FAILURE();
 
   PRIVATE:
     // ----------------------------------------------------------------------
@@ -94,6 +100,11 @@ class Tester : public DpTestGTestBase {
                                             Fw::Buffer inputBuffer,      //!< The buffer to send
                                             Fw::Buffer& outputBuffer,    //!< The buffer received (output)
                                             FwSizeType& expectedNumElts  //!< The expected number of elements (output)
+    );
+
+    //! Check received buffer with failure status
+    void productRecvIn_CheckFailure(FwDpIdType id,     //!< The container id
+                                    Fw::Buffer buffer  //!< The buffer
     );
 
   PRIVATE:
