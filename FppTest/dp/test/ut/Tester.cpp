@@ -43,7 +43,7 @@ void Tester::schedIn_OK() {
     ASSERT_from_productRequestOut(1, ID_BASE + DpTest::ContainerId::Container2, FwSizeType(DpTest::CONTAINER_2_SIZE));
 }
 
-void Tester::productRecvIn_Container1_OK() {
+void Tester::productRecvIn_Container1_SUCCESS() {
     Fw::Buffer buffer;
     FwSizeType expectedNumElts;
     // Invoke the port and check the header
@@ -65,7 +65,7 @@ void Tester::productRecvIn_Container1_OK() {
     }
 }
 
-void Tester::productRecvIn_Container2_OK() {
+void Tester::productRecvIn_Container2_SUCCESS() {
     Fw::Buffer buffer;
     FwSizeType expectedNumElts;
     // Invoke the port and check the header

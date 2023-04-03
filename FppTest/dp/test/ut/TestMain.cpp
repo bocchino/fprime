@@ -14,16 +14,22 @@ TEST(schedIn, OK) {
     tester.schedIn_OK();
 }
 
-TEST(productRecvIn, Container1_OK) {
-    COMMENT("Receive Container1 OK");
+TEST(productRecvIn, Container1_SUCCESS) {
+    COMMENT("Receive Container1 SUCCESS");
     Tester tester;
-    tester.productRecvIn_Container1_OK();
+    tester.productRecvIn_Container1_SUCCESS();
 }
 
-TEST(productRecvIn, Container2_OK) {
-    COMMENT("Receive Container2 OK");
+TEST(productRecvIn, Container1_FAILURE) {
+    COMMENT("Receive Container1 FAILURE");
     Tester tester;
-    tester.productRecvIn_Container2_OK();
+    tester.productRecvIn_Container1_SUCCESS();
+}
+
+TEST(productRecvIn, Container2_SUCCESS) {
+    COMMENT("Receive Container2 SUCCESS");
+    Tester tester;
+    tester.productRecvIn_Container2_SUCCESS();
 }
 
 int main(int argc, char** argv) {

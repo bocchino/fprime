@@ -45,11 +45,11 @@ class Tester : public DpTestGTestBase {
     //! schedIn OK
     void schedIn_OK();
 
-    //! productRecvIn with Container 1 OK
-    void productRecvIn_Container1_OK();
+    //! productRecvIn with Container 1 (SUCCESS)
+    void productRecvIn_Container1_SUCCESS();
 
-    //! productRecvIn with Container 2 OK
-    void productRecvIn_Container2_OK();
+    //! productRecvIn with Container 2 (SUCCESS)
+    void productRecvIn_Container2_SUCCESS();
 
   PRIVATE:
     // ----------------------------------------------------------------------
