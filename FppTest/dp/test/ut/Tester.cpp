@@ -109,7 +109,7 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     // Set the test time
     const Fw::Time timeTag = this->randomizeTestTime();
     // Invoke the productRecvIn port
-    this->invoke_to_productRecvIn(0, containerId, inputBuffer);
+    this->invoke_to_productRecvIn(0, containerId, inputBuffer, Fw::Success::SUCCESS);
     this->component.doDispatch();
     // Check the port history size
     ASSERT_FROM_PORT_HISTORY_SIZE(1);
