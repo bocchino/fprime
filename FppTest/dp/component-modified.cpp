@@ -233,7 +233,11 @@ namespace FppTest {
   Fw::InputDpResponsePort *DpTestComponentBase ::
     get_productRecvIn_InputPort(NATIVE_INT_TYPE portNum)
   {
-    FW_ASSERT(portNum < this->getNum_productRecvIn_InputPorts(),static_cast<FwAssertArgType>(portNum));
+    FW_ASSERT(
+        portNum < this->getNum_productRecvIn_InputPorts(),
+        static_cast<FwAssertArgType>(portNum)
+    );
+
     return &this->m_productRecvIn_InputPort[portNum];
   }
 
@@ -366,16 +370,6 @@ namespace FppTest {
   }
 
   // ----------------------------------------------------------------------
-  // Getters for numbers of typed input ports
-  // ----------------------------------------------------------------------
-
-  NATIVE_INT_TYPE DpTestComponentBase ::
-    getNum_schedIn_InputPorts()
-  {
-    return static_cast<NATIVE_INT_TYPE>(FW_NUM_ARRAY_ELEMENTS(this->m_schedIn_InputPort));
-  }
-
-  // ----------------------------------------------------------------------
   // Getters for numbers of special input ports
   // ----------------------------------------------------------------------
 
@@ -383,6 +377,16 @@ namespace FppTest {
     getNum_productRecvIn_InputPorts()
   {
     return static_cast<NATIVE_INT_TYPE>(FW_NUM_ARRAY_ELEMENTS(this->m_productRecvIn_InputPort));
+  }
+
+  // ----------------------------------------------------------------------
+  // Getters for numbers of typed input ports
+  // ----------------------------------------------------------------------
+
+  NATIVE_INT_TYPE DpTestComponentBase ::
+    getNum_schedIn_InputPorts()
+  {
+    return static_cast<NATIVE_INT_TYPE>(FW_NUM_ARRAY_ELEMENTS(this->m_schedIn_InputPort));
   }
 
   // ----------------------------------------------------------------------
@@ -719,7 +723,7 @@ namespace FppTest {
   }
 
   // ----------------------------------------------------------------------
-  // Calls for messages received on typed input ports
+  // Calls for messages received on special input ports
   // ----------------------------------------------------------------------
 
   void DpTestComponentBase ::
@@ -733,6 +737,10 @@ namespace FppTest {
     DpTestComponentBase* compPtr = static_cast<DpTestComponentBase*>(callComp);
     compPtr->productRecvIn_handlerBase(portNum, id, buffer, status);
   }
+
+  // ----------------------------------------------------------------------
+  // Calls for messages received on typed input ports
+  // ----------------------------------------------------------------------
 
   void DpTestComponentBase ::
     m_p_schedIn_in(
