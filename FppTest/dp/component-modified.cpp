@@ -616,8 +616,14 @@ namespace FppTest {
         const Fw::Buffer& buffer
     )
   {
-    FW_ASSERT(portNum < this->getNum_productSendOut_OutputPorts(),static_cast<FwAssertArgType>(portNum));
-    this->m_productSendOut_OutputPort[portNum].invoke(id, buffer);
+    FW_ASSERT(
+      portNum < this->getNum_productSendOut_OutputPorts(),
+      static_cast<FwAssertArgType>(portNum)
+    );
+    this->m_productSendOut_OutputPort[portNum].invoke(
+      id,
+      buffer
+    );
   }
 
   // ----------------------------------------------------------------------
