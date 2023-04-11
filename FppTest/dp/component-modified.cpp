@@ -201,7 +201,7 @@ namespace FppTest {
   }
 
   // ----------------------------------------------------------------------
-  // Invocation functions for output ports
+  // Invocation functions for special output ports
   // ----------------------------------------------------------------------
 
   void DpTestComponentBase ::

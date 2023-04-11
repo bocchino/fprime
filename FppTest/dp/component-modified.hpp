@@ -242,20 +242,8 @@ namespace FppTest {
       virtual void productRecvIn_handler(
           NATIVE_INT_TYPE portNum, //!< The port number
           FwDpIdType id, //!< The container ID
-          const Fw::Buffer &buffer, //!< The buffer
-          const Fw::Success &status //!< The status
-      ) = 0;
-
-    PROTECTED:
-
-      // ----------------------------------------------------------------------
-      // Handlers to implement for typed input ports
-      // ----------------------------------------------------------------------
-
-      //! Handler for input port schedIn
-      virtual void schedIn_handler(
-          NATIVE_INT_TYPE portNum, //!< The port number
-          NATIVE_UINT_TYPE context //!< The call order
+          const Fw::Buffer& buffer, //!< The buffer
+          const Fw::Success& status //!< The status
       ) = 0;
 
     PROTECTED:
@@ -270,9 +258,21 @@ namespace FppTest {
       void productRecvIn_handlerBase(
           NATIVE_INT_TYPE portNum, //!< The port number
           FwDpIdType id, //!< The container ID
-          const Fw::Buffer &buffer, //!< The buffer
-          const Fw::Success &status //!< The status
+          const Fw::Buffer& buffer, //!< The buffer
+          const Fw::Success& status //!< The status
       );
+
+    PROTECTED:
+
+      // ----------------------------------------------------------------------
+      // Handlers to implement for typed input ports
+      // ----------------------------------------------------------------------
+
+      //! Handler for input port schedIn
+      virtual void schedIn_handler(
+          NATIVE_INT_TYPE portNum, //!< The port number
+          NATIVE_UINT_TYPE context //!< The call order
+      ) = 0;
 
     PROTECTED:
 
@@ -326,7 +326,7 @@ namespace FppTest {
     PROTECTED:
 
       // ----------------------------------------------------------------------
-      // Invocation functions for typed output ports
+      // Invocation functions for special output ports
       // ----------------------------------------------------------------------
 
       //! Invoke output port productRequestOut
