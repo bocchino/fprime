@@ -46,13 +46,9 @@ namespace FppTest {
         NUM_SCHEDIN_INPUT_PORTS = 1,
       };
 
-      //! Enumerations for numbers of special input ports
-      enum {
-        NUM_PRODUCTRECVIN_INPUT_PORTS = 1,
-      };
-
       //! Enumerations for numbers of special output ports
       enum {
+        NUM_PRODUCTRECVIN_OUTPUT_PORTS = 1,
         NUM_PRODUCTREQUESTOUT_OUTPUT_PORTS = 1,
         NUM_PRODUCTSENDOUT_OUTPUT_PORTS = 1,
         NUM_TIMEGETOUT_OUTPUT_PORTS = 1,
@@ -72,9 +68,9 @@ namespace FppTest {
 
     public:
 
-      // ---------------------------------------------------------------------- 
-      // Getters for special input ports
-      // ---------------------------------------------------------------------- 
+      // ----------------------------------------------------------------------
+      // Getters for typed input ports
+      // ----------------------------------------------------------------------
 
       //! Get typed input port at index
       //!
@@ -86,21 +82,14 @@ namespace FppTest {
     public:
 
       // ----------------------------------------------------------------------
-      // Getters for typed input ports
-      // ----------------------------------------------------------------------
-
-      //! Get typed input port at index
-      //!
-      //! \return productRecvIn[portNum]
-      Fw::InputDpResponsePort* get_productRecvIn_InputPort(
-          NATIVE_INT_TYPE portNum //!< The port number
-      );
-
-    public:
-
-      // ----------------------------------------------------------------------
       // Connect special input ports to special output ports
       // ----------------------------------------------------------------------
+
+      //! Connect port to productRecvIn[portNum]
+      void set_productRecvIn_OutputPort(
+          NATIVE_INT_TYPE portNum, //!< The port number
+          Fw::InputDpResponsePort* port //!< The input port
+      );
 
       //! Connect port to productRequestOut[portNum]
       void set_productRequestOut_OutputPort(
@@ -127,6 +116,12 @@ namespace FppTest {
       // ----------------------------------------------------------------------
       // Connect serial input ports to special output ports
       // ----------------------------------------------------------------------
+
+      //! Connect port to productRecvIn[portNum]
+      void set_productRecvIn_OutputPort(
+          NATIVE_INT_TYPE portNum, //!< The port number
+          Fw::InputSerializePort* port //!< The port
+      );
 
       //! Connect port to productRequestOut[portNum]
       void set_productRequestOut_OutputPort(
@@ -176,19 +171,13 @@ namespace FppTest {
     PROTECTED:
 
       // ----------------------------------------------------------------------
-      // Getters for numbers of special input ports
-      // ----------------------------------------------------------------------
-
-      //! Get the number of productRecvIn input ports
-      //!
-      //! \return The number of productRecvIn input ports
-      NATIVE_INT_TYPE getNum_productRecvIn_InputPorts();
-
-    PROTECTED:
-
-      // ----------------------------------------------------------------------
       // Getters for numbers of special output ports
       // ----------------------------------------------------------------------
+
+      //! Get the number of productRecvIn output ports
+      //!
+      //! \return The number of productRecvIn output ports
+      NATIVE_INT_TYPE getNum_productRecvIn_OutputPorts();
 
       //! Get the number of productRequestOut output ports
       //!
@@ -210,6 +199,13 @@ namespace FppTest {
       // ----------------------------------------------------------------------
       // Connection status queries for special output ports
       // ----------------------------------------------------------------------
+
+      //! Check whether port productRecvIn is connected
+      //!
+      //! \return Whether port productRecvIn is connected
+      bool isConnected_productRecvIn_OutputPort(
+          NATIVE_INT_TYPE portNum //!< The port number
+      );
 
       //! Check whether port productRequestOut is connected
       //!
@@ -319,13 +315,11 @@ namespace FppTest {
     PRIVATE:
 
       // ----------------------------------------------------------------------
-      // Special input ports
+      // Special output ports
       // ----------------------------------------------------------------------
 
-      //! Input port productRecvIn
-      Fw::InputDpResponsePort m_productRecvIn_InputPort[NUM_PRODUCTRECVIN_INPUT_PORTS];
-
-    PRIVATE:
+      //! Output port productRecvIn
+      Fw::OutputDpResponsePort m_productRecvIn_OutputPort[NUM_PRODUCTRECVIN_OUTPUT_PORTS];
 
       //! Output port productRequestOut
       Fw::OutputDpRequestPort m_productRequestOut_OutputPort[NUM_PRODUCTREQUESTOUT_OUTPUT_PORTS];

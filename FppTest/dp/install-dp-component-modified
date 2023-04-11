@@ -1,6 +1,0 @@
-#!/bin/sh
-
-for suffix in hpp cpp
-do
-  cp dp-component-modified.$suffix ../build-fprime-automatic-native-ut/FppTest/dp/DpTestDpComponentAc.$suffix
-done
