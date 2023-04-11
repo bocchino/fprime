@@ -278,7 +278,7 @@ namespace FppTest {
     PROTECTED:
 
       // ----------------------------------------------------------------------
-      // Pre-message hooks for typed async input ports
+      // Pre-message hooks for special async input ports
       //
       // Each of these functions is invoked just before processing a message
       // on the corresponding port. By default, they do nothing. You can
@@ -293,6 +293,16 @@ namespace FppTest {
           const Fw::Buffer &buffer, //!< The buffer
           const Fw::Success &status //!< The status
       );
+
+    PROTECTED:
+
+      // ----------------------------------------------------------------------
+      // Pre-message hooks for typed async input ports
+      //
+      // Each of these functions is invoked just before processing a message
+      // on the corresponding port. By default, they do nothing. You can
+      // override them to provide specific pre-message behavior.
+      // ----------------------------------------------------------------------
 
       //! Pre-message hook for async input port schedIn
       virtual void schedIn_preMsgHook(

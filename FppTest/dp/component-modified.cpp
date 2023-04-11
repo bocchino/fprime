@@ -575,7 +575,7 @@ namespace FppTest {
   }
 
   // ----------------------------------------------------------------------
-  // Pre-message hooks for typed async input ports
+  // Pre-message hooks for special async input ports
   //
   // Each of these functions is invoked just before processing a message
   // on the corresponding port. By default, they do nothing. You can
@@ -590,6 +590,14 @@ namespace FppTest {
   {
     // Default: no-op
   }
+
+  // ----------------------------------------------------------------------
+  // Pre-message hooks for typed async input ports
+  //
+  // Each of these functions is invoked just before processing a message
+  // on the corresponding port. By default, they do nothing. You can
+  // override them to provide specific pre-message behavior.
+  // ----------------------------------------------------------------------
 
   void DpTestComponentBase ::
     schedIn_preMsgHook(
