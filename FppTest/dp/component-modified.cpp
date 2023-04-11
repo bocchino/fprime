@@ -201,32 +201,8 @@ namespace FppTest {
   }
 
   // ----------------------------------------------------------------------
-  // Invocation functions for special output ports
-  // ----------------------------------------------------------------------
-
-  void DpTestComponentBase ::
-    productRequestOut_out(
-        NATIVE_INT_TYPE portNum,
-        FwDpIdType id, FwSizeType size
-    )
-  {
-    FW_ASSERT(portNum < this->getNum_productRequestOut_OutputPorts(),static_cast<FwAssertArgType>(portNum));
-    this->m_productRequestOut_OutputPort[portNum].invoke(id, size);
-  }
-
-  void DpTestComponentBase ::
-    productSendOut_out(
-        NATIVE_INT_TYPE portNum,
-        FwDpIdType id, const Fw::Buffer &buffer
-    )
-  {
-    FW_ASSERT(portNum < this->getNum_productSendOut_OutputPorts(),static_cast<FwAssertArgType>(portNum));
-    this->m_productSendOut_OutputPort[portNum].invoke(id, buffer);
-  }
-
-  // ---------------------------------------------------------------------- 
   // Getters for special input ports
-  // ---------------------------------------------------------------------- 
+  // ----------------------------------------------------------------------
 
   Fw::InputDpResponsePort *DpTestComponentBase ::
     get_productRecvIn_InputPort(NATIVE_INT_TYPE portNum)
@@ -604,6 +580,30 @@ namespace FppTest {
     )
   {
     // Default: no-op
+  }
+
+  // ----------------------------------------------------------------------
+  // Invocation functions for special output ports
+  // ----------------------------------------------------------------------
+
+  void DpTestComponentBase ::
+    productRequestOut_out(
+        NATIVE_INT_TYPE portNum,
+        FwDpIdType id, FwSizeType size
+    )
+  {
+    FW_ASSERT(portNum < this->getNum_productRequestOut_OutputPorts(),static_cast<FwAssertArgType>(portNum));
+    this->m_productRequestOut_OutputPort[portNum].invoke(id, size);
+  }
+
+  void DpTestComponentBase ::
+    productSendOut_out(
+        NATIVE_INT_TYPE portNum,
+        FwDpIdType id, const Fw::Buffer &buffer
+    )
+  {
+    FW_ASSERT(portNum < this->getNum_productSendOut_OutputPorts(),static_cast<FwAssertArgType>(portNum));
+    this->m_productSendOut_OutputPort[portNum].invoke(id, buffer);
   }
 
   // ----------------------------------------------------------------------
