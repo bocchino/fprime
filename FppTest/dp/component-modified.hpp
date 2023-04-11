@@ -53,7 +53,6 @@ namespace FppTest {
 
       //! Enumerations for numbers of special output ports
       enum {
-        NUM_PRODUCTRECVIN_OUTPUT_PORTS = 1,
         NUM_PRODUCTREQUESTOUT_OUTPUT_PORTS = 1,
         NUM_PRODUCTSENDOUT_OUTPUT_PORTS = 1,
         NUM_TIMEGETOUT_OUTPUT_PORTS = 1,
@@ -236,7 +235,7 @@ namespace FppTest {
     PROTECTED:
 
       // ----------------------------------------------------------------------
-      // Handlers to implement for typed input ports
+      // Handlers to implement for special input ports
       // ----------------------------------------------------------------------
 
       //! Handler for input port productRecvIn
@@ -247,6 +246,12 @@ namespace FppTest {
           const Fw::Success &status //!< The status
       ) = 0;
 
+    PROTECTED:
+
+      // ----------------------------------------------------------------------
+      // Handlers to implement for typed input ports
+      // ----------------------------------------------------------------------
+
       //! Handler for input port schedIn
       virtual void schedIn_handler(
           NATIVE_INT_TYPE portNum, //!< The port number
@@ -256,7 +261,7 @@ namespace FppTest {
     PROTECTED:
 
       // ----------------------------------------------------------------------
-      // Port handler base-class functions for typed input ports
+      // Port handler base-class functions for special input ports
       //
       // Call these functions directly to bypass the corresponding ports
       // ----------------------------------------------------------------------
@@ -268,6 +273,14 @@ namespace FppTest {
           const Fw::Buffer &buffer, //!< The buffer
           const Fw::Success &status //!< The status
       );
+
+    PROTECTED:
+
+      // ----------------------------------------------------------------------
+      // Port handler base-class functions for typed input ports
+      //
+      // Call these functions directly to bypass the corresponding ports
+      // ----------------------------------------------------------------------
 
       //! Handler base-class function for input port schedIn
       void schedIn_handlerBase(
