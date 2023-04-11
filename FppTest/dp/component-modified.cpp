@@ -17,6 +17,7 @@ namespace FppTest {
   namespace {
     enum MsgTypeEnum {
       DPTEST_COMPONENT_EXIT = Fw::ActiveComponentBase::ACTIVE_COMPONENT_EXIT,
+      PRODUCTRECVIN_DPRESPONSE,
       SCHEDIN_SCHED,
     };
 
@@ -72,6 +73,34 @@ namespace FppTest {
   {
     // Initialize base class
     Fw::ActiveComponentBase::init(instance);
+
+    // Connect input port productRecvIn
+    for (
+        PlatformIntType port = 0;
+        port < static_cast<PlatformIntType>(this->getNum_productRecvIn_InputPorts());
+        port++
+    ) {
+
+      this->m_productRecvIn_InputPort[port].init();
+      this->m_productRecvIn_InputPort[port].addCallComp(
+          this,
+          m_p_productRecvIn_in
+      );
+      this->m_productRecvIn_InputPort[port].setPortNum(port);
+
+#if FW_OBJECT_NAMES == 1
+      char portName[120];
+      (void) snprintf(
+          portName,
+          sizeof(portName),
+          "%s_productRecvIn_InputPort[%" PRI_PlatformIntType "]",
+          this->m_objName,
+          port
+      );
+      this->m_productRecvIn_InputPort[port].setObjName(portName);
+#endif
+
+    }
 
     // Connect input port schedIn
     for (
@@ -170,6 +199,17 @@ namespace FppTest {
       Os::Queue::QUEUE_OK == qStat,
       static_cast<FwAssertArgType>(qStat)
     );
+  }
+
+  // ---------------------------------------------------------------------- 
+  // Getters for special input ports
+  // ---------------------------------------------------------------------- 
+
+  Fw::InputDpResponsePort *DpTestComponentBase ::
+    get_productRecvIn_InputPort(NATIVE_INT_TYPE portNum)
+  {
+    FW_ASSERT(portNum < this->getNum_productRecvIn_InputPorts(),static_cast<FwAssertArgType>(portNum));
+    return &this->m_productRecvIn_InputPort[portNum];
   }
 
   // ----------------------------------------------------------------------
@@ -311,6 +351,16 @@ namespace FppTest {
   }
 
   // ----------------------------------------------------------------------
+  // Getters for numbers of special input ports
+  // ----------------------------------------------------------------------
+
+  NATIVE_INT_TYPE DpTestComponentBase ::
+    getNum_productRecvIn_InputPorts()
+  {
+    return static_cast<NATIVE_INT_TYPE>(FW_NUM_ARRAY_ELEMENTS(this->m_productRecvIn_InputPort));
+  }
+
+  // ----------------------------------------------------------------------
   // Getters for numbers of special output ports
   // ----------------------------------------------------------------------
 
@@ -376,6 +426,73 @@ namespace FppTest {
   // ----------------------------------------------------------------------
 
   void DpTestComponentBase ::
+    productRecvIn_handlerBase(
+        NATIVE_INT_TYPE portNum,
+        FwDpIdType id, const Fw::Buffer &buffer, const Fw::Success &status
+    )
+  {
+
+    // Make sure port number is valid
+    FW_ASSERT(portNum < this->getNum_productRecvIn_InputPorts(),static_cast<FwAssertArgType>(portNum));
+
+    // Call pre-message hook
+    productRecvIn_preMsgHook(
+        portNum,
+        id, buffer, status
+    );
+
+    ComponentIpcSerializableBuffer msg;
+    Fw::SerializeStatus _status = Fw::FW_SERIALIZE_OK;
+
+    _status = msg.serialize(
+        static_cast<NATIVE_INT_TYPE>(PRODUCTRECVIN_DPRESPONSE)
+    );
+    FW_ASSERT (
+        _status == Fw::FW_SERIALIZE_OK,
+        static_cast<FwAssertArgType>(_status)
+    );
+
+    _status = msg.serialize(portNum);
+    FW_ASSERT (
+        _status == Fw::FW_SERIALIZE_OK,
+        static_cast<FwAssertArgType>(_status)
+    );
+
+    // Serialize argument id
+    _status = msg.serialize(id);
+    FW_ASSERT(
+        _status == Fw::FW_SERIALIZE_OK,
+        static_cast<FwAssertArgType>(_status)
+    );
+
+    // Serialize argument buffer
+    _status = msg.serialize(buffer);
+    FW_ASSERT(
+        _status == Fw::FW_SERIALIZE_OK,
+        static_cast<FwAssertArgType>(_status)
+    );
+
+    // Serialize argument status
+    _status = msg.serialize(status);
+    FW_ASSERT(
+        _status == Fw::FW_SERIALIZE_OK,
+        static_cast<FwAssertArgType>(_status)
+    );
+
+
+    // send message
+    Os::Queue::QueueBlocking _block =
+      Os::Queue::QUEUE_NONBLOCKING;
+    Os::Queue::QueueStatus qStatus =
+      this->m_queue.send(msg, 0,_block);
+    FW_ASSERT(
+        qStatus == Os::Queue::QUEUE_OK,
+        static_cast<FwAssertArgType>(qStatus)
+    );
+
+  }
+
+  void DpTestComponentBase ::
     schedIn_handlerBase(
         NATIVE_INT_TYPE portNum,
         NATIVE_UINT_TYPE context
@@ -435,6 +552,15 @@ namespace FppTest {
   // on the corresponding port. By default, they do nothing. You can
   // override them to provide specific pre-message behavior.
   // ----------------------------------------------------------------------
+
+  void DpTestComponentBase ::
+    productRecvIn_preMsgHook(
+        NATIVE_INT_TYPE portNum,
+        FwDpIdType id, const Fw::Buffer &buffer, const Fw::Success &status
+    )
+  {
+    // Default: no-op
+  }
 
   void DpTestComponentBase ::
     schedIn_preMsgHook(
@@ -506,6 +632,42 @@ namespace FppTest {
     );
 
     switch (msgType) {
+      // Handle async input port productRecvIn
+      case PRODUCTRECVIN_DPRESPONSE: {
+
+        // Deserialize argument id
+        FwDpIdType id;
+        deserStatus = msg.deserialize(id);
+        FW_ASSERT(
+            deserStatus == Fw::FW_SERIALIZE_OK,
+            static_cast<FwAssertArgType>(deserStatus)
+        );
+
+        // Deserialize argument buffer
+        Fw::Buffer buffer;
+        deserStatus = msg.deserialize(buffer);
+        FW_ASSERT(
+            deserStatus == Fw::FW_SERIALIZE_OK,
+            static_cast<FwAssertArgType>(deserStatus)
+        );
+
+        // Deserialize argument status
+        Fw::Success status;
+        deserStatus = msg.deserialize(status);
+        FW_ASSERT(
+            deserStatus == Fw::FW_SERIALIZE_OK,
+            static_cast<FwAssertArgType>(deserStatus)
+        );
+
+        // Call handler function
+        this->productRecvIn_handler(
+            portNum,
+            id, buffer, status
+        );
+
+        break;
+
+      }
       // Handle async input port schedIn
       case SCHEDIN_SCHED: {
         // Deserialize argument context
@@ -534,6 +696,18 @@ namespace FppTest {
   // ----------------------------------------------------------------------
   // Calls for messages received on typed input ports
   // ----------------------------------------------------------------------
+
+  void DpTestComponentBase ::
+    m_p_productRecvIn_in(
+        Fw::PassiveComponentBase* callComp,
+        NATIVE_INT_TYPE portNum,
+        FwDpIdType id, const Fw::Buffer &buffer, const Fw::Success &status
+    )
+  {
+    FW_ASSERT(callComp);
+    DpTestComponentBase* compPtr = static_cast<DpTestComponentBase*>(callComp);
+    compPtr->productRecvIn_handlerBase(portNum, id, buffer, status);
+  }
 
   void DpTestComponentBase ::
     m_p_schedIn_in(
