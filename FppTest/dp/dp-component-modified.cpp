@@ -119,6 +119,21 @@ namespace FppTest {
   // ----------------------------------------------------------------------
 
   void DpTestDpComponentBase ::
+    m_p_productRecvIn_in(
+        Fw::PassiveComponentBase* callComp,
+        NATIVE_INT_TYPE portNum,
+        FwDpIdType id,
+        const Fw::Buffer
+        &buffer,
+        const Fw::Success &status
+    )
+  {
+    FW_ASSERT(callComp);
+    DpTestComponentBase* compPtr = static_cast<DpTestComponentBase*>(callComp);
+    compPtr->productRecvIn_handlerBase(portNum, id, buffer, status);
+  }
+
+  void DpTestDpComponentBase ::
     productRecvIn_handler(
         const NATIVE_INT_TYPE portNum,
         FwDpIdType id,
