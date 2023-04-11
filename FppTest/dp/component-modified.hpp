@@ -43,6 +43,7 @@ namespace FppTest {
 
       //! Enumerations for numbers of typed input ports
       enum {
+        NUM_PRODUCTRECVIN_INPUT_PORTS = 1,
         NUM_SCHEDIN_INPUT_PORTS = 1,
       };
 
@@ -72,6 +73,14 @@ namespace FppTest {
       // Getters for typed input ports
       // ----------------------------------------------------------------------
 
+      //! Get input port at index
+      //!
+      //! \return productRecvIn[portNum]
+      //!
+      Fw::InputDpResponsePort* get_productRecvIn_InputPort(
+          NATIVE_INT_TYPE portNum /*!< The port number*/
+      );
+
       //! Get typed input port at index
       //!
       //! \return schedIn[portNum]
@@ -84,12 +93,6 @@ namespace FppTest {
       // ----------------------------------------------------------------------
       // Connect special input ports to special output ports
       // ----------------------------------------------------------------------
-
-      //! Connect port to productRecvIn[portNum]
-      void set_productRecvIn_OutputPort(
-          NATIVE_INT_TYPE portNum, //!< The port number
-          Fw::InputDpResponsePort* port //!< The input port
-      );
 
       //! Connect port to productRequestOut[portNum]
       void set_productRequestOut_OutputPort(
@@ -116,12 +119,6 @@ namespace FppTest {
       // ----------------------------------------------------------------------
       // Connect serial input ports to special output ports
       // ----------------------------------------------------------------------
-
-      //! Connect port to productRecvIn[portNum]
-      void set_productRecvIn_OutputPort(
-          NATIVE_INT_TYPE portNum, //!< The port number
-          Fw::InputSerializePort* port //!< The port
-      );
 
       //! Connect port to productRequestOut[portNum]
       void set_productRequestOut_OutputPort(
@@ -163,6 +160,12 @@ namespace FppTest {
       // Getters for numbers of typed input ports
       // ----------------------------------------------------------------------
 
+      //! Get the number of productRecvIn input ports
+      //!
+      //! \return The number of productRecvIn input ports
+      //!
+      NATIVE_INT_TYPE getNum_productRecvIn_InputPorts();
+
       //! Get the number of schedIn input ports
       //!
       //! \return The number of schedIn input ports
@@ -173,11 +176,6 @@ namespace FppTest {
       // ----------------------------------------------------------------------
       // Getters for numbers of special output ports
       // ----------------------------------------------------------------------
-
-      //! Get the number of productRecvIn output ports
-      //!
-      //! \return The number of productRecvIn output ports
-      NATIVE_INT_TYPE getNum_productRecvIn_OutputPorts();
 
       //! Get the number of productRequestOut output ports
       //!
@@ -199,13 +197,6 @@ namespace FppTest {
       // ----------------------------------------------------------------------
       // Connection status queries for special output ports
       // ----------------------------------------------------------------------
-
-      //! Check whether port productRecvIn is connected
-      //!
-      //! \return Whether port productRecvIn is connected
-      bool isConnected_productRecvIn_OutputPort(
-          NATIVE_INT_TYPE portNum //!< The port number
-      );
 
       //! Check whether port productRequestOut is connected
       //!
@@ -234,6 +225,14 @@ namespace FppTest {
       // Handlers to implement for typed input ports
       // ----------------------------------------------------------------------
 
+      //! Handler for input port productRecvIn
+      virtual void productRecvIn_handler(
+          NATIVE_INT_TYPE portNum, //!< The port number
+          FwDpIdType id, //!< The container ID
+          const Fw::Buffer &buffer, //!< The buffer
+          const Fw::Success &status //!< The status
+      ) = 0;
+
       //! Handler for input port schedIn
       virtual void schedIn_handler(
           NATIVE_INT_TYPE portNum, //!< The port number
@@ -247,6 +246,14 @@ namespace FppTest {
       //
       // Call these functions directly to bypass the corresponding ports
       // ----------------------------------------------------------------------
+
+      //! Handler base-class function for input port productRecvIn
+      void productRecvIn_handlerBase(
+          NATIVE_INT_TYPE portNum, //!< The port number
+          FwDpIdType id, //!< The container ID
+          const Fw::Buffer &buffer, //!< The buffer
+          const Fw::Success &status //!< The status
+      );
 
       //! Handler base-class function for input port schedIn
       void schedIn_handlerBase(
@@ -264,10 +271,41 @@ namespace FppTest {
       // override them to provide specific pre-message behavior.
       // ----------------------------------------------------------------------
 
+      //! Pre-message hook for async input port productRecvIn
+      //!
+      virtual void productRecvIn_preMsgHook(
+          NATIVE_INT_TYPE portNum, //!< The port number
+          FwDpIdType id, //!< The container ID
+          const Fw::Buffer &buffer, //!< The buffer
+          const Fw::Success &status //!< The status
+      );
+
       //! Pre-message hook for async input port schedIn
       virtual void schedIn_preMsgHook(
           NATIVE_INT_TYPE portNum, //!< The port number
           NATIVE_UINT_TYPE context //!< The call order
+      );
+
+    PROTECTED:
+
+      // ----------------------------------------------------------------------
+      // Invocation functions for typed output ports
+      // ----------------------------------------------------------------------
+
+      //! Invoke output port productRequestOut
+      //!
+      void productRequestOut_out(
+          NATIVE_INT_TYPE portNum, /*!< The port number*/
+          FwDpIdType id, //!< The container ID
+          FwSizeType size //!< The size of the requested buffer
+      );
+
+      //! Invoke output port productSendOut
+      //!
+      void productSendOut_out(
+          NATIVE_INT_TYPE portNum, /*!< The port number*/
+          FwDpIdType id, //!< The container ID
+          const Fw::Buffer &buffer //!< The buffer
       );
 
     PROTECTED:
@@ -296,6 +334,15 @@ namespace FppTest {
       // Calls for messages received on typed input ports
       // ----------------------------------------------------------------------
 
+      //! Callback for port productRecvIn
+      static void m_p_productRecvIn_in(
+          Fw::PassiveComponentBase* callComp, //!< The component instance
+          NATIVE_INT_TYPE portNum, //!< The port number
+          FwDpIdType id, //!< The container ID
+          const Fw::Buffer &buffer, //!< The buffer
+          const Fw::Success &status //!< The status
+      );
+      
       //! Callback for port schedIn
       static void m_p_schedIn_in(
           Fw::PassiveComponentBase* callComp, //!< The component instance
@@ -309,6 +356,9 @@ namespace FppTest {
       // Typed input ports
       // ----------------------------------------------------------------------
 
+      //! Input port productRecvIn
+      Fw::InputDpResponsePort m_productRecvIn_InputPort[NUM_PRODUCTRECVIN_INPUT_PORTS];
+
       //! Input port schedIn
       Svc::InputSchedPort m_schedIn_InputPort[NUM_SCHEDIN_INPUT_PORTS];
 
@@ -317,9 +367,6 @@ namespace FppTest {
       // ----------------------------------------------------------------------
       // Special output ports
       // ----------------------------------------------------------------------
-
-      //! Output port productRecvIn
-      Fw::OutputDpResponsePort m_productRecvIn_OutputPort[NUM_PRODUCTRECVIN_OUTPUT_PORTS];
 
       //! Output port productRequestOut
       Fw::OutputDpRequestPort m_productRequestOut_OutputPort[NUM_PRODUCTREQUESTOUT_OUTPUT_PORTS];

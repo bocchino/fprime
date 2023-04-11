@@ -99,27 +99,6 @@ namespace FppTest {
 #endif
     }
 
-    // Connect output port productRecvIn
-    for (
-      PlatformIntType port = 0;
-      port < static_cast<PlatformIntType>(this->getNum_productRecvIn_OutputPorts());
-      port++
-    ) {
-      this->m_productRecvIn_OutputPort[port].init();
-
-#if FW_OBJECT_NAMES == 1
-      char portName[120];
-      (void) snprintf(
-        portName,
-        sizeof(portName),
-        "%s_productRecvIn_OutputPort[%" PRI_PlatformIntType "]",
-        this->m_objName,
-        port
-      );
-      this->m_productRecvIn_OutputPort[port].setObjName(portName);
-#endif
-    }
-
     // Connect output port productRequestOut
     for (
       PlatformIntType port = 0;
@@ -213,20 +192,6 @@ namespace FppTest {
   // ----------------------------------------------------------------------
 
   void DpTestComponentBase ::
-    set_productRecvIn_OutputPort(
-        NATIVE_INT_TYPE portNum,
-        Fw::InputDpResponsePort* port
-    )
-  {
-    FW_ASSERT(
-      portNum < this->getNum_productRecvIn_OutputPorts(),
-      static_cast<FwAssertArgType>(portNum)
-    );
-
-    this->m_productRecvIn_OutputPort[portNum].addCallPort(port);
-  }
-
-  void DpTestComponentBase ::
     set_productRequestOut_OutputPort(
         NATIVE_INT_TYPE portNum,
         Fw::InputDpRequestPort* port
@@ -273,20 +238,6 @@ namespace FppTest {
   // ----------------------------------------------------------------------
   // Connect serial input ports to special output ports
   // ----------------------------------------------------------------------
-
-  void DpTestComponentBase ::
-    set_productRecvIn_OutputPort(
-        NATIVE_INT_TYPE portNum,
-        Fw::InputSerializePort* port
-    )
-  {
-    FW_ASSERT(
-      portNum < this->getNum_productRecvIn_OutputPorts(),
-      static_cast<FwAssertArgType>(portNum)
-    );
-
-    this->m_productRecvIn_OutputPort[portNum].registerSerialPort(port);
-  }
 
   void DpTestComponentBase ::
     set_productRequestOut_OutputPort(
@@ -364,12 +315,6 @@ namespace FppTest {
   // ----------------------------------------------------------------------
 
   NATIVE_INT_TYPE DpTestComponentBase ::
-    getNum_productRecvIn_OutputPorts()
-  {
-    return static_cast<NATIVE_INT_TYPE>(FW_NUM_ARRAY_ELEMENTS(this->m_productRecvIn_OutputPort));
-  }
-
-  NATIVE_INT_TYPE DpTestComponentBase ::
     getNum_productRequestOut_OutputPorts()
   {
     return static_cast<NATIVE_INT_TYPE>(FW_NUM_ARRAY_ELEMENTS(this->m_productRequestOut_OutputPort));
@@ -390,17 +335,6 @@ namespace FppTest {
   // ----------------------------------------------------------------------
   // Connection status queries for special output ports
   // ----------------------------------------------------------------------
-
-  bool DpTestComponentBase ::
-    isConnected_productRecvIn_OutputPort(NATIVE_INT_TYPE portNum)
-  {
-    FW_ASSERT(
-      portNum < this->getNum_productRecvIn_OutputPorts(),
-      static_cast<FwAssertArgType>(portNum)
-    );
-
-    return this->m_productRecvIn_OutputPort[portNum].isConnected();
-  }
 
   bool DpTestComponentBase ::
     isConnected_productRequestOut_OutputPort(NATIVE_INT_TYPE portNum)
