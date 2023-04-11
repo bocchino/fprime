@@ -329,7 +329,6 @@ namespace FppTest {
       // ----------------------------------------------------------------------
 
       //! Invoke output port productRequestOut
-      //!
       void productRequestOut_out(
           NATIVE_INT_TYPE portNum, //!< The port number
           FwDpIdType id, //!< The container ID
@@ -337,11 +336,10 @@ namespace FppTest {
       );
 
       //! Invoke output port productSendOut
-      //!
       void productSendOut_out(
           NATIVE_INT_TYPE portNum, //!< The port number
           FwDpIdType id, //!< The container ID
-          const Fw::Buffer &buffer //!< The buffer
+          const Fw::Buffer& buffer //!< The buffer
       );
 
     PROTECTED:
