@@ -1,0 +1,4 @@
+#!/bin/sh -e
+
+./install-component-modified
+./install-dp-component-modified
