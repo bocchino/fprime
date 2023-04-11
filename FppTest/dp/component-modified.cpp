@@ -769,7 +769,12 @@ namespace FppTest {
   {
     FW_ASSERT(callComp);
     DpTestComponentBase* compPtr = static_cast<DpTestComponentBase*>(callComp);
-    compPtr->productRecvIn_handlerBase(portNum, id, buffer, status);
+    compPtr->productRecvIn_handlerBase(
+      portNum,
+      id,
+      buffer,
+      status
+    );
   }
 
   // ----------------------------------------------------------------------
