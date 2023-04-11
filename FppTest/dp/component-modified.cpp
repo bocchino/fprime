@@ -599,8 +599,14 @@ namespace FppTest {
         FwSizeType size
     )
   {
-    FW_ASSERT(portNum < this->getNum_productRequestOut_OutputPorts(),static_cast<FwAssertArgType>(portNum));
-    this->m_productRequestOut_OutputPort[portNum].invoke(id, size);
+    FW_ASSERT(
+      portNum < this->getNum_productRequestOut_OutputPorts(),
+      static_cast<FwAssertArgType>(portNum)
+    );
+    this->m_productRequestOut_OutputPort[portNum].invoke(
+      id,
+      size
+    );
   }
 
   void DpTestComponentBase ::
