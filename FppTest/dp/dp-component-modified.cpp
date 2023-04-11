@@ -85,7 +85,8 @@ namespace FppTest {
     )
   {
     const FwDpIdType globalId = this->getIdBase() + containerId;
-    this->productRequestOut_out(0, globalId, size);
+    FW_ASSERT(this->getNum_productRequestOut_OutputPorts() > 0);
+    this->m_productRequestOut_OutputPort[0].invoke(containerId, size);
   }
 
   void DpTestDpComponentBase ::
@@ -109,7 +110,8 @@ namespace FppTest {
     FW_ASSERT(packetSize <= buffer.getSize(), packetSize, buffer.getSize());
     buffer.setSize(packetSize);
     // Send the buffer
-    this->productSendOut_out(0, container.getId(), buffer);
+    FW_ASSERT(this->getNum_productSendOut_OutputPorts() > 0);
+    this->m_productSendOut_OutputPort[0].invoke(container.id, buffer);
   }
 
   // ----------------------------------------------------------------------

@@ -155,7 +155,7 @@ namespace FppTest {
           FwDpIdType id, //!< The container id
           const Fw::Buffer& buffer, //!< The buffer
           const Fw::Success& status //!< The buffer status
-      ) override;
+      );
 
   };
 
