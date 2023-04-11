@@ -444,60 +444,66 @@ namespace FppTest {
 
     // Call pre-message hook
     productRecvIn_preMsgHook(
-        portNum,
-        id, buffer, status
+      portNum,
+      id,
+      buffer,
+      status
     );
-
     ComponentIpcSerializableBuffer msg;
     Fw::SerializeStatus _status = Fw::FW_SERIALIZE_OK;
 
+    // Serialize message ID
     _status = msg.serialize(
-        static_cast<NATIVE_INT_TYPE>(PRODUCTRECVIN_DPRESPONSE)
+      static_cast<NATIVE_INT_TYPE>(PRODUCTRECVIN_DPRESPONSE)
     );
-    FW_ASSERT (
-        _status == Fw::FW_SERIALIZE_OK,
-        static_cast<FwAssertArgType>(_status)
+    FW_ASSERT(
+      _status == Fw::FW_SERIALIZE_OK,
+      static_cast<FwAssertArgType>(_status)
     );
 
+    // Serialize port number
     _status = msg.serialize(portNum);
-    FW_ASSERT (
-        _status == Fw::FW_SERIALIZE_OK,
-        static_cast<FwAssertArgType>(_status)
+    FW_ASSERT(
+      _status == Fw::FW_SERIALIZE_OK,
+      static_cast<FwAssertArgType>(_status)
     );
 
     // Serialize argument id
     _status = msg.serialize(id);
     FW_ASSERT(
-        _status == Fw::FW_SERIALIZE_OK,
-        static_cast<FwAssertArgType>(_status)
+      _status == Fw::FW_SERIALIZE_OK,
+      static_cast<FwAssertArgType>(_status)
     );
 
     // Serialize argument buffer
     _status = msg.serialize(buffer);
     FW_ASSERT(
-        _status == Fw::FW_SERIALIZE_OK,
-        static_cast<FwAssertArgType>(_status)
+      _status == Fw::FW_SERIALIZE_OK,
+      static_cast<FwAssertArgType>(_status)
     );
 
     // Serialize argument status
     _status = msg.serialize(status);
     FW_ASSERT(
-        _status == Fw::FW_SERIALIZE_OK,
-        static_cast<FwAssertArgType>(_status)
+      _status == Fw::FW_SERIALIZE_OK,
+      static_cast<FwAssertArgType>(_status)
     );
 
+    // Send message
+    Os::Queue::QueueBlocking _block = Os::Queue::QUEUE_NONBLOCKING;
+    Os::Queue::QueueStatus qStatus = this->m_queue.send(msg, 0, _block);
 
-    // send message
-    Os::Queue::QueueBlocking _block =
-      Os::Queue::QUEUE_NONBLOCKING;
-    Os::Queue::QueueStatus qStatus =
-      this->m_queue.send(msg, 0,_block);
     FW_ASSERT(
-        qStatus == Os::Queue::QUEUE_OK,
-        static_cast<FwAssertArgType>(qStatus)
+      qStatus == Os::Queue::QUEUE_OK,
+      static_cast<FwAssertArgType>(qStatus)
     );
-
   }
+
+  // ----------------------------------------------------------------------
+  // Port handler base-class functions for typed input ports
+  //
+  // Call these functions directly to bypass the corresponding ports
+  // ----------------------------------------------------------------------
 
   void DpTestComponentBase ::
     schedIn_handlerBase(
