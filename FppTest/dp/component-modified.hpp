@@ -299,12 +299,11 @@ namespace FppTest {
       // ----------------------------------------------------------------------
 
       //! Pre-message hook for async input port productRecvIn
-      //!
       virtual void productRecvIn_preMsgHook(
           NATIVE_INT_TYPE portNum, //!< The port number
           FwDpIdType id, //!< The container ID
-          const Fw::Buffer &buffer, //!< The buffer
-          const Fw::Success &status //!< The status
+          const Fw::Buffer& buffer, //!< The buffer
+          const Fw::Success& status //!< The status
       );
 
     PROTECTED:
