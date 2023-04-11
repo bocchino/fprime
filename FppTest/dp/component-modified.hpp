@@ -41,9 +41,13 @@ namespace FppTest {
       // Constants
       // ----------------------------------------------------------------------
 
-      //! Enumerations for numbers of typed input ports
+      //! Enumerations for numbers of special input ports
       enum {
         NUM_PRODUCTRECVIN_INPUT_PORTS = 1,
+      };
+
+      //! Enumerations for numbers of typed input ports
+      enum {
         NUM_SCHEDIN_INPUT_PORTS = 1,
       };
 
@@ -70,16 +74,21 @@ namespace FppTest {
     public:
 
       // ----------------------------------------------------------------------
-      // Getters for typed input ports
+      // Getters for special input ports
       // ----------------------------------------------------------------------
 
-      //! Get input port at index
+      //! Get special input port at index
       //!
       //! \return productRecvIn[portNum]
-      //!
       Fw::InputDpResponsePort* get_productRecvIn_InputPort(
-          NATIVE_INT_TYPE portNum /*!< The port number*/
+          NATIVE_INT_TYPE portNum //!< The port number
       );
+
+    public:
+
+      // ----------------------------------------------------------------------
+      // Getters for typed input ports
+      // ----------------------------------------------------------------------
 
       //! Get typed input port at index
       //!
@@ -91,7 +100,7 @@ namespace FppTest {
     public:
 
       // ----------------------------------------------------------------------
-      // Connect special input ports to special output ports
+      // Connect input ports to special output ports
       // ----------------------------------------------------------------------
 
       //! Connect port to productRequestOut[portNum]
@@ -157,14 +166,19 @@ namespace FppTest {
     PROTECTED:
 
       // ----------------------------------------------------------------------
-      // Getters for numbers of typed input ports
+      // Getters for numbers of special input ports
       // ----------------------------------------------------------------------
 
       //! Get the number of productRecvIn input ports
       //!
       //! \return The number of productRecvIn input ports
-      //!
       NATIVE_INT_TYPE getNum_productRecvIn_InputPorts();
+
+    PROTECTED:
+
+      // ----------------------------------------------------------------------
+      // Getters for numbers of typed input ports
+      // ----------------------------------------------------------------------
 
       //! Get the number of schedIn input ports
       //!
@@ -295,7 +309,7 @@ namespace FppTest {
       //! Invoke output port productRequestOut
       //!
       void productRequestOut_out(
-          NATIVE_INT_TYPE portNum, /*!< The port number*/
+          NATIVE_INT_TYPE portNum, //!< The port number
           FwDpIdType id, //!< The container ID
           FwSizeType size //!< The size of the requested buffer
       );
@@ -303,7 +317,7 @@ namespace FppTest {
       //! Invoke output port productSendOut
       //!
       void productSendOut_out(
-          NATIVE_INT_TYPE portNum, /*!< The port number*/
+          NATIVE_INT_TYPE portNum, //!< The port number
           FwDpIdType id, //!< The container ID
           const Fw::Buffer &buffer //!< The buffer
       );
@@ -331,7 +345,7 @@ namespace FppTest {
     PRIVATE:
 
       // ----------------------------------------------------------------------
-      // Calls for messages received on typed input ports
+      // Calls for messages received on special input ports
       // ----------------------------------------------------------------------
 
       //! Callback for port productRecvIn
@@ -343,6 +357,12 @@ namespace FppTest {
           const Fw::Success &status //!< The status
       );
       
+    PRIVATE:
+
+      // ----------------------------------------------------------------------
+      // Calls for messages received on typed input ports
+      // ----------------------------------------------------------------------
+
       //! Callback for port schedIn
       static void m_p_schedIn_in(
           Fw::PassiveComponentBase* callComp, //!< The component instance
@@ -353,11 +373,17 @@ namespace FppTest {
     PRIVATE:
 
       // ----------------------------------------------------------------------
-      // Typed input ports
+      // Special input ports
       // ----------------------------------------------------------------------
 
       //! Input port productRecvIn
       Fw::InputDpResponsePort m_productRecvIn_InputPort[NUM_PRODUCTRECVIN_INPUT_PORTS];
+
+    PRIVATE:
+
+      // ----------------------------------------------------------------------
+      // Typed input ports
+      // ----------------------------------------------------------------------
 
       //! Input port schedIn
       Svc::InputSchedPort m_schedIn_InputPort[NUM_SCHEDIN_INPUT_PORTS];
