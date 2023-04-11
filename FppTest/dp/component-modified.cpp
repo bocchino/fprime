@@ -23,6 +23,7 @@ namespace FppTest {
 
     // Get the max size by doing a union of the input and internal port serialization sizes
     union BuffUnion {
+      BYTE productRecvInPortSize[Fw::InputDpResponsePort::SERIALIZED_SIZE];
       BYTE schedInPortSize[Svc::InputSchedPort::SERIALIZED_SIZE];
     };
 
@@ -199,6 +200,30 @@ namespace FppTest {
       Os::Queue::QUEUE_OK == qStat,
       static_cast<FwAssertArgType>(qStat)
     );
+  }
+
+  // ----------------------------------------------------------------------
+  // Invocation functions for output ports
+  // ----------------------------------------------------------------------
+
+  void DpTestComponentBase ::
+    productRequestOut_out(
+        NATIVE_INT_TYPE portNum,
+        FwDpIdType id, FwSizeType size
+    )
+  {
+    FW_ASSERT(portNum < this->getNum_productRequestOut_OutputPorts(),static_cast<FwAssertArgType>(portNum));
+    this->m_productRequestOut_OutputPort[portNum].invoke(id, size);
+  }
+
+  void DpTestComponentBase ::
+    productSendOut_out(
+        NATIVE_INT_TYPE portNum,
+        FwDpIdType id, const Fw::Buffer &buffer
+    )
+  {
+    FW_ASSERT(portNum < this->getNum_productSendOut_OutputPorts(),static_cast<FwAssertArgType>(portNum));
+    this->m_productSendOut_OutputPort[portNum].invoke(id, buffer);
   }
 
   // ---------------------------------------------------------------------- 
