@@ -695,40 +695,40 @@ namespace FppTest {
     switch (msgType) {
       // Handle async input port productRecvIn
       case PRODUCTRECVIN_DPRESPONSE: {
-
         // Deserialize argument id
         FwDpIdType id;
         deserStatus = msg.deserialize(id);
         FW_ASSERT(
-            deserStatus == Fw::FW_SERIALIZE_OK,
-            static_cast<FwAssertArgType>(deserStatus)
+          deserStatus == Fw::FW_SERIALIZE_OK,
+          static_cast<FwAssertArgType>(deserStatus)
         );
 
         // Deserialize argument buffer
         Fw::Buffer buffer;
         deserStatus = msg.deserialize(buffer);
         FW_ASSERT(
-            deserStatus == Fw::FW_SERIALIZE_OK,
-            static_cast<FwAssertArgType>(deserStatus)
+          deserStatus == Fw::FW_SERIALIZE_OK,
+          static_cast<FwAssertArgType>(deserStatus)
         );
 
         // Deserialize argument status
         Fw::Success status;
         deserStatus = msg.deserialize(status);
         FW_ASSERT(
-            deserStatus == Fw::FW_SERIALIZE_OK,
-            static_cast<FwAssertArgType>(deserStatus)
+          deserStatus == Fw::FW_SERIALIZE_OK,
+          static_cast<FwAssertArgType>(deserStatus)
         );
-
         // Call handler function
         this->productRecvIn_handler(
-            portNum,
-            id, buffer, status
+          portNum,
+          id,
+          buffer,
+          status
         );
 
         break;
-
       }
+
       // Handle async input port schedIn
       case SCHEDIN_SCHED: {
         // Deserialize argument context
