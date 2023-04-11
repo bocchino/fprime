@@ -376,10 +376,10 @@ namespace FppTest {
           Fw::PassiveComponentBase* callComp, //!< The component instance
           NATIVE_INT_TYPE portNum, //!< The port number
           FwDpIdType id, //!< The container ID
-          const Fw::Buffer &buffer, //!< The buffer
-          const Fw::Success &status //!< The status
+          const Fw::Buffer& buffer, //!< The buffer
+          const Fw::Success& status //!< The status
       );
-      
+
     PRIVATE:
 
       // ----------------------------------------------------------------------

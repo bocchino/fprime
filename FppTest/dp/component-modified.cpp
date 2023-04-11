@@ -77,30 +77,28 @@ namespace FppTest {
 
     // Connect input port productRecvIn
     for (
-        PlatformIntType port = 0;
-        port < static_cast<PlatformIntType>(this->getNum_productRecvIn_InputPorts());
-        port++
+      PlatformIntType port = 0;
+      port < static_cast<PlatformIntType>(this->getNum_productRecvIn_InputPorts());
+      port++
     ) {
-
       this->m_productRecvIn_InputPort[port].init();
       this->m_productRecvIn_InputPort[port].addCallComp(
-          this,
-          m_p_productRecvIn_in
+        this,
+        m_p_productRecvIn_in
       );
       this->m_productRecvIn_InputPort[port].setPortNum(port);
 
 #if FW_OBJECT_NAMES == 1
       char portName[120];
       (void) snprintf(
-          portName,
-          sizeof(portName),
-          "%s_productRecvIn_InputPort[%" PRI_PlatformIntType "]",
-          this->m_objName,
-          port
+        portName,
+        sizeof(portName),
+        "%s_productRecvIn_InputPort[%" PRI_PlatformIntType "]",
+        this->m_objName,
+        port
       );
       this->m_productRecvIn_InputPort[port].setObjName(portName);
 #endif
-
     }
 
     // Connect input port schedIn
