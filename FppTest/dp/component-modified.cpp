@@ -204,7 +204,7 @@ namespace FppTest {
   // Getters for special input ports
   // ----------------------------------------------------------------------
 
-  Fw::InputDpResponsePort *DpTestComponentBase ::
+  Fw::InputDpResponsePort* DpTestComponentBase ::
     get_productRecvIn_InputPort(NATIVE_INT_TYPE portNum)
   {
     FW_ASSERT(
@@ -423,7 +423,7 @@ namespace FppTest {
   }
 
   // ----------------------------------------------------------------------
-  // Port handler base-class functions for typed input ports
+  // Port handler base-class functions for special input ports
   //
   // Call these functions directly to bypass the corresponding ports
   // ----------------------------------------------------------------------
@@ -431,12 +431,16 @@ namespace FppTest {
   void DpTestComponentBase ::
     productRecvIn_handlerBase(
         NATIVE_INT_TYPE portNum,
-        FwDpIdType id, const Fw::Buffer &buffer, const Fw::Success &status
+        FwDpIdType id,
+        const Fw::Buffer& buffer,
+        const Fw::Success& status
     )
   {
-
     // Make sure port number is valid
-    FW_ASSERT(portNum < this->getNum_productRecvIn_InputPorts(),static_cast<FwAssertArgType>(portNum));
+    FW_ASSERT(
+      portNum < this->getNum_productRecvIn_InputPorts(),
+      static_cast<FwAssertArgType>(portNum)
+    );
 
     // Call pre-message hook
     productRecvIn_preMsgHook(
@@ -559,7 +563,9 @@ namespace FppTest {
   void DpTestComponentBase ::
     productRecvIn_preMsgHook(
         NATIVE_INT_TYPE portNum,
-        FwDpIdType id, const Fw::Buffer &buffer, const Fw::Success &status
+        FwDpIdType id,
+        const Fw::Buffer& buffer,
+        const Fw::Success& status
     )
   {
     // Default: no-op
@@ -589,7 +595,8 @@ namespace FppTest {
   void DpTestComponentBase ::
     productRequestOut_out(
         NATIVE_INT_TYPE portNum,
-        FwDpIdType id, FwSizeType size
+        FwDpIdType id,
+        FwSizeType size
     )
   {
     FW_ASSERT(portNum < this->getNum_productRequestOut_OutputPorts(),static_cast<FwAssertArgType>(portNum));
@@ -599,7 +606,8 @@ namespace FppTest {
   void DpTestComponentBase ::
     productSendOut_out(
         NATIVE_INT_TYPE portNum,
-        FwDpIdType id, const Fw::Buffer &buffer
+        FwDpIdType id,
+        const Fw::Buffer& buffer
     )
   {
     FW_ASSERT(portNum < this->getNum_productSendOut_OutputPorts(),static_cast<FwAssertArgType>(portNum));
