@@ -232,8 +232,8 @@ namespace FppTest {
     get_productRecvIn_InputPort(NATIVE_INT_TYPE portNum)
   {
     FW_ASSERT(
-        portNum < this->getNum_productRecvIn_InputPorts(),
-        static_cast<FwAssertArgType>(portNum)
+      portNum < this->getNum_productRecvIn_InputPorts(),
+      static_cast<FwAssertArgType>(portNum)
     );
 
     return &this->m_productRecvIn_InputPort[portNum];
@@ -255,7 +255,7 @@ namespace FppTest {
   }
 
   // ----------------------------------------------------------------------
-  // Connect special input ports to special output ports
+  // Connect input ports to special output ports
   // ----------------------------------------------------------------------
 
   void DpTestComponentBase ::
@@ -736,7 +736,9 @@ namespace FppTest {
     m_p_productRecvIn_in(
         Fw::PassiveComponentBase* callComp,
         NATIVE_INT_TYPE portNum,
-        FwDpIdType id, const Fw::Buffer &buffer, const Fw::Success &status
+        FwDpIdType id,
+        const Fw::Buffer& buffer,
+        const Fw::Success& status
     )
   {
     FW_ASSERT(callComp);
