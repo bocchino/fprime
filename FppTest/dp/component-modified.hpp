@@ -316,19 +316,6 @@ namespace FppTest {
           Fw::Success::T status //!< The container status
       ) = 0;
 
-      // ----------------------------------------------------------------------
-      // Handlers to implement for special input ports
-      // TODO: Merge the implementation in here
-      // ----------------------------------------------------------------------
-
-      //! Handler for input port productRecvIn
-      virtual void productRecvIn_handler(
-          NATIVE_INT_TYPE portNum, //!< The port number
-          FwDpIdType id, //!< The container ID
-          const Fw::Buffer& buffer, //!< The buffer
-          const Fw::Success& status //!< The status
-      ) = 0;
-
     PROTECTED:
 
       // ----------------------------------------------------------------------
@@ -476,6 +463,14 @@ namespace FppTest {
           FwDpIdType id, //!< The container ID
           const Fw::Buffer& buffer, //!< The buffer
           const Fw::Success& status //!< The status
+      );
+
+      //! Handler implementation for productRecvIn
+      void productRecvIn_handler(
+          const NATIVE_INT_TYPE portNum, //!< The port number
+          FwDpIdType id, //!< The container id
+          const Fw::Buffer& buffer, //!< The buffer
+          const Fw::Success& status //!< The buffer status
       );
 
     PRIVATE:

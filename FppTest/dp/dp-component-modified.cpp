@@ -30,7 +30,7 @@ namespace FppTest {
   // Private data product handling functions
   // ----------------------------------------------------------------------
 
-  void DpTestDpComponentBase ::
+  void DpTestComponentBase ::
     productRecvIn_handler(
         const NATIVE_INT_TYPE portNum,
         FwDpIdType id,
