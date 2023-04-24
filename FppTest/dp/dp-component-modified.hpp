@@ -42,24 +42,6 @@ namespace FppTest {
       //! Destroy DpTestDpComponentBase object
       virtual ~DpTestDpComponentBase();
 
-    PROTECTED:
-
-      // ----------------------------------------------------------------------
-      // Functions for managing data products
-      // ----------------------------------------------------------------------
-
-      //! Request a data product container
-      void Dp_Request(
-          ContainerId::T containerId, //!< The container id
-          FwSizeType size //!< The buffer size
-      );
-
-      //! Send a data product
-      void Dp_Send(
-          DpContainer& container, //!< The data product container
-          Fw::Time timeTag = Fw::ZERO_TIME //!< The time tag
-      );
-
     PRIVATE:
 
       // ----------------------------------------------------------------------

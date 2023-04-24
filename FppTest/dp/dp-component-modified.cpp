@@ -30,7 +30,7 @@ namespace FppTest {
   // Functions for managing data products
   // ----------------------------------------------------------------------
 
-  void DpTestDpComponentBase ::
+  void DpTestComponentBase ::
     Dp_Request(
         ContainerId::T containerId,
         FwSizeType size
@@ -40,7 +40,7 @@ namespace FppTest {
     this->productRequestOut_out(0, globalId, size);
   }
 
-  void DpTestDpComponentBase ::
+  void DpTestComponentBase ::
     Dp_Send(
         DpContainer& container,
         Fw::Time timeTag
