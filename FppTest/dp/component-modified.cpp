@@ -63,6 +63,54 @@ namespace FppTest {
   }
 
   // ----------------------------------------------------------------------
+  // Types for data products
+  // ----------------------------------------------------------------------
+
+  DpTestComponentBase::DpContainer ::
+    DpContainer(
+        FwDpIdType id,
+        const Fw::Buffer& buffer,
+        FwDpIdType baseId
+    ) :
+      Fw::DpContainer(id, buffer),
+      baseId(baseId)
+  {
+
+  }
+
+  Fw::SerializeStatus DpTestComponentBase::DpContainer ::
+    serializeRecord_DataRecord(const FppTest::DpTest_Data& elt)
+  {
+    Fw::SerializeBufferBase& serializeRepr = buffer.getSerializeRepr();
+    const FwDpIdType id = this->baseId + RecordId::DataRecord;
+    Fw::SerializeStatus status = serializeRepr.serialize(id);
+    if (status == Fw::FW_SERIALIZE_OK) {
+      status = serializeRepr.serialize(elt);
+    }
+    if (status == Fw::FW_SERIALIZE_OK) {
+      this->dataSize += sizeof(FwDpIdType);
+      this->dataSize += FppTest::DpTest_Data::SERIALIZED_SIZE;
+    }
+    return status;
+  }
+
+  Fw::SerializeStatus DpTestComponentBase::DpContainer ::
+    serializeRecord_U32Record(U32 elt)
+  {
+    Fw::SerializeBufferBase& serializeRepr = buffer.getSerializeRepr();
+    const FwDpIdType id = this->baseId + RecordId::U32Record;
+    Fw::SerializeStatus status = serializeRepr.serialize(id);
+    if (status == Fw::FW_SERIALIZE_OK) {
+      status = serializeRepr.serialize(elt);
+    }
+    if (status == Fw::FW_SERIALIZE_OK) {
+      this->dataSize += sizeof(FwDpIdType);
+      this->dataSize += sizeof(U32);
+    }
+    return status;
+  }
+
+  // ----------------------------------------------------------------------
   // Component initialization
   // ----------------------------------------------------------------------
 
