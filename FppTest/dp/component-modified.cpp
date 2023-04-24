@@ -863,6 +863,39 @@ namespace FppTest {
     );
   }
 
+  void DpTestComponentBase ::
+    productRecvIn_handler(
+        const NATIVE_INT_TYPE portNum,
+        FwDpIdType id,
+        const Fw::Buffer& buffer,
+        const Fw::Success& status
+    )
+  {
+    DpContainer container(id, buffer, this->getIdBase());
+    // Convert global id to local id
+    const auto idBase = this->getIdBase();
+    FW_ASSERT(id >= idBase, id, idBase);
+    const auto localId = id - idBase;
+    // Switch on the local id
+    switch (localId) {
+      case ContainerId::Container1:
+        // Set the priority
+        container.setPriority(ContainerPriority::Container1);
+        // Call the handler
+        this->Dp_Recv_Container1_handler(container, status.e);
+        break;
+      case ContainerId::Container2:
+        // Set the priority
+        container.setPriority(ContainerPriority::Container2);
+        // Call the handler
+        this->Dp_Recv_Container2_handler(container, status.e);
+        break;
+      default:
+        FW_ASSERT(0);
+        break;
+    }
+  }
+
   // ----------------------------------------------------------------------
   // Calls for messages received on typed input ports
   // ----------------------------------------------------------------------
