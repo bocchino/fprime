@@ -45,24 +45,6 @@ namespace FppTest {
     PROTECTED:
 
       // ----------------------------------------------------------------------
-      // Pure virtual functions to implement
-      // ----------------------------------------------------------------------
-
-      //! Receive a container of type Container1
-      virtual void Dp_Recv_Container1_handler(
-          DpContainer& container, //!< The container
-          Fw::Success::T status //!< The container status
-      ) = 0;
-
-      //! Receive a container of type Container2
-      virtual void Dp_Recv_Container2_handler(
-          DpContainer& container, //!< The container
-          Fw::Success::T status //!< The container status
-      ) = 0;
-
-    PROTECTED:
-
-      // ----------------------------------------------------------------------
       // Functions for managing data products
       // ----------------------------------------------------------------------
 
