@@ -10,6 +10,7 @@
 #include "FpConfig.hpp"
 #include "FppTest/dp/DpTest_DataSerializableAc.hpp"
 #include "Fw/Comp/ActiveComponentBase.hpp"
+#include "Fw/Dp/DpContainer.hpp"
 #include "Fw/Dp/DpRequestPortAc.hpp"
 #include "Fw/Dp/DpResponsePortAc.hpp"
 #include "Fw/Dp/DpSendPortAc.hpp"
@@ -56,6 +57,71 @@ namespace FppTest {
         NUM_PRODUCTREQUESTOUT_OUTPUT_PORTS = 1,
         NUM_PRODUCTSENDOUT_OUTPUT_PORTS = 1,
         NUM_TIMEGETOUT_OUTPUT_PORTS = 1,
+      };
+
+    PROTECTED:
+
+      // ----------------------------------------------------------------------
+      // Types for data products
+      // ----------------------------------------------------------------------
+
+      //! The container ids
+      struct ContainerId {
+        enum T : FwDpIdType {
+          Container1 = 300,
+          Container2 = 400,
+        };
+      };
+
+      //! The container default priorities
+      struct ContainerPriority {
+        enum T : FwDpPriorityType {
+          Container1 = 10,
+          Container2 = 20,
+        };
+      };
+
+      //! The record ids
+      struct RecordId {
+        enum T : FwDpIdType {
+          U32Record = 100,
+          DataRecord = 200,
+        };
+      };
+
+      //! A data product container
+      class DpContainer :
+        public Fw::DpContainer
+      {
+
+        public:
+
+          //! Constructor
+          DpContainer(
+              FwDpIdType id, //!< The container id
+              const Fw::Buffer& buffer, //!< The packet buffer
+              FwDpIdType baseId //!< The component base id
+          );
+
+        public:
+
+          //! Serialize a DataRecord into the packet buffer
+          //! \return The serialize status
+          Fw::SerializeStatus serializeRecord_DataRecord(
+              const FppTest::DpTest_Data& elt //!< The element
+          );
+
+          //! Serialize a U32Record into the packet buffer
+          //! \return The serialize status
+          Fw::SerializeStatus serializeRecord_U32Record(
+              U32 elt //!< The element
+          );
+
+        PRIVATE:
+
+          //! The component base id
+          FwDpIdType baseId;
+
       };
 
     public:

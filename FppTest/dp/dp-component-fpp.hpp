@@ -12,6 +12,7 @@
 #include "FppTest/dp/DpTest_DataSerializableAc.hpp"
 #include "Fw/Com/ComPacket.hpp"
 #include "Fw/Dp/DpContainer.hpp"
+#include "Fw/Dp/DpContainer.hpp"
 #include "Fw/Dp/DpRequestPortAc.hpp"
 #include "Fw/Dp/DpResponsePortAc.hpp"
 #include "Fw/Dp/DpSendPortAc.hpp"

@@ -13,7 +13,7 @@ namespace FppTest {
   // Types
   // ----------------------------------------------------------------------
 
-  DpTestDpComponentBase::DpContainer ::
+  DpTestComponentBase::DpContainer ::
     DpContainer(
         FwDpIdType id,
         const Fw::Buffer& buffer,
@@ -25,7 +25,7 @@ namespace FppTest {
 
   }
 
-  Fw::SerializeStatus DpTestDpComponentBase::DpContainer ::
+  Fw::SerializeStatus DpTestComponentBase::DpContainer ::
     serializeRecord_DataRecord(const FppTest::DpTest_Data& elt)
   {
     Fw::SerializeBufferBase& serializeRepr = buffer.getSerializeRepr();
@@ -41,7 +41,7 @@ namespace FppTest {
     return status;
   }
 
-  Fw::SerializeStatus DpTestDpComponentBase::DpContainer ::
+  Fw::SerializeStatus DpTestComponentBase::DpContainer ::
     serializeRecord_U32Record(U32 elt)
   {
     Fw::SerializeBufferBase& serializeRepr = buffer.getSerializeRepr();
