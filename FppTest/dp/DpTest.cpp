@@ -16,7 +16,7 @@ namespace FppTest {
 // ----------------------------------------------------------------------
 
 DpTest ::DpTest(const char* const compName, U32 u32RecordData, U16 dataRecordData)
-    : DpTestDpComponentBase(compName),
+    : DpTestComponentBase(compName),
       u32RecordData(u32RecordData),
       dataRecordData(dataRecordData),
       sendTime(Fw::ZERO_TIME) {}
