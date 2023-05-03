@@ -643,44 +643,6 @@ namespace FppTest {
   }
 
   // ----------------------------------------------------------------------
-  // Functions for managing data products
-  // ----------------------------------------------------------------------
-
-  void DpTestComponentBase ::
-    Dp_Request(
-        ContainerId::T containerId,
-        FwSizeType size
-    )
-  {
-    const FwDpIdType globalId = this->getIdBase() + containerId;
-    this->productRequestOut_out(0, globalId, size);
-  }
-
-  void DpTestComponentBase ::
-    Dp_Send(
-        DpContainer& container,
-        Fw::Time timeTag
-    )
-  {
-    // Update the time tag
-    if (timeTag == Fw::ZERO_TIME) {
-      // Get the time from the time port
-      timeTag = this->getTime();
-    }
-    container.setTimeTag(timeTag);
-    // Serialize the header into the packet
-    Fw::SerializeStatus status = container.serializeHeader();
-    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
-    // Update the size of the buffer according to the data size
-    const FwSizeType packetSize = container.getPacketSize();
-    Fw::Buffer buffer = container.getBuffer();
-    FW_ASSERT(packetSize <= buffer.getSize(), packetSize, buffer.getSize());
-    buffer.setSize(packetSize);
-    // Send the buffer
-    this->productSendOut_out(0, container.getId(), buffer);
-  }
-
-  // ----------------------------------------------------------------------
   // Invocation functions for special output ports
   // ----------------------------------------------------------------------
 
@@ -716,6 +678,44 @@ namespace FppTest {
       id,
       buffer
     );
+  }
+
+  // ----------------------------------------------------------------------
+  // Functions for managing data products
+  // ----------------------------------------------------------------------
+
+  void DpTestComponentBase ::
+    Dp_Request(
+        ContainerId::T containerId,
+        FwSizeType size
+    )
+  {
+    const FwDpIdType globalId = this->getIdBase() + containerId;
+    this->productRequestOut_out(0, globalId, size);
+  }
+
+  void DpTestComponentBase ::
+    Dp_Send(
+        DpContainer& container,
+        Fw::Time timeTag
+    )
+  {
+    // Update the time tag
+    if (timeTag == Fw::ZERO_TIME) {
+      // Get the time from the time port
+      timeTag = this->getTime();
+    }
+    container.setTimeTag(timeTag);
+    // Serialize the header into the packet
+    Fw::SerializeStatus status = container.serializeHeader();
+    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+    // Update the size of the buffer according to the data size
+    const FwSizeType packetSize = container.getPacketSize();
+    Fw::Buffer buffer = container.getBuffer();
+    FW_ASSERT(packetSize <= buffer.getSize(), packetSize, buffer.getSize());
+    buffer.setSize(packetSize);
+    // Send the buffer
+    this->productSendOut_out(0, container.getId(), buffer);
   }
 
   // ----------------------------------------------------------------------
