@@ -465,14 +465,6 @@ namespace FppTest {
           const Fw::Success& status //!< The status
       );
 
-      //! Handler implementation for productRecvIn
-      void productRecvIn_handler(
-          const NATIVE_INT_TYPE portNum, //!< The port number
-          FwDpIdType id, //!< The container id
-          const Fw::Buffer& buffer, //!< The buffer
-          const Fw::Success& status //!< The buffer status
-      );
-
     PRIVATE:
 
       // ----------------------------------------------------------------------
@@ -484,6 +476,20 @@ namespace FppTest {
           Fw::PassiveComponentBase* callComp, //!< The component instance
           NATIVE_INT_TYPE portNum, //!< The port number
           NATIVE_UINT_TYPE context //!< The call order
+      );
+
+    PRIVATE:
+
+      // ----------------------------------------------------------------------
+      // Private data product handling functions
+      // ----------------------------------------------------------------------
+
+      //! Handler implementation for productRecvIn
+      void productRecvIn_handler(
+          const NATIVE_INT_TYPE portNum, //!< The port number
+          FwDpIdType id, //!< The container id
+          const Fw::Buffer& buffer, //!< The buffer
+          const Fw::Success& status //!< The buffer status
       );
 
     PRIVATE:

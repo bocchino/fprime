@@ -863,6 +863,29 @@ namespace FppTest {
     );
   }
 
+  // ----------------------------------------------------------------------
+  // Calls for messages received on typed input ports
+  // ----------------------------------------------------------------------
+
+  void DpTestComponentBase ::
+    m_p_schedIn_in(
+        Fw::PassiveComponentBase* callComp,
+        NATIVE_INT_TYPE portNum,
+        NATIVE_UINT_TYPE context
+    )
+  {
+    FW_ASSERT(callComp);
+    DpTestComponentBase* compPtr = static_cast<DpTestComponentBase*>(callComp);
+    compPtr->schedIn_handlerBase(
+      portNum,
+      context
+    );
+  }
+
+  // ----------------------------------------------------------------------
+  // Private data product handling functions
+  // ----------------------------------------------------------------------
+
   void DpTestComponentBase ::
     productRecvIn_handler(
         const NATIVE_INT_TYPE portNum,
@@ -894,25 +917,6 @@ namespace FppTest {
         FW_ASSERT(0);
         break;
     }
-  }
-
-  // ----------------------------------------------------------------------
-  // Calls for messages received on typed input ports
-  // ----------------------------------------------------------------------
-
-  void DpTestComponentBase ::
-    m_p_schedIn_in(
-        Fw::PassiveComponentBase* callComp,
-        NATIVE_INT_TYPE portNum,
-        NATIVE_UINT_TYPE context
-    )
-  {
-    FW_ASSERT(callComp);
-    DpTestComponentBase* compPtr = static_cast<DpTestComponentBase*>(callComp);
-    compPtr->schedIn_handlerBase(
-      portNum,
-      context
-    );
   }
 
 }
