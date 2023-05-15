@@ -17,7 +17,8 @@ This module defines the following FPP ports:
 
 3. `DpSend`: A port for sending a data product buffer.
 
-For more information, see the file [`Dp.fpp`](Dp.fpp) in this directory.
+For more information, see the file [`Dp.fpp`](../Dp.fpp) in the parent 
+directory.
 
 ## 3. C++ Classes
 
@@ -45,4 +46,5 @@ The data product header has the following format.
 |DataSize|`FwSizeType`|`sizeof(FwSizeType)`|The size of the data payload in bytes|
 
 **Further information:**
-For more information, see the file [`DpContainer.hpp`](DpContainer.hpp) in this directory.
+For more information, see the file [`DpContainer.hpp`](../DpContainer.hpp) in 
+the parent directory.
