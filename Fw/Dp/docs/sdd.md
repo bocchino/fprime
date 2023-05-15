@@ -17,7 +17,7 @@ This module defines the following FPP ports:
 
 3. `DpSend`: A port for sending a data product buffer.
 
-For more information, see the file `Dp.fpp` in this directory.
+For more information, see the file [`Dp.fpp`](Dp.fpp) in this directory.
 
 ## 3. C++ Classes
 
@@ -31,7 +31,7 @@ It provides all the generic operations defined in `DpContainer`
 plus the operations that are specific to _C_, for example
 serializing the specific types of data that _C_ can store.
 
-*Serialized container format:*
+**Serialized container format:**
 In serialized form, each data product container consists of a header 
 followed by a data payload.
 The data product header has the following format.
@@ -44,5 +44,5 @@ The data product header has the following format.
 |TimeTag|`Fw::Time`|`Fw::Time::SERIALIZED_SIZE`|The time tag associated with the container|
 |DataSize|`FwSizeType`|`sizeof(FwSizeType)`|The size of the data payload in bytes|
 
-*Further information:*
-For more information, see the file `DpContainer.hpp` in this directory.
+**Further information:**
+For more information, see the file [`DpContainer.hpp`](DpContainer.hpp) in this directory.
