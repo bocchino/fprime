@@ -39,11 +39,11 @@ The data product header has the following format.
 
 |Field Name|Data Type|Serialized Size|Description|
 |----------|---------|---------------|-----------|
-|PacketDescriptor|`FwPacketDescriptorType`|`sizeof(FwPacketDescriptorType)`|The F Prime packet descriptor `FW_PACKET_DP`.||
-|Id|`FwDpIdType`|`sizeof(FwDpIdType)`The container ID|
-|Priority|`FwDpPriorityType`|`sizeof(FwDpPriorityType)`The container default priority|
-|TimeTag|`Fw::Time`|`Fw::Time::SERIALIZED_SIZE`|The time tag associated with the container|
-|DataSize|`FwSizeType`|`sizeof(FwSizeType)`|The size of the data payload in bytes|
+|`PacketDescriptor`|`FwPacketDescriptorType`|`sizeof(FwPacketDescriptorType)`|The F Prime packet descriptor `FW_PACKET_DP`.||
+|`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The container ID|
+|`Priority`|`FwDpPriorityType`|`sizeof(FwDpPriorityType)`|The container default priority|
+|`TimeTag`|`Fw::Time`|`Fw::Time::SERIALIZED_SIZE`|The time tag associated with the container|
+|`DataSize`|`FwSizeType`|`sizeof(FwSizeType)`|The size of the data payload in bytes|
 
 **Further information:**
 For more information, see the file [`DpContainer.hpp`](../DpContainer.hpp) in 
