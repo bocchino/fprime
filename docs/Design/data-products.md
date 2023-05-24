@@ -55,11 +55,17 @@ components:
    This component maintains a database of available data
    products. By command, it downlinks and deletes data products. (TBR)
 
+Typically an F' user would write one or more data product producer components 
+(1) and connect these components to instances of the standard data product
+manager, writer, and catalog components (2-4) that are provided with
+the F' framework.
+
 ## 3. FPP Models
 
 In this section we summarize the features of the FPP modeling
-language that support data products.
-These features are fully documented in _The FPP User's Guide_
+language that support the construction of data product
+producers.
+The features are fully documented in _The FPP User's Guide_
 and _The FPP Language Specification_.
 
 ### 3.1. Ports
