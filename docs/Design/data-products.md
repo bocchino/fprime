@@ -89,6 +89,9 @@ FPP provides the following special ports for managing data products:
    
 The port types are documented [here](../../Fw/Dp/docs/sdd.md).
 
+When you define a component that specifies data products, the
+component model must have each of these ports.
+
 ### 3.2. Records
 
 A record is a unit of data.
@@ -124,12 +127,5 @@ product container C2 default priority 10
 ```
 
 ## 4. Autocoded C++
-
-TODO
-
-1. **Special ports:** When defining an FPP component that manages
-data products, you must specify the following port instances:
-
-   a. A port in
 
 TODO
