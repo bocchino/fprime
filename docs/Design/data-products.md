@@ -55,8 +55,8 @@ components:
    This component maintains a database of available data
    products. By command, it downlinks and deletes data products. (TBR)
 
-Typically an F' user would write one or more data product producer components 
-(1) and connect these components to instances of the standard data product
+Typically an F' user constructs one or more data product producer components 
+(1) and connects these components to instances of the standard data product
 manager, writer, and catalog components (2-4) that are provided with
 the F' framework.
 
