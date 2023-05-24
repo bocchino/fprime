@@ -67,7 +67,7 @@ and _The FPP Language Specification_.
 FPP provides the following special ports for managing data products:
 
 1. A **product request port** of type `Fw::DpRequest`.
-   This is an output port for requesting an emnpty container from a
+   This is an output port for requesting an empty container from a
    data product manager. Example syntax:
    ```
    product request port productRequestOut
