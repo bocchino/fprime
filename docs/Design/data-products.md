@@ -15,7 +15,7 @@ First we explain some basic concepts.
 F' data products are based on **records** and **containers**.
 A record is a basic unit of data.
 For example, it may be a struct, an array of statically known size,
-or an array of dynamically known size.
+or an array of bytes of statically unknown size.
 A container has an identifier and a priority and stores records.
 
 The set of all containers forms the **data product dictionary**.
@@ -30,7 +30,7 @@ dictionary for each container _c_ defined in _C_.
 The identifier for _I.c_ is the base identifier of _I_ plus
 the local identifier for _c_.
 
-3. Given a topology _T_, the global identifiers _I.c_ for all the instances _T_
+3. For any topology _T_, the global identifiers _I.c_ for all the instances _T_
 form the data product dictionary for _T_.
 
 ### 2.2. F' Components
@@ -91,11 +91,37 @@ The port types are documented [here](../../Fw/Dp/docs/sdd.md).
 
 ### 3.2. Records
 
-TODO
+A record is a unit of data.
+As part of an FPP component definition, you can specify one or more
+records.
+A record specification consists of a name, a type, and an optional identifier.
+The type specifier may be `raw`, in which case the record
+is a raw array of bytes, of statically unknown size.
+Example syntax:
+```
+array Image = [1024] F32
+product record ImageRecord: Image
+product record RawImageRecord: raw
+```
 
 ### 3.3. Containers
 
-TODO
+A container is a data structure that stores records.
+As part of an FPP component specification, you can specify
+one or more containers.
+Each container specified in a component can store
+any of the records specified in the component.
+
+A container specification consists of a name, an optional
+identifier, and an optional default priority.
+The default priority is the priority to use if no
+other priority is specified for the container
+during ground operations.
+Example syntax:
+```
+product container C1
+product container C2 default priority 10
+```
 
 ## 4. Autocoded C++
 
