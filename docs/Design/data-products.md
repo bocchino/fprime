@@ -63,9 +63,8 @@ the F' framework.
 ## 3. FPP Models
 
 In this section we summarize the features of the FPP modeling
-language that support the construction of data product
-producers.
-The features are fully documented in _The FPP User's Guide_
+language used in constructing data product producer components.
+Each of these features is fully documented in _The FPP User's Guide_
 and _The FPP Language Specification_.
 
 ### 3.1. Ports
@@ -95,13 +94,13 @@ FPP provides the following special ports for managing data products:
    
 The port types are documented [here](../../Fw/Dp/docs/sdd.md).
 
-When you define a component that specifies data products, the
-component model must have each of these ports.
+Each data product producer component must have each of these ports
+in its FPP component model.
 
 ### 3.2. Records
 
 A record is a unit of data.
-As part of an FPP component definition, you can specify one or more
+When defining a producer component, you can specify one or more
 records.
 A record specification consists of a name, a type, and an optional identifier.
 The type specifier may be `raw`, in which case the record
@@ -116,8 +115,7 @@ product record RawImageRecord: raw
 ### 3.3. Containers
 
 A container is a data structure that stores records.
-As part of an FPP component specification, you can specify
-one or more containers.
+When defining a producer component, you can specify one or more containers.
 Each container specified in a component can store
 any of the records specified in the component.
 
