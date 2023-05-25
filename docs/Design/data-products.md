@@ -59,6 +59,7 @@ Typically an F' user constructs one or more data product producer components
 (1) and connects these components to instances of the standard data product
 manager, writer, and catalog components (2-4) that are provided with
 the F' framework.
+See [`Svc::DpManager`](../../Svc/DpManager/docs/sdd.md), TODO.
 
 ## 3. FPP Models
 
@@ -107,9 +108,9 @@ The type specifier may be `raw`, in which case the record
 is a raw array of bytes, of statically unknown size.
 Example syntax:
 ```
-array Image = [1024] F32
-product record ImageRecord: Image
-product record RawImageRecord: raw
+array FixedSizeData = [1024] F32
+product record FixedSizedataRecord: FixedSizeData
+product record RawDataRecord: raw
 ```
 
 ### 3.3. Containers
@@ -132,4 +133,25 @@ product container C2 default priority 10
 
 ## 4. Autocoded C++
 
-TODO
+The autocoded C++ base class for a producer component _C_ provides
+the following API elements:
+
+1. Enumerations defining the available container IDs, container
+priorities, and record IDs.
+
+1. A class _C_ `::DpRecord`. This class is derived from
+[`Fw::DpRecord`](../../Fw/Dp/docs/sdd.md).
+Each instance of _C_ `::DpRecord` is a wrapper for an `Fw::Buffer` _B_,
+which points to allocated memory.
+The class provides operations for serializing the records
+defined in _C_ into _B_.
+There is one operation _C_ `::DpRecord::serialize_` _R_
+for each record _R_ defined in _C_.
+
+1. A member function `Dp_Request` for requesting a data
+product container.
+This function takes a container ID and a size.
+It sends out a request on `productRequestOut`, which is
+typically connected to a data product manager component.
+
+1. TODO
