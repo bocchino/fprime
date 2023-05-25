@@ -139,19 +139,45 @@ the following API elements:
 1. Enumerations defining the available container IDs, container
 priorities, and record IDs.
 
-1. A class _C_ `::DpRecord`. This class is derived from
+1. A member class _C_ `::DpRecord`. This class is derived from
 [`Fw::DpRecord`](../../Fw/Dp/docs/sdd.md).
 Each instance of _C_ `::DpRecord` is a wrapper for an `Fw::Buffer` _B_,
 which points to allocated memory.
 The class provides operations for serializing the records
-defined in _C_ into _B_.
+defined in _C_ into the memory pointed to by _B_.
 There is one operation _C_ `::DpRecord::serialize_` _R_
 for each record _R_ defined in _C_.
 
-1. A member function `Dp_Request` for requesting a data
-product container.
+1. A member function `Dp_Request` for requesting a fresh
+data product container.
 This function takes a container ID and a size.
 It sends out a request on `productRequestOut`, which is
 typically connected to a data product manager component.
 
-1. TODO
+1. For each container _c_ defined in _C_, a pure virtual
+member function `Dp_Recv_` _c_ `_handler`.
+When a fresh container arrives in response to a
+`Dp_Request` invocation, the autocoded C++ uses the container ID to
+select and invoke the appropriate `Dp_Recv` handler.
+The implementation of _C_ must override each handler
+to provide the mission-specific behavior for filling
+in the corresponding container.
+The arguments to `Dp_Recv_` _c_ `_handler` provide
+(1) a reference to the container, which the implementation can fill in;
+and (2) a status value indicating whether the container
+is valid. An invalid container can result if the buffer
+allocation fails.
+
+1. A member function `Dp_Send` for sending a filled
+data product container.
+This function takes a reference to a container _c_ and an
+optional time tag.
+It does the following:
+
+   1. If no time tag is provided, then invoke `timeGetOut`
+      to get the system time and use it to set the time tag.
+
+   1. Stores the time tag into _c_.
+
+   1. Send _c_ on `productSendOut`.
+
