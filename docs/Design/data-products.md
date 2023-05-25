@@ -24,10 +24,11 @@ as for commands, telemetry, events, and parameters:
 
 1. Each component _C_ defines records and containers.
 The container IDs are local to _C_.
+Typically they have the values 0, 1, 2, ...
 
-2. Each component instance _I_ of _C_ contributes one container _I.c_ to the 
+2. Each instance _I_ of _C_ contributes one container _I.c_ to the 
 dictionary for each container _c_ defined in _C_.
-The identifier for _I.c_ is the base identifier of _I_ plus
+The global identifier for _I.c_ is the base identifier of _I_ plus
 the local identifier for _c_.
 
 3. For any topology _T_, the global identifiers _I.c_ for all the instances _T_
@@ -42,24 +43,26 @@ components:
    These components produce data products and are typically mission-specific.
    For example, they may produce science data.
 
-2. A **data product manager**.
-   This component allocates memory for empty containers.
-   It also forwards filled containers to the data product writer.
+1. Standard F Prime components for managing data products.
 
-3. A **data product writer**.
-   This component receives filled containers from data product
-   producers. It writes the contents of the containers to non-volatile
-   storage. (TBR)
+   1. A **data product manager**.
+      This component allocates memory for empty containers.
+      It also forwards filled containers to the data product writer.
+      See [`Svc::DpManager`](../../Svc/DpManager/docs/sdd.md).
 
-4. A **data product catalog**.
-   This component maintains a database of available data
-   products. By command, it downlinks and deletes data products. (TBR)
+   1. A **data product writer**.
+      This component receives filled containers from data product
+      producers. It writes the contents of the containers to non-volatile
+      storage. (TBR)
+      See TODO.
 
-Typically an F' user constructs one or more data product producer components 
-(1) and connects these components to instances of the standard data product
-manager, writer, and catalog components (2-4) that are provided with
-the F' framework.
-See [`Svc::DpManager`](../../Svc/DpManager/docs/sdd.md), TODO.
+   1. A **data product catalog**.
+      This component maintains a database of available data
+      products. By command, it downlinks and deletes data products. (TBR)
+      See TODO.
+
+Note that when using data products, you need to develop only the
+producer components. The other components are provided for you by F'.
 
 ## 3. FPP Models
 
@@ -181,3 +184,4 @@ It does the following:
 
    1. Send _c_ on `productSendOut`.
 
+## Use Cases
