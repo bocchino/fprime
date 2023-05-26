@@ -70,14 +70,32 @@ producer components. The other components are provided by F'.
 
 In this section we provide more detail about producer components.
 
-### 3.1. FPP Modeling
+### 3.1. Activities
 
-First we summarize the features of the FPP modeling
+A producer component typically repeats the following activities,
+as often as necessary:
+
+1. Request a container from a data manager component.
+
+2. When the container is received, fill the container with
+data by serializing records into the container.
+
+3. When the container is full, send the container to the
+data product manager, which forwards it to the data
+product writer.
+
+The FPP model and the autocoded C++ have several features that
+support these activities.
+We discuss these features in the following sections.
+
+### 3.2. FPP Modeling
+
+In this section we summarize the features of the FPP modeling
 language used in constructing data product producer components.
 Each of these features is fully documented in _The FPP User's Guide_
 and _The FPP Language Specification_.
 
-#### 3.1.1. Ports
+#### 3.2.1. Ports
 
 FPP provides the following special ports for managing data products:
 
@@ -107,7 +125,7 @@ The port types are documented [here](../../Fw/Dp/docs/sdd.md).
 Each data product producer component must have each of these ports
 in its FPP component model.
 
-#### 3.1.2. Records
+#### 3.2.2. Records
 
 A record is a unit of data.
 When defining a producer component, you can specify one or more
@@ -122,7 +140,7 @@ product record FixedSizedataRecord: FixedSizeData
 product record RawDataRecord: raw
 ```
 
-#### 3.1.3. Containers
+#### 3.2.3. Containers
 
 A container is a data structure that stores records.
 When defining a producer component, you can specify one or more containers.
@@ -140,7 +158,7 @@ product container C1
 product container C2 default priority 10
 ```
 
-### 3.2. Autocoded C++
+### 3.3. Autocoded C++
 
 The autocoded C++ base class for a producer component _C_ provides
 the following API elements:
