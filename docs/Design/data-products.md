@@ -24,14 +24,14 @@ as for commands, telemetry, events, and parameters:
 
 1. Each component _C_ defines records and containers.
 The container IDs are local to _C_.
-Typically they have the values 0, 1, 2, ...
+Typically they have the values 0, 1, 2, ... .
 
 2. Each instance _I_ of _C_ contributes one container _I.c_ to the 
 dictionary for each container _c_ defined in _C_.
 The global identifier for _I.c_ is the base identifier of _I_ plus
 the local identifier for _c_.
 For example, if the base identifier is 0x1000, then the global identifiers
-might be 0x1000, 0x1001, 0x1002, ...
+might be 0x1000, 0x1001, 0x1002, ... .
 
 3. For any topology _T_, the global identifiers _I.c_ for all the instances _T_
 form the data product dictionary for _T_.
@@ -194,3 +194,15 @@ It does the following:
 
 In this section we discuss several common use cases involving
 data products.
+
+**Requesting and sending data products:**
+See the example uses in the documentation for
+[`Svc::DpManager`](../..Svc/DpManager/docs/sdd.md#5-example-uses).
+The component referred to as `client` in that document
+is a data product producer.
+
+**Writing data products to non-volatile storage:**
+TODO
+
+**Cataloging and downlinking data products:**
+TODO
