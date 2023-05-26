@@ -14,8 +14,8 @@ First we explain some basic concepts.
 
 F' data products are based on **records** and **containers**.
 A record is a basic unit of data.
-For example, it may be a struct, an array of statically known size,
-or an array of bytes of statically unknown size.
+For example, it may be a struct, an array of typed objects of
+statically known size, or an array of bytes of statically unknown size.
 A container has an identifier and a priority and stores records.
 
 The set of all containers forms the **data product dictionary**.
@@ -30,6 +30,8 @@ Typically they have the values 0, 1, 2, ...
 dictionary for each container _c_ defined in _C_.
 The global identifier for _I.c_ is the base identifier of _I_ plus
 the local identifier for _c_.
+For example, if the base identifier is 0x1000, then the global identifiers
+might be 0x1000, 0x1001, 0x1002, ...
 
 3. For any topology _T_, the global identifiers _I.c_ for all the instances _T_
 form the data product dictionary for _T_.
@@ -62,16 +64,20 @@ components:
       See TODO.
 
 Note that when using data products, you need to develop only the
-producer components. The other components are provided for you by F'.
+producer components. The other components are provided by F'.
 
-## 3. FPP Models
+## 3. Producer Components
 
-In this section we summarize the features of the FPP modeling
+In this section we provide more detail about producer components.
+
+### 3.1. FPP Modeling
+
+First we summarize the features of the FPP modeling
 language used in constructing data product producer components.
 Each of these features is fully documented in _The FPP User's Guide_
 and _The FPP Language Specification_.
 
-### 3.1. Ports
+#### 3.1.1. Ports
 
 FPP provides the following special ports for managing data products:
 
@@ -101,7 +107,7 @@ The port types are documented [here](../../Fw/Dp/docs/sdd.md).
 Each data product producer component must have each of these ports
 in its FPP component model.
 
-### 3.2. Records
+#### 3.1.2. Records
 
 A record is a unit of data.
 When defining a producer component, you can specify one or more
@@ -116,7 +122,7 @@ product record FixedSizedataRecord: FixedSizeData
 product record RawDataRecord: raw
 ```
 
-### 3.3. Containers
+#### 3.1.3. Containers
 
 A container is a data structure that stores records.
 When defining a producer component, you can specify one or more containers.
@@ -134,7 +140,7 @@ product container C1
 product container C2 default priority 10
 ```
 
-## 4. Autocoded C++
+### 3.2. Autocoded C++
 
 The autocoded C++ base class for a producer component _C_ provides
 the following API elements:
@@ -184,4 +190,7 @@ It does the following:
 
    1. Send _c_ on `productSendOut`.
 
-## Use Cases
+## 4. Use Cases
+
+In this section we discuss several common use cases involving
+data products.
