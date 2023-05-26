@@ -197,7 +197,7 @@ data products.
 
 **Requesting and sending data products:**
 See the example uses in the documentation for
-[`Svc::DpManager`](../..Svc/DpManager/docs/sdd.md#5-example-uses).
+[`Svc::DpManager`](../../Svc/DpManager/docs/sdd.md#5-example-uses).
 The component referred to as `client` in that document
 is a data product producer.
 
