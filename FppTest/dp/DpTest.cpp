@@ -15,10 +15,11 @@ namespace FppTest {
 // Construction, initialization, and destruction
 // ----------------------------------------------------------------------
 
-DpTest ::DpTest(const char* const compName, U32 u32RecordData, U16 dataRecordData)
+DpTest ::DpTest(const char* const compName, U32 u32RecordData, U16 dataRecordData, Fw::ByteArray rawRecordData)
     : DpTestComponentBase(compName),
       u32RecordData(u32RecordData),
       dataRecordData(dataRecordData),
+      rawRecordData(rawRecordData),
       sendTime(Fw::ZERO_TIME) {}
 
 void DpTest ::init(const NATIVE_INT_TYPE queueDepth, const NATIVE_INT_TYPE instance) {
@@ -70,6 +71,12 @@ void DpTest ::Dp_Recv_Container2_handler(DpContainer& container, Fw::Success::T 
         }
         // Provide an explicit time stamp
         this->Dp_Send(container, this->sendTime);
+    }
+}
+
+void DpTest ::Dp_Recv_Container3_handler(DpContainer& container, Fw::Success::T status) {
+    if (status == Fw::Success::SUCCESS) {
+        // TODO
     }
 }
 

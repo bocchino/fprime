@@ -18,11 +18,14 @@ namespace FppTest {
 
 Tester::Tester()
     : DpTestGTestBase("Tester", Tester::MAX_HISTORY_SIZE),
-      component("DpTest", STest::Pick::any(), STest::Pick::any()),
       container1Data{},
       container1Buffer(this->container1Data, DpTest::CONTAINER_1_SIZE),
       container2Data{},
-      container2Buffer(this->container2Data, DpTest::CONTAINER_2_SIZE) {
+      container2Buffer(this->container2Data, DpTest::CONTAINER_2_SIZE),
+      container3Data{},
+      container3Buffer(this->container3Data, DpTest::CONTAINER_3_SIZE),
+      rawRecordArray(this->rawRecordData, sizeof this->rawRecordData),
+      component("DpTest", STest::Pick::any(), STest::Pick::any(), this->rawRecordArray) {
     this->initComponents();
     this->connectPorts();
     this->component.setIdBase(ID_BASE);

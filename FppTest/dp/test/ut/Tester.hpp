@@ -112,10 +112,6 @@ class Tester : public DpTestGTestBase {
     // Variables
     // ----------------------------------------------------------------------
 
-    //! The component under test
-    //!
-    DpTest component;
-
     //! Buffer data for Container 1
     U8 container1Data[DpTest::CONTAINER_1_SIZE];
 
@@ -127,6 +123,23 @@ class Tester : public DpTestGTestBase {
 
     //! Buffer for Container 2
     const Fw::Buffer container2Buffer;
+
+    //! Buffer data for Container 3
+    U8 container3Data[DpTest::CONTAINER_3_SIZE];
+
+    //! Buffer for Container 3
+    const Fw::Buffer container3Buffer;
+    
+    //! Byte array data for raw record
+    U8 rawRecordData[DpTest::RAW_DATA_SIZE];
+
+    //! Byte array for raw record
+    Fw::ByteArray rawRecordArray;
+
+    //! The component under test
+    //!
+    DpTest component;
+
 };
 
 }  // end namespace FppTest

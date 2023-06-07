@@ -19,6 +19,8 @@ class DpTest : public DpTestComponentBase {
 
     static constexpr FwSizeType CONTAINER_1_SIZE = 100;
     static constexpr FwSizeType CONTAINER_2_SIZE = 1000;
+    static constexpr FwSizeType CONTAINER_3_SIZE = 1000;
+    static constexpr FwSizeType RAW_DATA_SIZE = 256;
 
   public:
     // ----------------------------------------------------------------------
@@ -28,7 +30,8 @@ class DpTest : public DpTestComponentBase {
     //! Construct object DpTest
     DpTest(const char* const compName,  //!< The component name
            U32 u32RecordData,           //!< The U32Record data
-           U16 dataRecordData           //!< The DataRecord data
+           U16 dataRecordData,          //!< The DataRecord data
+           Fw::ByteArray rawRecordData  //!< The RawRecord data
     );
 
     //! Initialize object DpTest
@@ -74,6 +77,12 @@ class DpTest : public DpTestComponentBase {
                                     Fw::Success::T           //!< The container status
                                     ) override;
 
+    //! Receive a data product container of type Container3
+    //! \return Serialize status
+    void Dp_Recv_Container3_handler(DpContainer& container,  //!< The container
+                                    Fw::Success::T           //!< The container status
+                                    ) override;
+
   PRIVATE:
     // ----------------------------------------------------------------------
     // Private member variables
@@ -84,6 +93,9 @@ class DpTest : public DpTestComponentBase {
 
     //! DataRecord data
     const U16 dataRecordData;
+
+    //! RawRecord data
+    const Fw::ByteArray rawRecordData;
 
     //! Send time for testing
     Fw::Time sendTime;
