@@ -15,7 +15,7 @@ exceptiongroup==1.1.0
 Flask==2.2.2
 Flask-Compress==1.13
 Flask-RESTful==0.3.9
-fprime-fpp==1.2.0-358-g9b3eb42d
+fprime-fpp==1.2.0-378-gca58b3c2
 fprime-gds==3.2.0
 fprime-tools==3.2.0
 gcovr==5.2
