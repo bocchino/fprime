@@ -32,9 +32,12 @@ It provides all the generic operations defined in `DpContainer`
 plus the operations that are specific to _C_, for example
 serializing the specific types of data that _C_ can store.
 
-**Serialized container format:**
+### Serialized Container Format
+
 In serialized form, each data product container consists of a header 
 followed by a data payload.
+
+**Header:**
 The data product header has the following format.
 
 |Field Name|Data Type|Serialized Size|Description|
@@ -45,6 +48,24 @@ The data product header has the following format.
 |`TimeTag`|`Fw::Time`|`Fw::Time::SERIALIZED_SIZE`|The time tag associated with the container|
 |`DataSize`|`FwSizeType`|`sizeof(FwSizeType)`|The size of the data payload in bytes|
 
-**Further information:**
+**Data payload:**
+The data payload is a sequence of records.
+The serialized format of each record _R_ depends on whether _R_ is a typed
+record or a raw record.
+Typed records with type _T_ have the following format:
+
+|Field Name|Data Type|Serialized Size|Description|
+|`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The record ID|
+|`Data`|_T_|sizeof(_T_) if _T_ is a primitive type; otherwise _T_`::SERIALIZED_SIZE`|The serialized data|
+
+Raw records have the following format:
+
+|Field Name|Data Type|Serialized Size|Description|
+|`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The record ID|
+|`Size`|`FwSizeType`|`sizeof(FwSizeType)`|The number _n_ of bytes in the record|
+|`Data`|Array of bytes|_n_|_n_ bytes of raw data|
+
+### Further Information
+
 For more information, see the file [`DpContainer.hpp`](../DpContainer.hpp) in 
 the parent directory.

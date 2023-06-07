@@ -174,6 +174,9 @@ The class provides operations for serializing the records
 defined in _C_ into the memory pointed to by _B_.
 There is one operation _C_ `::DpRecord::serialize_` _R_
 for each record _R_ defined in _C_.
+If the record _R_ has a specified type, _T_ then the serialized
+data follows the serialization format defined by _T_.
+If the record _R_ has `raw` type, then the seri
 
 1. A member function `Dp_Request` for requesting a fresh
 data product container.
