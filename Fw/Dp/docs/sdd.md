@@ -5,6 +5,8 @@
 
 This build module defines FPP ports and C++ classes that support
 the collection and storage of data products.
+For more information on data products and records, see the
+[data products documentation](../../../docs/Design/data-products.md).
 
 ## 2. FPP Ports
 
@@ -82,5 +84,3 @@ Raw records have the following format:
 
 For more information on the `DpContainer` class, see the file [`DpContainer.hpp`](../DpContainer.hpp) in 
 the parent directory.
-For more information on data products and records, see the
-[data products documentation](../../../docs/Design/data-products.md).
