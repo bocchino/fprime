@@ -46,15 +46,18 @@ module FppTest {
     @ Record 2
     product record DataRecord: Data id 200
 
+    @ Record 3
+    product record RawRecord: raw id 300
+
     # ----------------------------------------------------------------------
     # Containers
     # ----------------------------------------------------------------------
 
     @ Container 1
-    product container Container1 id 300 default priority 10
+    product container Container1 id 100 default priority 10
 
     @ Container 2
-    product container Container2 id 400 default priority 20
+    product container Container2 id 200 default priority 20
 
   }
 
