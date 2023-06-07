@@ -57,7 +57,7 @@ record or a raw record.
 
 **Typed records:**
 A typed record is specified in FPP in the form `product record` _name_ `:` _type_.
-It represents one item of data of type _type_.
+The record has name _name_ and represents one item of data of type _type_.
 The type may be a struct type with several fields or an array type with
 several indexed elements.
 Typed records with type _T_ have the following format:
@@ -65,11 +65,11 @@ Typed records with type _T_ have the following format:
 |Field Name|Data Type|Serialized Size|Description|
 |----------|---------|---------------|-----------|
 |`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The record ID|
-|`Data`|_T_|sizeof(_T_) if _T_ is a primitive type; otherwise _T_`::SERIALIZED_SIZE`|The serialized data|
+|`Data`|_T_|`sizeof(`_T_`)` if _T_ is a primitive type; otherwise _T_`::SERIALIZED_SIZE`|The serialized data|
 
 **Raw records:**
 A raw record is specified in FPP in the form `product record` _name_ `: raw`.
-It represents raw byte data.
+The record has name _name_ and represents raw byte data.
 Raw records have the following format:
 
 |Field Name|Data Type|Serialized Size|Description|
