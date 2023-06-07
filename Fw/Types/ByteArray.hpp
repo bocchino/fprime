@@ -43,10 +43,10 @@ namespace Fw {
       // ----------------------------------------------------------------------
 
       //! The bytes
-      U8 *const bytes;
+      U8 *bytes;
 
       //! The size
-      const FwSizeType size;
+      FwSizeType size;
 
   };
 
