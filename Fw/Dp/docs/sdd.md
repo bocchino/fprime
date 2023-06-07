@@ -80,5 +80,7 @@ Raw records have the following format:
 
 ### 3.2. Further Information
 
-For more information, see the file [`DpContainer.hpp`](../DpContainer.hpp) in 
+For more information on the `DpContainer` class, see the file [`DpContainer.hpp`](../DpContainer.hpp) in 
 the parent directory.
+For more information on data products and records, see the
+[data products documentation](../../../docs/Design/data-products.md).
