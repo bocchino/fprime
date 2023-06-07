@@ -29,6 +29,10 @@ Tester::Tester()
     this->initComponents();
     this->connectPorts();
     this->component.setIdBase(ID_BASE);
+    // Fill in array with random data
+    for (FwSizeType i = 0; i < this->rawRecordArray.size; ++i) {
+      this->rawRecordArray.bytes[i] = static_cast<U8>(STest::Pick::any());
+    }
 }
 
 Tester::~Tester() {}

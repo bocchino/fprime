@@ -76,7 +76,16 @@ void DpTest ::Dp_Recv_Container2_handler(DpContainer& container, Fw::Success::T 
 
 void DpTest ::Dp_Recv_Container3_handler(DpContainer& container, Fw::Success::T status) {
     if (status == Fw::Success::SUCCESS) {
-        // TODO
+        auto serializeStatus = Fw::FW_SERIALIZE_OK;
+        for (FwSizeType i = 0; i < CONTAINER_3_SIZE; ++i) {
+            serializeStatus = container.serializeRecord_RawRecord(this->rawRecordData);
+            if (serializeStatus == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
+                break;
+            }
+            FW_ASSERT(serializeStatus == Fw::FW_SERIALIZE_OK, status);
+        }
+        // Use the time stamp from the time get port
+        this->Dp_Send(container);
     }
 }
 
