@@ -57,6 +57,12 @@ class Tester : public DpTestGTestBase {
     //! productRecvIn with Container 2 (FAILURE)
     void productRecvIn_Container2_FAILURE();
 
+    //! productRecvIn with Container 3 (SUCCESS)
+    void productRecvIn_Container3_SUCCESS();
+
+    //! productRecvIn with Container 3 (FAILURE)
+    void productRecvIn_Container3_FAILURE();
+
   PRIVATE:
     // ----------------------------------------------------------------------
     // Handlers for typed from ports

@@ -31,7 +31,7 @@ Tester::Tester()
     this->component.setIdBase(ID_BASE);
     // Fill in array with random data
     for (FwSizeType i = 0; i < this->rawRecordArray.size; ++i) {
-      this->rawRecordArray.bytes[i] = static_cast<U8>(STest::Pick::any());
+        this->rawRecordArray.bytes[i] = static_cast<U8>(STest::Pick::any());
     }
 }
 
@@ -100,6 +100,41 @@ void Tester::productRecvIn_Container2_SUCCESS() {
 
 void Tester::productRecvIn_Container2_FAILURE() {
     productRecvIn_CheckFailure(DpTest::ContainerId::Container2, this->container2Buffer);
+}
+
+void Tester::productRecvIn_Container3_SUCCESS() {
+    Fw::Buffer buffer;
+    FwSizeType expectedNumElts;
+    const FwSizeType dataEltSize = sizeof(FwSizeType) + this->rawRecordArray.size;
+    // Invoke the port and check the header
+    this->productRecvIn_InvokeAndCheckHeader(DpTest::ContainerId::Container3, dataEltSize,
+                                             DpTest::ContainerPriority::Container3, this->container3Buffer, buffer,
+                                             expectedNumElts);
+
+    // Check the data
+    auto& serialRepr = buffer.getSerializeRepr();
+    for (FwSizeType i = 0; i < expectedNumElts; ++i) {
+        FwDpIdType id;
+        auto status = serialRepr.deserialize(id);
+        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+        const FwDpIdType expectedId = this->component.getIdBase() + DpTest::RecordId::RawRecord;
+        ASSERT_EQ(id, expectedId);
+        FwSizeType size;
+        status = serialRepr.deserialize(size);
+        ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+        ASSERT_EQ(size, this->rawRecordArray.size);
+        const U8* const buffAddr = serialRepr.getBuffAddr();
+        for (FwSizeType j = 0; j < size; ++j) {
+            U8 byte;
+            status = serialRepr.deserialize(byte);
+            ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+            ASSERT_EQ(byte, this->rawRecordArray.bytes[j]);
+        }
+    }
+}
+
+void Tester::productRecvIn_Container3_FAILURE() {
+    productRecvIn_CheckFailure(DpTest::ContainerId::Container3, this->container3Buffer);
 }
 
 // ----------------------------------------------------------------------

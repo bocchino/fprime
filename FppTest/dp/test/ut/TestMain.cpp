@@ -38,6 +38,18 @@ TEST(productRecvIn, Container2_FAILURE) {
     tester.productRecvIn_Container2_FAILURE();
 }
 
+TEST(productRecvIn, Container3_SUCCESS) {
+    COMMENT("Receive Container3 SUCCESS");
+    Tester tester;
+    tester.productRecvIn_Container3_SUCCESS();
+}
+
+TEST(productRecvIn, Container3_FAILURE) {
+    COMMENT("Receive Container3 FAILURE");
+    Tester tester;
+    tester.productRecvIn_Container3_FAILURE();
+}
+
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     STest::Random::seed();
