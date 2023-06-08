@@ -137,7 +137,6 @@ class Tester : public DpTestGTestBase {
     Fw::ByteArray rawRecordArray;
 
     //! The component under test
-    //!
     DpTest component;
 
 };
