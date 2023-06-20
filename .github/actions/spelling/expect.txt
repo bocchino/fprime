@@ -449,6 +449,7 @@ ERRORCHECK
 errorlevel
 errornum
 ert
+ethanchee
 etime
 ETIMEDOUT
 eturn
@@ -729,7 +730,6 @@ ISREG
 iss
 isspace
 isupper
-ITAR
 itimerspec
 itle
 itr
@@ -1024,6 +1024,8 @@ params
 PARENB
 PARODD
 parseable
+PASSIVERATEGROUP
+PASSIVERATEGROUPIMPLTESTER
 pathlib
 pathmaker
 pbuild
@@ -1614,7 +1616,7 @@ vwong
 vxworks
 VXWORKSLOGASSERT
 WAITALL
-Watney
+watney
 Wconversion
 Wdog
 weakref
@@ -1669,3 +1671,4 @@ XYZZY
 yacc
 yacgen
 yyyymmdd
+zmq
