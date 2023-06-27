@@ -1,6 +1,6 @@
 // ======================================================================
 // \title  AbstractState.hpp
-// \author bocchino
+// \author Rob Bocchino
 // \brief  Header file for abstract state
 //
 // \copyright

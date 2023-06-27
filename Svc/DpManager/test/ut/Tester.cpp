@@ -1,10 +1,10 @@
 // ======================================================================
 // \title  DpManager.hpp
-// \author bocchino
-// \brief  cpp file for DpManager test harness implementation class
+// \author Rob Bocchino
+// \brief  cpp file for DpManager test harness implementation
 // ======================================================================
 
-#include "Tester.hpp"
+#include "Svc/DpManager/test/ut/Tester.hpp"
 
 namespace Svc {
 
@@ -25,16 +25,6 @@ namespace Svc {
     ~Tester()
   {
 
-  }
-
-  // ----------------------------------------------------------------------
-  // Tests
-  // ----------------------------------------------------------------------
-
-  void Tester ::
-    toDo()
-  {
-    // TODO
   }
 
   // ----------------------------------------------------------------------

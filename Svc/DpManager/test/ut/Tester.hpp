@@ -1,11 +1,11 @@
 // ======================================================================
 // \title  DpManager/test/ut/Tester.hpp
-// \author bocchino
-// \brief  hpp file for DpManager test harness implementation class
+// \author Rob Bocchino
+// \brief  hpp file for DpManager test harness implementation
 // ======================================================================
 
-#ifndef TESTER_HPP
-#define TESTER_HPP
+#ifndef Svc_Tester_HPP
+#define Svc_Tester_HPP
 
 #include "GTestBase.hpp"
 #include "Svc/DpManager/DpManager.hpp"
@@ -13,100 +13,80 @@
 
 namespace Svc {
 
-  class Tester :
-    public DpManagerGTestBase
-  {
+class Tester : public DpManagerGTestBase {
+  PRIVATE:
+    // ----------------------------------------------------------------------
+    // Constants
+    // ----------------------------------------------------------------------
 
-      // ----------------------------------------------------------------------
-      // Constants
-      // ----------------------------------------------------------------------
+    //! The maximum buffer size
+    static constexpr FwSizeType MAX_BUFFER_SIZE = 1024;
 
-    private:
-      
-      //! The maximum buffer size
-      static constexpr FwSizeType MAX_BUFFER_SIZE = 1024;
+  public:
+    // ----------------------------------------------------------------------
+    // Construction and destruction
+    // ----------------------------------------------------------------------
 
-      // ----------------------------------------------------------------------
-      // Construction and destruction
-      // ----------------------------------------------------------------------
+    // Maximum size of histories storing events, telemetry, and port outputs
+    static const NATIVE_INT_TYPE MAX_HISTORY_SIZE = 10;
+    // Instance ID supplied to the component instance under test
+    static const NATIVE_INT_TYPE TEST_INSTANCE_ID = 0;
+    // Queue depth supplied to component instance under test
+    static const NATIVE_INT_TYPE TEST_INSTANCE_QUEUE_DEPTH = 10;
 
-    public:
-      // Maximum size of histories storing events, telemetry, and port outputs
-      static const NATIVE_INT_TYPE MAX_HISTORY_SIZE = 10;
-      // Instance ID supplied to the component instance under test
-      static const NATIVE_INT_TYPE TEST_INSTANCE_ID = 0;
-      // Queue depth supplied to component instance under test
-      static const NATIVE_INT_TYPE TEST_INSTANCE_QUEUE_DEPTH = 10;
+    //! Construct object Tester
+    Tester();
 
-      //! Construct object Tester
-      Tester();
+    //! Destroy object Tester
+    ~Tester();
 
-      //! Destroy object Tester
-      ~Tester();
+  PRIVATE:
+    // ----------------------------------------------------------------------
+    // Handlers for typed from ports
+    // ----------------------------------------------------------------------
 
-    public:
+    //! Handler for from_bufferGetOut
+    Fw::Buffer from_bufferGetOut_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
+                                         U32 size                        //!< The size
+    );
 
-      // ----------------------------------------------------------------------
-      // Tests
-      // ----------------------------------------------------------------------
+    //! Handler for from_productResponseOut
+    void from_productResponseOut_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
+                                         FwDpIdType id,                  //!< The container ID
+                                         const Fw::Buffer& buffer        //!< The buffer
+    );
 
-      //! To do
-      void toDo();
+    //! Handler for from_productSendOut
+    void from_productSendOut_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
+                                     Fw::Buffer& fwBuffer            //!< The buffer
+    );
 
-    private:
+  PRIVATE:
+    // ----------------------------------------------------------------------
+    // Helper methods
+    // ----------------------------------------------------------------------
 
-      // ----------------------------------------------------------------------
-      // Handlers for typed from ports
-      // ----------------------------------------------------------------------
+    //! Connect ports
+    void connectPorts();
 
-      //! Handler for from_bufferGetOut
-      Fw::Buffer from_bufferGetOut_handler(
-          const NATIVE_INT_TYPE portNum, //!< The port number
-          U32 size //!< The size
-      );
+    //! Initialize components
+    void initComponents();
 
-      //! Handler for from_productResponseOut
-      void from_productResponseOut_handler(
-          const NATIVE_INT_TYPE portNum, //!< The port number
-          FwDpIdType id, //!< The container ID
-          const Fw::Buffer &buffer //!< The buffer
-      );
+  PROTECTED:
+    // ----------------------------------------------------------------------
+    // Variables
+    // ----------------------------------------------------------------------
 
-      //! Handler for from_productSendOut
-      void from_productSendOut_handler(
-          const NATIVE_INT_TYPE portNum, //!< The port number
-          Fw::Buffer &fwBuffer //!< The buffer
-      );
+    //! The abstract state for testing
+    AbstractState abstractState;
 
-    private:
+    //! The component under test
+    DpManager component;
 
-      // ----------------------------------------------------------------------
-      // Helper methods
-      // ----------------------------------------------------------------------
+    //! Data for buffers
+    U8 bufferData[MAX_BUFFER_SIZE];
+};
 
-      //! Connect ports
-      void connectPorts();
-
-      //! Initialize components
-      void initComponents();
-
-    protected:
-
-      // ----------------------------------------------------------------------
-      // Variables
-      // ----------------------------------------------------------------------
-
-      //! The abstract state
-      AbstractState abstractState;
-
-      //! The component under test
-      DpManager component;
-
-      //! Data for buffers
-      U8 bufferData[MAX_BUFFER_SIZE];
-
-  };
-
-} // end namespace Svc
+}  // end namespace Svc
 
 #endif
