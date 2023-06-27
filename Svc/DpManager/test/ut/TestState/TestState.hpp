@@ -1,6 +1,6 @@
 // ====================================================================== 
 // \title  TestState.hpp
-// \author bocchino
+// \author Rob Bocchino
 // \brief  Test state for testing DpManager
 //
 // \copyright

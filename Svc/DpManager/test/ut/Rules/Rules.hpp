@@ -1,6 +1,6 @@
 // ====================================================================== 
 // \title  Rules.hpp
-// \author bocchino
+// \author Rob Bocchino
 // \brief  Rules for testing DpManager
 //
 // \copyright

@@ -1,6 +1,6 @@
 // ====================================================================== 
 // \title  BufferGetStatus.hpp
-// \author bocchino
+// \author Rob Bocchino
 // \brief  BufferGetStatus class interface
 //
 // \copyright
