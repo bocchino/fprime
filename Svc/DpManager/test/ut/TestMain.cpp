@@ -4,11 +4,20 @@
 
 #include "Fw/Test/UnitTest.hpp"
 #include "STest/Random/Random.hpp"
-#include "Svc/DpManager/test/ut/Tester.hpp"
+#include "Svc/DpManager/test/ut/Rules/Testers.hpp"
 
-TEST(Nominal, ToDo) {
-    Svc::Tester tester;
-    tester.toDo();
+namespace Svc {
+
+  TEST(BufferGetStatus, Invalid) {
+    BufferGetStatus::Tester tester;
+    tester.Invalid();
+  }
+
+  TEST(BufferGetStatus, Valid) {
+    BufferGetStatus::Tester tester;
+    tester.Valid();
+  }
+
 }
 
 int main(int argc, char **argv) {
