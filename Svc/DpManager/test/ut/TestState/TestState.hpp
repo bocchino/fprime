@@ -1,4 +1,4 @@
-// ====================================================================== 
+// ======================================================================
 // \title  TestState.hpp
 // \author Rob Bocchino
 // \brief  Test state for testing DpManager
@@ -15,26 +15,22 @@
 
 #include "Svc/DpManager/test/ut/Tester.hpp"
 
+#define TEST_STATE_DEF_RULE(GROUP_NAME, RULE_NAME)          \
+    bool precondition__##GROUP_NAME##__##RULE_NAME() const; \
+    void action__##GROUP_NAME##__##RULE_NAME();
+
 namespace Svc {
 
-  class TestState :
-    public Tester
-  {
+class TestState : public Tester {
+  public:
+    // ----------------------------------------------------------------------
+    // Rule definitions
+    // ----------------------------------------------------------------------
 
-    public:
+    TEST_STATE_DEF_RULE(BufferGetStatus, Invalid)
+    TEST_STATE_DEF_RULE(BufferGetStatus, Valid)
+};
 
-      // ----------------------------------------------------------------------
-      // Rule definitions 
-      // ----------------------------------------------------------------------
-      
-      bool precondition__BufferGetStatus__Invalid() const;
-      void action__BufferGetStatus__Invalid();
-      
-      bool precondition__BufferGetStatus__Valid() const;
-      void action__BufferGetStatus__Valid();
-      
-  };
-
-}
+}  // namespace Svc
 
 #endif

@@ -17,7 +17,7 @@
 
 #include "Svc/DpManager/test/ut/TestState/TestState.hpp"
 
-#define DEF_RULE(GROUP_NAME, RULE_NAME)                                                                         \
+#define RULES_DEF_RULE(GROUP_NAME, RULE_NAME)                                                                   \
     namespace GROUP_NAME {                                                                                      \
                                                                                                                 \
     struct RULE_NAME : public STest::Rule<TestState> {                                                          \
@@ -33,29 +33,8 @@ namespace Svc {
 
 namespace Rules {
 
-namespace BufferGetStatus {
-
-struct Invalid : public STest::Rule<TestState> {
-    Invalid(void) : Rule<TestState>("BufferGetStatus.Invalid") {}
-
-    bool precondition(const TestState& state) { return state.precondition__BufferGetStatus__Invalid(); }
-
-    void action(TestState& state) { state.action__BufferGetStatus__Invalid(); }
-};
-
-}  // namespace BufferGetStatus
-
-namespace BufferGetStatus {
-
-struct Valid : public STest::Rule<TestState> {
-    Valid(void) : Rule<TestState>("BufferGetStatus.Valid") {}
-
-    bool precondition(const TestState& state) { return state.precondition__BufferGetStatus__Valid(); }
-
-    void action(TestState& state) { state.action__BufferGetStatus__Valid(); }
-};
-
-}  // namespace BufferGetStatus
+RULES_DEF_RULE(BufferGetStatus, Invalid)
+RULES_DEF_RULE(BufferGetStatus, Valid)
 
 }  // namespace Rules
 
