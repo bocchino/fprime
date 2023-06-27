@@ -85,5 +85,4 @@ namespace Svc {
     this->pushFromPortEntry_productSendOut(fwBuffer);
   }
 
-
 } // end namespace Svc

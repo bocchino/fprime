@@ -90,7 +90,7 @@ namespace Svc {
       //! Initialize components
       void initComponents();
 
-    private:
+    protected:
 
       // ----------------------------------------------------------------------
       // Variables
