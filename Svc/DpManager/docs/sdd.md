@@ -23,7 +23,7 @@ for deallocation.
 Requirement | Description | Rationale | Verification Method
 ----------- | ----------- | ----------| -------------------
 SVC-DPMANAGER-001 | `Svc::DpManager` shall receive and asynchronously respond to  requests for data product buffers. | One purpose of the component is to provide data product buffers to clients. The asynchronous request-response prevents the client component from blocking on a guarded port. | Unit test
-SVC-DPMANAGER-002 | `Svc::DpManager` shall receive data product buffers and forward them for further processing. | This requirement provides a pass-through capability for sending data product buffers to downstream components. `Svc::DpManager` receives data product input on a port of type  `Fw::DpBufferSend`. This input consists of a container ID _id_ and an `Fw::Buffer` _B_. `Svc::DpManager` sends _B_ on a port of type `Fw::BufferSend`. This port type is used by the standard F Prime components for managing and logging data, e.g., `Svc::BufferLogger`. | Unit test
+SVC-DPMANAGER-002 | `Svc::DpManager` shall receive data product buffers and forward them for further processing. | This requirement provides a pass-through capability for sending data product buffers to downstream components. `Svc::DpManager` receives data product input on a port of type  `Fw::DpSend`. This input consists of a container ID _id_ and an `Fw::Buffer` _B_. `Svc::DpManager` sends _B_ on a port of type `Fw::BufferSend`. This port type is used by the standard F Prime components for managing and logging data, e.g., `Svc::BufferLogger`. | Unit test
 
 ## 3. Design
 
@@ -42,10 +42,10 @@ The diagram below shows the `DpManager` component.
 | Kind | Name | Port Type | Usage |
 |------|------|-----------|-------|
 | `async input` | `schedIn` | `Svc.Sched` | Schedule in port |
-| `async input` | `productRequestIn` | `Fw.DpBufferRequest` | Port for receiving data product buffer requests from a client component |
+| `async input` | `productRequestIn` | `Fw.DpRequest` | Port for receiving data product buffer requests from a client component |
 | `output` | `bufferGetOut` | `Fw.BufferGet` | Port for getting buffers from a Buffer Manager |
-| `output` | `productResponseOut` | `Fw.DpBufferSend` | Port for sending requested data product buffers to a client component |
-| `async input` | `productSendIn` | `Fw.DpBufferSend` | Port for receiving filled data product buffers from a client component |
+| `output` | `productResponseOut` | `Fw.DpSend` | Port for sending requested data product buffers to a client component |
+| `async input` | `productSendIn` | `Fw.DpSend` | Port for receiving filled data product buffers from a client component |
 | `output` | `productSendOut` | `Fw.BufferSend` | Port for sending filled data product buffers to a downstream component |
 | `time get` | `timeGetOut` | `Fw.Time` | Time get port |
 | `telemetry` | `tlmOut` | `Fw.Tlm` | Telemetry port |

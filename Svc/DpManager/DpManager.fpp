@@ -11,16 +11,16 @@ module Svc {
     async input port schedIn: Svc.Sched
 
     @ Port for receiving data product buffer requests from a client component
-    async input port productRequestIn: Fw.DpBufferRequest
+    async input port productRequestIn: Fw.DpRequest
 
     @ Port for getting buffers from a Buffer Manager
     output port bufferGetOut: Fw.BufferGet
 
     @ Port for sending requested data product buffers to a client component
-    output port productResponseOut: Fw.DpBufferSend
+    output port productResponseOut: Fw.DpSend
 
     @ Port for receiving filled data product buffers from a client component
-    async input port productSendIn: Fw.DpBufferSend
+    async input port productSendIn: Fw.DpSend
 
     @ Port for sending filled data product buffers to a downstream component
     output port productSendOut: Fw.BufferSend
