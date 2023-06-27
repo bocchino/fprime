@@ -48,8 +48,21 @@ namespace Svc {
     )
   {
     this->pushFromPortEntry_bufferGetOut(size);
-    // TODO
     Fw::Buffer buffer;
+    switch (this->abstractState.bufferGetStatus) {
+      case AbstractState::BufferGetStatus::VALID:
+        // Construct a valid buffer
+        buffer.setData(this->bufferData);
+        FW_ASSERT(size <= MAX_BUFFER_SIZE);
+        buffer.setSize(size);
+        break;
+      case AbstractState::BufferGetStatus::INVALID:
+        // Leave buffer in invalid state
+        break;
+      default:
+        FW_ASSERT(0);
+        break;
+    }
     return buffer;
   }
 
