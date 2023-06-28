@@ -5,6 +5,7 @@
 #include "Fw/Test/UnitTest.hpp"
 #include "STest/Random/Random.hpp"
 #include "Svc/DpManager/test/ut/Rules/Testers.hpp"
+#include "Svc/DpManager/test/ut/Scenarios/Random.hpp"
 
 namespace Svc {
 
@@ -16,6 +17,12 @@ namespace Svc {
   TEST(BufferGetStatus, Valid) {
     BufferGetStatus::Tester tester;
     tester.Valid();
+  }
+
+  TEST(Scenarios, Random) {
+    const FwSizeType numSteps = 10000;
+    Scenarios::Random::Tester tester;
+    tester.run(numSteps);
   }
 
 }
