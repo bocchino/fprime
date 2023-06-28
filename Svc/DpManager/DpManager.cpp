@@ -30,13 +30,12 @@ void DpManager::productRequestIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdTy
     // Get a buffer
     Fw::Buffer buffer = this->bufferGetOut_out(0, size);
     if ((buffer.getData() != nullptr) && (buffer.getSize() >= size)) {
-      // Buffer is valid
-      this->numSuccessfulAllocations++;
-    }
-    else {
-      // Buffer is invalid
-      this->numFailedAllocations++;
-      this->log_WARNING_HI_BufferAllocationFailed(id);
+        // Buffer is valid
+        this->numSuccessfulAllocations++;
+    } else {
+        // Buffer is invalid
+        this->numFailedAllocations++;
+        this->log_WARNING_HI_BufferAllocationFailed(id);
     }
     // Send buffer on productResponseOut
     this->productResponseOut_out(0, id, buffer);
