@@ -77,7 +77,7 @@ The handler for this port sends out the state variables as telemetry.
 #### 3.5.2. productRequestIn
 
 This port receives container ID _id_ and a requested buffer size _size_.
-It does the following:D
+It does the following:
 
 1. Invoke `bufferGetOut` to get a buffer _B_.
 

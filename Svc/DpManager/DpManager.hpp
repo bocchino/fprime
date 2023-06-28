@@ -62,8 +62,6 @@ class DpManager : public DpManagerComponentBase {
 
     //! The number of bytes handled
     U32 numBytes;
-
-
 };
 
 }  // end namespace Svc
