@@ -13,23 +13,28 @@ namespace Svc {
 // Construction, initialization, and destruction
 // ----------------------------------------------------------------------
 
-DpManager ::DpManager(const char* const compName) : DpManagerComponentBase(compName) {}
+DpManager::DpManager(const char* const compName)
+    : DpManagerComponentBase(compName),
+      numSuccessfulAllocations(0),
+      numFailedAllocations(0),
+      numDataProducts(0),
+      numBytes(0) {}
 
-DpManager ::~DpManager() {}
+DpManager::~DpManager() {}
 
 // ----------------------------------------------------------------------
 // Handler implementations for user-defined typed input ports
 // ----------------------------------------------------------------------
 
-void DpManager ::productRequestIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, FwSizeType size) {
+void DpManager::productRequestIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, FwSizeType size) {
     // TODO
 }
 
-void DpManager ::productSendIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, const Fw::Buffer& buffer) {
+void DpManager::productSendIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, const Fw::Buffer& buffer) {
     // TODO
 }
 
-void DpManager ::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
+void DpManager::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
     // TODO
 }
 

@@ -1,0 +1,5 @@
+#!/bin/sh -e
+
+fprime-util build --ut
+cp ../../build-fprime-automatic-native-ut/bin/`uname`/Svc_DpManager_ut_exe .
+./Svc_DpManager_ut_exe
