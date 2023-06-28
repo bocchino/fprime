@@ -27,7 +27,19 @@ DpManager::~DpManager() {}
 // ----------------------------------------------------------------------
 
 void DpManager::productRequestIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, FwSizeType size) {
-    // TODO
+    // Get a buffer
+    Fw::Buffer buffer = this->bufferGetOut_out(0, size);
+    if ((buffer.getData() != nullptr) && (buffer.getSize() >= size)) {
+      // Buffer is valid
+      this->numSuccessfulAllocations++;
+    }
+    else {
+      // Buffer is invalid
+      this->numFailedAllocations++;
+      this->log_WARNING_HI_BufferAllocationFailed(id);
+    }
+    // Send buffer on productResponseOut
+    this->productResponseOut_out(0, id, buffer);
 }
 
 void DpManager::productSendIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, const Fw::Buffer& buffer) {
@@ -35,7 +47,11 @@ void DpManager::productSendIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType 
 }
 
 void DpManager::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
-    // TODO
+    // Emit telemetry
+    this->tlmWrite_NumSuccessfulAllocations(this->numSuccessfulAllocations);
+    this->tlmWrite_NumFailedAllocations(this->numFailedAllocations);
+    this->tlmWrite_NumDataProducts(this->numDataProducts);
+    this->tlmWrite_NumBytes(this->numBytes);
 }
 
 }  // end namespace Svc

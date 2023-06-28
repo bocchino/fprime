@@ -1,5 +1,9 @@
 #!/bin/sh -e
 
+dir=`dirname $0`
+echo $dir
+
 fprime-util build --ut
 cp ../../build-fprime-automatic-native-ut/bin/`uname`/Svc_DpManager_ut_exe .
+find ../.. -name '*.gcda' | xargs rm
 ./Svc_DpManager_ut_exe
