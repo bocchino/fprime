@@ -27,6 +27,8 @@ DpManager::~DpManager() {}
 // ----------------------------------------------------------------------
 
 void DpManager::productRequestIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, FwSizeType size) {
+    // portNum is unused
+    (void) portNum;
     // Get a buffer
     Fw::Buffer buffer = this->bufferGetOut_out(0, size);
     if ((buffer.getData() != nullptr) && (buffer.getSize() >= size)) {
@@ -42,7 +44,12 @@ void DpManager::productRequestIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdTy
 }
 
 void DpManager::productSendIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, const Fw::Buffer& buffer) {
-    // TODO
+    // portNum and id are unused
+    (void) portNum;
+    (void) id;
+    // Send the buffer on productSendOut
+    Fw::Buffer sendBuffer = buffer;
+    this->productSendOut_out(0, sendBuffer);
 }
 
 void DpManager::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
