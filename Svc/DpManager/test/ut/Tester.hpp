@@ -66,11 +66,17 @@ class Tester : public DpManagerGTestBase {
     // Helper methods
     // ----------------------------------------------------------------------
 
+    //! Check telemetry
+    void checkTelemetry();
+
     //! Connect ports
     void connectPorts();
 
     //! Initialize components
     void initComponents();
+
+    //! Update telemetry
+    void updateTelemetry();
 
   PROTECTED:
     // ----------------------------------------------------------------------

@@ -32,13 +32,34 @@ class AbstractState {
         INVALID
     };
 
+    //! A model of an on-change telemetry channel
+    template <typename T>
+    class OnChangeChannel {
+      public:
+        OnChangeChannel(T value) : isValid(false), value(value) {}
+        bool valueChanged(T newValue) const { return (!this->isValid) || (newValue != this->value); }
+        void update(T newValue) {
+            this->value = newValue;
+            this->isValid = true;
+        }
+
+      PRIVATE:
+        bool isValid;
+        T value;
+    };
+
   public:
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
 
     //! Construct an AbstractState object
-    AbstractState(void) : bufferGetStatus(BufferGetStatus::VALID) {}
+    AbstractState(void)
+        : bufferGetStatus(BufferGetStatus::VALID),
+          numSuccessfulAllocations(0),
+          numFailedAllocations(0),
+          numDataProducts(0),
+          numBytes(0) {}
 
   public:
     // ----------------------------------------------------------------------
@@ -47,6 +68,18 @@ class AbstractState {
 
     //! The buffer get status
     BufferGetStatus bufferGetStatus;
+
+    //! The number of successful buffer allocations
+    OnChangeChannel<U32> numSuccessfulAllocations;
+
+    //! The number of failed buffer allocations
+    OnChangeChannel<U32> numFailedAllocations;
+
+    //! The number of data products handled
+    OnChangeChannel<U32> numDataProducts;
+
+    //! The number of bytes handled
+    OnChangeChannel<U32> numBytes;
 };
 
 }  // namespace Svc
