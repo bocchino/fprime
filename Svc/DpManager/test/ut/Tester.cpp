@@ -60,7 +60,7 @@ void Tester ::from_productSendOut_handler(const NATIVE_INT_TYPE portNum, Fw::Buf
         const auto changeStatus = this->abstractState.VAR.updatePrev(); \
         if (changeStatus == AbstractState::ChangeStatus::CHANGED) {     \
             ASSERT_TLM_##NAME##_SIZE(1);                                \
-            ASSERT_TLM_##NAME(0, this->component.VAR);                  \
+            ASSERT_TLM_##NAME(0, this->abstractState.VAR.value);        \
         } else {                                                        \
             ASSERT_TLM_##NAME##_SIZE(0);                                \
         }                                                               \

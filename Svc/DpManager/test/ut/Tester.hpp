@@ -14,7 +14,7 @@
 namespace Svc {
 
 class Tester : public DpManagerGTestBase {
-  PRIVATE:
+  private:
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
@@ -40,7 +40,7 @@ class Tester : public DpManagerGTestBase {
     //! Destroy object Tester
     ~Tester();
 
-  PRIVATE:
+  private:
     // ----------------------------------------------------------------------
     // Handlers for typed from ports
     // ----------------------------------------------------------------------
@@ -61,7 +61,7 @@ class Tester : public DpManagerGTestBase {
                                      Fw::Buffer& fwBuffer            //!< The buffer
     );
 
-  PRIVATE:
+  private:
     // ----------------------------------------------------------------------
     // Helper methods
     // ----------------------------------------------------------------------
@@ -78,7 +78,7 @@ class Tester : public DpManagerGTestBase {
     //! Update telemetry
     void updateTelemetry();
 
-  PROTECTED:
+  protected:
     // ----------------------------------------------------------------------
     // Variables
     // ----------------------------------------------------------------------
