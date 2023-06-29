@@ -90,7 +90,11 @@ It does the following:
 #### 3.5.3. productSendIn
 
 This port receives a data product ID _I_ and a buffer _B_.
-It sends _B_ on `productSendOut`.
+It does the following:
+
+1. Update `numDataProducts` and `numBytes`.
+
+1. Send _B_ on `productSendOut`.
 
 ## 4. Ground Interface
 

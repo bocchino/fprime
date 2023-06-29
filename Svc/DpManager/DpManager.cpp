@@ -47,6 +47,9 @@ void DpManager::productSendIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType 
     // portNum and id are unused
     (void) portNum;
     (void) id;
+    // Update state variables
+    this->numDataProducts++;
+    this->numBytes += buffer.getSize();
     // Send the buffer on productSendOut
     Fw::Buffer sendBuffer = buffer;
     this->productSendOut_out(0, sendBuffer);
