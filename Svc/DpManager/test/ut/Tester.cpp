@@ -55,15 +55,15 @@ void Tester ::from_productSendOut_handler(const NATIVE_INT_TYPE portNum, Fw::Buf
 // Helper methods
 // ----------------------------------------------------------------------
 
-#define TESTER_CHECK_CHANNEL(VAR, NAME)                                                \
-    {                                                                                  \
-        bool valueChanged = this->abstractState.VAR.valueChanged(this->component.VAR); \
-        if (valueChanged) {                                                            \
-            ASSERT_TLM_##NAME##_SIZE(1);                                               \
-            ASSERT_TLM_##NAME(0, this->component.VAR);                                 \
-        } else {                                                                       \
-            ASSERT_TLM_##NAME##_SIZE(0);                                               \
-        }                                                                              \
+#define TESTER_CHECK_CHANNEL(VAR, NAME)                                 \
+    {                                                                   \
+        const auto changeStatus = this->abstractState.VAR.updatePrev(); \
+        if (changeStatus == AbstractState::ChangeStatus::CHANGED) {     \
+            ASSERT_TLM_##NAME##_SIZE(1);                                \
+            ASSERT_TLM_##NAME(0, this->component.VAR);                  \
+        } else {                                                        \
+            ASSERT_TLM_##NAME##_SIZE(0);                                \
+        }                                                               \
     }
 
 void Tester::checkTelemetry() {
@@ -71,15 +71,6 @@ void Tester::checkTelemetry() {
     TESTER_CHECK_CHANNEL(numFailedAllocations, NumFailedAllocations);
     TESTER_CHECK_CHANNEL(numDataProducts, NumDataProducts);
     TESTER_CHECK_CHANNEL(numBytes, NumBytes);
-}
-
-#define TESTER_UPDATE_CHANNEL(VAR) this->abstractState.VAR.update(this->component.VAR);
-
-void Tester::updateTelemetry() {
-    TESTER_UPDATE_CHANNEL(numSuccessfulAllocations);
-    TESTER_UPDATE_CHANNEL(numFailedAllocations);
-    TESTER_UPDATE_CHANNEL(numDataProducts);
-    TESTER_UPDATE_CHANNEL(numBytes);
 }
 
 }  // end namespace Svc

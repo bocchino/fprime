@@ -32,20 +32,25 @@ class AbstractState {
         INVALID
     };
 
+    //! Change status
+    enum class ChangeStatus { CHANGED, NOT_CHANGED };
+
     //! A model of an on-change telemetry channel
     template <typename T>
     class OnChangeChannel {
       public:
-        OnChangeChannel(T value) : isValid(false), value(value) {}
-        bool valueChanged(T newValue) const { return (!this->isValid) || (newValue != this->value); }
-        void update(T newValue) {
-            this->value = newValue;
-            this->isValid = true;
+        OnChangeChannel(T value) : value(value), prevIsValid(false), prev(value) {}
+        ChangeStatus updatePrev() { 
+          const auto status = ((!this->prevIsValid) || (this->value != this->prev)) ?
+            ChangeStatus::CHANGED : ChangeStatus::NOT_CHANGED;
+          this->prev = this->value;
+          return status;
         }
-
-      PRIVATE:
-        bool isValid;
+      public:
         T value;
+      PRIVATE:
+        bool prevIsValid;
+        T prev;
     };
 
   public:
