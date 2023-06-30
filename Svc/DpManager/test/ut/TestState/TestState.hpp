@@ -31,6 +31,7 @@ class TestState : public Tester {
     TEST_STATE_DEF_RULE(BufferGetStatus, Valid)
     TEST_STATE_DEF_RULE(ProductRequestIn, BufferInvalid)
     TEST_STATE_DEF_RULE(ProductRequestIn, BufferValid)
+    TEST_STATE_DEF_RULE(ProductSendIn, OK)
     TEST_STATE_DEF_RULE(SchedIn, OK)
 };
 

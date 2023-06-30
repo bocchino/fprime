@@ -37,6 +37,7 @@ RULES_DEF_RULE(BufferGetStatus, Invalid)
 RULES_DEF_RULE(BufferGetStatus, Valid)
 RULES_DEF_RULE(ProductRequestIn, BufferInvalid)
 RULES_DEF_RULE(ProductRequestIn, BufferValid)
+RULES_DEF_RULE(ProductSendIn, OK)
 RULES_DEF_RULE(SchedIn, OK)
 
 }  // namespace Rules

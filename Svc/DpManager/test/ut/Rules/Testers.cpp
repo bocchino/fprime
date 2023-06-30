@@ -22,6 +22,8 @@ namespace Svc {
 
     ProductRequestIn::Tester validBuffer;
 
+    ProductSendIn::Tester productSendIn;
+
     SchedIn::Tester schedIn;
     
   }

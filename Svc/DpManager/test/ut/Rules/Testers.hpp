@@ -15,6 +15,7 @@
 
 #include "Svc/DpManager/test/ut/Rules/BufferGetStatus.hpp"
 #include "Svc/DpManager/test/ut/Rules/ProductRequestIn.hpp"
+#include "Svc/DpManager/test/ut/Rules/ProductSendIn.hpp"
 #include "Svc/DpManager/test/ut/Rules/SchedIn.hpp"
 
 namespace Svc {
@@ -27,8 +28,9 @@ namespace Svc {
 
     extern ProductRequestIn::Tester validBuffer;
 
-    extern SchedIn::Tester schedIn;
+    extern ProductSendIn::Tester productSendIn;
 
+    extern SchedIn::Tester schedIn;
     
   }
 
