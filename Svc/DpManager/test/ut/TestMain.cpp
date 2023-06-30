@@ -29,6 +29,11 @@ namespace Svc {
     tester.BufferValid();
   }
 
+  TEST(ProductSendIn, OK) {
+    ProductSendIn::Tester tester;
+    tester.OK();
+  }
+
   TEST(SchedIn, OK) {
     SchedIn::Tester tester;
     tester.OK();

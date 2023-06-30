@@ -29,6 +29,7 @@ Rules::BufferGetStatus::Invalid bufferGetStatusInvalid;
 Rules::BufferGetStatus::Valid bufferGetStatusValid;
 Rules::ProductRequestIn::BufferInvalid productRequestInBufferInvalid;
 Rules::ProductRequestIn::BufferValid productRequestInBufferValid;
+Rules::ProductSendIn::OK productSendInOK;
 Rules::SchedIn::OK schedInOK;
 
 // ----------------------------------------------------------------------
@@ -41,6 +42,7 @@ void Tester ::run(FwSizeType maxNumSteps) {
         &bufferGetStatusValid,
         &productRequestInBufferInvalid,
         &productRequestInBufferValid,
+        &productSendInOK,
         &schedInOK,
     };
     STest::RandomScenario<TestState> scenario("RandomScenario", rules,
