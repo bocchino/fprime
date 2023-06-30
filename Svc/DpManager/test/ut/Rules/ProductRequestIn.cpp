@@ -21,7 +21,7 @@ namespace Svc {
 // ----------------------------------------------------------------------
 
 bool TestState::precondition__ProductRequestIn__BufferValid() const {
-    return true;
+    return this->abstractState.bufferGetStatus == AbstractState::BufferGetStatus::VALID;
 }
 
 void TestState::action__ProductRequestIn__BufferValid() {
@@ -29,7 +29,7 @@ void TestState::action__ProductRequestIn__BufferValid() {
 }
 
 bool TestState::precondition__ProductRequestIn__BufferInvalid() const {
-    return true;
+    return this->abstractState.bufferGetStatus == AbstractState::BufferGetStatus::INVALID;
 }
 
 void TestState ::action__ProductRequestIn__BufferInvalid() {
