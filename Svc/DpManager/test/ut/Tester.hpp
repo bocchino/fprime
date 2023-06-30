@@ -61,22 +61,26 @@ class Tester : public DpManagerGTestBase {
                                      Fw::Buffer& fwBuffer            //!< The buffer
     );
 
-  private:
+  protected:
     // ----------------------------------------------------------------------
-    // Helper methods
+    // Protected instance methods
     // ----------------------------------------------------------------------
-
     //! Check telemetry
     void checkTelemetry();
+
+    //! Update telemetry
+    void updateTelemetry();
+
+  private:
+    // ----------------------------------------------------------------------
+    // Private helper methods
+    // ----------------------------------------------------------------------
 
     //! Connect ports
     void connectPorts();
 
     //! Initialize components
     void initComponents();
-
-    //! Update telemetry
-    void updateTelemetry();
 
   protected:
     // ----------------------------------------------------------------------

@@ -10,6 +10,7 @@
 // of Technology Transfer at the California Institute of Technology.
 // ======================================================================
 
+#include "STest/Pick/Pick.hpp"
 #include "Svc/DpManager/test/ut/Rules/SchedIn.hpp"
 #include "Svc/DpManager/test/ut/Rules/Testers.hpp"
 
@@ -24,7 +25,14 @@ bool TestState ::precondition__SchedIn__OK() const {
 }
 
 void TestState ::action__SchedIn__OK() {
-    // TODO
+    // Clear history
+    this->clearHistory();
+    // Invoke schedIn port
+    const U32 context = STest::Pick::any();
+    this->invoke_to_schedIn(0, context);
+    this->component.doDispatch();
+    // Check telemetry
+    this->checkTelemetry();
 }
 
 namespace SchedIn {
