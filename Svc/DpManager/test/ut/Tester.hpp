@@ -68,9 +68,6 @@ class Tester : public DpManagerGTestBase {
     //! Check telemetry
     void checkTelemetry();
 
-    //! Update telemetry
-    void updateTelemetry();
-
   private:
     // ----------------------------------------------------------------------
     // Private helper methods

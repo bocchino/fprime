@@ -55,22 +55,22 @@ void Tester ::from_productSendOut_handler(const NATIVE_INT_TYPE portNum, Fw::Buf
 // Helper methods
 // ----------------------------------------------------------------------
 
-#define TESTER_CHECK_CHANNEL(VAR, NAME)                                 \
+#define TESTER_CHECK_CHANNEL(NAME)                                 \
     {                                                                   \
-        const auto changeStatus = this->abstractState.VAR.updatePrev(); \
+        const auto changeStatus = this->abstractState.NAME.updatePrev(); \
         if (changeStatus == AbstractState::ChangeStatus::CHANGED) {     \
             ASSERT_TLM_##NAME##_SIZE(1);                                \
-            ASSERT_TLM_##NAME(0, this->abstractState.VAR.value);        \
+            ASSERT_TLM_##NAME(0, this->abstractState.NAME.value);        \
         } else {                                                        \
             ASSERT_TLM_##NAME##_SIZE(0);                                \
         }                                                               \
     }
 
 void Tester::checkTelemetry() {
-    TESTER_CHECK_CHANNEL(numSuccessfulAllocations, NumSuccessfulAllocations);
-    TESTER_CHECK_CHANNEL(numFailedAllocations, NumFailedAllocations);
-    TESTER_CHECK_CHANNEL(numDataProducts, NumDataProducts);
-    TESTER_CHECK_CHANNEL(numBytes, NumBytes);
+    TESTER_CHECK_CHANNEL(NumSuccessfulAllocations);
+    TESTER_CHECK_CHANNEL(NumFailedAllocations);
+    TESTER_CHECK_CHANNEL(NumDataProducts);
+    TESTER_CHECK_CHANNEL(NumBytes);
 }
 
 }  // end namespace Svc

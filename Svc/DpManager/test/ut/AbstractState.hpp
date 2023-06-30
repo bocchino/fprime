@@ -105,10 +105,10 @@ class AbstractState {
     //! Construct an AbstractState object
     AbstractState(void)
         : bufferGetStatus(BufferGetStatus::VALID),
-          numSuccessfulAllocations(0),
-          numFailedAllocations(0),
-          numDataProducts(0),
-          numBytes(0) {}
+          NumSuccessfulAllocations(0),
+          NumFailedAllocations(0),
+          NumDataProducts(0),
+          NumBytes(0) {}
 
   public:
     // ----------------------------------------------------------------------
@@ -119,16 +119,16 @@ class AbstractState {
     BufferGetStatus bufferGetStatus;
 
     //! The number of successful buffer allocations
-    OnChangeChannel<U32> numSuccessfulAllocations;
+    OnChangeChannel<U32> NumSuccessfulAllocations;
 
     //! The number of failed buffer allocations
-    OnChangeChannel<U32> numFailedAllocations;
+    OnChangeChannel<U32> NumFailedAllocations;
 
     //! The number of data products handled
-    OnChangeChannel<U32> numDataProducts;
+    OnChangeChannel<U32> NumDataProducts;
 
     //! The number of bytes handled
-    OnChangeChannel<U32> numBytes;
+    OnChangeChannel<U32> NumBytes;
 };
 
 }  // namespace Svc
