@@ -8,6 +8,7 @@ register_fprime_module()
 set(UT_SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/DpManager.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/test/ut/Rules/BufferGetStatus.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/test/ut/Rules/ProductRequestIn.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/test/ut/Rules/SchedIn.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/test/ut/Rules/Testers.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/test/ut/Scenarios/Random.cpp"

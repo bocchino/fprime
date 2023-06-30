@@ -19,6 +19,16 @@ namespace Svc {
     tester.Valid();
   }
 
+  TEST(ProductRequestIn, BufferInvalid) {
+    ProductRequestIn::Tester tester;
+    tester.BufferInvalid();
+  }
+
+  TEST(ProductRequestIn, BufferValid) {
+    ProductRequestIn::Tester tester;
+    tester.BufferValid();
+  }
+
   TEST(SchedIn, OK) {
     SchedIn::Tester tester;
     tester.OK();
