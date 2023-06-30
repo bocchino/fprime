@@ -19,6 +19,11 @@ namespace Svc {
     tester.Valid();
   }
 
+  TEST(SchedIn, OK) {
+    SchedIn::Tester tester;
+    tester.OK();
+  }
+
   TEST(Scenarios, Random) {
     const FwSizeType numSteps = 10000;
     Scenarios::Random::Tester tester;

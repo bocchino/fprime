@@ -3,7 +3,7 @@
 dir=`dirname $0`
 cd $dir
 
-fprime-util build --ut
+./build
 cp ../../build-fprime-automatic-native-ut/bin/`uname`/Svc_DpManager_ut_exe .
 find ../.. -name '*.gcda' | xargs rm
 ./Svc_DpManager_ut_exe

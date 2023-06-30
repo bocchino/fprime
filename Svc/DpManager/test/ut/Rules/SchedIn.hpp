@@ -1,7 +1,7 @@
 // ====================================================================== 
-// \title  BufferGetStatus.hpp
+// \title  SchedIn.hpp
 // \author Rob Bocchino
-// \brief  BufferGetStatus class interface
+// \brief  SchedIn class interface
 //
 // \copyright
 // Copyright (C) 2023 California Institute of Technology.
@@ -10,15 +10,15 @@
 // of Technology Transfer at the California Institute of Technology.
 // ======================================================================
 
-#ifndef Svc_BufferGetStatus_HPP
-#define Svc_BufferGetStatus_HPP
+#ifndef Svc_SchedIn_HPP
+#define Svc_SchedIn_HPP
 
 #include "Svc/DpManager/test/ut/Rules/Rules.hpp"
 #include "Svc/DpManager/test/ut/TestState/TestState.hpp"
 
 namespace Svc {
 
-  namespace BufferGetStatus {
+  namespace SchedIn {
 
     class Tester {
 
@@ -28,11 +28,8 @@ namespace Svc {
         // Tests
         // ----------------------------------------------------------------------
 
-        //! Valid
-        void Valid();
-
-        //! Invalid
-        void Invalid();
+        //! OK
+        void OK();
 
       public:
 
@@ -40,11 +37,8 @@ namespace Svc {
         // Rules
         // ----------------------------------------------------------------------
 
-        //! Rule BufferGetStatus::Valid
-        Rules::BufferGetStatus::Valid ruleValid;
-
-        //! Rule BufferGetStatus::Invalid
-        Rules::BufferGetStatus::Invalid ruleInvalid;
+        //! Rule SchedIn::OK
+        Rules::SchedIn::OK ruleOK;
 
       public:
 

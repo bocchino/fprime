@@ -19,21 +19,21 @@ namespace Svc {
 // Rule definitions
 // ----------------------------------------------------------------------
 
-bool TestState ::precondition__BufferGetStatus__Valid(void) const {
+bool TestState ::precondition__BufferGetStatus__Valid() const {
     bool result = (this->abstractState.bufferGetStatus != AbstractState::BufferGetStatus::VALID);
     return result;
 }
 
-void TestState ::action__BufferGetStatus__Valid(void) {
+void TestState ::action__BufferGetStatus__Valid() {
     this->abstractState.bufferGetStatus = AbstractState::BufferGetStatus::VALID;
 }
 
-bool TestState ::precondition__BufferGetStatus__Invalid(void) const {
+bool TestState ::precondition__BufferGetStatus__Invalid() const {
     bool result = (this->abstractState.bufferGetStatus != AbstractState::BufferGetStatus::INVALID);
     return result;
 }
 
-void TestState ::action__BufferGetStatus__Invalid(void) {
+void TestState ::action__BufferGetStatus__Invalid() {
     this->abstractState.bufferGetStatus = AbstractState::BufferGetStatus::INVALID;
 }
 
@@ -43,12 +43,12 @@ namespace BufferGetStatus {
 // Tests
 // ----------------------------------------------------------------------
 
-void Tester ::Valid(void) {
+void Tester ::Valid() {
     this->ruleInvalid.apply(this->testState);
     this->ruleValid.apply(this->testState);
 }
 
-void Tester ::Invalid(void) {
+void Tester ::Invalid() {
     this->ruleInvalid.apply(this->testState);
 }
 

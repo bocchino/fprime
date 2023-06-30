@@ -14,12 +14,15 @@
 #define Svc_Testers_HPP
 
 #include "Svc/DpManager/test/ut/Rules/BufferGetStatus.hpp"
+#include "Svc/DpManager/test/ut/Rules/SchedIn.hpp"
 
 namespace Svc {
 
   namespace Testers {
     
     extern BufferGetStatus::Tester bufferGetStatus;
+
+    extern SchedIn::Tester schedIn;
     
   }
 

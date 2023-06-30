@@ -27,6 +27,7 @@ namespace Random {
 
 Rules::BufferGetStatus::Invalid bufferGetStatusInvalid;
 Rules::BufferGetStatus::Valid bufferGetStatusValid;
+Rules::SchedIn::OK schedInOK;
 
 // ----------------------------------------------------------------------
 // Tests
@@ -36,6 +37,7 @@ void Tester ::run(FwSizeType maxNumSteps) {
     STest::Rule<TestState>* rules[] = {
         &bufferGetStatusValid,
         &bufferGetStatusInvalid,
+        &schedInOK,
     };
     STest::RandomScenario<TestState> scenario("RandomScenario", rules,
                                               sizeof(rules) / sizeof(STest::RandomScenario<TestState>*));

@@ -21,7 +21,7 @@
     namespace GROUP_NAME {                                                                                      \
                                                                                                                 \
     struct RULE_NAME : public STest::Rule<TestState> {                                                          \
-        RULE_NAME(void) : Rule<TestState>(#GROUP_NAME "." #RULE_NAME) {}                                        \
+        RULE_NAME() : Rule<TestState>(#GROUP_NAME "." #RULE_NAME) {}                                            \
                                                                                                                 \
         bool precondition(const TestState& state) { return state.precondition__##GROUP_NAME##__##RULE_NAME(); } \
                                                                                                                 \
@@ -35,6 +35,7 @@ namespace Rules {
 
 RULES_DEF_RULE(BufferGetStatus, Invalid)
 RULES_DEF_RULE(BufferGetStatus, Valid)
+RULES_DEF_RULE(SchedIn, OK)
 
 }  // namespace Rules
 

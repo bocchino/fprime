@@ -29,6 +29,7 @@ class TestState : public Tester {
 
     TEST_STATE_DEF_RULE(BufferGetStatus, Invalid)
     TEST_STATE_DEF_RULE(BufferGetStatus, Valid)
+    TEST_STATE_DEF_RULE(SchedIn, OK)
 };
 
 }  // namespace Svc

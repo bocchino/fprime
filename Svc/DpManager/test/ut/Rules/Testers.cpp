@@ -17,6 +17,8 @@ namespace Svc {
   namespace Testers {
     
     BufferGetStatus::Tester bufferGetStatus;
+
+    SchedIn::Tester schedIn;
     
   }
 
