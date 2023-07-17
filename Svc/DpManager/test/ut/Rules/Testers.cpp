@@ -18,9 +18,7 @@ namespace Svc {
     
     BufferGetStatus::Tester bufferGetStatus;
 
-    ProductRequestIn::Tester invalidBuffer;
-
-    ProductRequestIn::Tester validBuffer;
+    ProductRequestIn::Tester productRequestIn;
 
     ProductSendIn::Tester productSendIn;
 

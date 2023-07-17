@@ -24,9 +24,7 @@ namespace Svc {
     
     extern BufferGetStatus::Tester bufferGetStatus;
 
-    extern ProductRequestIn::Tester invalidBuffer;
-
-    extern ProductRequestIn::Tester validBuffer;
+    extern ProductRequestIn::Tester productRequestIn;
 
     extern ProductSendIn::Tester productSendIn;
 

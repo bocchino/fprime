@@ -10,6 +10,8 @@
 // of Technology Transfer at the California Institute of Technology.
 // ======================================================================
 
+#include <limits>
+
 #include "STest/Pick/Pick.hpp"
 #include "Svc/DpManager/test/ut/Rules/ProductRequestIn.hpp"
 #include "Svc/DpManager/test/ut/Rules/Testers.hpp"
@@ -33,6 +35,22 @@ bool TestState::precondition__ProductRequestIn__BufferInvalid() const {
 }
 
 void TestState ::action__ProductRequestIn__BufferInvalid() {
+    // Clear history
+    this->clearHistory();
+    // Send the invocation
+    const FwDpIdType id = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpIdType>::max());
+    const FwSizeType size = STest::Pick::lowerUpper(1, MAX_BUFFER_SIZE);
+    this->invoke_to_productRequestIn(0, id, size);
+    this->component.doDispatch();
+    // Check events
+    ASSERT_EVENTS_SIZE(1);
+    ASSERT_EVENTS_BufferAllocationFailed(0, id);
+    // Update test state
+    ++this->abstractState.NumFailedAllocations.value;
+    // Check product response out
+    ASSERT_FROM_PORT_HISTORY_SIZE(2);
+    ASSERT_from_bufferGetOut_SIZE(1);
+    ASSERT_from_productResponseOut_SIZE(1);
     // TODO
 }
 
@@ -47,7 +65,9 @@ void Tester ::BufferValid() {
 }
 
 void Tester ::BufferInvalid() {
-    // TODO
+    Testers::bufferGetStatus.ruleInvalid.apply(this->testState);
+    this->ruleBufferInvalid.apply(this->testState);
+    Testers::schedIn.ruleOK.apply(this->testState);
 }
 
 }  // namespace ProductRequestIn
