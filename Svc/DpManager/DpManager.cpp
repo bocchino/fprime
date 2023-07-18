@@ -34,11 +34,11 @@ void DpManager::productRequestIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdTy
     Fw::Success status(Fw::Success::FAILURE);
     if (buffer.isValid()) {
         // Buffer is valid
-        this->numSuccessfulAllocations++;
+        ++this->numSuccessfulAllocations;
         status = Fw::Success::SUCCESS;
     } else {
         // Buffer is invalid
-        this->numFailedAllocations++;
+        ++this->numFailedAllocations;
         this->log_WARNING_HI_BufferAllocationFailed(id);
     }
     // Send buffer on productResponseOut
@@ -50,7 +50,7 @@ void DpManager::productSendIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType 
     (void) portNum;
     (void) id;
     // Update state variables
-    this->numDataProducts++;
+    ++this->numDataProducts;
     this->numBytes += buffer.getSize();
     // Send the buffer on productSendOut
     Fw::Buffer sendBuffer = buffer;
