@@ -47,11 +47,14 @@ void TestState ::action__ProductRequestIn__BufferInvalid() {
     ASSERT_EVENTS_BufferAllocationFailed(0, id);
     // Update test state
     ++this->abstractState.NumFailedAllocations.value;
-    // Check product response out
+    // Check port history
     ASSERT_FROM_PORT_HISTORY_SIZE(2);
+    // Check buffer get out
     ASSERT_from_bufferGetOut_SIZE(1);
+    // Check product response out
     ASSERT_from_productResponseOut_SIZE(1);
-    // TODO
+    Fw::Buffer invalidBuffer;
+    ASSERT_from_productResponseOut(0, id, invalidBuffer);
 }
 
 namespace ProductRequestIn {
