@@ -20,5 +20,34 @@
 | `NumDataProducts` | `OnChangeChannel<U32>` | The number of data products handled | 0 |
 | `NumBytes` | `OnChangeChannel<U32>` | The number of bytes handled | 0 |
 
-## 2. Rules
+## 2. Rule Groups
 
+### 2.1. BufferGetStatus
+
+This rule group manages the buffer get status in the test harness.
+
+#### 2.1.1. Valid
+
+TODO
+
+#### 2.1.2. Invalid
+
+TODO
+
+### 2.2. ProductRequestIn
+
+This rule group sends test input to the `productRequestIn` port.
+
+#### BufferInvalid
+
+TODO
+
+#### BufferValid
+
+TODO
+
+### 2.3. SchedIn
+
+This rule group sends test input to the `schedIn` port.
+
+#### OK
