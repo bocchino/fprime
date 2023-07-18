@@ -38,11 +38,11 @@ TODO
 
 This rule group sends test input to the `productRequestIn` port.
 
-#### BufferInvalid
+#### 2.2.1. BufferInvalid
 
 TODO
 
-#### BufferValid
+#### 2.2.2. BufferValid
 
 TODO
 
@@ -50,4 +50,4 @@ TODO
 
 This rule group sends test input to the `schedIn` port.
 
-#### OK
+#### 2.3.1. OK
