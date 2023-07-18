@@ -27,7 +27,26 @@ bool TestState::precondition__ProductRequestIn__BufferValid() const {
 }
 
 void TestState::action__ProductRequestIn__BufferValid() {
-    // TODO
+    // Clear history
+    this->clearHistory();
+    // Send the invocation
+    const FwDpIdType id = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpIdType>::max());
+    const FwSizeType size = STest::Pick::lowerUpper(1, MAX_BUFFER_SIZE);
+    this->invoke_to_productRequestIn(0, id, size);
+    this->component.doDispatch();
+    // Check events
+    ASSERT_EVENTS_SIZE(0);
+    // Update test state
+    ++this->abstractState.NumSuccessfulAllocations.value;
+    // Check port history
+    ASSERT_FROM_PORT_HISTORY_SIZE(2);
+    // Check buffer get out
+    ASSERT_from_bufferGetOut_SIZE(1);
+    // Check product response out
+    ASSERT_from_productResponseOut_SIZE(1);
+    const Fw::Success failure(Fw::Success::SUCCESS);
+    const Fw::Buffer buffer(this->bufferData, size);
+    ASSERT_from_productResponseOut(0, id, buffer, failure);
 }
 
 bool TestState::precondition__ProductRequestIn__BufferInvalid() const {
@@ -53,9 +72,9 @@ void TestState ::action__ProductRequestIn__BufferInvalid() {
     ASSERT_from_bufferGetOut_SIZE(1);
     // Check product response out
     ASSERT_from_productResponseOut_SIZE(1);
-    const Fw::Buffer invalidBuffer;
-    const Fw::Success failure(Fw::Success::FAILURE);
-    ASSERT_from_productResponseOut(0, id, invalidBuffer, failure);
+    const Fw::Buffer buffer;
+    const Fw::Success status(Fw::Success::FAILURE);
+    ASSERT_from_productResponseOut(0, id, buffer, status);
 }
 
 namespace ProductRequestIn {
@@ -65,7 +84,8 @@ namespace ProductRequestIn {
 // ----------------------------------------------------------------------
 
 void Tester ::BufferValid() {
-    // TODO
+    this->ruleBufferValid.apply(this->testState);
+    Testers::schedIn.ruleOK.apply(this->testState);
 }
 
 void Tester ::BufferInvalid() {
