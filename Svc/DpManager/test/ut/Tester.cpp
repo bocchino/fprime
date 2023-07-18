@@ -43,8 +43,11 @@ Fw::Buffer Tester ::from_bufferGetOut_handler(const NATIVE_INT_TYPE portNum, U32
     return buffer;
 }
 
-void Tester ::from_productResponseOut_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, const Fw::Buffer& buffer) {
-    this->pushFromPortEntry_productResponseOut(id, buffer);
+void Tester ::from_productResponseOut_handler(const NATIVE_INT_TYPE portNum,
+                                              FwDpIdType id,
+                                              const Fw::Buffer& buffer,
+                                              const Fw::Success& status) {
+    this->pushFromPortEntry_productResponseOut(id, buffer, status);
 }
 
 void Tester ::from_productSendOut_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& fwBuffer) {
@@ -55,15 +58,15 @@ void Tester ::from_productSendOut_handler(const NATIVE_INT_TYPE portNum, Fw::Buf
 // Helper methods
 // ----------------------------------------------------------------------
 
-#define TESTER_CHECK_CHANNEL(NAME)                                 \
-    {                                                                   \
+#define TESTER_CHECK_CHANNEL(NAME)                                       \
+    {                                                                    \
         const auto changeStatus = this->abstractState.NAME.updatePrev(); \
-        if (changeStatus == AbstractState::ChangeStatus::CHANGED) {     \
-            ASSERT_TLM_##NAME##_SIZE(1);                                \
+        if (changeStatus == AbstractState::ChangeStatus::CHANGED) {      \
+            ASSERT_TLM_##NAME##_SIZE(1);                                 \
             ASSERT_TLM_##NAME(0, this->abstractState.NAME.value);        \
-        } else {                                                        \
-            ASSERT_TLM_##NAME##_SIZE(0);                                \
-        }                                                               \
+        } else {                                                         \
+            ASSERT_TLM_##NAME##_SIZE(0);                                 \
+        }                                                                \
     }
 
 void Tester::checkTelemetry() {

@@ -54,7 +54,8 @@ void TestState ::action__ProductRequestIn__BufferInvalid() {
     // Check product response out
     ASSERT_from_productResponseOut_SIZE(1);
     Fw::Buffer invalidBuffer;
-    ASSERT_from_productResponseOut(0, id, invalidBuffer);
+    Fw::Success failure(Fw::Success::FAILURE);
+    ASSERT_from_productResponseOut(0, id, invalidBuffer, failure);
 }
 
 namespace ProductRequestIn {

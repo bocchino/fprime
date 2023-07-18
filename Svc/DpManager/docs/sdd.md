@@ -44,7 +44,7 @@ The diagram below shows the `DpManager` component.
 | `async input` | `schedIn` | `Svc.Sched` | Schedule in port |
 | `async input` | `productRequestIn` | `Fw.DpRequest` | Port for receiving data product buffer requests from a client component |
 | `output` | `bufferGetOut` | `Fw.BufferGet` | Port for getting buffers from a Buffer Manager |
-| `output` | `productResponseOut` | `Fw.DpSend` | Port for sending requested data product buffers to a client component |
+| `output` | `productResponseOut` | `Fw.DpResponse` | Port for sending requested data product buffers to a client component |
 | `async input` | `productSendIn` | `Fw.DpSend` | Port for receiving filled data product buffers from a client component |
 | `output` | `productSendOut` | `Fw.BufferSend` | Port for sending filled data product buffers to a downstream component |
 | `time get` | `timeGetOut` | `Fw.Time` | Time get port |
@@ -81,11 +81,13 @@ It does the following:
 
 1. Invoke `bufferGetOut` to get a buffer _B_.
 
-1. If _B_ is valid, then increment `numAllocations`
+1. Set `status = FAILURE`.
+
+1. If _B_ is valid, then increment `numAllocations` and set `status = SUCCESS`.
 
 1. Otherwise increment `numFailedAllocations` and emit a warning event.
 
-1. send _(id, B)_ on `productResponseOut`.
+1. send _(id, B, status)_ on `productResponseOut`.
 
 #### 3.5.3. productSendIn
 
