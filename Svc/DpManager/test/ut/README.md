@@ -28,7 +28,8 @@ This rule group manages the buffer get status in the test harness.
 
 #### 2.1.1. Valid
 
-Sets the buffer get status to valid.
+Sets the buffer get status to `VALID`, simulating a system state
+in which buffers are available.
 
 **Precondition:**
 `bufferGetStatus != VALID`.
@@ -46,7 +47,8 @@ None (helper rule).
 
 #### 2.1.2. Invalid
 
-Sets the buffer get status to invalid.
+Sets the buffer get status to `INVALID`, simulating a system
+state in which no buffers are available.
 
 **Precondition:**
 `bufferGetStatus != INVALID`.
