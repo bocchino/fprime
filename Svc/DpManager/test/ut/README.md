@@ -31,10 +31,10 @@ This rule group manages the buffer get status in the test harness.
 Sets the buffer get status to valid.
 
 **Precondition:**
-`bufferGetStatus != VALID`
+`bufferGetStatus != VALID`.
 
 **Action:**
-`bufferGetStatus = VALID`
+`bufferGetStatus = VALID`.
 
 **Test:**
 
@@ -49,10 +49,10 @@ None (helper rule).
 Sets the buffer get status to invalid.
 
 **Precondition:**
-`bufferGetStatus != INVALID`
+`bufferGetStatus != INVALID`.
 
 **Action:**
-`bufferGetStatus = INVALID`
+`bufferGetStatus = INVALID`.
 
 **Test:**
 Apply rule `BufferGetStatus::Invalid`.
@@ -71,7 +71,7 @@ Invokes `productRequestIn` in a state where the test harness returns
 an invalid buffer.
 
 **Precondition:**
-TODO
+`bufferGetStatus == INVALID`.
 
 **Action:**
 TODO
@@ -80,8 +80,7 @@ TODO
 TODO
 
 **Requirements tested:**
-TODO
-
+`SVC-DPMANAGER-001`.
 
 #### 2.2.2. BufferValid
 
@@ -89,16 +88,26 @@ Invokes `productRequestIn` in a state where the test harness returns
 a valid buffer.
 
 **Precondition:**
-TODO
+`bufferGetStatus == VALID`.
 
 **Action:**
-TODO
+
+1. Clear history.
+1. Invoke `productRequestIn` with a random id and size.
+1. Assert that the event history is empty.
+1. Assert that the from port history contains two items.
+1. Assert that the `from_bufferGetOut` history has one item.
+1. Assert that the `from_productResponseOut` history has one item.
+1. Assert that the `from_productResponseOut` history contains the
+   expected buffer value and status `SUCCESS` at index zero.
 
 **Test:**
-TODO
+
+1. Apply rule `ProductRequestIn::BufferValid`
+1. Apply rule `SchedIn::OK`
 
 **Requirements tested:**
-TODO
+`SVC-DPMANAGER-001`, `SVC-DP-MANAGER-003`.
 
 ### 2.3. ProductSendIn
 
@@ -118,7 +127,7 @@ TODO
 TODO
 
 **Requirements tested:**
-TODO
+`SVC-DPMANAGER-002`.
 
 ### 2.4. SchedIn
 
