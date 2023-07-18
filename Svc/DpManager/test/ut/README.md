@@ -30,9 +30,35 @@ This rule group manages the buffer get status in the test harness.
 
 TODO
 
+**Precondition:**
+TODO
+
+**Action:**
+TODO
+
+**Test:**
+TODO
+
+**Requirements tested:**
+TODO
+
+
 #### 2.1.2. Invalid
 
 TODO
+
+**Precondition:**
+TODO
+
+**Action:**
+TODO
+
+**Test:**
+TODO
+
+**Requirements tested:**
+TODO
+
 
 ### 2.2. ProductRequestIn
 
@@ -42,8 +68,33 @@ This rule group sends test input to the `productRequestIn` port.
 
 TODO
 
+**Precondition:**
+TODO
+
+**Action:**
+TODO
+
+**Test:**
+TODO
+
+**Requirements tested:**
+TODO
+
+
 #### 2.2.2. BufferValid
 
+TODO
+
+**Precondition:**
+TODO
+
+**Action:**
+TODO
+
+**Test:**
+TODO
+
+**Requirements tested:**
 TODO
 
 ### 2.3. SchedIn
@@ -51,3 +102,20 @@ TODO
 This rule group sends test input to the `schedIn` port.
 
 #### 2.3.1. OK
+
+Invokes `schedIn` with nominal input.
+
+**Precondition:** `true`
+
+**Action:**
+
+1. Clear history
+1. Invoke `schedIn` with a random context.
+1. Check telemetry.
+
+**Test:**
+
+1. Apply rule `SchedIn::OK`.
+
+**Requirements tested:**
+`SVC-DPMANAGER-003`
