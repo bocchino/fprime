@@ -100,6 +100,26 @@ TODO
 **Requirements tested:**
 TODO
 
+### ProductSendIn
+
+This rule group sends test input to the `productSendIn` port.
+
+#### OK
+
+Invokes `productSendIn` with nominal input.
+
+**Precondition:**
+TODO
+
+**Action:**
+TODO
+
+**Test:**
+TODO
+
+**Requirements tested:**
+TODO
+
 ### 2.3. SchedIn
 
 This rule group sends test input to the `schedIn` port.
