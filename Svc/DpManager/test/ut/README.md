@@ -96,15 +96,15 @@ a valid buffer.
 1. Invoke `productRequestIn` with a random id and size.
 1. Assert that the event history is empty.
 1. Assert that the from port history contains two items.
-1. Assert that the `from_bufferGetOut` history has one item.
-1. Assert that the `from_productResponseOut` history has one item.
+1. Assert that the `from_bufferGetOut` history contains one item.
+1. Assert that the `from_productResponseOut` history contains one item.
 1. Assert that the `from_productResponseOut` history contains the
    expected buffer value and status `SUCCESS` at index zero.
 
 **Test:**
 
-1. Apply rule `ProductRequestIn::BufferValid`
-1. Apply rule `SchedIn::OK`
+1. Apply rule `ProductRequestIn::BufferValid`.
+1. Apply rule `SchedIn::OK`.
 
 **Requirements tested:**
 `SVC-DPMANAGER-001`, `SVC-DP-MANAGER-003`.

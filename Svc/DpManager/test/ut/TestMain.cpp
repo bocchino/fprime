@@ -39,13 +39,11 @@ namespace Svc {
     tester.OK();
   }
 
-#if 1
   TEST(Scenarios, Random) {
     const FwSizeType numSteps = 10000;
     Scenarios::Random::Tester tester;
     tester.run(numSteps);
   }
-#endif
 
 }
 
