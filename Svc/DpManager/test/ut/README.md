@@ -46,16 +46,16 @@ None (helper rule).
 
 #### 2.1.2. Invalid
 
-Sets the buffer get status to valid.
+Sets the buffer get status to invalid.
 
 **Precondition:**
-TODO
+`bufferGetStatus != INVALID`
 
 **Action:**
-TODO
+`bufferGetStatus = INVALID`
 
 **Test:**
-TODO
+Apply rule `BufferGetStatus::Invalid`.
 
 **Requirements tested:**
 None (helper rule).
