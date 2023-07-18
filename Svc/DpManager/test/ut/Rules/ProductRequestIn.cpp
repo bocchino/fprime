@@ -53,8 +53,8 @@ void TestState ::action__ProductRequestIn__BufferInvalid() {
     ASSERT_from_bufferGetOut_SIZE(1);
     // Check product response out
     ASSERT_from_productResponseOut_SIZE(1);
-    Fw::Buffer invalidBuffer;
-    Fw::Success failure(Fw::Success::FAILURE);
+    const Fw::Buffer invalidBuffer;
+    const Fw::Success failure(Fw::Success::FAILURE);
     ASSERT_from_productResponseOut(0, id, invalidBuffer, failure);
 }
 
