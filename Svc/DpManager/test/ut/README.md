@@ -31,10 +31,10 @@ This rule group manages the buffer get status in the test harness.
 Sets the buffer get status to valid.
 
 **Precondition:**
-`bufferGetStatus != INVALID`
+`bufferGetStatus != VALID`
 
 **Action:**
-`bufferGetStatus = INVALID`
+`bufferGetStatus = VALID`
 
 **Test:**
 
