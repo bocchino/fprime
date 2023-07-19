@@ -4,7 +4,7 @@
 
 ```mermaid
 classDiagram
-    class STest__Rule["STest::Rule<TestState>"]
+    class STest__Rule["STest::Rule~TestState~"]
     class Rules__BufferGetStatus__Invalid["Rules::BufferGetStatus::Invalid"]
     class Rules__BufferGetStatus__Valid["Rules::BufferGetStatus::Valid"]
     class Tester {
