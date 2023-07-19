@@ -31,7 +31,7 @@ class Tester {
     void run(FwSizeType maxNumSteps  //!< The maximum number of steps
     );
 
-  PRIVATE:
+  private:
     // ----------------------------------------------------------------------
     // Private member variables
     // ----------------------------------------------------------------------

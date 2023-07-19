@@ -46,7 +46,7 @@ namespace Svc {
         //! Rule BufferGetStatus::Invalid
         Rules::BufferGetStatus::Invalid ruleInvalid;
 
-      public:
+      private:
 
         // ----------------------------------------------------------------------
         // Public member variables
