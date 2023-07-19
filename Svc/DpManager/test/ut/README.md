@@ -6,7 +6,8 @@
 classDiagram
     DpManagerGTestBase <|-- Tester
     Tester <|-- TestState
-    STest__Rule~TestState~ <|-- Invalid
+    STest__Rule~TestState~["STest::Rule<TestState>"] <|-- Rules__BufferGetStatus__Invalid["Rules::BufferGetStatus::Invalid"]
+    STest__Rule~TestState~ <|-- Rules__BufferGetStatus__Valid["Rules::BufferGetStatus::Valid"]
     class Tester {
         note "The abstracted state for testing"
         +AbstractState abstractState
