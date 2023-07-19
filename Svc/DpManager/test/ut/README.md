@@ -76,10 +76,23 @@ an invalid buffer.
 `bufferGetStatus == INVALID`.
 
 **Action:**
-TODO
+
+1. Clear the history.
+1. Invoke `productRequestIn` with a random id _I_ and size _S_.
+1. Assert that the event history contains one element.
+1. Assert that the event history for `BufferAllocationFailed` contains _I_ at index zero.
+1. Increment `NumFailedAllocations`.
+1. Assert that the from port history contains two elements.
+1. Assert that the history for `from_bufferGetOut` contains one element.
+1. Assert that the history for `from_productResponseOut` contains one element.
+1. Assert that the history for `productResponseOut` contains the expected invalid buffer
+   and status `FAILURE` at index zero.
 
 **Test:**
-TODO
+
+1. Apply rule `BufferGetStatus::Invalid`.
+1. Apply rule `ProductRequestIn::BufferInvalid`.
+1. Apply rule `SchedIn::OK`.
 
 **Requirements tested:**
 `SVC-DPMANAGER-001`.
@@ -95,14 +108,14 @@ a valid buffer.
 **Action:**
 
 1. Clear history.
-1. Invoke `productRequestIn` with a random id and size.
+1. Invoke `productRequestIn` with a random id _I_ and size _S_.
 1. Assert that the event history is empty.
 1. Increment `NumSuccessfulAllocations`.
 1. Assert that the from port history contains two items.
 1. Assert that the `from_bufferGetOut` history contains one item.
 1. Assert that the `from_productResponseOut` history contains one item.
 1. Assert that the `from_productResponseOut` history contains the
-   expected buffer value and status `SUCCESS` at index zero.
+   expected valid buffer value and status `SUCCESS` at index zero.
 
 **Test:**
 
