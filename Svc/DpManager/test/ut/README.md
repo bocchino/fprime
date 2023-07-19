@@ -181,12 +181,11 @@ This rule invokes `schedIn` with nominal input.
 
 ### 3.1. Tester and TestState
 
-The abstract state is a member of the `Tester` class.
+The abstract state and the component under test are members of the `Tester` class.
 `TestState` is a derived class of `Tester`.
-The preconditions and actions are defined in `TestState` so they can use the functions
+The preconditions and actions of the rules are defined in `TestState` so they can use the functions
 and macros defined in `DpManagerGTestBase`.
-The prototypes of the precondition and action functions are boilerplate and
-are defined using macro expansion.
+The class definition of `TestState` is boilerplate and is defined using macro expansion.
 
 ```mermaid
 classDiagram
@@ -204,9 +203,11 @@ classDiagram
     Tester <|-- TestState
 ```
 
+The preconditions and actions for the `BufferGetStatus` rule group are shown.
+
 ### 3.2. Rules
 
-The classes derived from `STest::Rule` are entirely boilerplate.
+The classes derived from `STest::Rule` are boilerplate.
 The precondition and action functions turn around and call the corresponding
 functions in `TestState`.
 The boilerplate is defined using macro expansion.
@@ -214,39 +215,28 @@ The boilerplate is defined using macro expansion.
 ```mermaid
 classDiagram
     class `Rules::BufferGetStatus::Invalid` {
-        +precondition
-        +action
+        +precondition(state)
+        +action(state)
     }
     class `Rules::BufferGetStatus::Valid` {
-        +precondition
-        +action
+        +precondition(state)
+        +action(state)
     }
     `STest::Rule`~TestState~ <|-- `Rules::BufferGetStatus::Invalid`
     `STest::Rule`~TestState~ <|-- `Rules::BufferGetStatus::Valid`
 ```
 
-The tester and rules for the `BufferGetStatus` rule group are shown.
+The rules for the `BufferGetStatus` rule group are shown.
+
+### Rule Group Testers
+
+There is one tester for each rule group.
+Each tester defines the rules for the group, defines a test state,
+and provides one test scenario for each rule.
+The tester for the `BufferGetStatus` rule group is shown.
 
 ```mermaid
 classDiagram
-    class Tester {
-        #AbstractState abstractState
-        #DpManager component
-    }
-    class TestState {
-        +precondition__BufferGetStatus__Invalid
-        +action__BufferGetStatus__Invalid
-        +precondition__BufferGetStatus__Valid
-        +action__BufferGetStatus__Valid
-    }
-    class `Rules::BufferGetStatus::Invalid` {
-        +precondition
-        +action
-    }
-    class `Rules::BufferGetStatus::Valid` {
-        +precondition
-        +action
-    }
     class `BufferGetStatus::Tester` {
         +Valid() : Test scenario for ruleValid
         +Invalid() : Test scenario for ruleInvalid
@@ -254,12 +244,17 @@ classDiagram
         +Rules::BufferGetStatus::Invalid ruleInvalid
         -TestState testState
     }
+```
+
+### Random Scenario Tester
+
+The random scenario tester instantiates all the rules and uses them to provide
+a random scenario.
+
+```mermaid
+classDiagram
     class `Scenarios::Random::Tester` {
         +run(maxNumSteps)
         -TestState testState
     }
-    DpManagerGTestBase <|-- Tester
-    Tester <|-- TestState
-    `STest::Rule`~TestState~ <|-- `Rules::BufferGetStatus::Invalid`
-    `STest::Rule`~TestState~ <|-- `Rules::BufferGetStatus::Valid`
 ```
