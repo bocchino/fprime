@@ -179,7 +179,7 @@ This rule invokes `schedIn` with nominal input.
 
 ## 3. Class Diagrams
 
-### Tester and TestState
+### 3.1. Tester and TestState
 
 The abstract state is a member of the `Tester` class.
 `TestState` is a derived class of `Tester`.
@@ -204,7 +204,7 @@ classDiagram
     Tester <|-- TestState
 ```
 
-### Rules
+### 3.2. Rules
 
 The classes derived from `STest::Rule` are entirely boilerplate.
 The precondition and action functions turn around and call the corresponding
