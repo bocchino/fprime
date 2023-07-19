@@ -95,7 +95,7 @@ an invalid buffer.
 1. Apply rule `SchedIn::OK`.
 
 **Requirements tested:**
-`SVC-DPMANAGER-001`.
+`SVC-DPMANAGER-001`, `SVC-DPMANAGER-003`.
 
 #### 2.2.2. BufferValid
 
@@ -151,7 +151,7 @@ Apply rule `ProductSendIn::OK`.
 Apply rule `SchedIn::OK`.
 
 **Requirements tested:**
-`SVC-DPMANAGER-002`.
+`SVC-DPMANAGER-002`, `SVC-DPMANAGER-003`.
 
 ### 2.4. SchedIn
 
