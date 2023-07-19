@@ -1,40 +1,5 @@
 # DpManager Component Tests
 
-## Class Diagram
-
-```mermaid
-classDiagram
-    class Tester {
-        #AbstractState abstractState
-        #DpManager component
-    }
-    class TestState {
-        +precondition__BufferGetStatus__Invalid
-        +action__BufferGetStatus__Invalid
-        +precondition__BufferGetStatus__Valid
-        +action__BufferGetStatus__Valid
-    }
-    class `Rules::BufferGetStatus::Invalid` {
-        +precondition
-        +action
-    }
-    class `Rules::BufferGetStatus::Valid` {
-        +precondition
-        +action
-    }
-    class `BufferGetStatus::Tester` {
-        +Valid() : Test scenario for Valid rule
-        +Invalid()
-        +Rules::BufferGetStatus::Valid ruleValid
-        +Rules::BufferGetStatus::Invalid ruleInvalid
-        +TestState testState
-    }
-    DpManagerGTestBase <|-- Tester
-    Tester <|-- TestState
-    `STest::Rule`~TestState~ <|-- `Rules::BufferGetStatus::Invalid`
-    `STest::Rule`~TestState~ <|-- `Rules::BufferGetStatus::Valid`
-```
-
 ## 1. Abstract State
 
 ### 1.1. Types
@@ -54,6 +19,7 @@ classDiagram
 | `NumFailedAllocations` | `OnChangeChannel<U32>` | The number of failed buffer allocations | 0 |
 | `NumDataProducts` | `OnChangeChannel<U32>` | The number of data products handled | 0 |
 | `NumBytes` | `OnChangeChannel<U32>` | The number of bytes handled | 0 |
+
 
 ## 2. Rule Groups
 
@@ -210,3 +176,90 @@ This rule invokes `schedIn` with nominal input.
 
 **Requirements tested:**
 `SVC-DPMANAGER-003`.
+
+## 3. Class Diagrams
+
+### Tester and TestState
+
+The abstract state is a member of the `Tester` class.
+`TestState` is a derived class of `Tester`.
+The preconditions and actions are defined in `TestState` so they can use the functions
+and macros defined in `DpManagerGTestBase`.
+The prototypes of the precondition and action functions are boilerplate and
+are defined using macro expansion.
+
+```mermaid
+classDiagram
+    class Tester {
+        #AbstractState abstractState
+        #DpManager component
+    }
+    class TestState {
+        +precondition__BufferGetStatus__Invalid()
+        +action__BufferGetStatus__Invalid()
+        +precondition__BufferGetStatus__Valid()
+        +action__BufferGetStatus__Valid()
+    }
+    DpManagerGTestBase <|-- Tester
+    Tester <|-- TestState
+```
+
+### Rules
+
+The classes derived from `STest::Rule` are entirely boilerplate.
+The precondition and action functions turn around and call the corresponding
+functions in `TestState`.
+The boilerplate is defined using macro expansion.
+
+```mermaid
+classDiagram
+    class `Rules::BufferGetStatus::Invalid` {
+        +precondition
+        +action
+    }
+    class `Rules::BufferGetStatus::Valid` {
+        +precondition
+        +action
+    }
+    `STest::Rule`~TestState~ <|-- `Rules::BufferGetStatus::Invalid`
+    `STest::Rule`~TestState~ <|-- `Rules::BufferGetStatus::Valid`
+```
+
+The tester and rules for the `BufferGetStatus` rule group are shown.
+
+```mermaid
+classDiagram
+    class Tester {
+        #AbstractState abstractState
+        #DpManager component
+    }
+    class TestState {
+        +precondition__BufferGetStatus__Invalid
+        +action__BufferGetStatus__Invalid
+        +precondition__BufferGetStatus__Valid
+        +action__BufferGetStatus__Valid
+    }
+    class `Rules::BufferGetStatus::Invalid` {
+        +precondition
+        +action
+    }
+    class `Rules::BufferGetStatus::Valid` {
+        +precondition
+        +action
+    }
+    class `BufferGetStatus::Tester` {
+        +Valid() : Test scenario for ruleValid
+        +Invalid() : Test scenario for ruleInvalid
+        +Rules::BufferGetStatus::Valid ruleValid
+        +Rules::BufferGetStatus::Invalid ruleInvalid
+        -TestState testState
+    }
+    class `Scenarios::Random::Tester` {
+        +run(maxNumSteps)
+        -TestState testState
+    }
+    DpManagerGTestBase <|-- Tester
+    Tester <|-- TestState
+    `STest::Rule`~TestState~ <|-- `Rules::BufferGetStatus::Invalid`
+    `STest::Rule`~TestState~ <|-- `Rules::BufferGetStatus::Valid`
+```
