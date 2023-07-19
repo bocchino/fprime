@@ -4,7 +4,7 @@
 
 ```mermaid
 classDiagram
-    class STest__Rule["STest::Rule"]
+    class STest__Rule["STest::Rule<TestState>"]
     class Rules__BufferGetStatus__Invalid["Rules::BufferGetStatus::Invalid"]
     class Rules__BufferGetStatus__Valid["Rules::BufferGetStatus::Valid"]
     class Tester {
@@ -15,8 +15,8 @@ classDiagram
     }
     DpManagerGTestBase <|-- Tester
     Tester <|-- TestState
-    STest__Rule~TestState~ <|-- Rules__BufferGetStatus__Invalid
-    STest__Rule~TestState~ <|-- Rules__BufferGetStatus__Valid
+    STest__Rule <|-- Rules__BufferGetStatus__Invalid
+    STest__Rule <|-- Rules__BufferGetStatus__Valid
 ```
 
 ## 1. Abstract State
