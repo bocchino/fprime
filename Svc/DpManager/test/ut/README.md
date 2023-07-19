@@ -12,6 +12,7 @@ classDiagram
         note "The component under test"
         +DpManager component
     }
+    Rules::BufferGetStatus::Invalid <|-- STest::Rule<TestState>
 ```
 
 ## 1. Abstract State
