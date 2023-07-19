@@ -4,19 +4,35 @@
 
 ```mermaid
 classDiagram
-    class STest__Rule["STest::Rule<TestState>"]
-    class Rules__BufferGetStatus__Invalid["Rules::BufferGetStatus::Invalid"]
-    class Rules__BufferGetStatus__Valid["Rules::BufferGetStatus::Valid"]
     class Tester {
-        note "The abstracted state for testing"
-        +AbstractState abstractState
-        note "The component under test"
-        +DpManager component
+        #AbstractState abstractState
+        #DpManager component
+    }
+    class TestState {
+        +precondition__BufferGetStatus__Invalid
+        +action__BufferGetStatus__Invalid
+        +precondition__BufferGetStatus__Valid
+        +action__BufferGetStatus__Valid
+    }
+    class `Rules::BufferGetStatus::Invalid` {
+        +precondition
+        +action
+    }
+    class `Rules::BufferGetStatus::Valid` {
+        +precondition
+        +action
+    }
+    class `BufferGetStatus::Tester` {
+        +Valid() : Test scenario for Valid rule
+        +Invalid()
+        +Rules::BufferGetStatus::Valid ruleValid
+        +Rules::BufferGetStatus::Invalid ruleInvalid
+        +TestState testState
     }
     DpManagerGTestBase <|-- Tester
     Tester <|-- TestState
-    STest__Rule~TestState~ <|-- Rules__BufferGetStatus__Invalid
-    STest__Rule <|-- Rules__BufferGetStatus__Valid
+    `STest::Rule`~TestState~ <|-- `Rules::BufferGetStatus::Invalid`
+    `STest::Rule`~TestState~ <|-- `Rules::BufferGetStatus::Valid`
 ```
 
 ## 1. Abstract State
