@@ -12,18 +12,6 @@ classDiagram
         note "The component under test"
         +DpManager component
     }
-    Rules::BufferGetStatus::Invalid <|-- STest::Rule<TestState>
-    Rules::BufferGetStatus::Valid <|-- STest::Rule<TestState>
-    class BufferGetStatus::Tester {
-        note "Tests"
-        +Valid()
-        +Invalid()
-        note "Rules"
-        +Rules::BufferGetStatus::Valid ruleValid
-        +Rules::BufferGetStatus::Invalid ruleInvalid
-        note "Test state"
-        +TestState testState
-    }
 ```
 
 ## 1. Abstract State
