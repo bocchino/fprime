@@ -1,5 +1,31 @@
 # DpManager Component Tests
 
+## Class Diagram
+
+```mermaid
+classDiagram
+    DpManagerGTestBase <|-- Tester
+    Tester <|-- TestState
+    class Tester {
+        note "The abstracted state for testing"
+        +AbstractState abstractState
+        note "The component under test"
+        +DpManager component
+    }
+    Rules::BufferGetStatus::Invalid <|-- STest::Rule<TestState>
+    Rules::BufferGetStatus::Valid <|-- STest::Rule<TestState>
+    class BufferGetStatus::Tester {
+        note "Tests"
+        +Valid()
+        +Invalid()
+        note "Rules"
+        +Rules::BufferGetStatus::Valid ruleValid
+        +Rules::BufferGetStatus::Invalid ruleInvalid
+        note "Test state"
+        +TestState testState
+    }
+```
+
 ## 1. Abstract State
 
 ### 1.1. Types
