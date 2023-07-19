@@ -28,7 +28,7 @@ This rule group manages the buffer get status in the test harness.
 
 #### 2.1.1. Valid
 
-Sets the buffer get status to `VALID`, simulating a system state
+This rule sets the buffer get status to `VALID`, simulating a system state
 in which buffers are available.
 
 **Precondition:**
@@ -47,7 +47,7 @@ None (helper rule).
 
 #### 2.1.2. Invalid
 
-Sets the buffer get status to `INVALID`, simulating a system
+This rule sets the buffer get status to `INVALID`, simulating a system
 state in which no buffers are available.
 
 **Precondition:**
@@ -69,7 +69,7 @@ This rule group sends test input to the `productRequestIn` port.
 
 #### 2.2.1. BufferInvalid
 
-Invokes `productRequestIn` in a state where the test harness returns
+This rule invokes `productRequestIn` in a state where the test harness returns
 an invalid buffer.
 
 **Precondition:**
@@ -86,7 +86,7 @@ TODO
 
 #### 2.2.2. BufferValid
 
-Invokes `productRequestIn` in a state where the test harness returns
+This rule invokes `productRequestIn` in a state where the test harness returns
 a valid buffer.
 
 **Precondition:**
@@ -97,6 +97,7 @@ a valid buffer.
 1. Clear history.
 1. Invoke `productRequestIn` with a random id and size.
 1. Assert that the event history is empty.
+1. Increment `NumSuccessfulAllocations`.
 1. Assert that the from port history contains two items.
 1. Assert that the `from_bufferGetOut` history contains one item.
 1. Assert that the `from_productResponseOut` history contains one item.
@@ -117,16 +118,24 @@ This rule group sends test input to the `productSendIn` port.
 
 #### 2.3.1. OK
 
-Invokes `productSendIn` with nominal input.
+This rule invokes `productSendIn` with nominal input.
 
-**Precondition:**
-TODO
+**Precondition:** `true`.
 
 **Action:**
-TODO
+
+1. Clear history.
+1. Invoke `productSendIn` with a random id _I_ and buffer _B_.
+1. Assert that the event history is empty.
+1. Increment `NumDataBroducts`.
+1. Increase `NumBytes` by the size of _B_.
+1. Assert that the from port history contains one item.
+1. Assert that the `from_productSendOut` history contains one item.
+1. Assert that the `from_productSendOut` history contains _B_ at index zero.
 
 **Test:**
-TODO
+Apply rule `ProductSendIn::OK`.
+Apply rule `SchedIn::OK`.
 
 **Requirements tested:**
 `SVC-DPMANAGER-002`.
@@ -137,7 +146,7 @@ This rule group sends test input to the `schedIn` port.
 
 #### 2.4.1. OK
 
-Invokes `schedIn` with nominal input.
+This rule invokes `schedIn` with nominal input.
 
 **Precondition:** `true`
 
