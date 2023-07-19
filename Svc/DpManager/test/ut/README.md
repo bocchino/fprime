@@ -177,7 +177,7 @@ This rule invokes `schedIn` with nominal input.
 **Requirements tested:**
 `SVC-DPMANAGER-003`.
 
-## 3. Class Diagrams
+## 3. Implementation
 
 ### 3.1. Tester and TestState
 
