@@ -15,7 +15,7 @@ classDiagram
     }
     DpManagerGTestBase <|-- Tester
     Tester <|-- TestState
-    STest__Rule <|-- Rules__BufferGetStatus__Invalid
+    STest__Rule~TestState~ <|-- Rules__BufferGetStatus__Invalid
     STest__Rule <|-- Rules__BufferGetStatus__Valid
 ```
 
