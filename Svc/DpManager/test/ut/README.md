@@ -228,7 +228,7 @@ classDiagram
 
 The rules for the `BufferGetStatus` rule group are shown.
 
-### Rule Group Testers
+### 3.3. Rule Group Testers
 
 There is one tester for each rule group.
 Each tester defines the rules for the group, defines a test state,
@@ -246,7 +246,7 @@ classDiagram
     }
 ```
 
-### Random Scenario Tester
+### 3.4. Random Scenario Tester
 
 The random scenario tester instantiates all the rules and uses them to provide
 a random scenario.
