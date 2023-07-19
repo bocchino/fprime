@@ -6,13 +6,13 @@
 classDiagram
     DpManagerGTestBase <|-- Tester
     Tester <|-- TestState
+    Rules::BufferGetStatus::Invalid <|-- STest::Rule<TestState>
     class Tester {
         note "The abstracted state for testing"
         +AbstractState abstractState
         note "The component under test"
         +DpManager component
     }
-    Rules::BufferGetStatus::Invalid <|-- STest::Rule<TestState>
 ```
 
 ## 1. Abstract State
