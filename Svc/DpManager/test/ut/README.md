@@ -6,7 +6,7 @@
 classDiagram
     DpManagerGTestBase <|-- Tester
     Tester <|-- TestState
-    STest.Rule~TestState~ <|-- Invalid
+    STest__Rule~TestState~ <|-- Invalid
     class Tester {
         note "The abstracted state for testing"
         +AbstractState abstractState
