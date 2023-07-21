@@ -65,11 +65,11 @@ Apply rule `BufferGetStatus::Invalid`.
 None (helper rule).
 
 
-## 3. BufferSize
+### 2.2. BufferSize
 
 This rule group manages the buffer size.
 
-### 3.1. Set
+#### 2.2.1. Set
 
 This rule sets the buffer size.
 
@@ -85,11 +85,11 @@ Apply rule `BufferSize::Set`.
 **Requirements tested:**
 None (helper rule).
 
-### 3.2. ProductRequestIn
+### 2.3. ProductRequestIn
 
 This rule group sends test input to the `productRequestIn` port.
 
-#### 3.2.1. BufferInvalid
+#### 2.3.1. BufferInvalid
 
 This rule invokes `productRequestIn` in a state where the test harness returns
 an invalid buffer.
@@ -124,7 +124,7 @@ an invalid buffer.
 **Requirements tested:**
 `SVC-DPMANAGER-001`, `SVC-DPMANAGER-003`.
 
-#### 3.2.2. BufferValid
+#### 2.3.2. BufferValid
 
 This rule invokes `productRequestIn` in a state where the test harness returns
 a valid buffer.
@@ -157,11 +157,11 @@ a valid buffer.
 **Requirements tested:**
 `SVC-DPMANAGER-001`, `SVC-DP-MANAGER-003`.
 
-### 3.3. ProductSendIn
+### 2.4. ProductSendIn
 
 This rule group sends test input to the `productSendIn` port.
 
-#### 3.3.1. OK
+#### 2.4.1. OK
 
 This rule invokes `productSendIn` with nominal input.
 
@@ -186,11 +186,11 @@ Apply rule `SchedIn::OK`.
 **Requirements tested:**
 `SVC-DPMANAGER-002`, `SVC-DPMANAGER-003`.
 
-### 3.4. SchedIn
+### 2.5. SchedIn
 
 This rule group sends test input to the `schedIn` port.
 
-#### 3.4.1. OK
+#### 2.5.1. OK
 
 This rule invokes `schedIn` with nominal input.
 
@@ -209,9 +209,9 @@ This rule invokes `schedIn` with nominal input.
 **Requirements tested:**
 `SVC-DPMANAGER-003`.
 
-## 4. Implementation
+## 3. Implementation
 
-### 4.1. Tester and TestState
+### 3.1. Tester and TestState
 
 The abstract state and the component under test are members of the `Tester` class.
 `TestState` is a derived class of `Tester`.
@@ -237,7 +237,7 @@ classDiagram
 
 The preconditions and actions for the `BufferGetStatus` rule group are shown.
 
-### 4.2. Rules
+### 3.2. Rules
 
 The classes derived from `STest::Rule` are boilerplate.
 The precondition and action functions turn around and call the corresponding
@@ -260,7 +260,7 @@ classDiagram
 
 The rules for the `BufferGetStatus` rule group are shown.
 
-### 4.3. Rule Group Testers
+### 3.3. Rule Group Testers
 
 There is one tester for each rule group.
 Each tester defines the rules for the group, defines a test state,
@@ -278,7 +278,7 @@ classDiagram
     }
 ```
 
-### 4.4. Random Scenario Tester
+### 3.4. Random Scenario Tester
 
 The random scenario tester instantiates all the rules and uses them to provide
 a random scenario.
