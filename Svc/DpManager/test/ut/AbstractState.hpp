@@ -58,7 +58,7 @@ class AbstractState {
             this->value = value;
         }
         void clear() {
-            this-> state = State::NO_VALUE;
+            this->state = State::NO_VALUE;
         }
         T get() const {
             FW_ASSERT(this->hasValue());
