@@ -14,7 +14,7 @@
 namespace Svc {
 
 class Tester : public DpManagerGTestBase {
-  protected:
+  public:
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
@@ -80,7 +80,7 @@ class Tester : public DpManagerGTestBase {
     //! Initialize components
     void initComponents();
 
-  protected:
+  public:
     // ----------------------------------------------------------------------
     // Variables
     // ----------------------------------------------------------------------

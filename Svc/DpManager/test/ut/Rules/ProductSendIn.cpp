@@ -29,15 +29,14 @@ void TestState ::action__ProductSendIn__OK() {
     this->clearHistory();
     // Send the invocation
     const FwDpIdType id = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpIdType>::max());
-    const FwSizeType size = STest::Pick::lowerUpper(1, MAX_BUFFER_SIZE);
-    const Fw::Buffer buffer(this->bufferData, size);
+    const Fw::Buffer buffer(this->bufferData, this->abstractState.bufferSize);
     this->invoke_to_productSendIn(0, id, buffer);
     this->component.doDispatch();
     // Check events
     ASSERT_EVENTS_SIZE(0);
     // Update test state
     ++this->abstractState.NumDataProducts.value;
-    this->abstractState.NumBytes.value += size;
+    this->abstractState.NumBytes.value += this->abstractState.bufferSize;
     // Check port history
     ASSERT_FROM_PORT_HISTORY_SIZE(1);
     // Check product send out

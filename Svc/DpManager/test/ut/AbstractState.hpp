@@ -103,9 +103,9 @@ class AbstractState {
     // ----------------------------------------------------------------------
 
     //! Construct an AbstractState object
-    AbstractState(void)
+    AbstractState()
         : bufferGetStatus(BufferGetStatus::VALID),
-          bufferSize(0),
+          bufferSize(1),
           NumSuccessfulAllocations(0),
           NumFailedAllocations(0),
           NumDataProducts(0),

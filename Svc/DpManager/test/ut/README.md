@@ -15,7 +15,7 @@
 | Variable | Type | Description | Initial Value |
 |----------|------|-------------|---------------|
 | `bufferGetStatus` | `BufferGetStatus` | The buffer get status | `VALID` |
-| `bufferSize` | `FwSizeType` | The current buffer size | `MAX_BUFFER_SIZE` |
+| `bufferSize` | `FwSizeType` | The current buffer size | 1 |
 | `NumSuccessfulAllocations` | `OnChangeChannel<U32>` | The number of successful buffer allocations | 0 |
 | `NumFailedAllocations` | `OnChangeChannel<U32>` | The number of failed buffer allocations | 0 |
 | `NumDataProducts` | `OnChangeChannel<U32>` | The number of data products handled | 0 |
@@ -117,6 +117,9 @@ an invalid buffer.
 1. Apply rule `BufferGetStatus::Invalid`.
 1. Apply rule `ProductRequestIn::BufferInvalid`.
 1. Apply rule `SchedIn::OK`.
+1. Set `bufferSize` to `MAX_BUFFER_SIZE`.
+1. Apply rule `ProductRequestIn::BufferInvalid`.
+1. Apply rule `SchedIn::OK`.
 
 **Requirements tested:**
 `SVC-DPMANAGER-001`, `SVC-DPMANAGER-003`.
@@ -145,6 +148,9 @@ a valid buffer.
 
 **Test:**
 
+1. Apply rule `ProductRequestIn::BufferValid`.
+1. Apply rule `SchedIn::OK`.
+1. Set `bufferSize` to `MAX_BUFFER_SIZE`.
 1. Apply rule `ProductRequestIn::BufferValid`.
 1. Apply rule `SchedIn::OK`.
 
@@ -216,8 +222,8 @@ The class definition of `TestState` is boilerplate and is defined using macro ex
 ```mermaid
 classDiagram
     class Tester {
-        #AbstractState abstractState
-        #DpManager component
+        +AbstractState abstractState
+        +DpManager component
     }
     class TestState {
         +precondition__BufferGetStatus__Invalid()

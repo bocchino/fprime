@@ -14,6 +14,7 @@
 #define Svc_Testers_HPP
 
 #include "Svc/DpManager/test/ut/Rules/BufferGetStatus.hpp"
+#include "Svc/DpManager/test/ut/Rules/BufferSize.hpp"
 #include "Svc/DpManager/test/ut/Rules/ProductRequestIn.hpp"
 #include "Svc/DpManager/test/ut/Rules/ProductSendIn.hpp"
 #include "Svc/DpManager/test/ut/Rules/SchedIn.hpp"
@@ -23,6 +24,8 @@ namespace Svc {
   namespace Testers {
     
     extern BufferGetStatus::Tester bufferGetStatus;
+
+    extern BufferSize::Tester bufferSize;
 
     extern ProductRequestIn::Tester productRequestIn;
 

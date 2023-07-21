@@ -31,8 +31,7 @@ void TestState::action__ProductRequestIn__BufferValid() {
     this->clearHistory();
     // Send the invocation
     const FwDpIdType id = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpIdType>::max());
-    const FwSizeType size = STest::Pick::lowerUpper(1, MAX_BUFFER_SIZE);
-    this->invoke_to_productRequestIn(0, id, size);
+    this->invoke_to_productRequestIn(0, id, this->abstractState.bufferSize);
     this->component.doDispatch();
     // Check events
     ASSERT_EVENTS_SIZE(0);
@@ -42,11 +41,11 @@ void TestState::action__ProductRequestIn__BufferValid() {
     ASSERT_FROM_PORT_HISTORY_SIZE(2);
     // Check buffer get out
     ASSERT_from_bufferGetOut_SIZE(1);
-    ASSERT_from_bufferGetOut(0, size);
+    ASSERT_from_bufferGetOut(0, this->abstractState.bufferSize);
     // Check product response out
     ASSERT_from_productResponseOut_SIZE(1);
     const Fw::Success failure(Fw::Success::SUCCESS);
-    const Fw::Buffer buffer(this->bufferData, size);
+    const Fw::Buffer buffer(this->bufferData, this->abstractState.bufferSize);
     ASSERT_from_productResponseOut(0, id, buffer, failure);
 }
 
@@ -59,8 +58,7 @@ void TestState ::action__ProductRequestIn__BufferInvalid() {
     this->clearHistory();
     // Send the invocation
     const FwDpIdType id = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpIdType>::max());
-    const FwSizeType size = STest::Pick::lowerUpper(1, MAX_BUFFER_SIZE);
-    this->invoke_to_productRequestIn(0, id, size);
+    this->invoke_to_productRequestIn(0, id, this->abstractState.bufferSize);
     this->component.doDispatch();
     // Check events
     ASSERT_EVENTS_SIZE(1);
@@ -71,7 +69,7 @@ void TestState ::action__ProductRequestIn__BufferInvalid() {
     ASSERT_FROM_PORT_HISTORY_SIZE(2);
     // Check buffer get out
     ASSERT_from_bufferGetOut_SIZE(1);
-    ASSERT_from_bufferGetOut(0, size);
+    ASSERT_from_bufferGetOut(0, this->abstractState.bufferSize);
     // Check product response out
     ASSERT_from_productResponseOut_SIZE(1);
     const Fw::Buffer buffer;
@@ -88,10 +86,16 @@ namespace ProductRequestIn {
 void Tester ::BufferValid() {
     this->ruleBufferValid.apply(this->testState);
     Testers::schedIn.ruleOK.apply(this->testState);
+    this->testState.abstractState.bufferSize = Svc::Tester::MAX_BUFFER_SIZE;
+    this->ruleBufferValid.apply(this->testState);
+    Testers::schedIn.ruleOK.apply(this->testState);
 }
 
 void Tester ::BufferInvalid() {
     Testers::bufferGetStatus.ruleInvalid.apply(this->testState);
+    this->ruleBufferInvalid.apply(this->testState);
+    Testers::schedIn.ruleOK.apply(this->testState);
+    this->testState.abstractState.bufferSize = Svc::Tester::MAX_BUFFER_SIZE;
     this->ruleBufferInvalid.apply(this->testState);
     Testers::schedIn.ruleOK.apply(this->testState);
 }
