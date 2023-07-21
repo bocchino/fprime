@@ -83,9 +83,11 @@ an invalid buffer.
 1. Assert that the event history contains one element.
 1. Assert that the event history for `BufferAllocationFailed` contains _I_ at index zero.
 1. Increment `NumFailedAllocations`.
-1. Assert that the from port history contains two elements.
-1. Assert that the history for `from_bufferGetOut` contains one element.
-1. Assert that the history for `from_productResponseOut` contains one element.
+1. Assert that the from port history contains two items.
+1. Assert that the history for `from_bufferGetOut` contains one item.
+1. Assert that the `from_bufferGetOut` history contains size _S_
+   at index zero.
+1. Assert that the history for `from_productResponseOut` contains one item.
 1. Assert that the history for `productResponseOut` contains the expected invalid buffer
    and status `FAILURE` at index zero.
 
@@ -114,6 +116,8 @@ a valid buffer.
 1. Increment `NumSuccessfulAllocations`.
 1. Assert that the from port history contains two items.
 1. Assert that the `from_bufferGetOut` history contains one item.
+1. Assert that the `from_bufferGetOut` history contains size _S_
+   at index zero.
 1. Assert that the `from_productResponseOut` history contains one item.
 1. Assert that the `from_productResponseOut` history contains the
    expected valid buffer value and status `SUCCESS` at index zero.

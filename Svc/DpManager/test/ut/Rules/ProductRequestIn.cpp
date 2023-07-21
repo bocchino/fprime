@@ -42,6 +42,7 @@ void TestState::action__ProductRequestIn__BufferValid() {
     ASSERT_FROM_PORT_HISTORY_SIZE(2);
     // Check buffer get out
     ASSERT_from_bufferGetOut_SIZE(1);
+    ASSERT_from_bufferGetOut(0, size);
     // Check product response out
     ASSERT_from_productResponseOut_SIZE(1);
     const Fw::Success failure(Fw::Success::SUCCESS);
@@ -70,6 +71,7 @@ void TestState ::action__ProductRequestIn__BufferInvalid() {
     ASSERT_FROM_PORT_HISTORY_SIZE(2);
     // Check buffer get out
     ASSERT_from_bufferGetOut_SIZE(1);
+    ASSERT_from_bufferGetOut(0, size);
     // Check product response out
     ASSERT_from_productResponseOut_SIZE(1);
     const Fw::Buffer buffer;
