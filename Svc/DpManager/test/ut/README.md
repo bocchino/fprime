@@ -10,12 +10,14 @@
 * `OnChangeChannel<T>`: A model of an on-change telemetry channel that
   stores type `T`.
 
+* `Option<T>`: An optional value of type `T`.
+
 ### 1.2. Variables
 
 | Variable | Type | Description | Initial Value |
 |----------|------|-------------|---------------|
 | `bufferGetStatus` | `BufferGetStatus` | The buffer get status | `VALID` |
-| `bufferSize` | `FwSizeType` | The current buffer size | 1 |
+| `bufferSize` | `Option<FwSizeType>` | The current buffer size | `none` |
 | `NumSuccessfulAllocations` | `OnChangeChannel<U32>` | The number of successful buffer allocations | 0 |
 | `NumFailedAllocations` | `OnChangeChannel<U32>` | The number of failed buffer allocations | 0 |
 | `NumDataProducts` | `OnChangeChannel<U32>` | The number of data products handled | 0 |
@@ -65,31 +67,11 @@ Apply rule `BufferGetStatus::Invalid`.
 None (helper rule).
 
 
-### 2.2. BufferSize
-
-This rule group manages the buffer size.
-
-#### 2.2.1. Set
-
-This rule sets the buffer size.
-
-**Precondition:**
-`true`
-
-**Action:**
-Set `bufferSize` to a random value in the range `[1, MAX_BUFFER_SIZE]`.
-
-**Test:**
-Apply rule `BufferSize::Set`.
-
-**Requirements tested:**
-None (helper rule).
-
-### 2.3. ProductRequestIn
+### 2.2. ProductRequestIn
 
 This rule group sends test input to the `productRequestIn` port.
 
-#### 2.3.1. BufferInvalid
+#### 2.2.1. BufferInvalid
 
 This rule invokes `productRequestIn` in a state where the test harness returns
 an invalid buffer.
@@ -100,13 +82,14 @@ an invalid buffer.
 **Action:**
 
 1. Clear the history.
-1. Invoke `productRequestIn` with a random id _I_ and size `bufferSize`.
+1. Let _S_ be `bufferSize`, or a random value if `bufferSize == none`.
+   Invoke `productRequestIn` with a random id _I_ and with size _S_.
 1. Assert that the event history contains one element.
 1. Assert that the event history for `BufferAllocationFailed` contains _I_ at index zero.
 1. Increment `NumFailedAllocations`.
 1. Assert that the from port history contains two items.
 1. Assert that the history for `from_bufferGetOut` contains one item.
-1. Assert that the `from_bufferGetOut` history contains size `bufferSize`
+1. Assert that the `from_bufferGetOut` history contains size _S_
    at index zero.
 1. Assert that the history for `from_productResponseOut` contains one item.
 1. Assert that the history for `productResponseOut` contains the expected invalid buffer
@@ -115,6 +98,7 @@ an invalid buffer.
 **Test:**
 
 1. Apply rule `BufferGetStatus::Invalid`.
+1. Set `bufferSize` to `MIN_BUFFER_SIZE`.
 1. Apply rule `ProductRequestIn::BufferInvalid`.
 1. Apply rule `SchedIn::OK`.
 1. Set `bufferSize` to `MAX_BUFFER_SIZE`.
@@ -124,7 +108,7 @@ an invalid buffer.
 **Requirements tested:**
 `SVC-DPMANAGER-001`, `SVC-DPMANAGER-003`.
 
-#### 2.3.2. BufferValid
+#### 2.2.2. BufferValid
 
 This rule invokes `productRequestIn` in a state where the test harness returns
 a valid buffer.
@@ -135,12 +119,13 @@ a valid buffer.
 **Action:**
 
 1. Clear history.
-1. Invoke `productRequestIn` with a random id _I_ and size `bufferSize`.
+1. Let _S_ be `bufferSize`, or a random value if `buffersize == none`.
+   Invoke `productRequestIn` with a random id _I_ and with size _S_.
 1. Assert that the event history is empty.
 1. Increment `NumSuccessfulAllocations`.
 1. Assert that the from port history contains two items.
 1. Assert that the `from_bufferGetOut` history contains one item.
-1. Assert that the `from_bufferGetOut` history contains size `bufferSize`
+1. Assert that the `from_bufferGetOut` history contains size _S_.
    at index zero.
 1. Assert that the `from_productResponseOut` history contains one item.
 1. Assert that the `from_productResponseOut` history contains the
@@ -148,6 +133,7 @@ a valid buffer.
 
 **Test:**
 
+1. Set `bufferSize` to `MIN_BUFFER_SIZE`.
 1. Apply rule `ProductRequestIn::BufferValid`.
 1. Apply rule `SchedIn::OK`.
 1. Set `bufferSize` to `MAX_BUFFER_SIZE`.
@@ -157,11 +143,11 @@ a valid buffer.
 **Requirements tested:**
 `SVC-DPMANAGER-001`, `SVC-DP-MANAGER-003`.
 
-### 2.4. ProductSendIn
+### 2.3. ProductSendIn
 
 This rule group sends test input to the `productSendIn` port.
 
-#### 2.4.1. OK
+#### 2.3.1. OK
 
 This rule invokes `productSendIn` with nominal input.
 
@@ -170,8 +156,9 @@ This rule invokes `productSendIn` with nominal input.
 **Action:**
 
 1. Clear history.
-1. Invoke `productSendIn` with a random id _I_ and a buffer _B_.
-   of size `bufferSize`.
+1. Let _S_ be `bufferSize`, or a random value if `bufferSize == none`.
+   Invoke `productSendIn` with a random id _I_ and a buffer _B_ of
+   of size _S_.
 1. Assert that the event history is empty.
 1. Increment `NumDataBroducts`.
 1. Increase `NumBytes` by the size of _B_.
@@ -180,17 +167,21 @@ This rule invokes `productSendIn` with nominal input.
 1. Assert that the `from_productSendOut` history contains _B_ at index zero.
 
 **Test:**
-Apply rule `ProductSendIn::OK`.
-Apply rule `SchedIn::OK`.
+1. Set `bufferSize` to `MIN_BUFFER_SIZE`.
+1. Apply rule `ProductSendIn::OK`.
+1. Apply rule `SchedIn::OK`.
+1. Set `bufferSize` to `MAX_BUFFER_SIZE`.
+1. Apply rule `ProductSendIn::OK`.
+1. Apply rule `SchedIn::OK`.
 
 **Requirements tested:**
 `SVC-DPMANAGER-002`, `SVC-DPMANAGER-003`.
 
-### 2.5. SchedIn
+### 2.4. SchedIn
 
 This rule group sends test input to the `schedIn` port.
 
-#### 2.5.1. OK
+#### 2.4.1. OK
 
 This rule invokes `schedIn` with nominal input.
 

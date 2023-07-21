@@ -27,7 +27,6 @@ namespace Random {
 
 Rules::BufferGetStatus::Invalid bufferGetStatusInvalid;
 Rules::BufferGetStatus::Valid bufferGetStatusValid;
-Rules::BufferSize::Set bufferSizeSet;
 Rules::ProductRequestIn::BufferInvalid productRequestInBufferInvalid;
 Rules::ProductRequestIn::BufferValid productRequestInBufferValid;
 Rules::ProductSendIn::OK productSendInOK;
@@ -41,7 +40,6 @@ void Tester ::run(FwSizeType maxNumSteps) {
     STest::Rule<TestState>* rules[] = {
         &bufferGetStatusInvalid,
         &bufferGetStatusValid,
-        &bufferSizeSet,
         &productRequestInBufferInvalid,
         &productRequestInBufferValid,
         &productSendInOK,

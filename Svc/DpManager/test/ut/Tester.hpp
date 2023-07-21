@@ -16,14 +16,6 @@ namespace Svc {
 class Tester : public DpManagerGTestBase {
   public:
     // ----------------------------------------------------------------------
-    // Constants
-    // ----------------------------------------------------------------------
-
-    //! The maximum buffer size
-    static constexpr FwSizeType MAX_BUFFER_SIZE = 1024;
-
-  public:
-    // ----------------------------------------------------------------------
     // Construction and destruction
     // ----------------------------------------------------------------------
 
@@ -90,9 +82,6 @@ class Tester : public DpManagerGTestBase {
 
     //! The component under test
     DpManager component;
-
-    //! Data for buffers
-    U8 bufferData[MAX_BUFFER_SIZE];
 };
 
 }  // end namespace Svc

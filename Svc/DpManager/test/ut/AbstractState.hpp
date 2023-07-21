@@ -16,11 +16,23 @@
 #include <cstring>
 
 #include "Fw/Types/Assert.hpp"
+#include "STest/Pick/Pick.hpp"
 #include "Svc/DpManager/DpManager.hpp"
 
 namespace Svc {
 
 class AbstractState {
+  public:
+    // ----------------------------------------------------------------------
+    // Constants
+    // ----------------------------------------------------------------------
+
+    //! The minimum buffer size
+    static constexpr FwSizeType MIN_BUFFER_SIZE = 1;
+
+    //! The maximum buffer size
+    static constexpr FwSizeType MAX_BUFFER_SIZE = 1024;
+
   public:
     // ----------------------------------------------------------------------
     // Types
@@ -57,9 +69,7 @@ class AbstractState {
             this->state = State::VALUE;
             this->value = value;
         }
-        void clear() {
-            this->state = State::NO_VALUE;
-        }
+        void clear() { this->state = State::NO_VALUE; }
         T get() const {
             FW_ASSERT(this->hasValue());
             return this->value;
@@ -104,8 +114,8 @@ class AbstractState {
 
     //! Construct an AbstractState object
     AbstractState()
-        : bufferGetStatus(BufferGetStatus::VALID),
-          bufferSize(1),
+        : bufferSizeOpt(),
+          bufferGetStatus(BufferGetStatus::VALID),
           NumSuccessfulAllocations(0),
           NumFailedAllocations(0),
           NumDataProducts(0),
@@ -113,14 +123,32 @@ class AbstractState {
 
   public:
     // ----------------------------------------------------------------------
-    // State variables
+    // Accessor methods
+    // ----------------------------------------------------------------------
+
+    //! Get the buffer size
+    FwSizeType getBufferSize() const {
+        return this->bufferSizeOpt.getOrElse(STest::Pick::lowerUpper(MIN_BUFFER_SIZE, MAX_BUFFER_SIZE));
+    }
+
+    //! Set the buffer size
+    void setBufferSize(FwSizeType bufferSize) { this->bufferSizeOpt.set(bufferSize); }
+
+  private:
+    // ----------------------------------------------------------------------
+    // Private state variables
+    // ----------------------------------------------------------------------
+
+    //! The current buffer size
+    Option<FwSizeType> bufferSizeOpt;
+
+  public:
+    // ----------------------------------------------------------------------
+    // Public state variables
     // ----------------------------------------------------------------------
 
     //! The buffer get status
     BufferGetStatus bufferGetStatus;
-
-    //! The current buffer size
-    FwSizeType bufferSize;
 
     //! The number of successful buffer allocations
     OnChangeChannel<U32> NumSuccessfulAllocations;
@@ -133,6 +161,9 @@ class AbstractState {
 
     //! The number of bytes handled
     OnChangeChannel<U32> NumBytes;
+
+    //! Data for buffers
+    U8 bufferData[MAX_BUFFER_SIZE];
 };
 
 }  // namespace Svc

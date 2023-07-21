@@ -29,8 +29,8 @@ Fw::Buffer Tester ::from_bufferGetOut_handler(const NATIVE_INT_TYPE portNum, U32
     switch (this->abstractState.bufferGetStatus) {
         case AbstractState::BufferGetStatus::VALID:
             // Construct a valid buffer
-            buffer.setData(this->bufferData);
-            FW_ASSERT(size <= MAX_BUFFER_SIZE);
+            buffer.setData(this->abstractState.bufferData);
+            FW_ASSERT(size <= AbstractState::MAX_BUFFER_SIZE);
             buffer.setSize(size);
             break;
         case AbstractState::BufferGetStatus::INVALID:
