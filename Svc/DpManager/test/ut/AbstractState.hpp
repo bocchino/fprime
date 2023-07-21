@@ -105,6 +105,7 @@ class AbstractState {
     //! Construct an AbstractState object
     AbstractState(void)
         : bufferGetStatus(BufferGetStatus::VALID),
+          bufferSize(0),
           NumSuccessfulAllocations(0),
           NumFailedAllocations(0),
           NumDataProducts(0),
@@ -117,6 +118,9 @@ class AbstractState {
 
     //! The buffer get status
     BufferGetStatus bufferGetStatus;
+
+    //! The current buffer size
+    FwSizeType bufferSize;
 
     //! The number of successful buffer allocations
     OnChangeChannel<U32> NumSuccessfulAllocations;

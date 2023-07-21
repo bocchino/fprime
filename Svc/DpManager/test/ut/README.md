@@ -15,6 +15,7 @@
 | Variable | Type | Description | Initial Value |
 |----------|------|-------------|---------------|
 | `bufferGetStatus` | `BufferGetStatus` | The buffer get status | `VALID` |
+| `bufferSize` | `FwSizeType` | The current buffer size | `MAX_BUFFER_SIZE` |
 | `NumSuccessfulAllocations` | `OnChangeChannel<U32>` | The number of successful buffer allocations | 0 |
 | `NumFailedAllocations` | `OnChangeChannel<U32>` | The number of failed buffer allocations | 0 |
 | `NumDataProducts` | `OnChangeChannel<U32>` | The number of data products handled | 0 |
@@ -64,11 +65,31 @@ Apply rule `BufferGetStatus::Invalid`.
 None (helper rule).
 
 
-### 2.2. ProductRequestIn
+## 3. BufferSize
+
+This rule group manages the buffer size.
+
+### 3.1. Set
+
+This rule sets the buffer size.
+
+**Precondition:**
+`true`
+
+**Action:**
+Set `bufferSize` to a random value in the range `[1, MAX_BUFFER_SIZE]`.
+
+**Test:**
+Apply rule `BufferSize::Set`.
+
+**Requirements tested:**
+None (helper rule).
+
+### 3.2. ProductRequestIn
 
 This rule group sends test input to the `productRequestIn` port.
 
-#### 2.2.1. BufferInvalid
+#### 3.2.1. BufferInvalid
 
 This rule invokes `productRequestIn` in a state where the test harness returns
 an invalid buffer.
@@ -79,13 +100,13 @@ an invalid buffer.
 **Action:**
 
 1. Clear the history.
-1. Invoke `productRequestIn` with a random id _I_ and size _S_.
+1. Invoke `productRequestIn` with a random id _I_ and size `bufferSize`.
 1. Assert that the event history contains one element.
 1. Assert that the event history for `BufferAllocationFailed` contains _I_ at index zero.
 1. Increment `NumFailedAllocations`.
 1. Assert that the from port history contains two items.
 1. Assert that the history for `from_bufferGetOut` contains one item.
-1. Assert that the `from_bufferGetOut` history contains size _S_
+1. Assert that the `from_bufferGetOut` history contains size `bufferSize`
    at index zero.
 1. Assert that the history for `from_productResponseOut` contains one item.
 1. Assert that the history for `productResponseOut` contains the expected invalid buffer
@@ -100,7 +121,7 @@ an invalid buffer.
 **Requirements tested:**
 `SVC-DPMANAGER-001`, `SVC-DPMANAGER-003`.
 
-#### 2.2.2. BufferValid
+#### 3.2.2. BufferValid
 
 This rule invokes `productRequestIn` in a state where the test harness returns
 a valid buffer.
@@ -111,12 +132,12 @@ a valid buffer.
 **Action:**
 
 1. Clear history.
-1. Invoke `productRequestIn` with a random id _I_ and size _S_.
+1. Invoke `productRequestIn` with a random id _I_ and size `bufferSize`.
 1. Assert that the event history is empty.
 1. Increment `NumSuccessfulAllocations`.
 1. Assert that the from port history contains two items.
 1. Assert that the `from_bufferGetOut` history contains one item.
-1. Assert that the `from_bufferGetOut` history contains size _S_
+1. Assert that the `from_bufferGetOut` history contains size `bufferSize`
    at index zero.
 1. Assert that the `from_productResponseOut` history contains one item.
 1. Assert that the `from_productResponseOut` history contains the
@@ -130,11 +151,11 @@ a valid buffer.
 **Requirements tested:**
 `SVC-DPMANAGER-001`, `SVC-DP-MANAGER-003`.
 
-### 2.3. ProductSendIn
+### 3.3. ProductSendIn
 
 This rule group sends test input to the `productSendIn` port.
 
-#### 2.3.1. OK
+#### 3.3.1. OK
 
 This rule invokes `productSendIn` with nominal input.
 
@@ -143,7 +164,8 @@ This rule invokes `productSendIn` with nominal input.
 **Action:**
 
 1. Clear history.
-1. Invoke `productSendIn` with a random id _I_ and buffer _B_.
+1. Invoke `productSendIn` with a random id _I_ and a buffer _B_.
+   of size `bufferSize`.
 1. Assert that the event history is empty.
 1. Increment `NumDataBroducts`.
 1. Increase `NumBytes` by the size of _B_.
@@ -158,11 +180,11 @@ Apply rule `SchedIn::OK`.
 **Requirements tested:**
 `SVC-DPMANAGER-002`, `SVC-DPMANAGER-003`.
 
-### 2.4. SchedIn
+### 3.4. SchedIn
 
 This rule group sends test input to the `schedIn` port.
 
-#### 2.4.1. OK
+#### 3.4.1. OK
 
 This rule invokes `schedIn` with nominal input.
 
@@ -181,9 +203,9 @@ This rule invokes `schedIn` with nominal input.
 **Requirements tested:**
 `SVC-DPMANAGER-003`.
 
-## 3. Implementation
+## 4. Implementation
 
-### 3.1. Tester and TestState
+### 4.1. Tester and TestState
 
 The abstract state and the component under test are members of the `Tester` class.
 `TestState` is a derived class of `Tester`.
@@ -209,7 +231,7 @@ classDiagram
 
 The preconditions and actions for the `BufferGetStatus` rule group are shown.
 
-### 3.2. Rules
+### 4.2. Rules
 
 The classes derived from `STest::Rule` are boilerplate.
 The precondition and action functions turn around and call the corresponding
@@ -232,7 +254,7 @@ classDiagram
 
 The rules for the `BufferGetStatus` rule group are shown.
 
-### 3.3. Rule Group Testers
+### 4.3. Rule Group Testers
 
 There is one tester for each rule group.
 Each tester defines the rules for the group, defines a test state,
@@ -250,7 +272,7 @@ classDiagram
     }
 ```
 
-### 3.4. Random Scenario Tester
+### 4.4. Random Scenario Tester
 
 The random scenario tester instantiates all the rules and uses them to provide
 a random scenario.
