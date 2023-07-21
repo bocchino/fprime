@@ -142,7 +142,7 @@ product record RawDataRecord: raw
 
 #### 3.2.3. Containers
 
-A container is a data structure that stores records.
+A container is a data structure that  records.
 When defining a producer component, you can specify one or more containers.
 Each container specified in a component can store
 any of the records specified in the component.
@@ -206,7 +206,7 @@ It does the following:
    1. If no time tag is provided, then invoke `timeGetOut`
       to get the system time and use it to set the time tag.
 
-   1. Stores the time tag into _c_.
+   1. Store the time tag into _c_.
 
    1. Send _c_ on `productSendOut`.
 
