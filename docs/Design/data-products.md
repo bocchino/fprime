@@ -55,12 +55,11 @@ components:
    1. A **data product writer**.
       This component receives filled containers from data product
       producers. It writes the contents of the containers to non-volatile
-      storage. (TBR)
-      See TODO.
+      storage. See [`Svc::DpWriter`](../../Svc/DpWriter/docs/sdd.md).
 
    1. A **data product catalog**.
       This component maintains a database of available data
-      products. By command, it downlinks and deletes data products. (TBR)
+      products. By command, it downlinks and deletes data products.
       See TODO.
 
 Note that when using data products, you need to develop only the
