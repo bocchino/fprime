@@ -17,6 +17,9 @@ A record is a basic unit of data.
 For example, it may be a struct, an array of typed objects of
 statically known size, or an array of bytes of statically unknown size.
 A container has an identifier and a priority and stores records.
+In C++, a container is represented as a class object with member fields that
+(1) store header fields and (2) store an `Fw::Buffer` object pointing
+to the container data.
 
 The set of all containers forms the **data product dictionary**.
 To manage the data product dictionary, F Prime uses the same general approach
@@ -98,21 +101,34 @@ and _The FPP Language Specification_.
 
 FPP provides the following special ports for managing data products:
 
+1. A **product get port** for synchronously requesting an empty
+   container from a buffer manager.
+   The request is served on the thread that invokes the port
+   and causes a mutex lock to be taken on that thread.
+   Example syntax:
+   ```
+   product get port productGetOut
+   ```
+
 1. A **product request port** of type `Fw::DpRequest`.
-   This is an output port for requesting an empty container from a
-   data product manager. Example syntax:
+   This is an output port for asynchronously requesting an empty container
+   from a data product manager.
+   The request is served on the thread of the data product manager.
+   This approach incurs the overhead of a separate threat, but it
+   does not require the requesting component to take a lock.
+   Example syntax:
    ```
    product request port productRequestOut
    ```
 
-2. A **product receive port** of type `Fw::DpResponse`.
+1. A **product receive port** of type `Fw::DpResponse`.
    This is an input port for receiving an empty container in response
-   to a request. Example syntax:
+   to an asynchronous request. Example syntax:
    ```
    async product recv port productRecvIn
    ```
 
-3. A **product send port** of type `Fw::DpSend`.
+1. A **product send port** of type `Fw::DpSend`.
    This is an output port for sending a filled container
    to a data product writer. Example syntax:
    ```
@@ -121,8 +137,14 @@ FPP provides the following special ports for managing data products:
    
 The port types are documented [here](../../Fw/Dp/docs/sdd.md).
 
-Each data product producer component must have each of these ports
-in its FPP component model.
+Each data product producer component must have the following
+ports in its component model:
+
+1. A `product` `get` port, or a `product` `request` port, or both ports.
+   A component that has a `product` `request` port must also have
+   a `product` `receive` port.
+
+1. A `product` `send` port.
 
 #### 3.2.2. Records
 
@@ -176,7 +198,14 @@ for each record _R_ defined in _C_.
 For the serialized format of each record, see the documentation
 for [`Fw::DpRecord`](../../Fw/Dp/docs/sdd.md).
 
-1. A member function `Dp_Request` for requesting a fresh
+1. If _C_ has a `product` `get` port, a member function `Dp_Get`
+for synchronously requesting memory for a fresh container.
+This function takes a container data structure _D_ and a size.
+It requests an `Fw::Buffer` of the requested size and stores it
+in _D_.
+
+1. If _C_ has a `product` `request` port, A member function
+`Dp_Request` for asynchronously requesting a fresh
 data product container.
 This function takes a container ID and a size.
 It sends out a request on `productRequestOut`, which is
