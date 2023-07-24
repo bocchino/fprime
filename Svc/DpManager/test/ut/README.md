@@ -208,7 +208,9 @@ The abstract state and the component under test are members of the `Tester` clas
 `TestState` is a derived class of `Tester`.
 The preconditions and actions of the rules are defined in `TestState` so they can use the functions
 and macros defined in `DpManagerGTestBase`.
-The class definition of `TestState` is boilerplate and is defined using macro expansion.
+The header file for `TestState` is boilerplate and is defined using macro expansion.
+The function definitions for `TestState` are handwritten.
+They encode the preconditions and actions described above.
 
 ```mermaid
 classDiagram
