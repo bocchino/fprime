@@ -141,7 +141,7 @@ The port types are documented [here](../../Fw/Dp/docs/sdd.md).
 Each data product producer component must have the following
 ports in its component model:
 
-1. A `product` `get` port, or a `product` `request` port, or both ports.
+1. One or both of a `product` `get` port and a `product` `request` port.
 
 1. A `product` `send` port.
 
