@@ -18,8 +18,8 @@ For example, it may be a struct, an array of typed objects of
 statically known size, or an array of bytes of statically unknown size.
 A container has an identifier and a priority and stores records.
 In C++, a container is represented as a class object with member fields that
-(1) store header fields and (2) store an `Fw::Buffer` object pointing
-to the container data.
+(1) store header data and (2) store an `Fw::Buffer` object pointing
+to the memory that stores the records.
 
 The set of all containers forms the **data product dictionary**.
 To manage the data product dictionary, F Prime uses the same general approach
