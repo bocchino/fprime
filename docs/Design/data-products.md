@@ -101,7 +101,7 @@ and _The FPP Language Specification_.
 
 FPP provides the following special ports for managing data products:
 
-1. A **product get port** of type `Fw::DpGet` for synchronously requesting
+1. A **product get port** of type `Fw::BufferGet` for synchronously requesting
    memory from a buffer manager.
    The request is served on the thread that invokes the port
    and causes a mutex lock to be taken on that thread.
