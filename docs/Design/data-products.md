@@ -101,7 +101,8 @@ and _The FPP Language Specification_.
 
 FPP provides the following special ports for managing data products:
 
-1. A **product get port** of type `Fw::BufferGet` for synchronously requesting
+1. A **product get port** of type `Fw::BufferGet`.
+   This is an output port for synchronously requesting
    memory from a buffer manager.
    The request is served on the thread that invokes the port
    and causes a mutex lock to be taken on that thread.
@@ -114,8 +115,8 @@ FPP provides the following special ports for managing data products:
    This is an output port for asynchronously requesting memory
    from a data product manager.
    The request is served on the thread of the data product manager.
-   This approach incurs the overhead of a separate threat, but it
-   does not require the requesting component to take a lock.
+   This approach incurs the overhead of a separate thread, but it
+   does not require the requesting thread to take a lock.
    Example syntax:
    ```
    product request port productRequestOut
