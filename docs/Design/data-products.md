@@ -141,10 +141,11 @@ Each data product producer component must have the following
 ports in its component model:
 
 1. A `product` `get` port, or a `product` `request` port, or both ports.
-   A component that has a `product` `request` port must also have
-   a `product` `receive` port.
 
 1. A `product` `send` port.
+
+ A component that has a `product` `request` port must also have
+ a `product` `receive` port.
 
 #### 3.2.2. Records
 
