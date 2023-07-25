@@ -13,6 +13,8 @@
 #ifndef DPCFG_HPP
 #define DPCFG_HPP
 
+#include "FpConfig.hpp"
+
 namespace Fw {
 
 class DpCfg {
@@ -27,7 +29,7 @@ enum class ProcId : U8 {
 //! header
 static constexpr FwSizeType CONTAINER_DATA_SIZE = 32;
 
-}
+};
 
 }
 

@@ -7,7 +7,7 @@
 #ifndef Fw_DpContainer_HPP
 #define Fw_DpContainer_HPP
 
-#include "FpConfig.hpp"
+#include "DpCfg.hpp"
 #include "Fw/Buffer/Buffer.hpp"
 #include "Fw/Time/Time.hpp"
 
