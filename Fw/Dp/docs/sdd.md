@@ -8,7 +8,17 @@ the collection and storage of data products.
 For more information on data products and records, see the
 [data products documentation](../../../docs/Design/data-products.md).
 
-## 2. FPP Ports
+## 2. Configuration
+
+The following types and constants are configurable via the file
+[`config/DpCfg.hpp`](../../../config/DpCfg.hpp):
+
+| Name | Kind | Description |
+| ---- | ---- | ---- |
+| `Fw::DpCfg::ProcId` | Type | The type of the identifier for the kind of processing to perform on a container before writing it to disk. |
+| `Fw::DpCfg::CONTAINER_DATA_SIZE` | Constant | The size of the user-configurable data in the container packet header. |
+
+## 3. FPP Ports
 
 This module defines the following FPP ports:
 
@@ -22,7 +32,7 @@ This module defines the following FPP ports:
 For more information, see the file [`Dp.fpp`](../Dp.fpp) in the parent 
 directory.
 
-## 3. C++ Classes
+## 4. C++ Classes
 
 This module defines a C++ class `DpContainer`.
 `DpContainer` is the base class for a data product container.
@@ -34,12 +44,12 @@ It provides all the generic operations defined in `DpContainer`
 plus the operations that are specific to _C_, for example
 serializing the specific types of data that _C_ can store.
 
-### 3.1. Serialized Container Format
+### 4.1. Serialized Container Format
 
 In serialized form, each data product container consists of a header 
 followed by a data payload.
 
-#### 3.1.1. Header
+#### 4.1.1. Header
 
 The data product header has the following format.
 
@@ -49,9 +59,11 @@ The data product header has the following format.
 |`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The container ID|
 |`Priority`|`FwDpPriorityType`|`sizeof(FwDpPriorityType)`|The container default priority|
 |`TimeTag`|`Fw::Time`|`Fw::Time::SERIALIZED_SIZE`|The time tag associated with the container|
+|`ProcId`|`Fw::DpCfg::ProcId`|The processing identifier|
+|`UserData`|`U8[Fw::DpCfg::CONTAINER_DATA_SIZE]`|User-configurable data|
 |`DataSize`|`FwSizeType`|`sizeof(FwSizeType)`|The size of the data payload in bytes|
 
-#### 3.1.2. Data Payload
+#### 4.1.2. Data Payload
 
 The data payload is a sequence of records.
 The serialized format of each record _R_ depends on whether _R_ is a typed
@@ -80,7 +92,7 @@ Raw records have the following format:
 |`Size`|`FwSizeType`|`sizeof(FwSizeType)`|The number _n_ of bytes in the record|
 |`Data`|Array of bytes|_n_|_n_ bytes of raw data|
 
-### 3.2. Further Information
+### 4.2. Further Information
 
 For more information on the `DpContainer` class, see the file [`DpContainer.hpp`](../DpContainer.hpp) in 
 the parent directory.
