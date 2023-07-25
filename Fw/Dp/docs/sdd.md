@@ -45,7 +45,7 @@ The data product header has the following format.
 
 |Field Name|Data Type|Serialized Size|Description|
 |----------|---------|---------------|-----------|
-|`PacketDescriptor`|`FwPacketDescriptorType`|`sizeof(FwPacketDescriptorType)`|The F Prime packet descriptor `FW_PACKET_DP`.|
+|`PacketDescriptor`|`FwPacketDescriptorType`|`sizeof(FwPacketDescriptorType)`|The F Prime packet descriptor [`FW_PACKET_DP`](../../../Fw/Com/ComPacket.hpp)|
 |`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The container ID|
 |`Priority`|`FwDpPriorityType`|`sizeof(FwDpPriorityType)`|The container default priority|
 |`TimeTag`|`Fw::Time`|`Fw::Time::SERIALIZED_SIZE`|The time tag associated with the container|
