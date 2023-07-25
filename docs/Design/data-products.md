@@ -206,7 +206,7 @@ This function takes a container data structure _D_ and a size.
 It requests an `Fw::Buffer` of the requested size and stores it
 in _D_.
 
-1. If _C_ has a `product` `request` port, A member function
+1. If _C_ has a `product` `request` port, a member function
 `Dp_Request` for asynchronously requesting a fresh
 data product container.
 This function takes a container ID and a size.
