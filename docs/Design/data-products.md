@@ -101,7 +101,7 @@ and _The FPP Language Specification_.
 
 FPP provides the following special ports for managing data products:
 
-1. A **product get port** of type `Fw::BufferGet`.
+1. A **product get port** of type [`Fw::BufferGet`](../../Fw/Buffer/docs/sdd.md).
    This is an output port for synchronously requesting
    memory from a buffer manager.
    The request is served on the thread that invokes the port
@@ -111,7 +111,7 @@ FPP provides the following special ports for managing data products:
    product get port productGetOut
    ```
 
-1. A **product request port** of type `Fw::DpRequest`.
+1. A **product request port** of type [`Fw::DpRequest`](../../Fw/Dp/docs/sdd.md).
    This is an output port for asynchronously requesting memory
    from a data product manager.
    The request is served on the thread of the data product manager.
@@ -122,22 +122,20 @@ FPP provides the following special ports for managing data products:
    product request port productRequestOut
    ```
 
-1. A **product receive port** of type `Fw::DpResponse`.
+1. A **product receive port** of type [`Fw::DpResponse`](../../Fw/Dp/docs/sdd.md).
    This is an input port for receiving an empty container in response
    to an asynchronous request. Example syntax:
    ```
    async product recv port productRecvIn
    ```
 
-1. A **product send port** of type `Fw::DpSend`.
+1. A **product send port** of type [`Fw::DpSend`](../../Fw/Dp/docs/sdd.md).
    This is an output port for sending a filled container
    to a data product writer. Example syntax:
    ```
    product send port productSendOut
    ```
    
-The port types are documented [here](../../Fw/Dp/docs/sdd.md).
-
 Each data product producer component must have the following
 ports in its component model:
 
