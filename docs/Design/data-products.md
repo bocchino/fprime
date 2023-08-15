@@ -203,6 +203,8 @@ for synchronously requesting memory for a fresh container.
 This function takes a container data structure _D_ and a size.
 It requests an `Fw::Buffer` of the requested size and stores it
 in _D_.
+It returns a status value indicating whether the buffer
+allocation succeeded.
 
 1. If _C_ has a `product` `request` port, a member function
 `Dp_Request` for asynchronously requesting a fresh
@@ -211,8 +213,9 @@ This function takes a container ID and a size.
 It sends out a request on `productRequestOut`, which is
 typically connected to a data product manager component.
 
-1. For each container _c_ defined in _C_, a pure virtual
-member function `Dp_Recv_` _c_ `_handler`.
+1. If _C_ has a `product` `recv` port, a pure virtual
+member function `Dp_Recv_` _c_ `_handler` for each container _c_
+defined in _C_.
 When a fresh container arrives in response to a
 `Dp_Request` invocation, the autocoded C++ uses the container ID to
 select and invoke the appropriate `Dp_Recv` handler.
