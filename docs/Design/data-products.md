@@ -65,6 +65,11 @@ components:
       products. By command, it downlinks and deletes data products.
       See TODO.
 
+   1. A **data product processor**.
+      This component performs in-memory processing on data
+      product containers.
+      See TODO.
+
 Note that when using data products, you need to develop only the
 producer components. The other components are provided by F'.
 
@@ -256,4 +261,7 @@ is a data product producer.
 TODO
 
 **Cataloging and downlinking data products:**
+TODO
+
+**Processing data products:**
 TODO
