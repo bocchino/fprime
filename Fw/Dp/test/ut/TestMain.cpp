@@ -2,6 +2,7 @@
 // TestMain.cpp
 // ----------------------------------------------------------------------
 
+#include <cstring>
 #include <limits>
 
 #include "gtest/gtest.h"
@@ -16,6 +17,7 @@ using namespace Fw;
 
 constexpr FwSizeType BUFFER_SIZE = 100;
 U8 bufferData[BUFFER_SIZE];
+U8 userData[DpCfg::CONTAINER_USER_DATA_SIZE];
 
 void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     // Check the packet size
@@ -34,6 +36,12 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     const DpCfg::ProcId procId =
         static_cast<DpCfg::ProcId>(STest::Pick::lowerUpper(0, std::numeric_limits<DpCfg::ProcIdNumType>::max()));
     container.setProcId(procId);
+    // Set the user data
+    for (U8& data : userData) {
+      data = static_cast<U8>(STest::Pick::any());
+    }
+    FW_ASSERT(sizeof userData == sizeof container.userData);
+    (void) ::memcpy(container.userData, userData, sizeof container.userData);
     // Serialize and deserialize the header
     auto status = container.serializeHeader();
     ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
@@ -47,6 +55,10 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     ASSERT_EQ(timeTag, header.timeTag);
     // Check the deserialized processor id
     ASSERT_EQ(procId, header.procId);
+    // Check the deserialized data
+    for (FwSizeType i = 0; i < DpCfg::CONTAINER_USER_DATA_SIZE; ++i) {
+      ASSERT_EQ(userData[i], header.userData[i]);
+    }
     // Check the data size
     // Data size should be zero because there is no data
     ASSERT_EQ(0, header.dataSize);

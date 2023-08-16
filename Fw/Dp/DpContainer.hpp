@@ -51,7 +51,7 @@ class DpContainer {
     );
 
     //! Constructor without buffer
-    DpContainer(FwDpIdType id            //!< The container id
+    DpContainer(FwDpIdType id  //!< The container id
     );
 
   public:
@@ -125,13 +125,21 @@ class DpContainer {
     //! Initialize the user data field
     void initUserDataField();
 
-  PROTECTED:
+  public:
     // ----------------------------------------------------------------------
-    // Protected member variables
+    // Public member variables
     // ----------------------------------------------------------------------
 
     //! The container id
     const FwDpIdType id;
+
+    //! The user data
+    U8 userData[DpCfg::CONTAINER_USER_DATA_SIZE];
+
+  PROTECTED:
+    // ----------------------------------------------------------------------
+    // Protected member variables
+    // ----------------------------------------------------------------------
 
     //! The priority
     FwDpPriorityType priority;
@@ -141,9 +149,6 @@ class DpContainer {
 
     //! The processor ID
     DpCfg::ProcId procId;
-
-    //! The user data
-    U8 userData[DpCfg::CONTAINER_USER_DATA_SIZE];
 
     //! The data size
     FwSizeType dataSize;
