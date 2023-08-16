@@ -8,9 +8,9 @@
 #define Fw_DpContainer_HPP
 
 #include "DpCfg.hpp"
-#include "config/ProcIdEnumAc.hpp"
 #include "Fw/Buffer/Buffer.hpp"
 #include "Fw/Time/Time.hpp"
+#include "config/ProcIdEnumAc.hpp"
 
 namespace Fw {
 
@@ -85,7 +85,7 @@ class DpContainer {
 
     //! Get the processor ID
     //! \return The processor ID
-    DpCfg::ProcId::T getProcId() const { return this->procId; }
+    DpCfg::ProcId getProcId() const { return this->procId; }
 
     //! Move the packet serialization to the specified offset
     //! \return The serialize status
@@ -109,7 +109,7 @@ class DpContainer {
     }
 
     //! Set the processor ID
-    void setProcId(DpCfg::ProcId::T procId  //!< The processor ID
+    void setProcId(DpCfg::ProcId procId  //!< The processor ID
     ) {
         this->procId = procId;
     }
@@ -149,7 +149,7 @@ class DpContainer {
     Time timeTag;
 
     //! The processor ID
-    DpCfg::ProcId::T procId;
+    DpCfg::ProcId procId;
 
     //! The data size
     FwSizeType dataSize;

@@ -60,7 +60,7 @@ Fw::SerializeStatus DpContainer::serializeHeader() {
     }
     // Serialize the processor ID
     if (status == Fw::FW_SERIALIZE_OK) {
-        status = serializeRepr.serialize(static_cast<DpCfg::ProcId::SerialType>(this->procId));
+        status = serializeRepr.serialize(this->procId);
     }
     // Serialize the user data
     if (status == Fw::FW_SERIALIZE_OK) {

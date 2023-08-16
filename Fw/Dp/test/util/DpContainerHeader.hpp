@@ -58,10 +58,8 @@ struct DpContainerHeader {
         ASSERT_EQ(status, FW_SERIALIZE_OK);
         // Deserialize the processor ID
         DpContainerHeader::moveDeserToOffset(buffer, DpContainer::Header::PROC_ID_OFFSET);
-        DpCfg::ProcId::SerialType procIdNum;
-        status = serializeRepr.deserialize(procIdNum);
+        status = serializeRepr.deserialize(procId);
         ASSERT_EQ(status, FW_SERIALIZE_OK);
-        this->procId = static_cast<DpCfg::ProcId::T>(procIdNum);
         // Deserialize the user data
         DpContainerHeader::moveDeserToOffset(buffer, DpContainer::Header::USER_DATA_OFFSET);
         NATIVE_UINT_TYPE size = sizeof this->userData;
@@ -90,7 +88,7 @@ struct DpContainerHeader {
     Time timeTag;
 
     //! The processor ID
-    DpCfg::ProcId::T procId;
+    DpCfg::ProcId procId;
 
     //! The user data
     U8 userData[DpCfg::CONTAINER_USER_DATA_SIZE];
