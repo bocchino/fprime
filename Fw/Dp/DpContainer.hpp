@@ -78,6 +78,10 @@ class DpContainer {
     //! \return The time tag
     Fw::Time getTimeTag() const { return this->timeTag; }
 
+    //! Get the processor ID
+    //! \return The processor ID
+    DpCfg::ProcId getProcId() const { return this->procId; }
+
     //! Move the packet serialization to the specified offset
     //! \return The serialize status
     Fw::SerializeStatus moveSerToOffset(FwSizeType offset  //!< The offset
@@ -99,6 +103,12 @@ class DpContainer {
         this->timeTag = timeTag;
     }
 
+    //! Set the processor ID
+    void setProcId(DpCfg::ProcId procId  //!< The processor ID
+    ) {
+        this->procId = procId;
+    }
+
   PROTECTED:
     // ----------------------------------------------------------------------
     // Protected member variables
@@ -111,13 +121,19 @@ class DpContainer {
     FwDpPriorityType priority;
 
     //! The time tag
-    Fw::Time timeTag;
+    Time timeTag;
+
+    //! The processor ID
+    DpCfg::ProcId procId;
+
+    //! The user data
+    U8 userData[DpCfg::CONTAINER_USER_DATA_SIZE];
 
     //! The data size
     FwSizeType dataSize;
 
     //! The packet buffer
-    Fw::Buffer buffer;
+    Buffer buffer;
 };
 
 }  // end namespace Fw

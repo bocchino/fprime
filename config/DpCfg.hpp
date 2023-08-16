@@ -18,9 +18,11 @@
 namespace Fw {
 
 struct DpCfg {
+    //! The numeric type of the identifier for the kind of processing
+    using ProcIdNumType = U8;
     //! The type of the identifier for the kind of processing to perform on
     //! a container before writing it to disk.
-    enum class ProcId : U8 {
+    enum class ProcId : ProcIdNumType {
         NONE = 255  //!< No processing
     };
 

@@ -36,6 +36,10 @@ TEST(Header, OK) {
     const U32 useconds = STest::Pick::startLength(0, 1000000);
     Fw::Time timeTag(seconds, useconds);
     container.setTimeTag(timeTag);
+    // Set the processor ID
+    const DpCfg::ProcId procId =
+        static_cast<DpCfg::ProcId>(STest::Pick::lowerUpper(0, std::numeric_limits<DpCfg::ProcIdNumType>::max()));
+    container.setProcId(procId);
     // Serialize and deserialize the header
     auto status = container.serializeHeader();
     ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
@@ -47,6 +51,8 @@ TEST(Header, OK) {
     ASSERT_EQ(priority, header.priority);
     // Check the deserialized time tag
     ASSERT_EQ(timeTag, header.timeTag);
+    // Check the deserialized processor id
+    ASSERT_EQ(procId, header.procId);
     // Check the data size
     // Data size should be zero because there is no data
     ASSERT_EQ(0, header.dataSize);
