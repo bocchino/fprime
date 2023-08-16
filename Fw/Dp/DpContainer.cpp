@@ -16,14 +16,18 @@ namespace Fw {
 // Constructor
 // ----------------------------------------------------------------------
 
-//! Constructor
 DpContainer::DpContainer(FwDpIdType id, const Fw::Buffer& buffer)
-    : id(id), priority(0), procId(DpCfg::ProcId::NONE), dataSize(0), buffer(buffer) {
-    // Initialize user data field
-    (void)::memset(this->userData, 0, sizeof this->userData);
-    // Move the serialization index to the end of the header
-    const auto status = this->moveSerToOffset(Header::SIZE);
-    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+    : id(id), priority(0), procId(DpCfg::ProcId::NONE), dataSize(0), buffer() {
+    // Initialize the user data field
+    this->initUserDataField();
+    // Set the buffer
+    this->setBuffer(buffer);
+}
+
+DpContainer::DpContainer(FwDpIdType id)
+    : id(id), priority(0), procId(DpCfg::ProcId::NONE), dataSize(0), buffer() {
+    // Initialize the user data field
+    this->initUserDataField();
 }
 
 // ----------------------------------------------------------------------
@@ -69,4 +73,20 @@ Fw::SerializeStatus DpContainer::serializeHeader() {
     }
     return status;
 }
+
+void DpContainer::setBuffer(const Buffer& buffer) {
+    this->buffer = buffer;
+    // Move the serialization index to the end of the header
+    const auto status = this->moveSerToOffset(Header::SIZE);
+    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+}
+
+// ----------------------------------------------------------------------
+// Private member functions
+// ----------------------------------------------------------------------
+
+void DpContainer::initUserDataField() {
+    (void)::memset(this->userData, 0, sizeof this->userData);
+}
+
 }  // namespace Fw

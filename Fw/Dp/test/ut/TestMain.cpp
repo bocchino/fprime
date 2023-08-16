@@ -17,13 +17,7 @@ using namespace Fw;
 constexpr FwSizeType BUFFER_SIZE = 100;
 U8 bufferData[BUFFER_SIZE];
 
-TEST(Header, OK) {
-    COMMENT("Test header serialization");
-    // Create a buffer
-    Fw::Buffer buffer(bufferData, sizeof bufferData);
-    // Use the buffer to create a container
-    const FwDpIdType id = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpIdType>::max());
-    DpContainer container(id, buffer);
+void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     // Check the packet size
     // Packet size should be header size because there is no data
     const auto headerSize = DpContainer::Header::SIZE;
@@ -56,6 +50,29 @@ TEST(Header, OK) {
     // Check the data size
     // Data size should be zero because there is no data
     ASSERT_EQ(0, header.dataSize);
+}
+
+TEST(Header, BufferInConstructor) {
+    COMMENT("Test header serialization with buffer in constructor");
+    // Create a buffer
+    Fw::Buffer buffer(bufferData, sizeof bufferData);
+    // Use the buffer to create a container
+    const FwDpIdType id = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpIdType>::max());
+    DpContainer container(id, buffer);
+    // Check the header
+    checkHeader(id, buffer, container);
+}
+
+TEST(Header, BufferSet) {
+    COMMENT("Test header serialization with buffer set");
+    // Create a buffer
+    Fw::Buffer buffer(bufferData, sizeof bufferData);
+    // Use the buffer to create a container
+    const FwDpIdType id = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpIdType>::max());
+    DpContainer container(id);
+    container.setBuffer(buffer);
+    // Check the header
+    checkHeader(id, buffer, container);
 }
 
 int main(int argc, char** argv) {

@@ -45,9 +45,13 @@ class DpContainer {
     // Constructor
     // ----------------------------------------------------------------------
 
-    //! Constructor
+    //! Constructor with buffer
     DpContainer(FwDpIdType id,            //!< The container id
                 const Fw::Buffer& buffer  //!< The buffer
+    );
+
+    //! Constructor without buffer
+    DpContainer(FwDpIdType id            //!< The container id
     );
 
   public:
@@ -108,6 +112,18 @@ class DpContainer {
     ) {
         this->procId = procId;
     }
+
+    //! Set the packet buffer
+    void setBuffer(const Buffer& buffer  //!< The buffer
+    );
+
+  PRIVATE:
+    // ----------------------------------------------------------------------
+    // Private member functions
+    // ----------------------------------------------------------------------
+
+    //! Initialize the user data field
+    void initUserDataField();
 
   PROTECTED:
     // ----------------------------------------------------------------------
