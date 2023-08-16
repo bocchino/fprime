@@ -17,7 +17,7 @@ namespace Fw {
 // ----------------------------------------------------------------------
 
 DpContainer::DpContainer(FwDpIdType id, const Fw::Buffer& buffer)
-    : id(id), priority(0), procId(DpCfg::ProcId::NONE), dataSize(0), buffer() {
+    : id(id), priority(0), procId(DpCfg::FppProcId::NONE), dataSize(0), buffer() {
     // Initialize the user data field
     this->initUserDataField();
     // Set the buffer
@@ -25,7 +25,7 @@ DpContainer::DpContainer(FwDpIdType id, const Fw::Buffer& buffer)
 }
 
 DpContainer::DpContainer(FwDpIdType id)
-    : id(id), priority(0), procId(DpCfg::ProcId::NONE), dataSize(0), buffer() {
+    : id(id), priority(0), procId(DpCfg::FppProcId::NONE), dataSize(0), buffer() {
     // Initialize the user data field
     this->initUserDataField();
 }
@@ -60,7 +60,7 @@ Fw::SerializeStatus DpContainer::serializeHeader() {
     }
     // Serialize the processor ID
     if (status == Fw::FW_SERIALIZE_OK) {
-        status = serializeRepr.serialize(static_cast<DpCfg::ProcIdNumType>(this->procId));
+        status = serializeRepr.serialize(static_cast<DpCfg::FppProcId::SerialType>(this->procId));
     }
     // Serialize the user data
     if (status == Fw::FW_SERIALIZE_OK) {

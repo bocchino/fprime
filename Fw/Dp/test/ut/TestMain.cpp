@@ -33,15 +33,15 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     Fw::Time timeTag(seconds, useconds);
     container.setTimeTag(timeTag);
     // Set the processor ID
-    const DpCfg::ProcId procId =
-        static_cast<DpCfg::ProcId>(STest::Pick::lowerUpper(0, std::numeric_limits<DpCfg::ProcIdNumType>::max()));
+    const DpCfg::FppProcId::T procId =
+        static_cast<DpCfg::FppProcId::T>(STest::Pick::startLength(0, DpCfg::FppProcId::NUM_CONSTANTS));
     container.setProcId(procId);
     // Set the user data
     for (U8& data : userData) {
-      data = static_cast<U8>(STest::Pick::any());
+        data = static_cast<U8>(STest::Pick::any());
     }
     FW_ASSERT(sizeof userData == sizeof container.userData);
-    (void) ::memcpy(container.userData, userData, sizeof container.userData);
+    (void)::memcpy(container.userData, userData, sizeof container.userData);
     // Serialize and deserialize the header
     auto status = container.serializeHeader();
     ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
@@ -57,7 +57,7 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     ASSERT_EQ(procId, header.procId);
     // Check the deserialized data
     for (FwSizeType i = 0; i < DpCfg::CONTAINER_USER_DATA_SIZE; ++i) {
-      ASSERT_EQ(userData[i], header.userData[i]);
+        ASSERT_EQ(userData[i], header.userData[i]);
     }
     // Check the data size
     // Data size should be zero because there is no data

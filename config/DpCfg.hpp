@@ -17,7 +17,7 @@
 
 namespace Fw {
 
-struct DpCfg {
+namespace DpCfg {
     //! The numeric type of the identifier for the kind of processing
     using ProcIdNumType = U8;
     //! The type of the identifier for the kind of processing to perform on
@@ -28,7 +28,7 @@ struct DpCfg {
 
     //! The size in bytes of the user-configurable data in the container packet
     //! header
-    static constexpr FwSizeType CONTAINER_USER_DATA_SIZE = 32;
+    constexpr FwSizeType CONTAINER_USER_DATA_SIZE = 32;
 };
 
 }  // namespace Fw
