@@ -8,7 +8,7 @@
 #define Fw_DpContainer_HPP
 
 #include "DpCfg.hpp"
-#include "config/FppProcIdEnumAc.hpp"
+#include "config/ProcIdEnumAc.hpp"
 #include "Fw/Buffer/Buffer.hpp"
 #include "Fw/Time/Time.hpp"
 
@@ -34,7 +34,7 @@ class DpContainer {
         //! The offset for the processing ID field
         static constexpr FwSizeType PROC_ID_OFFSET = TIME_TAG_OFFSET + Time::SERIALIZED_SIZE;
         //! The offset for the user data field
-        static constexpr FwSizeType USER_DATA_OFFSET = PROC_ID_OFFSET + sizeof(DpCfg::FppProcId::SerialType);
+        static constexpr FwSizeType USER_DATA_OFFSET = PROC_ID_OFFSET + sizeof(DpCfg::ProcId::SerialType);
         //! The offset for the data size field
         static constexpr FwSizeType DATA_SIZE_OFFSET = USER_DATA_OFFSET + DpCfg::CONTAINER_USER_DATA_SIZE;
         //! The header size
@@ -85,7 +85,7 @@ class DpContainer {
 
     //! Get the processor ID
     //! \return The processor ID
-    DpCfg::FppProcId::T getProcId() const { return this->procId; }
+    DpCfg::ProcId::T getProcId() const { return this->procId; }
 
     //! Move the packet serialization to the specified offset
     //! \return The serialize status
@@ -109,7 +109,7 @@ class DpContainer {
     }
 
     //! Set the processor ID
-    void setProcId(DpCfg::FppProcId::T procId  //!< The processor ID
+    void setProcId(DpCfg::ProcId::T procId  //!< The processor ID
     ) {
         this->procId = procId;
     }
@@ -149,7 +149,7 @@ class DpContainer {
     Time timeTag;
 
     //! The processor ID
-    DpCfg::FppProcId::T procId;
+    DpCfg::ProcId::T procId;
 
     //! The data size
     FwSizeType dataSize;

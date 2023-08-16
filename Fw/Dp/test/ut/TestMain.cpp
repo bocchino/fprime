@@ -33,8 +33,8 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     Fw::Time timeTag(seconds, useconds);
     container.setTimeTag(timeTag);
     // Set the processor ID
-    const DpCfg::FppProcId::T procId =
-        static_cast<DpCfg::FppProcId::T>(STest::Pick::startLength(0, DpCfg::FppProcId::NUM_CONSTANTS));
+    const DpCfg::ProcId::T procId =
+        static_cast<DpCfg::ProcId::T>(STest::Pick::startLength(0, DpCfg::ProcId::NUM_CONSTANTS));
     container.setProcId(procId);
     // Set the user data
     for (U8& data : userData) {

@@ -18,14 +18,6 @@
 namespace Fw {
 
 namespace DpCfg {
-    //! The numeric type of the identifier for the kind of processing
-    using ProcIdNumType = U8;
-    //! The type of the identifier for the kind of processing to perform on
-    //! a container before writing it to disk.
-    enum class ProcId : ProcIdNumType {
-        NONE = 255  //!< No processing
-    };
-
     //! The size in bytes of the user-configurable data in the container packet
     //! header
     constexpr FwSizeType CONTAINER_USER_DATA_SIZE = 32;
