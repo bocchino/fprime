@@ -205,10 +205,11 @@ for [`Fw::DpRecord`](../../Fw/Dp/docs/sdd.md).
 
 1. If _C_ has a `product` `get` port, a member function `Dp_Get`
 for synchronously requesting memory for a fresh container.
-This function takes a container data structure _D_ and a size.
-It requests an `Fw::Buffer` of the requested size and stores it
-in _D_.
-It returns a status value indicating whether the buffer
+This function takes a container ID, a size, and a reference
+to a status variable.
+It gets an `Fw::Buffer` of the requested size, uses the
+buffer to construct a data product container _D_, and returns
+_D_. It updates the status variable to indicate whether the buffer
 allocation succeeded.
 
 1. If _C_ has a `product` `request` port, a member function
