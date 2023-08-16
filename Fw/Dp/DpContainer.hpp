@@ -30,8 +30,12 @@ class DpContainer {
         static constexpr FwDpPriorityType PRIORITY_OFFSET = ID_OFFSET + sizeof(FwDpIdType);
         //! The offset for the time tag field
         static constexpr FwSizeType TIME_TAG_OFFSET = PRIORITY_OFFSET + sizeof(FwDpPriorityType);
+        //! The offset for the processing ID field
+        static constexpr FwSizeType PROC_ID_OFFSET = TIME_TAG_OFFSET + Time::SERIALIZED_SIZE;
+        //! The offset for the user data field
+        static constexpr FwSizeType USER_DATA_OFFSET = PROC_ID_OFFSET + sizeof(DpCfg::ProcId);
         //! The offset for the data size field
-        static constexpr FwSizeType DATA_SIZE_OFFSET = TIME_TAG_OFFSET + Fw::Time::SERIALIZED_SIZE;
+        static constexpr FwSizeType DATA_SIZE_OFFSET = USER_DATA_OFFSET + DpCfg::CONTAINER_USER_DATA_SIZE;
         //! The header size
         static constexpr FwSizeType SIZE = DATA_SIZE_OFFSET + sizeof(FwSizeType);
     };
@@ -44,7 +48,7 @@ class DpContainer {
     //! Constructor
     DpContainer(FwDpIdType id,            //!< The container id
                 const Fw::Buffer& buffer  //!< The buffer
-                );
+    );
 
   public:
     // ----------------------------------------------------------------------
