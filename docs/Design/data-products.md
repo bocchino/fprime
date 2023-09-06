@@ -192,16 +192,17 @@ the following API elements:
 1. Enumerations defining the available container IDs, container
 priorities, and record IDs.
 
-1. A member class _C_ `::DpRecord`. This class is derived from
-[`Fw::DpRecord`](../../Fw/Dp/docs/sdd.md).
-Each instance of _C_ `::DpRecord` is a wrapper for an `Fw::Buffer` _B_,
+1. A member class _C_ `::DpContainer`. This class is derived from
+[`Fw::DpRecord`](../../Fw/Dp/docs/sdd.md) and represents a container
+specialized to the data products defined in _C_.
+Each instance of _C_ `::DpContainer` is a wrapper for an `Fw::Buffer` _B_,
 which points to allocated memory.
 The class provides operations for serializing the records
 defined in _C_ into the memory pointed to by _B_.
-There is one operation _C_ `::DpRecord::serialize_` _R_
+There is one operation _C_ `::DpContainer::serialize_` _R_
 for each record _R_ defined in _C_.
 For the serialized format of each record, see the documentation
-for [`Fw::DpRecord`](../../Fw/Dp/docs/sdd.md).
+for [`Fw::DpContainer`](../../Fw/Dp/docs/sdd.md).
 
 1. If _C_ has a `product` `get` port, a member function `Dp_Get`
 for synchronously requesting memory for a fresh container.
