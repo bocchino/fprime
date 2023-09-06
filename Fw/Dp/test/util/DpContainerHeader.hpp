@@ -56,9 +56,9 @@ struct DpContainerHeader {
         DpContainerHeader::moveDeserToOffset(buffer, DpContainer::Header::TIME_TAG_OFFSET);
         status = serializeRepr.deserialize(this->timeTag);
         ASSERT_EQ(status, FW_SERIALIZE_OK);
-        // Deserialize the processor ID
+        // Deserialize the processing type
         DpContainerHeader::moveDeserToOffset(buffer, DpContainer::Header::PROC_ID_OFFSET);
-        status = serializeRepr.deserialize(procId);
+        status = serializeRepr.deserialize(procType);
         ASSERT_EQ(status, FW_SERIALIZE_OK);
         // Deserialize the user data
         DpContainerHeader::moveDeserToOffset(buffer, DpContainer::Header::USER_DATA_OFFSET);
@@ -87,8 +87,8 @@ struct DpContainerHeader {
     //! The time tag
     Time timeTag;
 
-    //! The processor ID
-    DpCfg::ProcId procId;
+    //! The processing type
+    DpCfg::ProcType procType;
 
     //! The user data
     U8 userData[DpCfg::CONTAINER_USER_DATA_SIZE];

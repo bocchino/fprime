@@ -32,10 +32,10 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     const U32 useconds = STest::Pick::startLength(0, 1000000);
     Fw::Time timeTag(seconds, useconds);
     container.setTimeTag(timeTag);
-    // Set the processor ID
-    const DpCfg::ProcId procId(
-        static_cast<DpCfg::ProcId::T>(STest::Pick::startLength(0, DpCfg::ProcId::NUM_CONSTANTS)));
-    container.setProcId(procId);
+    // Set the processing type
+    const DpCfg::ProcType procType(
+        static_cast<DpCfg::ProcType::T>(STest::Pick::startLength(0, DpCfg::ProcType::NUM_CONSTANTS)));
+    container.setProcType(procType);
     // Set the user data
     for (U8& data : userData) {
         data = static_cast<U8>(STest::Pick::any());
@@ -54,7 +54,7 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     // Check the deserialized time tag
     ASSERT_EQ(timeTag, header.timeTag);
     // Check the deserialized processor id
-    ASSERT_EQ(procId, header.procId);
+    ASSERT_EQ(procType, header.procType);
     // Check the deserialized data
     for (FwSizeType i = 0; i < DpCfg::CONTAINER_USER_DATA_SIZE; ++i) {
         ASSERT_EQ(userData[i], header.userData[i]);
