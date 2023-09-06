@@ -59,8 +59,8 @@ The data product header has the following format.
 |`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The container ID|
 |`Priority`|`FwDpPriorityType`|`sizeof(FwDpPriorityType)`|The container default priority|
 |`TimeTag`|`Fw::Time`|`Fw::Time::SERIALIZED_SIZE`|The time tag associated with the container|
-|`ProcId`|`Fw::DpCfg::ProcId`|The processing identifier|
-|`UserData`|`U8[Fw::DpCfg::CONTAINER_USER_DATA_SIZE]`|User-configurable data|
+|`ProcType`|`Fw::DpCfg::ProcType`|`Fw::DpCfg::ProcType::SERIALIZED_SIZE`|The processing type|
+|`UserData`|Array of `U8`|Fw::DpCfg::CONTAINER_USER_DATA_SIZE`|User-configurable data|
 |`DataSize`|`FwSizeType`|`sizeof(FwSizeType)`|The size of the data payload in bytes|
 
 #### 4.1.2. Data Payload
