@@ -106,7 +106,7 @@ and _The FPP Language Specification_.
 
 FPP provides the following special ports for managing data products:
 
-1. A **product get port** of type [`Fw::BufferGet`](../../Fw/Buffer/docs/sdd.md).
+1. A **product get port** of type [`Fw::DpGet`](../../Fw/Dp/docs/sdd.md).
    This is an output port for synchronously requesting
    memory from a buffer manager.
    The request is served on the thread that invokes the port

@@ -1,6 +1,8 @@
 \page SvcDpManagerComponent Svc::DpManager Component
 # Svc::DpManager (Active Component)
 
+**TODO: Add support for synchronous buffer requests via `DpGet`.**
+
 ## 1. Introduction
 
 `Svc::DpManager` is an active component for managing data products.
