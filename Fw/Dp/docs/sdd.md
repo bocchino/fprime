@@ -22,21 +22,24 @@ The following types and constants are configurable via the file
 
 This module defines the following FPP ports:
 
-1. `DpRequest`: A port for sending a request for a data product buffer to back 
+1. `DpGet`: A port for synchronously getting a buffer to back
    a data product container.
 
-2. `DpResponse`: A port for receiving a response to a buffer request.
+1. `DpRequest`: A port for sending a request for a buffer to back
+   a data product container.
 
-3. `DpSend`: A port for sending a data product buffer.
+1. `DpResponse`: A port for receiving a response to a buffer request.
 
-For more information, see the file [`Dp.fpp`](../Dp.fpp) in the parent 
+1. `DpSend`: A port for sending a buffer holding data products.
+
+For more information, see the file [`Dp.fpp`](../Dp.fpp) in the parent
 directory.
 
 ## 4. C++ Classes
 
 This module defines a C++ class `DpContainer`.
 `DpContainer` is the base class for a data product container.
-When you specify a container _C_ in an FPP component model, 
+When you specify a container _C_ in an FPP component model,
 the auto-generated C++ for the component defines a container
 class for _C_.
 The container class is derived from `DpContainer`.
@@ -46,7 +49,7 @@ serializing the specific types of data that _C_ can store.
 
 ### 4.1. Serialized Container Format
 
-In serialized form, each data product container consists of a header 
+In serialized form, each data product container consists of a header
 followed by a data payload.
 
 #### 4.1.1. Header
@@ -94,5 +97,5 @@ Raw records have the following format:
 
 ### 4.2. Further Information
 
-For more information on the `DpContainer` class, see the file [`DpContainer.hpp`](../DpContainer.hpp) in 
+For more information on the `DpContainer` class, see the file [`DpContainer.hpp`](../DpContainer.hpp) in
 the parent directory.
