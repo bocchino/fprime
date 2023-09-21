@@ -166,6 +166,9 @@ product record FixedSizedataRecord: FixedSizeData
 product record RawDataRecord: raw
 ```
 
+_TODO: Instead of a raw byte record, we should allow a variable-size
+array of any type. Then a raw byte record is just a U8 array._
+
 #### 3.2.3. Containers
 
 A container is a data structure that  records.
