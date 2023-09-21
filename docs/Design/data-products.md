@@ -167,7 +167,8 @@ product record RawDataRecord: raw
 ```
 
 _TODO: Instead of a raw byte record, we should allow a variable-size
-array of any type. Then a raw byte record is just a U8 array._
+array of any type. Then a raw byte record is just a U8 array.
+See issue #323 on fprime-community/fpp._
 
 #### 3.2.3. Containers
 
