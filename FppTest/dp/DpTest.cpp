@@ -32,21 +32,14 @@ DpTest ::~DpTest() {}
 // Handler implementations for user-defined typed input ports
 // ----------------------------------------------------------------------
 
-void DpTest ::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
+void DpTest::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
     // Request a buffer for Container 1
     this->Dp_Request(ContainerId::Container1, CONTAINER_1_SIZE);
     // Get a buffer for Container 1
-    DpContainer container1;
-    Fw::Success status = this->Dp_Get(ContainerId::Container1, CONTAINER_1_SIZE, container1);
-    (void) status;
-#if 0
+    DpContainer container;
+    Fw::Success status = this->Dp_Get(ContainerId::Container1, CONTAINER_1_SIZE, container);
     FW_ASSERT(status == Fw::Success::SUCCESS, status);
-    FW_ASSERT(
-        container1.getBuffer().getSize() == CONTAINER_1_SIZE,
-        container1.getBuffer().getSize(),
-        CONTAINER_1_SIZE
-    );
-#endif
+    this->checkContainer(container, ContainerId::Container1, CONTAINER_1_SIZE);
     // Request a buffer for Container 2
     this->Dp_Request(ContainerId::Container2, CONTAINER_2_SIZE);
     // Request a buffer for Container 3
@@ -101,6 +94,28 @@ void DpTest ::Dp_Recv_Container3_handler(DpContainer& container, Fw::Success::T 
         // Use the time stamp from the time get port
         this->Dp_Send(container);
     }
+}
+
+// ----------------------------------------------------------------------
+// Private helper functions 
+// ----------------------------------------------------------------------
+
+void DpTest::checkContainer(
+    const DpContainer& container,
+    FwDpIdType localId,
+    FwSizeType size
+) const {
+  FW_ASSERT(
+      container.getId() == container.getBaseId() + localId,
+      container.getId(),
+      container.getBaseId(),
+      ContainerId::Container1
+  );
+  FW_ASSERT(
+      container.getBuffer().getSize() == size,
+      container.getBuffer().getSize(),
+      size
+  );
 }
 
 }  // end namespace FppTest
