@@ -46,14 +46,13 @@ class DpContainer {
     // Constructor
     // ----------------------------------------------------------------------
 
-    //! Constructor with buffer
+    //! Constructor for initialized container
     DpContainer(FwDpIdType id,            //!< The container id
                 const Fw::Buffer& buffer  //!< The buffer
     );
 
-    //! Constructor without buffer
-    DpContainer(FwDpIdType id  //!< The container id
-    );
+    //! Constructor for uninitialized container
+    DpContainer();
 
   public:
     // ----------------------------------------------------------------------
@@ -96,6 +95,12 @@ class DpContainer {
     //! \return The serialize status
     Fw::SerializeStatus serializeHeader();
 
+    //! Set the id
+    void setId(FwDpIdType id  //!< The id
+    ) {
+        this->id = id;
+    }
+
     //! Set the priority
     void setPriority(FwDpPriorityType priority  //!< The priority
     ) {
@@ -131,9 +136,6 @@ class DpContainer {
     // Public member variables
     // ----------------------------------------------------------------------
 
-    //! The container id
-    const FwDpIdType id;
-
     //! The user data
     U8 userData[DpCfg::CONTAINER_USER_DATA_SIZE];
 
@@ -141,6 +143,9 @@ class DpContainer {
     // ----------------------------------------------------------------------
     // Protected member variables
     // ----------------------------------------------------------------------
+
+    //! The container id
+    FwDpIdType id;
 
     //! The priority
     FwDpPriorityType priority;

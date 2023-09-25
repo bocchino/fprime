@@ -81,7 +81,8 @@ TEST(Header, BufferSet) {
     Fw::Buffer buffer(bufferData, sizeof bufferData);
     // Use the buffer to create a container
     const FwDpIdType id = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpIdType>::max());
-    DpContainer container(id);
+    DpContainer container;
+    container.setId(id);
     container.setBuffer(buffer);
     // Check the header
     checkHeader(id, buffer, container);

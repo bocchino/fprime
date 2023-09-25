@@ -24,8 +24,8 @@ DpContainer::DpContainer(FwDpIdType id, const Fw::Buffer& buffer)
     this->setBuffer(buffer);
 }
 
-DpContainer::DpContainer(FwDpIdType id)
-    : id(id), priority(0), procType(DpCfg::ProcType::NONE), dataSize(0), buffer() {
+DpContainer::DpContainer()
+    : id(0), priority(0), procType(DpCfg::ProcType::NONE), dataSize(0), buffer() {
     // Initialize the user data field
     this->initUserDataField();
 }
