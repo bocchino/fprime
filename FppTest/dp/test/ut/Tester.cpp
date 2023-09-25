@@ -213,7 +213,26 @@ Fw::Success Tester::from_productGetOut_handler(const NATIVE_INT_TYPE portNum,
                                                FwSizeType size,
                                                Fw::Buffer& buffer) {
     this->pushFromPortEntry_productGetOut(id, size, buffer);
-    return Fw::Success::FAILURE;
+    Fw::Success status = Fw::Success::FAILURE;
+    FW_ASSERT(id >= ID_BASE, id, ID_BASE);
+    const FwDpIdType localId = id - ID_BASE;
+    switch (localId) {
+      case DpTest::ContainerId::Container1:
+        buffer = this->container1Buffer;
+        status = Fw::Success::SUCCESS;
+        break;
+      case DpTest::ContainerId::Container2:
+        buffer = this->container2Buffer;
+        status = Fw::Success::SUCCESS;
+        break;
+      case DpTest::ContainerId::Container3:
+        buffer = this->container3Buffer;
+        status = Fw::Success::SUCCESS;
+        break;
+      default:
+        break;
+    }
+    return status;
 }
 
 void Tester::from_productRequestOut_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, FwSizeType size) {
