@@ -51,7 +51,7 @@ class DpContainer {
                 const Fw::Buffer& buffer  //!< The buffer
     );
 
-    //! Constructor for uninitialized container
+    //! Constructor for container with default initialization
     DpContainer();
 
   public:
