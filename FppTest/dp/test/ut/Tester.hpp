@@ -68,19 +68,27 @@ class Tester : public DpTestGTestBase {
     // Handlers for typed from ports
     // ----------------------------------------------------------------------
 
+    //! Handler for from_productGetOut
+    //!
+    Fw::Success from_productGetOut_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
+                                           FwDpIdType id,                  //!< The container ID
+                                           FwSizeType size,                //!< The size of the requested buffer
+                                           Fw::Buffer& buffer              //!< The buffer
+    ) override;
+
     //! Handler for from_productRequestOut
     //!
     void from_productRequestOut_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
                                         FwDpIdType id,                  //!< The container ID
                                         FwSizeType size                 //!< The size of the requested buffer
-    );
+    ) override;
 
     //! Handler for from_productSendOut
     //!
     void from_productSendOut_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
                                      FwDpIdType id,                  //!< The container ID
                                      const Fw::Buffer& buffer        //!< The buffer
-    );
+    ) override;
 
   PRIVATE:
     // ----------------------------------------------------------------------
@@ -135,7 +143,7 @@ class Tester : public DpTestGTestBase {
 
     //! Buffer for Container 3
     const Fw::Buffer container3Buffer;
-    
+
     //! Byte array data for raw record
     U8 rawRecordData[DpTest::RAW_DATA_SIZE];
 
@@ -144,7 +152,6 @@ class Tester : public DpTestGTestBase {
 
     //! The component under test
     DpTest component;
-
 };
 
 }  // end namespace FppTest

@@ -48,6 +48,7 @@ void Tester::schedIn_OK() {
     ASSERT_from_productRequestOut_SIZE(3);
     ASSERT_from_productRequestOut(0, ID_BASE + DpTest::ContainerId::Container1, FwSizeType(DpTest::CONTAINER_1_SIZE));
     ASSERT_from_productRequestOut(1, ID_BASE + DpTest::ContainerId::Container2, FwSizeType(DpTest::CONTAINER_2_SIZE));
+    ASSERT_from_productRequestOut(2, ID_BASE + DpTest::ContainerId::Container3, FwSizeType(DpTest::CONTAINER_3_SIZE));
 }
 
 void Tester::productRecvIn_Container1_SUCCESS() {
@@ -206,6 +207,14 @@ void Tester::productRecvIn_CheckFailure(FwDpIdType id, Fw::Buffer buffer) {
 // ----------------------------------------------------------------------
 // Handlers for typed from ports
 // ----------------------------------------------------------------------
+
+Fw::Success Tester::from_productGetOut_handler(const NATIVE_INT_TYPE portNum,
+                                               FwDpIdType id,
+                                               FwSizeType size,
+                                               Fw::Buffer& buffer) {
+    this->pushFromPortEntry_productGetOut(id, size, buffer);
+    return Fw::Success::FAILURE;
+}
 
 void Tester::from_productRequestOut_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, FwSizeType size) {
     this->pushFromPortEntry_productRequestOut(id, size);
