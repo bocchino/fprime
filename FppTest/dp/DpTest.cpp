@@ -43,28 +43,24 @@ void DpTest::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE con
     {
         DpContainer container;
         Fw::Success status = this->Dp_Get(ContainerId::Container1, CONTAINER_1_SIZE, container);
+        FW_ASSERT(status == Fw::Success::SUCCESS, status);
         // Check the container
-        if (status == Fw::Success::SUCCESS) {
-            this->checkContainer(container, ContainerId::Container1, CONTAINER_1_SIZE);
-        }
+        this->checkContainer(container, ContainerId::Container1, CONTAINER_1_SIZE);
     }
     // Get a buffer for Container 2
     {
         DpContainer container;
         Fw::Success status = this->Dp_Get(ContainerId::Container2, CONTAINER_2_SIZE, container);
+        FW_ASSERT(status == Fw::Success::SUCCESS);
         // Check the container
-        if (status == Fw::Success::SUCCESS) {
-            this->checkContainer(container, ContainerId::Container2, CONTAINER_2_SIZE);
-        }
+        this->checkContainer(container, ContainerId::Container2, CONTAINER_2_SIZE);
     }
     // Get a buffer for Container 3
     {
         DpContainer container;
         Fw::Success status = this->Dp_Get(ContainerId::Container3, CONTAINER_3_SIZE, container);
-        // Check the container
-        if (status == Fw::Success::SUCCESS) {
-            this->checkContainer(container, ContainerId::Container3, CONTAINER_3_SIZE);
-        }
+        // This one should fail
+        FW_ASSERT(status == Fw::Success::FAILURE);
     }
 }
 

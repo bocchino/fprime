@@ -236,9 +236,7 @@ Fw::Success Tester::from_productGetOut_handler(const NATIVE_INT_TYPE portNum,
             status = Fw::Success::SUCCESS;
             break;
         case DpTest::ContainerId::Container3:
-            FW_ASSERT(size == DpTest::CONTAINER_3_SIZE);
-            buffer = this->container3Buffer;
-            status = Fw::Success::SUCCESS;
+            // Make this one fail for testing purposes
             break;
         default:
             break;
