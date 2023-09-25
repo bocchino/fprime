@@ -44,11 +44,12 @@ Tester::~Tester() {}
 void Tester::schedIn_OK() {
     this->invoke_to_schedIn(0, 0);
     this->component.doDispatch();
-    ASSERT_FROM_PORT_HISTORY_SIZE(3);
+    ASSERT_FROM_PORT_HISTORY_SIZE(4);
     ASSERT_from_productRequestOut_SIZE(3);
     ASSERT_from_productRequestOut(0, ID_BASE + DpTest::ContainerId::Container1, FwSizeType(DpTest::CONTAINER_1_SIZE));
     ASSERT_from_productRequestOut(1, ID_BASE + DpTest::ContainerId::Container2, FwSizeType(DpTest::CONTAINER_2_SIZE));
     ASSERT_from_productRequestOut(2, ID_BASE + DpTest::ContainerId::Container3, FwSizeType(DpTest::CONTAINER_3_SIZE));
+    ASSERT_from_productGetOut_SIZE(1);
 }
 
 void Tester::productRecvIn_Container1_SUCCESS() {
