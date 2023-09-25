@@ -218,14 +218,17 @@ Fw::Success Tester::from_productGetOut_handler(const NATIVE_INT_TYPE portNum,
     const FwDpIdType localId = id - ID_BASE;
     switch (localId) {
       case DpTest::ContainerId::Container1:
+        FW_ASSERT(size == DpTest::CONTAINER_1_SIZE);
         buffer = this->container1Buffer;
         status = Fw::Success::SUCCESS;
         break;
       case DpTest::ContainerId::Container2:
+        FW_ASSERT(size == DpTest::CONTAINER_2_SIZE);
         buffer = this->container2Buffer;
         status = Fw::Success::SUCCESS;
         break;
       case DpTest::ContainerId::Container3:
+        FW_ASSERT(size == DpTest::CONTAINER_3_SIZE);
         buffer = this->container3Buffer;
         status = Fw::Success::SUCCESS;
         break;

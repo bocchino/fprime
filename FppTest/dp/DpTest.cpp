@@ -35,6 +35,15 @@ DpTest ::~DpTest() {}
 void DpTest ::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
     // Request a buffer for Container 1
     this->Dp_Request(ContainerId::Container1, CONTAINER_1_SIZE);
+    // Get a buffer for Container 1
+    DpContainer container1(ContainerId::Container1 + this->getIdBase(), this->getIdBase());
+    Fw::Success status = this->Dp_Get(CONTAINER_1_SIZE, container1);
+    FW_ASSERT(status == Fw::Success::SUCCESS, status);
+    FW_ASSERT(
+        container1.getBuffer().getSize() == CONTAINER_1_SIZE,
+        container1.getBuffer().getSize(),
+        CONTAINER_1_SIZE
+    );
     // Request a buffer for Container 2
     this->Dp_Request(ContainerId::Container2, CONTAINER_2_SIZE);
     // Request a buffer for Container 3
