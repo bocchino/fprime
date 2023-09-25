@@ -35,15 +35,26 @@ DpTest ::~DpTest() {}
 void DpTest::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
     // Request a buffer for Container 1
     this->Dp_Request(ContainerId::Container1, CONTAINER_1_SIZE);
-    // Get a buffer for Container 1
-    DpContainer container;
-    Fw::Success status = this->Dp_Get(ContainerId::Container1, CONTAINER_1_SIZE, container);
-    FW_ASSERT(status == Fw::Success::SUCCESS, status);
-    this->checkContainer(container, ContainerId::Container1, CONTAINER_1_SIZE);
     // Request a buffer for Container 2
     this->Dp_Request(ContainerId::Container2, CONTAINER_2_SIZE);
     // Request a buffer for Container 3
     this->Dp_Request(ContainerId::Container3, CONTAINER_3_SIZE);
+    {
+      // Get a buffer for Container 1
+      DpContainer container;
+      Fw::Success status = this->Dp_Get(ContainerId::Container1, CONTAINER_1_SIZE, container);
+      FW_ASSERT(status == Fw::Success::SUCCESS, status);
+      // Check the container
+      this->checkContainer(container, ContainerId::Container1, CONTAINER_1_SIZE);
+    }
+    {
+      // Get a buffer for Container 2
+      DpContainer container;
+      Fw::Success status = this->Dp_Get(ContainerId::Container2, CONTAINER_2_SIZE, container);
+      FW_ASSERT(status == Fw::Success::SUCCESS, status);
+      // Check the container
+      this->checkContainer(container, ContainerId::Container2, CONTAINER_2_SIZE);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -97,25 +108,14 @@ void DpTest ::Dp_Recv_Container3_handler(DpContainer& container, Fw::Success::T 
 }
 
 // ----------------------------------------------------------------------
-// Private helper functions 
+// Private helper functions
 // ----------------------------------------------------------------------
 
-void DpTest::checkContainer(
-    const DpContainer& container,
-    FwDpIdType localId,
-    FwSizeType size
-) const {
-  FW_ASSERT(
-      container.getId() == container.getBaseId() + localId,
-      container.getId(),
-      container.getBaseId(),
-      ContainerId::Container1
-  );
-  FW_ASSERT(
-      container.getBuffer().getSize() == size,
-      container.getBuffer().getSize(),
-      size
-  );
+void DpTest::checkContainer(const DpContainer& container, FwDpIdType localId, FwSizeType size) const {
+    FW_ASSERT(container.getBaseId() == this->getIdBase(), container.getBaseId(), this->getIdBase());
+    FW_ASSERT(container.getId() == container.getBaseId() + localId, container.getId(), container.getBaseId(),
+              ContainerId::Container1);
+    FW_ASSERT(container.getBuffer().getSize() == size, container.getBuffer().getSize(), size);
 }
 
 }  // end namespace FppTest

@@ -84,16 +84,14 @@ class DpTest : public DpTestComponentBase {
                                     ) override;
 
   PRIVATE:
-
     // ----------------------------------------------------------------------
-    // Private helper functions 
+    // Private helper functions
     // ----------------------------------------------------------------------
 
     //! Check a container for validity
-    void checkContainer(
-        const DpContainer& container, //!< The container
-        FwDpIdType localId, //!< The expected local id
-        FwSizeType size //!< The expected size
+    void checkContainer(const DpContainer& container,  //!< The container
+                        FwDpIdType localId,            //!< The expected local id
+                        FwSizeType size                //!< The expected size
     ) const;
 
   PRIVATE:

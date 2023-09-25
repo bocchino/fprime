@@ -44,12 +44,17 @@ Tester::~Tester() {}
 void Tester::schedIn_OK() {
     this->invoke_to_schedIn(0, 0);
     this->component.doDispatch();
-    ASSERT_FROM_PORT_HISTORY_SIZE(4);
+    ASSERT_FROM_PORT_HISTORY_SIZE(5);
     ASSERT_from_productRequestOut_SIZE(3);
     ASSERT_from_productRequestOut(0, ID_BASE + DpTest::ContainerId::Container1, FwSizeType(DpTest::CONTAINER_1_SIZE));
     ASSERT_from_productRequestOut(1, ID_BASE + DpTest::ContainerId::Container2, FwSizeType(DpTest::CONTAINER_2_SIZE));
     ASSERT_from_productRequestOut(2, ID_BASE + DpTest::ContainerId::Container3, FwSizeType(DpTest::CONTAINER_3_SIZE));
-    ASSERT_from_productGetOut_SIZE(1);
+    Fw::Buffer buffer;
+    ASSERT_from_productGetOut_SIZE(2);
+    ASSERT_from_productGetOut(0, ID_BASE + DpTest::ContainerId::Container1, FwSizeType(DpTest::CONTAINER_1_SIZE),
+                              buffer);
+    ASSERT_from_productGetOut(1, ID_BASE + DpTest::ContainerId::Container2, FwSizeType(DpTest::CONTAINER_2_SIZE),
+                              buffer);
 }
 
 void Tester::productRecvIn_Container1_SUCCESS() {
@@ -218,23 +223,23 @@ Fw::Success Tester::from_productGetOut_handler(const NATIVE_INT_TYPE portNum,
     FW_ASSERT(id >= ID_BASE, id, ID_BASE);
     const FwDpIdType localId = id - ID_BASE;
     switch (localId) {
-      case DpTest::ContainerId::Container1:
-        FW_ASSERT(size == DpTest::CONTAINER_1_SIZE);
-        buffer = this->container1Buffer;
-        status = Fw::Success::SUCCESS;
-        break;
-      case DpTest::ContainerId::Container2:
-        FW_ASSERT(size == DpTest::CONTAINER_2_SIZE);
-        buffer = this->container2Buffer;
-        status = Fw::Success::SUCCESS;
-        break;
-      case DpTest::ContainerId::Container3:
-        FW_ASSERT(size == DpTest::CONTAINER_3_SIZE);
-        buffer = this->container3Buffer;
-        status = Fw::Success::SUCCESS;
-        break;
-      default:
-        break;
+        case DpTest::ContainerId::Container1:
+            FW_ASSERT(size == DpTest::CONTAINER_1_SIZE);
+            buffer = this->container1Buffer;
+            status = Fw::Success::SUCCESS;
+            break;
+        case DpTest::ContainerId::Container2:
+            FW_ASSERT(size == DpTest::CONTAINER_2_SIZE);
+            buffer = this->container2Buffer;
+            status = Fw::Success::SUCCESS;
+            break;
+        case DpTest::ContainerId::Container3:
+            FW_ASSERT(size == DpTest::CONTAINER_3_SIZE);
+            buffer = this->container3Buffer;
+            status = Fw::Success::SUCCESS;
+            break;
+        default:
+            break;
     }
     return status;
 }
