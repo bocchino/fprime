@@ -20,6 +20,9 @@ void Tester ::connectPorts() {
     // schedIn
     this->connect_to_schedIn(0, this->component.get_schedIn_InputPort(0));
 
+    // productGetOut
+    this->component.set_productGetOut_OutputPort(0, this->get_from_productGetOut(0));
+
     // productRequestOut
     this->component.set_productRequestOut_OutputPort(0, this->get_from_productRequestOut(0));
 

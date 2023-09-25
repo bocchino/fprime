@@ -17,6 +17,9 @@ module FppTest {
     # Special ports
     # ----------------------------------------------------------------------
 
+    @ Data product get port
+    product get port productGetOut
+
     @ Data product request port
     product request port productRequestOut
 
