@@ -44,16 +44,18 @@ Tester::~Tester() {}
 void Tester::schedIn_OK() {
     this->invoke_to_schedIn(0, 0);
     this->component.doDispatch();
-    ASSERT_FROM_PORT_HISTORY_SIZE(5);
+    ASSERT_FROM_PORT_HISTORY_SIZE(6);
     ASSERT_from_productRequestOut_SIZE(3);
     ASSERT_from_productRequestOut(0, ID_BASE + DpTest::ContainerId::Container1, FwSizeType(DpTest::CONTAINER_1_SIZE));
     ASSERT_from_productRequestOut(1, ID_BASE + DpTest::ContainerId::Container2, FwSizeType(DpTest::CONTAINER_2_SIZE));
     ASSERT_from_productRequestOut(2, ID_BASE + DpTest::ContainerId::Container3, FwSizeType(DpTest::CONTAINER_3_SIZE));
     Fw::Buffer buffer;
-    ASSERT_from_productGetOut_SIZE(2);
+    ASSERT_from_productGetOut_SIZE(3);
     ASSERT_from_productGetOut(0, ID_BASE + DpTest::ContainerId::Container1, FwSizeType(DpTest::CONTAINER_1_SIZE),
                               buffer);
     ASSERT_from_productGetOut(1, ID_BASE + DpTest::ContainerId::Container2, FwSizeType(DpTest::CONTAINER_2_SIZE),
+                              buffer);
+    ASSERT_from_productGetOut(2, ID_BASE + DpTest::ContainerId::Container3, FwSizeType(DpTest::CONTAINER_3_SIZE),
                               buffer);
 }
 
