@@ -211,7 +211,7 @@ for [`Fw::DpContainer`](../../Fw/Dp/docs/sdd.md).
 1. If _C_ has a `product` `get` port, a member function `Dp_Get`
 for synchronously requesting memory for a fresh container.
 This function takes a container ID, a size, and a reference
-to a data product container _D_.
+to a data product container _D_ with default initialization.
 It gets an `Fw::Buffer` _B_ of the requested size and
 uses the ID, the size, and _B_ to initialize _D_.
 It returns a status value indicating whether the buffer
