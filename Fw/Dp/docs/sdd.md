@@ -15,7 +15,7 @@ The following types and constants are configurable via the file
 
 | Name | Kind | Description |
 | ---- | ---- | ---- |
-| `Fw::DpCfg::ProcId` | Type | The type of the identifier for the kind of processing to perform on a container before writing it to disk. |
+| `Fw::DpCfg::ProcType` | Type | The type of the identifier for the kind of processing to perform on a container before writing it to disk. |
 | `Fw::DpCfg::CONTAINER_DATA_SIZE` | Constant | The size of the user-configurable data in the container packet header. |
 
 ## 3. FPP Ports
@@ -59,7 +59,7 @@ The data product header has the following format.
 |Field Name|Data Type|Serialized Size|Description|
 |----------|---------|---------------|-----------|
 |`PacketDescriptor`|`FwPacketDescriptorType`|`sizeof(FwPacketDescriptorType)`|The F Prime packet descriptor [`FW_PACKET_DP`](../../../Fw/Com/ComPacket.hpp)|
-|`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The container ID|
+|`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The container ID. This is a system-global ID (component-local ID + component base ID)|
 |`Priority`|`FwDpPriorityType`|`sizeof(FwDpPriorityType)`|The container default priority|
 |`TimeTag`|`Fw::Time`|`Fw::Time::SERIALIZED_SIZE`|The time tag associated with the container|
 |`ProcType`|`Fw::DpCfg::ProcType`|`Fw::DpCfg::ProcType::SERIALIZED_SIZE`|The processing type|
