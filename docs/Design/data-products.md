@@ -208,38 +208,37 @@ for each record _R_ defined in _C_.
 For the serialized format of each record, see the documentation
 for [`Fw::DpContainer`](../../Fw/Dp/docs/sdd.md).
 
-1. If _C_ has a `product` `get` port, a member function `Dp_Get`
-for synchronously requesting memory for a fresh container.
+1. If _C_ has a `product` `get` port, a member function `dpGet_`
+_c_ for each container defined in _C_.
 This function takes a container ID, a size, and a reference
-to a data product container _D_ with default initialization.
-It gets an `Fw::Buffer` _B_ of the requested size and
-uses the ID, the size, and _B_ to initialize _D_.
+to a data product container _D_.
+It gets an `Fw::Buffer` _B_ of the requested size.
+Then it uses the ID, the size, and _B_ to initialize _D_.
 It returns a status value indicating whether the buffer
 allocation succeeded.
 
 1. If _C_ has a `product` `request` port, a member function
-`Dp_Request` for asynchronously requesting a fresh
-data product container.
+`dpRequest_` _c_ for each container defined in _C_.
 This function takes a container ID and a size.
 It sends out a request on `productRequestOut`, which is
 typically connected to a data product manager component.
 
 1. If _C_ has a `product` `recv` port, a pure virtual
-member function `Dp_Recv_` _c_ `_handler` for each container _c_
+member function `dpRecv_` _c_ `_handler` for each container _c_
 defined in _C_.
 When a fresh container arrives in response to a
-`Dp_Request` invocation, the autocoded C++ uses the container ID to
-select and invoke the appropriate `Dp_Recv` handler.
+`dpRequest` invocation, the autocoded C++ uses the container ID to
+select and invoke the appropriate `dpRecv` handler.
 The implementation of _C_ must override each handler
 to provide the mission-specific behavior for filling
 in the corresponding container.
-The arguments to `Dp_Recv_` _c_ `_handler` provide
+The arguments to `dpRecv_` _c_ `_handler` provide
 (1) a reference to the container, which the implementation can fill in;
 and (2) a status value indicating whether the container
 is valid. An invalid container can result if the buffer
 allocation fails.
 
-1. A member function `Dp_Send` for sending a filled
+1. A member function `dpSend` for sending a filled
 data product container.
 This function takes a reference to a container _c_ and an
 optional time tag.
