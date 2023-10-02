@@ -34,11 +34,11 @@ DpTest ::~DpTest() {}
 
 void DpTest::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
     // Request a buffer for Container 1
-    this->dpRequest(ContainerId::Container1, CONTAINER_1_SIZE);
+    this->dpRequest_Container1(CONTAINER_1_SIZE);
     // Request a buffer for Container 2
-    this->dpRequest(ContainerId::Container2, CONTAINER_2_SIZE);
+    this->dpRequest_Container2(CONTAINER_2_SIZE);
     // Request a buffer for Container 3
-    this->dpRequest(ContainerId::Container3, CONTAINER_3_SIZE);
+    this->dpRequest_Container3(CONTAINER_3_SIZE);
     // Get a buffer for Container 1
     {
         DpContainer container;
