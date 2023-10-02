@@ -34,15 +34,15 @@ DpTest ::~DpTest() {}
 
 void DpTest::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
     // Request a buffer for Container 1
-    this->Dp_Request(ContainerId::Container1, CONTAINER_1_SIZE);
+    this->dpRequest(ContainerId::Container1, CONTAINER_1_SIZE);
     // Request a buffer for Container 2
-    this->Dp_Request(ContainerId::Container2, CONTAINER_2_SIZE);
+    this->dpRequest(ContainerId::Container2, CONTAINER_2_SIZE);
     // Request a buffer for Container 3
-    this->Dp_Request(ContainerId::Container3, CONTAINER_3_SIZE);
+    this->dpRequest(ContainerId::Container3, CONTAINER_3_SIZE);
     // Get a buffer for Container 1
     {
         DpContainer container;
-        Fw::Success status = this->Dp_Get(ContainerId::Container1, CONTAINER_1_SIZE, container);
+        Fw::Success status = this->dpGet(ContainerId::Container1, CONTAINER_1_SIZE, container);
         FW_ASSERT(status == Fw::Success::SUCCESS, status);
         // Check the container
         this->checkContainer(container, ContainerId::Container1, CONTAINER_1_SIZE);
@@ -50,7 +50,7 @@ void DpTest::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE con
     // Get a buffer for Container 2
     {
         DpContainer container;
-        Fw::Success status = this->Dp_Get(ContainerId::Container2, CONTAINER_2_SIZE, container);
+        Fw::Success status = this->dpGet(ContainerId::Container2, CONTAINER_2_SIZE, container);
         FW_ASSERT(status == Fw::Success::SUCCESS);
         // Check the container
         this->checkContainer(container, ContainerId::Container2, CONTAINER_2_SIZE);
@@ -58,7 +58,7 @@ void DpTest::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE con
     // Get a buffer for Container 3
     {
         DpContainer container;
-        Fw::Success status = this->Dp_Get(ContainerId::Container3, CONTAINER_3_SIZE, container);
+        Fw::Success status = this->dpGet(ContainerId::Container3, CONTAINER_3_SIZE, container);
         // This one should fail
         FW_ASSERT(status == Fw::Success::FAILURE);
     }
@@ -68,7 +68,7 @@ void DpTest::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE con
 // Data product handler impelentations
 // ----------------------------------------------------------------------
 
-void DpTest ::Dp_Recv_Container1_handler(DpContainer& container, Fw::Success::T status) {
+void DpTest ::dpRecv_Container1_handler(DpContainer& container, Fw::Success::T status) {
     if (status == Fw::Success::SUCCESS) {
         auto serializeStatus = Fw::FW_SERIALIZE_OK;
         for (FwSizeType i = 0; i < CONTAINER_1_SIZE; ++i) {
@@ -79,11 +79,11 @@ void DpTest ::Dp_Recv_Container1_handler(DpContainer& container, Fw::Success::T 
             FW_ASSERT(serializeStatus == Fw::FW_SERIALIZE_OK, status);
         }
         // Use the time stamp from the time get port
-        this->Dp_Send(container);
+        this->dpSend(container);
     }
 }
 
-void DpTest ::Dp_Recv_Container2_handler(DpContainer& container, Fw::Success::T status) {
+void DpTest ::dpRecv_Container2_handler(DpContainer& container, Fw::Success::T status) {
     if (status == Fw::Success::SUCCESS) {
         const DpTest_Data dataRecord(this->dataRecordData);
         auto serializeStatus = Fw::FW_SERIALIZE_OK;
@@ -95,11 +95,11 @@ void DpTest ::Dp_Recv_Container2_handler(DpContainer& container, Fw::Success::T 
             FW_ASSERT(serializeStatus == Fw::FW_SERIALIZE_OK, status);
         }
         // Provide an explicit time stamp
-        this->Dp_Send(container, this->sendTime);
+        this->dpSend(container, this->sendTime);
     }
 }
 
-void DpTest ::Dp_Recv_Container3_handler(DpContainer& container, Fw::Success::T status) {
+void DpTest ::dpRecv_Container3_handler(DpContainer& container, Fw::Success::T status) {
     if (status == Fw::Success::SUCCESS) {
         auto serializeStatus = Fw::FW_SERIALIZE_OK;
         for (FwSizeType i = 0; i < CONTAINER_3_SIZE; ++i) {
@@ -110,7 +110,7 @@ void DpTest ::Dp_Recv_Container3_handler(DpContainer& container, Fw::Success::T 
             FW_ASSERT(serializeStatus == Fw::FW_SERIALIZE_OK, status);
         }
         // Use the time stamp from the time get port
-        this->Dp_Send(container);
+        this->dpSend(container);
     }
 }
 

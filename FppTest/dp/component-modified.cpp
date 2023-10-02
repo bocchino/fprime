@@ -685,7 +685,7 @@ namespace FppTest {
   // ----------------------------------------------------------------------
 
   void DpTestComponentBase ::
-    Dp_Request(
+    dpRequest(
         ContainerId::T containerId,
         FwSizeType size
     )
@@ -695,7 +695,7 @@ namespace FppTest {
   }
 
   void DpTestComponentBase ::
-    Dp_Send(
+    dpSend(
         DpContainer& container,
         Fw::Time timeTag
     )
@@ -905,13 +905,13 @@ namespace FppTest {
         // Set the priority
         container.setPriority(ContainerPriority::Container1);
         // Call the handler
-        this->Dp_Recv_Container1_handler(container, status.e);
+        this->dpRecv_Container1_handler(container, status.e);
         break;
       case ContainerId::Container2:
         // Set the priority
         container.setPriority(ContainerPriority::Container2);
         // Call the handler
-        this->Dp_Recv_Container2_handler(container, status.e);
+        this->dpRecv_Container2_handler(container, status.e);
         break;
       default:
         FW_ASSERT(0);

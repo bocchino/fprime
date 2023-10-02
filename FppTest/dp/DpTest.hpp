@@ -67,21 +67,21 @@ class DpTest : public DpTestComponentBase {
 
     //! Receive a data product container of type Container1
     //! \return Serialize status
-    void Dp_Recv_Container1_handler(DpContainer& container,  //!< The container
-                                    Fw::Success::T           //!< The container status
-                                    ) override;
+    void dpRecv_Container1_handler(DpContainer& container,  //!< The container
+                                   Fw::Success::T           //!< The container status
+                                   ) override;
 
     //! Receive a data product container of type Container2
     //! \return Serialize status
-    void Dp_Recv_Container2_handler(DpContainer& container,  //!< The container
-                                    Fw::Success::T           //!< The container status
-                                    ) override;
+    void dpRecv_Container2_handler(DpContainer& container,  //!< The container
+                                   Fw::Success::T           //!< The container status
+                                   ) override;
 
     //! Receive a data product container of type Container3
     //! \return Serialize status
-    void Dp_Recv_Container3_handler(DpContainer& container,  //!< The container
-                                    Fw::Success::T           //!< The container status
-                                    ) override;
+    void dpRecv_Container3_handler(DpContainer& container,  //!< The container
+                                   Fw::Success::T           //!< The container status
+                                   ) override;
 
   PRIVATE:
     // ----------------------------------------------------------------------
