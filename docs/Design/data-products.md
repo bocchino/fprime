@@ -157,18 +157,27 @@ A record is a unit of data.
 When defining a producer component, you can specify one or more
 records.
 A record specification consists of a name, a type, and an optional identifier.
-The type specifier may be `raw`, in which case the record
-is a raw array of bytes, of statically unknown size.
+The type may be one of the following:
+
+1. An FPP type _T_. In this case, the record contains a single value of type 
+   _T_. _T_ may be a struct type or a fixed-size array type.
+
+1. An FPP type _T_ followed by the keyword `array`.
+   In this case, the record is an array of values of type _T_
+   of statically unknown size.
+   The size of the array is stored in the record.
+
 Example syntax:
 ```
-array FixedSizeData = [1024] F32
-product record FixedSizedataRecord: FixedSizeData
-product record RawDataRecord: raw
+@ A struct with a fixed-size member array
+struct FixedSizeData {
+  data: [1024] F32
+}
+@ A record containing fixed-size data
+product record FixedSizeDataRecord: FixedSizeData
+@ A record containing a variable-size array
+product record F32ArrayRecord: F32 array
 ```
-
-_TODO: Instead of a raw byte record, we should allow a variable-size
-array of any type. Then a raw byte record is just a U8 array.
-See issue #323 on fprime-community/fpp._
 
 #### 3.2.3. Containers
 
