@@ -176,7 +176,7 @@ struct FixedSizeData {
 @ A record containing fixed-size data
 product record FixedSizeDataRecord: FixedSizeData
 @ A record containing a variable-size array
-product record F32ArrayRecord: F32 array
+product record F32ArrayRecord: F32 array id 0x01
 ```
 
 #### 3.2.3. Containers
@@ -194,7 +194,7 @@ during ground operations.
 Example syntax:
 ```
 product container C1
-product container C2 default priority 10
+product container C2 id 0x01 default priority 10
 ```
 
 ### 3.3. Autocoded C++
