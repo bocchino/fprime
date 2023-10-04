@@ -92,14 +92,20 @@ namespace FppTest {
     serializeRecord_DataRecord(const FppTest::DpTest_Data& elt)
   {
     Fw::SerializeBufferBase& serializeRepr = this->buffer.getSerializeRepr();
-    const FwDpIdType id = this->baseId + RecordId::DataRecord;
-    Fw::SerializeStatus status = serializeRepr.serialize(id);
-    if (status == Fw::FW_SERIALIZE_OK) {
+    const FwSizeType newDataSize = dataSize +
+      sizeof(FwDpIdType) +
+      FppTest::DpTest_Data::SERIALIZED_SIZE;
+    Fw::SerializeStatus status = Fw::FW_SERIALIZE_OK;
+    if (DpContainer::Header::SIZE + newDataSize <= serializeRepr.getBuffCapacity()) {
+      const FwDpIdType id = this->baseId + RecordId::DataRecord;
+      status = serializeRepr.serialize(id);
+      FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
       status = serializeRepr.serialize(elt);
+      FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+      this->dataSize = newDataSize;
     }
-    if (status == Fw::FW_SERIALIZE_OK) {
-      this->dataSize += sizeof(FwDpIdType);
-      this->dataSize += FppTest::DpTest_Data::SERIALIZED_SIZE;
+    else {
+      status = Fw::FW_SERIALIZE_NO_ROOM_LEFT;
     }
     return status;
   }
