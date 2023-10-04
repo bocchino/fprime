@@ -144,8 +144,8 @@ class Tester : public DpTestGTestBase {
     //! Buffer for Container 3
     const Fw::Buffer container3Buffer;
 
-    //! Byte array data for U8 array record
-    U8 u8ArrayRecordData[DpTest::U8_ARRAY_DATA_SIZE];
+    //! Data for U8 array record
+    DpTest::U8ArrayRecordData u8ArrayRecordData;
 
     //! Byte array for U8 array record
     Fw::ByteArray u8ArrayRecordArray;

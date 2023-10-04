@@ -25,13 +25,13 @@ class DpTest : public DpTestComponentBase {
     static constexpr FwSizeType CONTAINER_3_SIZE = 1000;
     static constexpr FwSizeType CONTAINER_4_SIZE = 1000;
     static constexpr FwSizeType CONTAINER_5_SIZE = 1000;
-    static constexpr FwSizeType U8_ARRAY_DATA_SIZE = 256;
 
   public:
     // ----------------------------------------------------------------------
     // Types
     // ----------------------------------------------------------------------
 
+    using U8ArrayRecordData = std::array<U8, 256>;
     using U32ArrayRecordData = std::array<U32, 100>;
 
   public:

@@ -24,14 +24,14 @@ Tester::Tester()
       container2Buffer(this->container2Data, DpTest::CONTAINER_2_SIZE),
       container3Data{},
       container3Buffer(this->container3Data, DpTest::CONTAINER_3_SIZE),
-      u8ArrayRecordArray(this->u8ArrayRecordData, sizeof this->u8ArrayRecordData),
+      u8ArrayRecordArray(this->u8ArrayRecordData.data(), this->u8ArrayRecordData.size()),
       component("DpTest", STest::Pick::any(), STest::Pick::any(), this->u8ArrayRecordArray, this->u32ArrayRecordData) {
     this->initComponents();
     this->connectPorts();
     this->component.setIdBase(ID_BASE);
     // Fill in array with random data
-    for (FwSizeType i = 0; i < this->u8ArrayRecordArray.size; ++i) {
-        this->u8ArrayRecordArray.bytes[i] = static_cast<U8>(STest::Pick::any());
+    for (FwSizeType i = 0; i < this->u8ArrayRecordData.size(); ++i) {
+        this->u8ArrayRecordData[i] = static_cast<U8>(STest::Pick::any());
     }
 }
 
@@ -114,7 +114,7 @@ void Tester::productRecvIn_Container2_FAILURE() {
 void Tester::productRecvIn_Container3_SUCCESS() {
     Fw::Buffer buffer;
     FwSizeType expectedNumElts;
-    const FwSizeType dataEltSize = sizeof(FwSizeType) + this->u8ArrayRecordArray.size;
+    const FwSizeType dataEltSize = sizeof(FwSizeType) + this->u8ArrayRecordData.size();
     // Invoke the port and check the header
     this->productRecvIn_InvokeAndCheckHeader(DpTest::ContainerId::Container3, dataEltSize,
                                              DpTest::ContainerPriority::Container3, this->container3Buffer, buffer,
@@ -131,13 +131,13 @@ void Tester::productRecvIn_Container3_SUCCESS() {
         FwSizeType size;
         status = serialRepr.deserialize(size);
         ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-        ASSERT_EQ(size, this->u8ArrayRecordArray.size);
+        ASSERT_EQ(size, this->u8ArrayRecordData.size());
         const U8* const buffAddr = serialRepr.getBuffAddr();
         for (FwSizeType j = 0; j < size; ++j) {
             U8 byte;
             status = serialRepr.deserialize(byte);
             ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-            ASSERT_EQ(byte, this->u8ArrayRecordArray.bytes[j]);
+            ASSERT_EQ(byte, this->u8ArrayRecordData[j]);
         }
     }
 }
