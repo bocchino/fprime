@@ -31,7 +31,7 @@ class DpTest : public DpTestComponentBase {
     DpTest(const char* const compName,  //!< The component name
            U32 u32RecordData,           //!< The U32Record data
            U16 dataRecordData,          //!< The DataRecord data
-           Fw::ByteArray rawRecordData  //!< The RawRecord data
+           Fw::ByteArray u8ArrayRecordData  //!< The U8ArrayRecord data
     );
 
     //! Initialize object DpTest
@@ -105,8 +105,8 @@ class DpTest : public DpTestComponentBase {
     //! DataRecord data
     const U16 dataRecordData;
 
-    //! RawRecord data
-    const Fw::ByteArray rawRecordData;
+    //! U8ArrayRecord data
+    const Fw::ByteArray u8ArrayRecordData;
 
     //! Send time for testing
     Fw::Time sendTime;

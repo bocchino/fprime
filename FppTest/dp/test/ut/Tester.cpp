@@ -24,14 +24,14 @@ Tester::Tester()
       container2Buffer(this->container2Data, DpTest::CONTAINER_2_SIZE),
       container3Data{},
       container3Buffer(this->container3Data, DpTest::CONTAINER_3_SIZE),
-      rawRecordArray(this->rawRecordData, sizeof this->rawRecordData),
-      component("DpTest", STest::Pick::any(), STest::Pick::any(), this->rawRecordArray) {
+      u8ArrayRecordArray(this->u8ArrayRecordData, sizeof this->u8ArrayRecordData),
+      component("DpTest", STest::Pick::any(), STest::Pick::any(), this->u8ArrayRecordArray) {
     this->initComponents();
     this->connectPorts();
     this->component.setIdBase(ID_BASE);
     // Fill in array with random data
-    for (FwSizeType i = 0; i < this->rawRecordArray.size; ++i) {
-        this->rawRecordArray.bytes[i] = static_cast<U8>(STest::Pick::any());
+    for (FwSizeType i = 0; i < this->u8ArrayRecordArray.size; ++i) {
+        this->u8ArrayRecordArray.bytes[i] = static_cast<U8>(STest::Pick::any());
     }
 }
 
@@ -114,7 +114,7 @@ void Tester::productRecvIn_Container2_FAILURE() {
 void Tester::productRecvIn_Container3_SUCCESS() {
     Fw::Buffer buffer;
     FwSizeType expectedNumElts;
-    const FwSizeType dataEltSize = sizeof(FwSizeType) + this->rawRecordArray.size;
+    const FwSizeType dataEltSize = sizeof(FwSizeType) + this->u8ArrayRecordArray.size;
     // Invoke the port and check the header
     this->productRecvIn_InvokeAndCheckHeader(DpTest::ContainerId::Container3, dataEltSize,
                                              DpTest::ContainerPriority::Container3, this->container3Buffer, buffer,
@@ -126,18 +126,18 @@ void Tester::productRecvIn_Container3_SUCCESS() {
         FwDpIdType id;
         auto status = serialRepr.deserialize(id);
         ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-        const FwDpIdType expectedId = this->component.getIdBase() + DpTest::RecordId::RawRecord;
+        const FwDpIdType expectedId = this->component.getIdBase() + DpTest::RecordId::U8ArrayRecord;
         ASSERT_EQ(id, expectedId);
         FwSizeType size;
         status = serialRepr.deserialize(size);
         ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-        ASSERT_EQ(size, this->rawRecordArray.size);
+        ASSERT_EQ(size, this->u8ArrayRecordArray.size);
         const U8* const buffAddr = serialRepr.getBuffAddr();
         for (FwSizeType j = 0; j < size; ++j) {
             U8 byte;
             status = serialRepr.deserialize(byte);
             ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-            ASSERT_EQ(byte, this->rawRecordArray.bytes[j]);
+            ASSERT_EQ(byte, this->u8ArrayRecordArray.bytes[j]);
         }
     }
 }
