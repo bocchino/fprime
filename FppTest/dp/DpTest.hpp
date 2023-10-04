@@ -10,7 +10,6 @@
 #include <array>
 
 #include "FppTest/dp/DpTestComponentAc.hpp"
-#include "Fw/Types/ByteArray.hpp"
 
 namespace FppTest {
 
@@ -40,11 +39,11 @@ class DpTest : public DpTestComponentBase {
     // ----------------------------------------------------------------------
 
     //! Construct object DpTest
-    DpTest(const char* const compName,                   //!< The component name
-           U32 u32RecordData,                            //!< The U32Record data
-           U16 dataRecordData,                           //!< The DataRecord data
-           const U8ArrayRecordData& u8ArrayRecordData__,   //!< The U8ArrayRecord data
-           const U32ArrayRecordData& u32ArrayRecordData  //!< The U32ArrayRecord data
+    DpTest(const char* const compName,                    //!< The component name
+           U32 u32RecordData,                             //!< The U32Record data
+           U16 dataRecordData,                            //!< The DataRecord data
+           const U8ArrayRecordData& u8ArrayRecordData__,  //!< The U8ArrayRecord data
+           const U32ArrayRecordData& u32ArrayRecordData   //!< The U32ArrayRecord data
     );
 
     //! Initialize object DpTest
@@ -132,9 +131,6 @@ class DpTest : public DpTestComponentBase {
 
     //! U8ArrayRecord data
     const U8ArrayRecordData& u8ArrayRecordData;
-
-    //! U8ArrayRecord byte array
-    const Fw::ByteArray u8ArrayRecordByteArray;
 
     //! U32ArrayRecord data
     const U32ArrayRecordData& u32ArrayRecordData;
