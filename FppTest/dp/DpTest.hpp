@@ -130,6 +130,9 @@ class DpTest : public DpTestComponentBase {
     //! DataRecord data
     const U16 dataRecordData;
 
+    //! U8ArrayRecord data
+    const U8ArrayRecordData& u8ArrayRecordData;
+
     //! U8ArrayRecord byte array
     const Fw::ByteArray u8ArrayRecordByteArray;
 

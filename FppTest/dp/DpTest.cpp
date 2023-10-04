@@ -23,6 +23,7 @@ DpTest ::DpTest(const char* const compName,
     : DpTestComponentBase(compName),
       u32RecordData(u32RecordData),
       dataRecordData(dataRecordData),
+      u8ArrayRecordData(u8ArrayRecordData),
       u8ArrayRecordByteArray(const_cast<U8*>(u8ArrayRecordData.data()), u8ArrayRecordData.size()),
       u32ArrayRecordData(u32ArrayRecordData),
       sendTime(Fw::ZERO_TIME) {}
