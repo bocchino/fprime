@@ -7,13 +7,15 @@
 #ifndef FppTest_DpTest_HPP
 #define FppTest_DpTest_HPP
 
+#include <array>
+
 #include "FppTest/dp/DpTestComponentAc.hpp"
 #include "Fw/Types/ByteArray.hpp"
 
 namespace FppTest {
 
 class DpTest : public DpTestComponentBase {
-  PRIVATE:
+  public:
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
@@ -27,14 +29,22 @@ class DpTest : public DpTestComponentBase {
 
   public:
     // ----------------------------------------------------------------------
+    // Types
+    // ----------------------------------------------------------------------
+
+    using U32ArrayRecordData = std::array<U32, 100>;
+
+  public:
+    // ----------------------------------------------------------------------
     // Construction, initialization, and destruction
     // ----------------------------------------------------------------------
 
     //! Construct object DpTest
-    DpTest(const char* const compName,  //!< The component name
-           U32 u32RecordData,           //!< The U32Record data
-           U16 dataRecordData,          //!< The DataRecord data
-           Fw::ByteArray u8ArrayRecordData  //!< The U8ArrayRecord data
+    DpTest(const char* const compName,                   //!< The component name
+           U32 u32RecordData,                            //!< The U32Record data
+           U16 dataRecordData,                           //!< The DataRecord data
+           Fw::ByteArray u8ArrayRecordData,              //!< The U8ArrayRecord data
+           const U32ArrayRecordData& u32ArrayRecordData  //!< The U32ArrayRecord data
     );
 
     //! Initialize object DpTest
@@ -122,6 +132,9 @@ class DpTest : public DpTestComponentBase {
 
     //! U8ArrayRecord data
     const Fw::ByteArray u8ArrayRecordData;
+
+    //! U32ArrayRecord data
+    const U32ArrayRecordData& u32ArrayRecordData;
 
     //! Send time for testing
     Fw::Time sendTime;

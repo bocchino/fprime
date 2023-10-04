@@ -15,11 +15,16 @@ namespace FppTest {
 // Construction, initialization, and destruction
 // ----------------------------------------------------------------------
 
-DpTest ::DpTest(const char* const compName, U32 u32RecordData, U16 dataRecordData, Fw::ByteArray u8ArrayRecordData)
+DpTest ::DpTest(const char* const compName,
+                U32 u32RecordData,
+                U16 dataRecordData,
+                Fw::ByteArray u8ArrayRecordData,
+                const U32ArrayRecordData& u32ArrayRecordData)
     : DpTestComponentBase(compName),
       u32RecordData(u32RecordData),
       dataRecordData(dataRecordData),
       u8ArrayRecordData(u8ArrayRecordData),
+      u32ArrayRecordData(u32ArrayRecordData),
       sendTime(Fw::ZERO_TIME) {}
 
 void DpTest ::init(const NATIVE_INT_TYPE queueDepth, const NATIVE_INT_TYPE instance) {
@@ -103,10 +108,8 @@ void DpTest ::dpRecv_Container3_handler(DpContainer& container, Fw::Success::T s
     if (status == Fw::Success::SUCCESS) {
         auto serializeStatus = Fw::FW_SERIALIZE_OK;
         for (FwSizeType i = 0; i < CONTAINER_3_SIZE; ++i) {
-            serializeStatus = container.serializeRecord_U8ArrayRecord(
-                this->u8ArrayRecordData.bytes,
-                this->u8ArrayRecordData.size
-            );
+            serializeStatus =
+                container.serializeRecord_U8ArrayRecord(this->u8ArrayRecordData.bytes, this->u8ArrayRecordData.size);
             if (serializeStatus == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
                 break;
             }
