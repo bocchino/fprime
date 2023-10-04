@@ -150,6 +150,9 @@ class Tester : public DpTestGTestBase {
     //! Data for U32 array record
     DpTest::U32ArrayRecordData u32ArrayRecordData;
 
+    //! Data for Data array record
+    DpTest::DataArrayRecordData dataArrayRecordData;
+
     //! The component under test
     DpTest component;
 };

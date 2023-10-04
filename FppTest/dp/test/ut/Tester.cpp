@@ -24,14 +24,21 @@ Tester::Tester()
       container2Buffer(this->container2Data, DpTest::CONTAINER_2_SIZE),
       container3Data{},
       container3Buffer(this->container3Data, DpTest::CONTAINER_3_SIZE),
-      component("DpTest", STest::Pick::any(), STest::Pick::any(), this->u8ArrayRecordData, this->u32ArrayRecordData) {
+      component("DpTest",
+                STest::Pick::any(),
+                STest::Pick::any(),
+                this->u8ArrayRecordData,
+                this->u32ArrayRecordData,
+                this->dataArrayRecordData) {
     this->initComponents();
     this->connectPorts();
     this->component.setIdBase(ID_BASE);
-    // Fill in array with random data
+    // Fill in arrays with random data
     for (FwSizeType i = 0; i < this->u8ArrayRecordData.size(); ++i) {
         this->u8ArrayRecordData.at(i) = static_cast<U8>(STest::Pick::any());
     }
+    // TODO: u32ArrayRecordData
+    // TODO: dataArrayRecordData
 }
 
 Tester::~Tester() {}

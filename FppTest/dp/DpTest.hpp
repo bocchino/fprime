@@ -32,6 +32,7 @@ class DpTest : public DpTestComponentBase {
 
     using U8ArrayRecordData = std::array<U8, 256>;
     using U32ArrayRecordData = std::array<U32, 100>;
+    using DataArrayRecordData = std::array<DpTest_Data, 300>;
 
   public:
     // ----------------------------------------------------------------------
@@ -39,11 +40,12 @@ class DpTest : public DpTestComponentBase {
     // ----------------------------------------------------------------------
 
     //! Construct object DpTest
-    DpTest(const char* const compName,                    //!< The component name
-           U32 u32RecordData,                             //!< The U32Record data
-           U16 dataRecordData,                            //!< The DataRecord data
-           const U8ArrayRecordData& u8ArrayRecordData__,  //!< The U8ArrayRecord data
-           const U32ArrayRecordData& u32ArrayRecordData   //!< The U32ArrayRecord data
+    DpTest(const char* const compName,                     //!< The component name
+           U32 u32RecordData,                              //!< The U32Record data
+           U16 dataRecordData,                             //!< The DataRecord data
+           const U8ArrayRecordData& u8ArrayRecordData,     //!< The U8ArrayRecord data
+           const U32ArrayRecordData& u32ArrayRecordData,   //!< The U32ArrayRecord data
+           const DataArrayRecordData& dataArrayRecordData  //!< The DataArrayRecord data
     );
 
     //! Initialize object DpTest
@@ -134,6 +136,9 @@ class DpTest : public DpTestComponentBase {
 
     //! U32ArrayRecord data
     const U32ArrayRecordData& u32ArrayRecordData;
+
+    //! DataArrayRecord data
+    const DataArrayRecordData& dataArrayRecordData;
 
     //! Send time for testing
     Fw::Time sendTime;

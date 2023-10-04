@@ -19,12 +19,14 @@ DpTest ::DpTest(const char* const compName,
                 U32 u32RecordData,
                 U16 dataRecordData,
                 const U8ArrayRecordData& u8ArrayRecordData,
-                const U32ArrayRecordData& u32ArrayRecordData)
+                const U32ArrayRecordData& u32ArrayRecordData,
+                const DataArrayRecordData& dataArrayRecordData)
     : DpTestComponentBase(compName),
       u32RecordData(u32RecordData),
       dataRecordData(dataRecordData),
       u8ArrayRecordData(u8ArrayRecordData),
       u32ArrayRecordData(u32ArrayRecordData),
+      dataArrayRecordData(dataArrayRecordData),
       sendTime(Fw::ZERO_TIME) {}
 
 void DpTest ::init(const NATIVE_INT_TYPE queueDepth, const NATIVE_INT_TYPE instance) {
