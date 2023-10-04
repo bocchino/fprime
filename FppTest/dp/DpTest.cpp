@@ -103,7 +103,10 @@ void DpTest ::dpRecv_Container3_handler(DpContainer& container, Fw::Success::T s
     if (status == Fw::Success::SUCCESS) {
         auto serializeStatus = Fw::FW_SERIALIZE_OK;
         for (FwSizeType i = 0; i < CONTAINER_3_SIZE; ++i) {
-            serializeStatus = container.serializeRecord_U8ArrayRecord(this->u8ArrayRecordData);
+            serializeStatus = container.serializeRecord_U8ArrayRecord(
+                this->u8ArrayRecordData.bytes,
+                this->u8ArrayRecordData.size
+            );
             if (serializeStatus == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
                 break;
             }

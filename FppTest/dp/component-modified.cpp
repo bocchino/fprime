@@ -6,6 +6,7 @@
 
 #include <cstdio>
 
+#include "Fw/Types/ByteArray.hpp"
 #include "FppTest/dp/DpTestComponentAc.hpp"
 #include "Fw/Types/Assert.hpp"
 #if FW_ENABLE_TEXT_LOGGING
@@ -21,7 +22,8 @@ namespace FppTest {
       SCHEDIN_SCHED,
     };
 
-    // Get the max size by doing a union of the input and internal port serialization sizes
+    // Get the max size by constructing a union of the async input, command, and
+    // internal port serialization sizes
     union BuffUnion {
       BYTE productRecvInPortSize[Fw::InputDpResponsePort::SERIALIZED_SIZE];
       BYTE schedInPortSize[Svc::InputSchedPort::SERIALIZED_SIZE];
@@ -78,10 +80,18 @@ namespace FppTest {
 
   }
 
+  DpTestComponentBase::DpContainer ::
+    DpContainer() :
+      Fw::DpContainer(),
+      baseId(0)
+  {
+
+  }
+
   Fw::SerializeStatus DpTestComponentBase::DpContainer ::
     serializeRecord_DataRecord(const FppTest::DpTest_Data& elt)
   {
-    Fw::SerializeBufferBase& serializeRepr = buffer.getSerializeRepr();
+    Fw::SerializeBufferBase& serializeRepr = this->buffer.getSerializeRepr();
     const FwDpIdType id = this->baseId + RecordId::DataRecord;
     Fw::SerializeStatus status = serializeRepr.serialize(id);
     if (status == Fw::FW_SERIALIZE_OK) {
@@ -97,7 +107,7 @@ namespace FppTest {
   Fw::SerializeStatus DpTestComponentBase::DpContainer ::
     serializeRecord_U32Record(U32 elt)
   {
-    Fw::SerializeBufferBase& serializeRepr = buffer.getSerializeRepr();
+    Fw::SerializeBufferBase& serializeRepr = this->buffer.getSerializeRepr();
     const FwDpIdType id = this->baseId + RecordId::U32Record;
     Fw::SerializeStatus status = serializeRepr.serialize(id);
     if (status == Fw::FW_SERIALIZE_OK) {
@@ -106,6 +116,55 @@ namespace FppTest {
     if (status == Fw::FW_SERIALIZE_OK) {
       this->dataSize += sizeof(FwDpIdType);
       this->dataSize += sizeof(U32);
+    }
+    return status;
+  }
+
+  Fw::SerializeStatus DpTestComponentBase::DpContainer ::
+    serializeRecord_U8ArrayRecord(
+        const U8* array,
+        FwSizeType size
+    )
+  {
+    FW_ASSERT(array != nullptr);
+    Fw::SerializeBufferBase& serializeRepr = this->buffer.getSerializeRepr();
+#if 0
+    const FwDpIdType id = this->baseId + RecordId::U8ArrayRecord;
+    Fw::SerializeStatus status = serializeRepr.serialize(id);
+    if (status == Fw::FW_SERIALIZE_OK) {
+      this->dataSize += sizeof(FwDpIdType);
+      status = serializeRepr.serialize(size);
+    }
+    if (status == Fw::FW_SERIALIZE_OK) {
+      this->dataSize += sizeof(FwSizeType);
+      for (FwSizeType i = 0; i < size; i++) {
+        status = serializeRepr.serialize(array[i]);
+        if (status != Fw::FW_SERIALIZE_OK) {
+          break;
+        }
+        //this->dataSize += sizeof(U8);
+      }
+    }
+    return status;
+#endif
+    Fw::ByteArray byteArray(const_cast<U8*>(array), size);
+    const FwDpIdType id = this->baseId + RecordId::U8ArrayRecord;
+    Fw::SerializeStatus status = serializeRepr.serialize(id);
+    if (status == Fw::FW_SERIALIZE_OK) {
+      status = serializeRepr.serialize(size);
+    }
+    if (status == Fw::FW_SERIALIZE_OK) {
+      const bool omitSerializedLength = true;
+      status = serializeRepr.serialize(
+          byteArray.bytes,
+          size,
+          omitSerializedLength
+      );
+    }
+    if (status == Fw::FW_SERIALIZE_OK) {
+      this->dataSize += sizeof(FwDpIdType);
+      this->dataSize += sizeof(FwSizeType);
+      this->dataSize += size;
     }
     return status;
   }
@@ -172,6 +231,27 @@ namespace FppTest {
         port
       );
       this->m_schedIn_InputPort[port].setObjName(portName);
+#endif
+    }
+
+    // Connect output port productGetOut
+    for (
+      PlatformIntType port = 0;
+      port < static_cast<PlatformIntType>(this->getNum_productGetOut_OutputPorts());
+      port++
+    ) {
+      this->m_productGetOut_OutputPort[port].init();
+
+#if FW_OBJECT_NAMES == 1
+      char portName[120];
+      (void) snprintf(
+        portName,
+        sizeof(portName),
+        "%s_productGetOut_OutputPort[%" PRI_PlatformIntType "]",
+        this->m_objName,
+        port
+      );
+      this->m_productGetOut_OutputPort[port].setObjName(portName);
 #endif
     }
 
@@ -281,6 +361,20 @@ namespace FppTest {
   // ----------------------------------------------------------------------
   // Connect input ports to special output ports
   // ----------------------------------------------------------------------
+
+  void DpTestComponentBase ::
+    set_productGetOut_OutputPort(
+        NATIVE_INT_TYPE portNum,
+        Fw::InputDpGetPort* port
+    )
+  {
+    FW_ASSERT(
+      portNum < this->getNum_productGetOut_OutputPorts(),
+      static_cast<FwAssertArgType>(portNum)
+    );
+
+    this->m_productGetOut_OutputPort[portNum].addCallPort(port);
+  }
 
   void DpTestComponentBase ::
     set_productRequestOut_OutputPort(
@@ -396,7 +490,7 @@ namespace FppTest {
   // ----------------------------------------------------------------------
 
   NATIVE_INT_TYPE DpTestComponentBase ::
-    getNum_productRecvIn_InputPorts()
+    getNum_productRecvIn_InputPorts() const
   {
     return static_cast<NATIVE_INT_TYPE>(FW_NUM_ARRAY_ELEMENTS(this->m_productRecvIn_InputPort));
   }
@@ -406,7 +500,7 @@ namespace FppTest {
   // ----------------------------------------------------------------------
 
   NATIVE_INT_TYPE DpTestComponentBase ::
-    getNum_schedIn_InputPorts()
+    getNum_schedIn_InputPorts() const
   {
     return static_cast<NATIVE_INT_TYPE>(FW_NUM_ARRAY_ELEMENTS(this->m_schedIn_InputPort));
   }
@@ -416,19 +510,25 @@ namespace FppTest {
   // ----------------------------------------------------------------------
 
   NATIVE_INT_TYPE DpTestComponentBase ::
-    getNum_productRequestOut_OutputPorts()
+    getNum_productGetOut_OutputPorts() const
+  {
+    return static_cast<NATIVE_INT_TYPE>(FW_NUM_ARRAY_ELEMENTS(this->m_productGetOut_OutputPort));
+  }
+
+  NATIVE_INT_TYPE DpTestComponentBase ::
+    getNum_productRequestOut_OutputPorts() const
   {
     return static_cast<NATIVE_INT_TYPE>(FW_NUM_ARRAY_ELEMENTS(this->m_productRequestOut_OutputPort));
   }
 
   NATIVE_INT_TYPE DpTestComponentBase ::
-    getNum_productSendOut_OutputPorts()
+    getNum_productSendOut_OutputPorts() const
   {
     return static_cast<NATIVE_INT_TYPE>(FW_NUM_ARRAY_ELEMENTS(this->m_productSendOut_OutputPort));
   }
 
   NATIVE_INT_TYPE DpTestComponentBase ::
-    getNum_timeGetOut_OutputPorts()
+    getNum_timeGetOut_OutputPorts() const
   {
     return static_cast<NATIVE_INT_TYPE>(FW_NUM_ARRAY_ELEMENTS(this->m_timeGetOut_OutputPort));
   }
@@ -436,6 +536,17 @@ namespace FppTest {
   // ----------------------------------------------------------------------
   // Connection status queries for special output ports
   // ----------------------------------------------------------------------
+
+  bool DpTestComponentBase ::
+    isConnected_productGetOut_OutputPort(NATIVE_INT_TYPE portNum)
+  {
+    FW_ASSERT(
+      portNum < this->getNum_productGetOut_OutputPorts(),
+      static_cast<FwAssertArgType>(portNum)
+    );
+
+    return this->m_productGetOut_OutputPort[portNum].isConnected();
+  }
 
   bool DpTestComponentBase ::
     isConnected_productRequestOut_OutputPort(NATIVE_INT_TYPE portNum)
@@ -646,6 +757,25 @@ namespace FppTest {
   // Invocation functions for special output ports
   // ----------------------------------------------------------------------
 
+  Fw::Success DpTestComponentBase ::
+    productGetOut_out(
+        NATIVE_INT_TYPE portNum,
+        FwDpIdType id,
+        FwSizeType size,
+        Fw::Buffer& buffer
+    )
+  {
+    FW_ASSERT(
+      portNum < this->getNum_productGetOut_OutputPorts(),
+      static_cast<FwAssertArgType>(portNum)
+    );
+    return this->m_productGetOut_OutputPort[portNum].invoke(
+      id,
+      size,
+      buffer
+    );
+  }
+
   void DpTestComponentBase ::
     productRequestOut_out(
         NATIVE_INT_TYPE portNum,
@@ -683,16 +813,6 @@ namespace FppTest {
   // ----------------------------------------------------------------------
   // Functions for managing data products
   // ----------------------------------------------------------------------
-
-  void DpTestComponentBase ::
-    dpRequest(
-        ContainerId::T containerId,
-        FwSizeType size
-    )
-  {
-    const FwDpIdType globalId = this->getIdBase() + containerId;
-    this->productRequestOut_out(0, globalId, size);
-  }
 
   void DpTestComponentBase ::
     dpSend(
@@ -886,6 +1006,35 @@ namespace FppTest {
   // Private data product handling functions
   // ----------------------------------------------------------------------
 
+  Fw::Success::T DpTestComponentBase ::
+    dpGet(
+        ContainerId::T containerId,
+        FwSizeType size,
+        DpContainer& container
+    )
+  {
+    const FwDpIdType baseId = this->getIdBase();
+    const FwDpIdType globalId = baseId + containerId;
+    Fw::Buffer buffer;
+    const Fw::Success::T status = this->productGetOut_out(0, globalId, size, buffer);
+    if (status == Fw::Success::SUCCESS) {
+      container.setId(globalId);
+      container.setBuffer(buffer);
+      container.setBaseId(baseId);
+    }
+    return status;
+  }
+
+  void DpTestComponentBase ::
+    dpRequest(
+        ContainerId::T containerId,
+        FwSizeType size
+    )
+  {
+    const FwDpIdType globalId = this->getIdBase() + containerId;
+    this->productRequestOut_out(0, globalId, size);
+  }
+
   void DpTestComponentBase ::
     productRecvIn_handler(
         const NATIVE_INT_TYPE portNum,
@@ -912,6 +1061,12 @@ namespace FppTest {
         container.setPriority(ContainerPriority::Container2);
         // Call the handler
         this->dpRecv_Container2_handler(container, status.e);
+        break;
+      case ContainerId::Container3:
+        // Set the priority
+        container.setPriority(ContainerPriority::Container3);
+        // Call the handler
+        this->dpRecv_Container3_handler(container, status.e);
         break;
       default:
         FW_ASSERT(0);

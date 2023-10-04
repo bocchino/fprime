@@ -8,6 +8,7 @@
 #define FppTest_DpTest_HPP
 
 #include "FppTest/dp/DpTestComponentAc.hpp"
+#include "Fw/Types/ByteArray.hpp"
 
 namespace FppTest {
 

@@ -11,6 +11,7 @@
 #include "FppTest/dp/DpTest_DataSerializableAc.hpp"
 #include "Fw/Comp/ActiveComponentBase.hpp"
 #include "Fw/Dp/DpContainer.hpp"
+#include "Fw/Dp/DpGetPortAc.hpp"
 #include "Fw/Dp/DpRequestPortAc.hpp"
 #include "Fw/Dp/DpResponsePortAc.hpp"
 #include "Fw/Dp/DpSendPortAc.hpp"
@@ -54,6 +55,7 @@ namespace FppTest {
 
       //! Enumerations for numbers of special output ports
       enum {
+        NUM_PRODUCTGETOUT_OUTPUT_PORTS = 1,
         NUM_PRODUCTREQUESTOUT_OUTPUT_PORTS = 1,
         NUM_PRODUCTSENDOUT_OUTPUT_PORTS = 1,
         NUM_TIMEGETOUT_OUTPUT_PORTS = 1,
@@ -68,8 +70,9 @@ namespace FppTest {
       //! The container ids
       struct ContainerId {
         enum T : FwDpIdType {
-          Container1 = 300,
-          Container2 = 400,
+          Container1 = 100,
+          Container2 = 200,
+          Container3 = 300,
         };
       };
 
@@ -78,6 +81,7 @@ namespace FppTest {
         enum T : FwDpPriorityType {
           Container1 = 10,
           Container2 = 20,
+          Container3 = 30,
         };
       };
 
@@ -86,6 +90,7 @@ namespace FppTest {
         enum T : FwDpIdType {
           U32Record = 100,
           DataRecord = 200,
+          U8ArrayRecord = 300,
         };
       };
 
@@ -96,26 +101,40 @@ namespace FppTest {
 
         public:
 
-          //! Constructor
+          //! Constructor with custom initialization
           DpContainer(
               FwDpIdType id, //!< The container id
               const Fw::Buffer& buffer, //!< The packet buffer
               FwDpIdType baseId //!< The component base id
           );
 
+          //! Constructor with default initialization
+          DpContainer();
+
         public:
 
-          //! Serialize a DataRecord into the packet buffer
+          //! Serialize a DataRecord record into the packet buffer
           //! \return The serialize status
           Fw::SerializeStatus serializeRecord_DataRecord(
               const FppTest::DpTest_Data& elt //!< The element
           );
 
-          //! Serialize a U32Record into the packet buffer
+          //! Serialize a U32Record record into the packet buffer
           //! \return The serialize status
           Fw::SerializeStatus serializeRecord_U32Record(
               U32 elt //!< The element
           );
+
+          //! Serialize a U8ArrayRecord record into the packet buffer
+          //! \return The serialize status
+          Fw::SerializeStatus serializeRecord_U8ArrayRecord(
+              const U8* array, //!< An array of U8 elements
+              FwSizeType size //!< The array size
+          );
+
+          FwDpIdType getBaseId() const { return this->baseId; }
+
+          void setBaseId(FwDpIdType baseId) { this->baseId = baseId; }
 
         PRIVATE:
 
@@ -167,6 +186,12 @@ namespace FppTest {
       // ----------------------------------------------------------------------
       // Connect input ports to special output ports
       // ----------------------------------------------------------------------
+
+      //! Connect port to productGetOut[portNum]
+      void set_productGetOut_OutputPort(
+          NATIVE_INT_TYPE portNum, //!< The port number
+          Fw::InputDpGetPort* port //!< The input port
+      );
 
       //! Connect port to productRequestOut[portNum]
       void set_productRequestOut_OutputPort(
@@ -237,7 +262,7 @@ namespace FppTest {
       //! Get the number of productRecvIn input ports
       //!
       //! \return The number of productRecvIn input ports
-      NATIVE_INT_TYPE getNum_productRecvIn_InputPorts();
+      NATIVE_INT_TYPE getNum_productRecvIn_InputPorts() const;
 
     PROTECTED:
 
@@ -248,7 +273,7 @@ namespace FppTest {
       //! Get the number of schedIn input ports
       //!
       //! \return The number of schedIn input ports
-      NATIVE_INT_TYPE getNum_schedIn_InputPorts();
+      NATIVE_INT_TYPE getNum_schedIn_InputPorts() const;
 
     PROTECTED:
 
@@ -256,26 +281,38 @@ namespace FppTest {
       // Getters for numbers of special output ports
       // ----------------------------------------------------------------------
 
+      //! Get the number of productGetOut output ports
+      //!
+      //! \return The number of productGetOut output ports
+      NATIVE_INT_TYPE getNum_productGetOut_OutputPorts() const;
+
       //! Get the number of productRequestOut output ports
       //!
       //! \return The number of productRequestOut output ports
-      NATIVE_INT_TYPE getNum_productRequestOut_OutputPorts();
+      NATIVE_INT_TYPE getNum_productRequestOut_OutputPorts() const;
 
       //! Get the number of productSendOut output ports
       //!
       //! \return The number of productSendOut output ports
-      NATIVE_INT_TYPE getNum_productSendOut_OutputPorts();
+      NATIVE_INT_TYPE getNum_productSendOut_OutputPorts() const;
 
       //! Get the number of timeGetOut output ports
       //!
       //! \return The number of timeGetOut output ports
-      NATIVE_INT_TYPE getNum_timeGetOut_OutputPorts();
+      NATIVE_INT_TYPE getNum_timeGetOut_OutputPorts() const;
 
     PROTECTED:
 
       // ----------------------------------------------------------------------
       // Connection status queries for special output ports
       // ----------------------------------------------------------------------
+
+      //! Check whether port productGetOut is connected
+      //!
+      //! \return Whether port productGetOut is connected
+      bool isConnected_productGetOut_OutputPort(
+          NATIVE_INT_TYPE portNum //!< The port number
+      );
 
       //! Check whether port productRequestOut is connected
       //!
@@ -380,6 +417,14 @@ namespace FppTest {
       // Invocation functions for special output ports
       // ----------------------------------------------------------------------
 
+      //! Invoke output port productGetOut
+      Fw::Success productGetOut_out(
+          NATIVE_INT_TYPE portNum, //!< The port number
+          FwDpIdType id, //!< The container ID
+          FwSizeType size, //!< The size of the requested buffer
+          Fw::Buffer& buffer //!< The buffer
+      );
+
       //! Invoke output port productRequestOut
       void productRequestOut_out(
           NATIVE_INT_TYPE portNum, //!< The port number
@@ -400,11 +445,53 @@ namespace FppTest {
       // Functions for managing data products
       // ----------------------------------------------------------------------
 
-      //! Request a data product container
-      void dpRequest(
-          ContainerId::T containerId, //!< The container id
-          FwSizeType size //!< The buffer size
-      );
+      //! Get a buffer and use it to initialize container Container1
+      //! \return The status of the buffer request
+      Fw::Success::T dpGet_Container1(
+          FwSizeType size, //!< The buffer size (input)
+          DpContainer& container //!< The container (output)
+      ) {
+        return this->dpGet(ContainerId::Container1, size, container);
+      }
+
+      //! Get a buffer and use it to initialize container Container2
+      //! \return The status of the buffer request
+      Fw::Success::T dpGet_Container2(
+          FwSizeType size, //!< The buffer size (input)
+          DpContainer& container //!< The container (output)
+      ) {
+        return this->dpGet(ContainerId::Container2, size, container);
+      }
+
+      //! Get a buffer and use it to initialize container Container3
+      //! \return The status of the buffer request
+      Fw::Success::T dpGet_Container3(
+          FwSizeType size, //!< The buffer size (input)
+          DpContainer& container //!< The container (output)
+      ) {
+        return this->dpGet(ContainerId::Container3, size, container);
+      }
+
+      //! Request a Container1 container
+      void dpRequest_Container1(
+          FwSizeType size //!< The buffer size (input)
+      ) {
+        return this->dpRequest(ContainerId::Container1, size);
+      }
+
+      //! Request a Container2 container
+      void dpRequest_Container2(
+          FwSizeType size //!< The buffer size (input)
+      ) {
+        return this->dpRequest(ContainerId::Container2, size);
+      }
+
+      //! Request a Container3 container
+      void dpRequest_Container3(
+          FwSizeType size //!< The buffer size (input)
+      ) {
+        return this->dpRequest(ContainerId::Container3, size);
+      }
 
       //! Send a data product
       void dpSend(
@@ -426,6 +513,12 @@ namespace FppTest {
 
       //! Receive a container of type Container2
       virtual void dpRecv_Container2_handler(
+          DpContainer& container, //!< The container
+          Fw::Success::T status //!< The container status
+      ) = 0;
+
+      //! Receive a container of type Container3
+      virtual void dpRecv_Container3_handler(
           DpContainer& container, //!< The container
           Fw::Success::T status //!< The container status
       ) = 0;
@@ -484,6 +577,20 @@ namespace FppTest {
       // Private data product handling functions
       // ----------------------------------------------------------------------
 
+      //! Get a buffer and use it to initialize a data product container
+      //! \return The status of the buffer request
+      Fw::Success::T dpGet(
+          ContainerId::T containerId, //!< The component-local container id (input)
+          FwSizeType size, //!< The buffer size (input)
+          DpContainer& container //!< The container (output)
+      );
+
+      //! Request a data product container
+      void dpRequest(
+          ContainerId::T containerId, //!< The component-local container id
+          FwSizeType size //!< The buffer size
+      );
+
       //! Handler implementation for productRecvIn
       void productRecvIn_handler(
           const NATIVE_INT_TYPE portNum, //!< The port number
@@ -515,6 +622,9 @@ namespace FppTest {
       // ----------------------------------------------------------------------
       // Special output ports
       // ----------------------------------------------------------------------
+
+      //! Output port productGetOut
+      Fw::OutputDpGetPort m_productGetOut_OutputPort[NUM_PRODUCTGETOUT_OUTPUT_PORTS];
 
       //! Output port productRequestOut
       Fw::OutputDpRequestPort m_productRequestOut_OutputPort[NUM_PRODUCTREQUESTOUT_OUTPUT_PORTS];
