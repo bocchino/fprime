@@ -128,9 +128,9 @@ namespace FppTest {
   {
     FW_ASSERT(array != nullptr);
     Fw::SerializeBufferBase& serializeRepr = this->buffer.getSerializeRepr();
-#if 0
     const FwDpIdType id = this->baseId + RecordId::U8ArrayRecord;
     Fw::SerializeStatus status = serializeRepr.serialize(id);
+#if 0
     if (status == Fw::FW_SERIALIZE_OK) {
       this->dataSize += sizeof(FwDpIdType);
       status = serializeRepr.serialize(size);
@@ -148,8 +148,6 @@ namespace FppTest {
     return status;
 #endif
     Fw::ByteArray byteArray(const_cast<U8*>(array), size);
-    const FwDpIdType id = this->baseId + RecordId::U8ArrayRecord;
-    Fw::SerializeStatus status = serializeRepr.serialize(id);
     if (status == Fw::FW_SERIALIZE_OK) {
       status = serializeRepr.serialize(size);
     }
