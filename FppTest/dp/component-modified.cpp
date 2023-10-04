@@ -92,17 +92,17 @@ namespace FppTest {
     serializeRecord_DataRecord(const FppTest::DpTest_Data& elt)
   {
     Fw::SerializeBufferBase& serializeRepr = this->buffer.getSerializeRepr();
-    const FwSizeType newDataSize = dataSize +
+    const FwSizeType sizeDelta =
       sizeof(FwDpIdType) +
       FppTest::DpTest_Data::SERIALIZED_SIZE;
     Fw::SerializeStatus status = Fw::FW_SERIALIZE_OK;
-    if (DpContainer::Header::SIZE + newDataSize <= serializeRepr.getBuffCapacity()) {
+    if (serializeRepr.getBuffLength() + sizeDelta <= serializeRepr.getBuffCapacity()) {
       const FwDpIdType id = this->baseId + RecordId::DataRecord;
       status = serializeRepr.serialize(id);
       FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
       status = serializeRepr.serialize(elt);
       FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
-      this->dataSize = newDataSize;
+      this->dataSize += sizeDelta;
     }
     else {
       status = Fw::FW_SERIALIZE_NO_ROOM_LEFT;
@@ -134,6 +134,10 @@ namespace FppTest {
   {
     FW_ASSERT(array != nullptr);
     Fw::SerializeBufferBase& serializeRepr = this->buffer.getSerializeRepr();
+    const FwSizeType sizeDelta =
+      sizeof(FwDpIdType) +
+      sizeof(FwSizeType) +
+      size * sizeof(U8);
     const FwDpIdType id = this->baseId + RecordId::U8ArrayRecord;
     Fw::SerializeStatus status = serializeRepr.serialize(id);
     if (status == Fw::FW_SERIALIZE_OK) {
@@ -148,9 +152,7 @@ namespace FppTest {
       }
     }
     if (status == Fw::FW_SERIALIZE_OK) {
-      this->dataSize += sizeof(FwDpIdType);
-      this->dataSize += sizeof(FwSizeType);
-      this->dataSize += size * sizeof(U8);
+      this->dataSize += sizeDelta;
     }
     return status;
   }
