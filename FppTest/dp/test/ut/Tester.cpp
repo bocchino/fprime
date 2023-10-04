@@ -30,7 +30,7 @@ Tester::Tester()
     this->component.setIdBase(ID_BASE);
     // Fill in array with random data
     for (FwSizeType i = 0; i < this->u8ArrayRecordData.size(); ++i) {
-        this->u8ArrayRecordData[i] = static_cast<U8>(STest::Pick::any());
+        this->u8ArrayRecordData.at(i) = static_cast<U8>(STest::Pick::any());
     }
 }
 
@@ -136,7 +136,7 @@ void Tester::productRecvIn_Container3_SUCCESS() {
             U8 byte;
             status = serialRepr.deserialize(byte);
             ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
-            ASSERT_EQ(byte, this->u8ArrayRecordData[j]);
+            ASSERT_EQ(byte, this->u8ArrayRecordData.at(j));
         }
     }
 }
