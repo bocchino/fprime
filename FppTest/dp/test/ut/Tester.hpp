@@ -144,10 +144,10 @@ class Tester : public DpTestGTestBase {
     //! Buffer for Container 3
     const Fw::Buffer container3Buffer;
 
-    //! Byte array data for raw record
+    //! Byte array data for U8 array record
     U8 u8ArrayRecordData[DpTest::RAW_DATA_SIZE];
 
-    //! Byte array for raw record
+    //! Byte array for U8 array record
     Fw::ByteArray u8ArrayRecordArray;
 
     //! The component under test
