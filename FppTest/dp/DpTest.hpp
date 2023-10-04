@@ -84,6 +84,18 @@ class DpTest : public DpTestComponentBase {
                                    Fw::Success::T           //!< The container status
                                    ) override;
 
+    //! Receive a data product container of type Container4
+    //! \return Serialize status
+    void dpRecv_Container4_handler(DpContainer& container,  //!< The container
+                                   Fw::Success::T           //!< The container status
+                                   ) override;
+
+    //! Receive a data product container of type Container5
+    //! \return Serialize status
+    void dpRecv_Container5_handler(DpContainer& container,  //!< The container
+                                   Fw::Success::T           //!< The container status
+                                   ) override;
+
   PRIVATE:
     // ----------------------------------------------------------------------
     // Private helper functions

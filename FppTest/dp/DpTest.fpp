@@ -52,6 +52,12 @@ module FppTest {
     @ Record 3
     product record U8ArrayRecord: U8 array id 300
 
+    @ Record 4
+    product record U32ArrayRecord: U32 array id 400
+
+    @ Record 5
+    product record DataArrayRecord: Data array id 500
+
     # ----------------------------------------------------------------------
     # Containers
     # ----------------------------------------------------------------------
@@ -64,6 +70,12 @@ module FppTest {
 
     @ Container 3
     product container Container3 id 300 default priority 30
+
+    @ Container 4
+    product container Container4 id 400 default priority 40
+
+    @ Container 5
+    product container Container5 id 500 default priority 50
 
   }
 
