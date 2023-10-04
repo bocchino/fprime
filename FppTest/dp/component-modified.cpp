@@ -130,39 +130,21 @@ namespace FppTest {
     Fw::SerializeBufferBase& serializeRepr = this->buffer.getSerializeRepr();
     const FwDpIdType id = this->baseId + RecordId::U8ArrayRecord;
     Fw::SerializeStatus status = serializeRepr.serialize(id);
-#if 0
     if (status == Fw::FW_SERIALIZE_OK) {
-      this->dataSize += sizeof(FwDpIdType);
       status = serializeRepr.serialize(size);
     }
     if (status == Fw::FW_SERIALIZE_OK) {
-      this->dataSize += sizeof(FwSizeType);
       for (FwSizeType i = 0; i < size; i++) {
         status = serializeRepr.serialize(array[i]);
         if (status != Fw::FW_SERIALIZE_OK) {
           break;
         }
-        //this->dataSize += sizeof(U8);
       }
-    }
-    return status;
-#endif
-    Fw::ByteArray byteArray(const_cast<U8*>(array), size);
-    if (status == Fw::FW_SERIALIZE_OK) {
-      status = serializeRepr.serialize(size);
-    }
-    if (status == Fw::FW_SERIALIZE_OK) {
-      const bool omitSerializedLength = true;
-      status = serializeRepr.serialize(
-          byteArray.bytes,
-          size,
-          omitSerializedLength
-      );
     }
     if (status == Fw::FW_SERIALIZE_OK) {
       this->dataSize += sizeof(FwDpIdType);
       this->dataSize += sizeof(FwSizeType);
-      this->dataSize += size;
+      this->dataSize += size * sizeof(U8);
     }
     return status;
   }
