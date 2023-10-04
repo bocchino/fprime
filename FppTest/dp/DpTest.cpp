@@ -18,12 +18,12 @@ namespace FppTest {
 DpTest ::DpTest(const char* const compName,
                 U32 u32RecordData,
                 U16 dataRecordData,
-                Fw::ByteArray u8ArrayRecordData,
+                const U8ArrayRecordData& u8ArrayRecordData,
                 const U32ArrayRecordData& u32ArrayRecordData)
     : DpTestComponentBase(compName),
       u32RecordData(u32RecordData),
       dataRecordData(dataRecordData),
-      u8ArrayRecordData(u8ArrayRecordData),
+      u8ArrayRecordByteArray(const_cast<U8*>(u8ArrayRecordData.data()), u8ArrayRecordData.size()),
       u32ArrayRecordData(u32ArrayRecordData),
       sendTime(Fw::ZERO_TIME) {}
 
@@ -109,7 +109,7 @@ void DpTest ::dpRecv_Container3_handler(DpContainer& container, Fw::Success::T s
         auto serializeStatus = Fw::FW_SERIALIZE_OK;
         for (FwSizeType i = 0; i < CONTAINER_3_SIZE; ++i) {
             serializeStatus =
-                container.serializeRecord_U8ArrayRecord(this->u8ArrayRecordData.bytes, this->u8ArrayRecordData.size);
+                container.serializeRecord_U8ArrayRecord(this->u8ArrayRecordByteArray.bytes, this->u8ArrayRecordByteArray.size);
             if (serializeStatus == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
                 break;
             }

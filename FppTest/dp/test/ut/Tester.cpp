@@ -24,8 +24,7 @@ Tester::Tester()
       container2Buffer(this->container2Data, DpTest::CONTAINER_2_SIZE),
       container3Data{},
       container3Buffer(this->container3Data, DpTest::CONTAINER_3_SIZE),
-      u8ArrayRecordArray(this->u8ArrayRecordData.data(), this->u8ArrayRecordData.size()),
-      component("DpTest", STest::Pick::any(), STest::Pick::any(), this->u8ArrayRecordArray, this->u32ArrayRecordData) {
+      component("DpTest", STest::Pick::any(), STest::Pick::any(), this->u8ArrayRecordData, this->u32ArrayRecordData) {
     this->initComponents();
     this->connectPorts();
     this->component.setIdBase(ID_BASE);

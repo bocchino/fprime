@@ -147,9 +147,6 @@ class Tester : public DpTestGTestBase {
     //! Data for U8 array record
     DpTest::U8ArrayRecordData u8ArrayRecordData;
 
-    //! Byte array for U8 array record
-    Fw::ByteArray u8ArrayRecordArray;
-
     //! Data for U32 array record
     DpTest::U32ArrayRecordData u32ArrayRecordData;
 
