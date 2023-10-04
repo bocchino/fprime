@@ -21,7 +21,9 @@ class DpTest : public DpTestComponentBase {
     static constexpr FwSizeType CONTAINER_1_SIZE = 100;
     static constexpr FwSizeType CONTAINER_2_SIZE = 1000;
     static constexpr FwSizeType CONTAINER_3_SIZE = 1000;
-    static constexpr FwSizeType RAW_DATA_SIZE = 256;
+    static constexpr FwSizeType CONTAINER_4_SIZE = 1000;
+    static constexpr FwSizeType CONTAINER_5_SIZE = 1000;
+    static constexpr FwSizeType U8_ARRAY_DATA_SIZE = 256;
 
   public:
     // ----------------------------------------------------------------------
