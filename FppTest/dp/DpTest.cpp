@@ -123,11 +123,35 @@ void DpTest ::dpRecv_Container3_handler(DpContainer& container, Fw::Success::T s
 }
 
 void DpTest ::dpRecv_Container4_handler(DpContainer& container, Fw::Success::T status) {
-    // TODO
+    if (status == Fw::Success::SUCCESS) {
+        auto serializeStatus = Fw::FW_SERIALIZE_OK;
+        for (FwSizeType i = 0; i < CONTAINER_4_SIZE; ++i) {
+            serializeStatus = container.serializeRecord_U32ArrayRecord(this->u32ArrayRecordData.data(),
+                                                                       this->u32ArrayRecordData.size());
+            if (serializeStatus == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
+                break;
+            }
+            FW_ASSERT(serializeStatus == Fw::FW_SERIALIZE_OK, status);
+        }
+        // Use the time stamp from the time get port
+        this->dpSend(container);
+    }
 }
 
 void DpTest ::dpRecv_Container5_handler(DpContainer& container, Fw::Success::T status) {
-    // TODO
+    if (status == Fw::Success::SUCCESS) {
+        auto serializeStatus = Fw::FW_SERIALIZE_OK;
+        for (FwSizeType i = 0; i < CONTAINER_5_SIZE; ++i) {
+            serializeStatus = container.serializeRecord_DataArrayRecord(this->dataArrayRecordData.data(),
+                                                                        this->dataArrayRecordData.size());
+            if (serializeStatus == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
+                break;
+            }
+            FW_ASSERT(serializeStatus == Fw::FW_SERIALIZE_OK, status);
+        }
+        // Use the time stamp from the time get port
+        this->dpSend(container);
+    }
 }
 
 // ----------------------------------------------------------------------

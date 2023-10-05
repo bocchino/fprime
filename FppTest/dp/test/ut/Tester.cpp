@@ -34,11 +34,15 @@ Tester::Tester()
     this->connectPorts();
     this->component.setIdBase(ID_BASE);
     // Fill in arrays with random data
-    for (FwSizeType i = 0; i < this->u8ArrayRecordData.size(); ++i) {
-        this->u8ArrayRecordData.at(i) = static_cast<U8>(STest::Pick::any());
+    for (U8& elt : this->u8ArrayRecordData) {
+        elt = static_cast<U8>(STest::Pick::any());
     }
-    // TODO: u32ArrayRecordData
-    // TODO: dataArrayRecordData
+    for (U32& elt : this->u32ArrayRecordData) {
+        elt = static_cast<U8>(STest::Pick::any());
+    }
+    for (DpTest_Data& elt : this->dataArrayRecordData) {
+        elt.set(static_cast<U16>(STest::Pick::any()));
+    }
 }
 
 Tester::~Tester() {}
