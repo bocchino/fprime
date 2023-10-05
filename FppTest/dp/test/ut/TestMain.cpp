@@ -64,11 +64,8 @@ TEST(productRecvIn, Container4_FAILURE) {
 
 TEST(productRecvIn, Container5_SUCCESS) {
     COMMENT("Receive Container5 SUCCESS");
-    COMMENT("TODO");
-#if 0
     Tester tester;
     tester.productRecvIn_Container5_SUCCESS();
-#endif
 }
 
 TEST(productRecvIn, Container5_FAILURE) {
