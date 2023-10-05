@@ -24,6 +24,10 @@ Tester::Tester()
       container2Buffer(this->container2Data, DpTest::CONTAINER_2_SIZE),
       container3Data{},
       container3Buffer(this->container3Data, DpTest::CONTAINER_3_SIZE),
+      container4Data{},
+      container4Buffer(this->container4Data, DpTest::CONTAINER_4_SIZE),
+      container5Data{},
+      container5Buffer(this->container5Data, DpTest::CONTAINER_5_SIZE),
       component("DpTest",
                 STest::Pick::any(),
                 STest::Pick::any(),
@@ -154,6 +158,18 @@ void Tester::productRecvIn_Container3_SUCCESS() {
 
 void Tester::productRecvIn_Container3_FAILURE() {
     productRecvIn_CheckFailure(DpTest::ContainerId::Container3, this->container3Buffer);
+}
+
+// TODO: Container 4 success
+
+void Tester::productRecvIn_Container4_FAILURE() {
+    productRecvIn_CheckFailure(DpTest::ContainerId::Container4, this->container4Buffer);
+}
+
+// TODO: Container 5 success
+
+void Tester::productRecvIn_Container5_FAILURE() {
+    productRecvIn_CheckFailure(DpTest::ContainerId::Container5, this->container5Buffer);
 }
 
 // ----------------------------------------------------------------------

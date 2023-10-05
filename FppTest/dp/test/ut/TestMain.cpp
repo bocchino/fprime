@@ -50,6 +50,36 @@ TEST(productRecvIn, Container3_FAILURE) {
     tester.productRecvIn_Container3_FAILURE();
 }
 
+TEST(productRecvIn, Container4_SUCCESS) {
+    COMMENT("Receive Container4 SUCCESS");
+    COMMENT("TODO");
+#if 0
+    Tester tester;
+    tester.productRecvIn_Container4_SUCCESS();
+#endif
+}
+
+TEST(productRecvIn, Container4_FAILURE) {
+    COMMENT("Receive Container4 FAILURE");
+    Tester tester;
+    tester.productRecvIn_Container4_FAILURE();
+}
+
+TEST(productRecvIn, Container5_SUCCESS) {
+    COMMENT("Receive Container5 SUCCESS");
+    COMMENT("TODO");
+#if 0
+    Tester tester;
+    tester.productRecvIn_Container5_SUCCESS();
+#endif
+}
+
+TEST(productRecvIn, Container5_FAILURE) {
+    COMMENT("Receive Container5 FAILURE");
+    Tester tester;
+    tester.productRecvIn_Container5_FAILURE();
+}
+
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     STest::Random::seed();

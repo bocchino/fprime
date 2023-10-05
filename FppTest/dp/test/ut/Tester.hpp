@@ -63,6 +63,18 @@ class Tester : public DpTestGTestBase {
     //! productRecvIn with Container 3 (FAILURE)
     void productRecvIn_Container3_FAILURE();
 
+    //! productRecvIn with Container 4 (SUCCESS)
+    void productRecvIn_Container4_SUCCESS();
+
+    //! productRecvIn with Container 4 (FAILURE)
+    void productRecvIn_Container4_FAILURE();
+
+    //! productRecvIn with Container 5 (SUCCESS)
+    void productRecvIn_Container5_SUCCESS();
+
+    //! productRecvIn with Container 5 (FAILURE)
+    void productRecvIn_Container5_FAILURE();
+
   PRIVATE:
     // ----------------------------------------------------------------------
     // Handlers for typed from ports
@@ -143,6 +155,18 @@ class Tester : public DpTestGTestBase {
 
     //! Buffer for Container 3
     const Fw::Buffer container3Buffer;
+
+    //! Buffer data for Container 4
+    U8 container4Data[DpTest::CONTAINER_4_SIZE];
+
+    //! Buffer for Container 4
+    const Fw::Buffer container4Buffer;
+
+    //! Buffer data for Container 5
+    U8 container5Data[DpTest::CONTAINER_5_SIZE];
+
+    //! Buffer for Container 5
+    const Fw::Buffer container5Buffer;
 
     //! Data for U8 array record
     DpTest::U8ArrayRecordData u8ArrayRecordData;
