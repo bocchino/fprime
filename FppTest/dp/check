@@ -3,4 +3,6 @@
 dir=`dirname $0`
 cd $dir
 (cd ..; find . -name '*gcda' | xargs rm)
+# Workaround until the FPP code gen is fixed
+./update-test-ac
 fprime-util check
