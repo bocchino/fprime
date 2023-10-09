@@ -260,14 +260,13 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     // Invoke the productRecvIn port
     this->invoke_to_productRecvIn(0, globalId, inputBuffer, Fw::Success::SUCCESS);
     this->component.doDispatch();
-#if 0
     // Check the port history size
-    ASSERT_FROM_PORT_HISTORY_SIZE(1);
-    ASSERT_from_productSendOut_SIZE(1);
+    ASSERT_PRODUCT_SEND_SIZE(1);
     // Get the history entry
-    const auto entry = this->fromPortHistory_productSendOut->at(0);
+    const auto entry = this->productSendHistory->at(0);
     // Check the container id
     ASSERT_EQ(entry.id, globalId);
+#if 0
     // Check the buffer size
     outputBuffer = entry.buffer;
     const auto bufferSize = outputBuffer.getSize();
