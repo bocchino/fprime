@@ -86,13 +86,6 @@ class Tester : public DpTestGTestBase {
     ) override;
 
 #if 0
-    //! Handler for from_productRequestOut
-    //!
-    void from_productRequestOut_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
-                                        FwDpIdType id,                  //!< The container ID
-                                        FwSizeType size                 //!< The size of the requested buffer
-    ) override;
-
     //! Handler for from_productSendOut
     //!
     void from_productSendOut_handler(const NATIVE_INT_TYPE portNum,  //!< The port number

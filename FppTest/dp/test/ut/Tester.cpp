@@ -58,12 +58,11 @@ Tester::~Tester() {}
 void Tester::schedIn_OK() {
     this->invoke_to_schedIn(0, 0);
     this->component.doDispatch();
+    ASSERT_PRODUCT_REQUEST_SIZE(3);
+    ASSERT_PRODUCT_REQUEST(0, ID_BASE + DpTest::ContainerId::Container1, FwSizeType(DpTest::CONTAINER_1_SIZE));
+    ASSERT_PRODUCT_REQUEST(1, ID_BASE + DpTest::ContainerId::Container2, FwSizeType(DpTest::CONTAINER_2_SIZE));
+    ASSERT_PRODUCT_REQUEST(2, ID_BASE + DpTest::ContainerId::Container3, FwSizeType(DpTest::CONTAINER_3_SIZE));
 #if 0
-    ASSERT_FROM_PORT_HISTORY_SIZE(6);
-    ASSERT_from_productRequestOut_SIZE(3);
-    ASSERT_from_productRequestOut(0, ID_BASE + DpTest::ContainerId::Container1, FwSizeType(DpTest::CONTAINER_1_SIZE));
-    ASSERT_from_productRequestOut(1, ID_BASE + DpTest::ContainerId::Container2, FwSizeType(DpTest::CONTAINER_2_SIZE));
-    ASSERT_from_productRequestOut(2, ID_BASE + DpTest::ContainerId::Container3, FwSizeType(DpTest::CONTAINER_3_SIZE));
     Fw::Buffer buffer;
     ASSERT_from_productGetOut_SIZE(3);
     ASSERT_from_productGetOut(0, ID_BASE + DpTest::ContainerId::Container1, FwSizeType(DpTest::CONTAINER_1_SIZE),
@@ -341,10 +340,6 @@ Fw::Success::T Tester::from_productGetOut_handler(FwDpIdType id, FwSizeType size
 }
 
 #if 0
-void Tester::from_productRequestOut_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, FwSizeType size) {
-    this->pushFromPortEntry_productRequestOut(id, size);
-}
-
 void Tester::from_productSendOut_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, const Fw::Buffer& buffer) {
     this->pushFromPortEntry_productSendOut(id, buffer);
 }
