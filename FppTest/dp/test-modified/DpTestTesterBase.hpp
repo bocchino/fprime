@@ -216,11 +216,12 @@ namespace FppTest {
           NATIVE_UINT_TYPE context //!< The call order
       );
 
+      //! Invoke the to port connected to productRecvIn
       void invoke_to_productRecvIn(
-          NATIVE_INT_TYPE portNum,
-          FwDpIdType id,
-          Fw::Buffer buffer,
-          Fw::Success success
+          NATIVE_INT_TYPE portNum, //!< The port number
+          FwDpIdType id, //!< The container ID
+          const Fw::Buffer& buffer, //!< The buffer
+          const Fw::Success& status //!< The status
       );
 
     protected:

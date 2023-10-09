@@ -306,8 +306,8 @@ namespace FppTest {
     invoke_to_productRecvIn(
         NATIVE_INT_TYPE portNum,
         FwDpIdType id,
-        Fw::Buffer buffer,
-        Fw::Success success
+        const Fw::Buffer& buffer,
+        const Fw::Success& status
     )
   {
     // Make sure port number is valid
@@ -316,7 +316,9 @@ namespace FppTest {
       static_cast<FwAssertArgType>(portNum)
     );
     this->m_to_productRecvIn[portNum].invoke(
-      id, buffer, success
+      id,
+      buffer,
+      status
     );
   }
 
