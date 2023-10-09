@@ -266,7 +266,6 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     const auto entry = this->productSendHistory->at(0);
     // Check the container id
     ASSERT_EQ(entry.id, globalId);
-#if 0
     // Check the buffer size
     outputBuffer = entry.buffer;
     const auto bufferSize = outputBuffer.getSize();
@@ -289,7 +288,6 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     // Check the buffer size
     const auto expectedBufferSize = DpTest::DpContainer::Header::SIZE + expectedDataSize;
     ASSERT_EQ(bufferSize, expectedBufferSize);
-#endif
 }
 
 void Tester::productRecvIn_CheckFailure(FwDpIdType id, Fw::Buffer buffer) {
