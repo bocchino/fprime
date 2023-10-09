@@ -316,10 +316,8 @@ void Tester::productRecvIn_CheckFailure(FwDpIdType id, Fw::Buffer buffer) {
 // Handlers for typed from ports
 // ----------------------------------------------------------------------
 
-Fw::Success::T Tester::productGetIn(FwDpIdType id,
-                                    FwSizeType size,
-                                    Fw::Buffer& buffer) {
-    Fw::Success status = this->DpTestTesterBase::productGetIn(id, size, buffer);
+Fw::Success::T Tester::from_productGetOut_handler(FwDpIdType id, FwSizeType size, Fw::Buffer& buffer) {
+    Fw::Success status = this->DpTestTesterBase::from_productGetOut_handler(id, size, buffer);
     FW_ASSERT(id >= ID_BASE, id, ID_BASE);
     const FwDpIdType localId = id - ID_BASE;
     switch (localId) {

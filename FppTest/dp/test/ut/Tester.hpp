@@ -80,9 +80,9 @@ class Tester : public DpTestGTestBase {
     // Handlers for typed from ports
     // ----------------------------------------------------------------------
 
-    Fw::Success::T productGetIn(FwDpIdType id,                  //!< The container ID
-                                FwSizeType size,                //!< The size of the requested buffer
-                                Fw::Buffer& buffer              //!< The buffer
+    Fw::Success::T from_productGetOut_handler(FwDpIdType id,                  //!< The container ID
+                                              FwSizeType size,                //!< The size of the requested buffer
+                                              Fw::Buffer& buffer              //!< The buffer
     ) override;
 
 #if 0

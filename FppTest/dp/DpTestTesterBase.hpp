@@ -297,14 +297,14 @@ namespace FppTest {
       // ----------------------------------------------------------------------
 
       //! Handle a data product get
-      virtual Fw::Success::T productGetIn(
+      virtual Fw::Success::T from_productGetOut_handler(
           FwDpIdType id, //!< The container ID
           FwSizeType size, //!< The size of the requested buffer
           Fw::Buffer& buffer //!< The buffer
       );
 
       //! Handle a data product request
-      virtual void productRequestIn(
+      virtual void from_productRequestOut_handler(
           FwDpIdType id, //!< The container ID
           FwSizeType size //!< The size of the requested buffer
       );

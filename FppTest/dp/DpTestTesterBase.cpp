@@ -401,7 +401,7 @@ namespace FppTest {
   // ----------------------------------------------------------------------
 
   Fw::Success::T DpTestTesterBase ::
-    productGetIn(
+    from_productGetOut_handler(
         FwDpIdType id,
         FwSizeType size,
         Fw::Buffer& buffer
@@ -416,7 +416,7 @@ namespace FppTest {
   }
 
   void DpTestTesterBase ::
-    productRequestIn(
+    from_productRequestOut_handler(
         FwDpIdType id,
         FwSizeType size
     )
@@ -461,7 +461,7 @@ namespace FppTest {
     )
   {
     DpTestTesterBase* _testerBase = static_cast<DpTestTesterBase*>(callComp);
-    return _testerBase->productGetIn(id, size, buffer);
+    return _testerBase->from_productGetOut_handler(id, size, buffer);
   }
 
   void DpTestTesterBase ::
@@ -473,7 +473,7 @@ namespace FppTest {
     )
   {
     DpTestTesterBase* _testerBase = static_cast<DpTestTesterBase*>(callComp);
-    _testerBase->productRequestIn(id, size);
+    _testerBase->from_productRequestOut_handler(id, size);
   }
 
   void DpTestTesterBase ::
