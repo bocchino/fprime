@@ -295,11 +295,8 @@ void Tester::productRecvIn_CheckFailure(FwDpIdType id, Fw::Buffer buffer) {
     const auto globalId = ID_BASE + id;
     this->invoke_to_productRecvIn(0, globalId, buffer, Fw::Success::FAILURE);
     this->component.doDispatch();
-#if 0
     // Check the port history size
-    ASSERT_FROM_PORT_HISTORY_SIZE(0);
-    ASSERT_from_productSendOut_SIZE(0);
-#endif
+    ASSERT_PRODUCT_SEND_SIZE(0);
 }
 
 // ----------------------------------------------------------------------
