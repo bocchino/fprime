@@ -7,9 +7,9 @@
 #ifndef FppTest_DpTest_Tester_HPP
 #define FppTest_DpTest_Tester_HPP
 
+#include "DpTestGTestBase.hpp"
 #include "FppTest/dp/DpTest.hpp"
 #include "Fw/Dp/test/util/DpContainerHeader.hpp"
-#include "DpTestGTestBase.hpp"
 #include "STest/Pick/Pick.hpp"
 
 namespace FppTest {
@@ -77,13 +77,13 @@ class Tester : public DpTestGTestBase {
 
   PRIVATE:
     // ----------------------------------------------------------------------
-    // Handlers for typed from ports
+    // Handlers for data product ports
     // ----------------------------------------------------------------------
 
-    Fw::Success::T from_productGetOut_handler(FwDpIdType id,                  //!< The container ID
-                                              FwSizeType size,                //!< The size of the requested buffer
-                                              Fw::Buffer& buffer              //!< The buffer
-    ) override;
+    Fw::Success::T productGet_handler(FwDpIdType id,      //!< The container ID
+                                      FwSizeType size,    //!< The size of the requested buffer
+                                      Fw::Buffer& buffer  //!< The buffer
+                                      ) override;
 
   PRIVATE:
     // ----------------------------------------------------------------------
