@@ -9,7 +9,7 @@
 
 #include "FppTest/dp/DpTest.hpp"
 #include "Fw/Dp/test/util/DpContainerHeader.hpp"
-#include "GTestBase.hpp"
+#include "DpTestGTestBase.hpp"
 #include "STest/Pick/Pick.hpp"
 
 namespace FppTest {
@@ -80,14 +80,12 @@ class Tester : public DpTestGTestBase {
     // Handlers for typed from ports
     // ----------------------------------------------------------------------
 
-    //! Handler for from_productGetOut
-    //!
-    Fw::Success from_productGetOut_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
-                                           FwDpIdType id,                  //!< The container ID
-                                           FwSizeType size,                //!< The size of the requested buffer
-                                           Fw::Buffer& buffer              //!< The buffer
+    Fw::Success::T productGetIn(FwDpIdType id,                  //!< The container ID
+                                FwSizeType size,                //!< The size of the requested buffer
+                                Fw::Buffer& buffer              //!< The buffer
     ) override;
 
+#if 0
     //! Handler for from_productRequestOut
     //!
     void from_productRequestOut_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
@@ -101,6 +99,7 @@ class Tester : public DpTestGTestBase {
                                      FwDpIdType id,                  //!< The container ID
                                      const Fw::Buffer& buffer        //!< The buffer
     ) override;
+#endif
 
   PRIVATE:
     // ----------------------------------------------------------------------
