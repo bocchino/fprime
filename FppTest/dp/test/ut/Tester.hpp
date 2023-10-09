@@ -85,15 +85,6 @@ class Tester : public DpTestGTestBase {
                                               Fw::Buffer& buffer              //!< The buffer
     ) override;
 
-#if 0
-    //! Handler for from_productSendOut
-    //!
-    void from_productSendOut_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
-                                     FwDpIdType id,                  //!< The container ID
-                                     const Fw::Buffer& buffer        //!< The buffer
-    ) override;
-#endif
-
   PRIVATE:
     // ----------------------------------------------------------------------
     // Helper methods
