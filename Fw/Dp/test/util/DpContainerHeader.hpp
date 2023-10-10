@@ -38,10 +38,11 @@ struct DpContainerHeader {
         // Deserialize the packet descriptor
         FwPacketDescriptorType packetDescriptor = Fw::ComPacket::FW_PACKET_UNKNOWN;
         // Reset deserialization
-        serializeRepr.setBuffLen(buffer.getSize());
+        auto status = serializeRepr.setBuffLen(buffer.getSize());
+        ASSERT_EQ(status, FW_SERIALIZE_OK);
         // Deserialize the packet descriptor
         DpContainerHeader::moveDeserToOffset(buffer, DpContainer::Header::PACKET_DESCRIPTOR_OFFSET);
-        auto status = serializeRepr.deserialize(packetDescriptor);
+        status = serializeRepr.deserialize(packetDescriptor);
         ASSERT_EQ(status, FW_SERIALIZE_OK);
         ASSERT_EQ(packetDescriptor, Fw::ComPacket::FW_PACKET_DP);
         // Deserialize the container id

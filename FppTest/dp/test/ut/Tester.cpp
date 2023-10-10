@@ -292,8 +292,8 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     const auto expectedDataSize = expectedNumElts * eltSize;
     // Check the history entry
     this->checkProductSend(entry, globalId, priority, timeTag, expectedDataSize);
-    // Deserialize the packet header to advance the deserialize pointer
-    // FIXME
+    // Deserialize the packet header. This step sets the deserialization size
+    // and advances the deserialization pointer to the start of the data payload.
     Fw::TestUtil::DpContainerHeader header;
     header.deserialize(outputBuffer);
 }
