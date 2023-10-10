@@ -248,7 +248,7 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     // Set the test time
     const Fw::Time timeTag = this->randomizeTestTime();
     // Invoke the productRecvIn port
-    this->invoke_to_productRecvIn(0, globalId, inputBuffer, Fw::Success::SUCCESS);
+    this->sendProductResponse(globalId, inputBuffer, Fw::Success::SUCCESS);
     this->component.doDispatch();
     // Check the port history size
     ASSERT_PRODUCT_SEND_SIZE(1);
@@ -283,7 +283,7 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
 void Tester::productRecvIn_CheckFailure(FwDpIdType id, Fw::Buffer buffer) {
     // Invoke the port
     const auto globalId = ID_BASE + id;
-    this->invoke_to_productRecvIn(0, globalId, buffer, Fw::Success::FAILURE);
+    this->sendProductResponse(globalId, buffer, Fw::Success::FAILURE);
     this->component.doDispatch();
     // Check the port history size
     ASSERT_PRODUCT_SEND_SIZE(0);
