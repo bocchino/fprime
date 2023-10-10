@@ -102,6 +102,14 @@ class Tester : public DpTestGTestBase {
     //! \return The time
     Fw::Time randomizeTestTime();
 
+    void checkProductSend(
+        const DpTestTesterBase::DpSend& entry,
+        FwDpIdType globalId,
+        FwDpPriorityType priority,
+        const Fw::Time& timeTag,
+        FwSizeType dataSize
+    );
+
     //! Invoke productRecvIn and check header
     void productRecvIn_InvokeAndCheckHeader(FwDpIdType id,               //!< The container id
                                             FwSizeType dataEltSize,      //!< The data element size

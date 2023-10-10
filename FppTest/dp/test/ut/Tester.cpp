@@ -238,6 +238,35 @@ Fw::Time Tester::randomizeTestTime() {
     return time;
 }
 
+void Tester::checkProductSend(
+      const DpTestTesterBase::DpSend& entry,
+      FwDpIdType globalId,
+      FwDpPriorityType priority,
+      const Fw::Time& timeTag,
+      FwSizeType dataSize
+) {
+  // Check the container id
+  ASSERT_EQ(entry.id, globalId);
+  // Check the buffer size
+  const auto bufferSize = entry.buffer.getSize();
+  ASSERT_GE(bufferSize, FwSizeType(DpTest::DpContainer::Header::SIZE));
+  // Deserialize the packet header
+  Fw::TestUtil::DpContainerHeader header;
+  auto buffer = entry.buffer;
+  header.deserialize(buffer);
+  // Check the container id
+  ASSERT_EQ(header.id, globalId);
+  // Check the priority
+  ASSERT_EQ(header.priority, priority);
+  // Check the time tag
+  ASSERT_EQ(header.timeTag, timeTag);
+  // Check the data size
+  ASSERT_EQ(header.dataSize, dataSize);
+  // Check the buffer size
+  const auto expectedBufferSize = DpTest::DpContainer::Header::SIZE + dataSize;
+  ASSERT_EQ(bufferSize, expectedBufferSize);
+}
+
 void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
                                                 FwSizeType dataEltSize,
                                                 FwDpPriorityType priority,
@@ -254,17 +283,15 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     ASSERT_PRODUCT_SEND_SIZE(1);
     // Get the history entry
     const auto entry = this->productSendHistory->at(0);
-    // Check the container id
-    ASSERT_EQ(entry.id, globalId);
-    // Check the buffer size
+    // Compute the expected data size
     outputBuffer = entry.buffer;
     const auto bufferSize = outputBuffer.getSize();
-    ASSERT_GE(bufferSize, FwSizeType(DpTest::DpContainer::Header::SIZE));
-    // Compute the expected data size
     const auto dataCapacity = bufferSize - DpTest::DpContainer::Header::SIZE;
     const auto eltSize = sizeof(FwDpIdType) + dataEltSize;
     expectedNumElts = dataCapacity / eltSize;
     const auto expectedDataSize = expectedNumElts * eltSize;
+    // Check the history entry
+    this->checkProductSend(entry, globalId, priority, timeTag, expectedDataSize);
     // Deserialize the packet header
     Fw::TestUtil::DpContainerHeader header;
     header.deserialize(outputBuffer);
