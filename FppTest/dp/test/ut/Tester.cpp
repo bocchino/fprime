@@ -260,6 +260,11 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     outputBuffer = entry.buffer;
     const auto bufferSize = outputBuffer.getSize();
     ASSERT_GE(bufferSize, FwSizeType(DpTest::DpContainer::Header::SIZE));
+    // Compute the expected data size
+    const auto dataCapacity = bufferSize - DpTest::DpContainer::Header::SIZE;
+    const auto eltSize = sizeof(FwDpIdType) + dataEltSize;
+    expectedNumElts = dataCapacity / eltSize;
+    const auto expectedDataSize = expectedNumElts * eltSize;
     // Deserialize the packet header
     Fw::TestUtil::DpContainerHeader header;
     header.deserialize(outputBuffer);
@@ -270,10 +275,6 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     // Check the time tag
     ASSERT_EQ(header.timeTag, timeTag);
     // Check the data size
-    const auto dataCapacity = bufferSize - DpTest::DpContainer::Header::SIZE;
-    const auto eltSize = sizeof(FwDpIdType) + dataEltSize;
-    expectedNumElts = dataCapacity / eltSize;
-    const auto expectedDataSize = expectedNumElts * eltSize;
     ASSERT_EQ(header.dataSize, expectedDataSize);
     // Check the buffer size
     const auto expectedBufferSize = DpTest::DpContainer::Header::SIZE + expectedDataSize;
