@@ -240,6 +240,7 @@ Fw::Time Tester::randomizeTestTime() {
 
 void Tester::checkProductSend(
       const DpTestTesterBase::DpSend& entry,
+      Fw::Buffer& buffer,
       FwDpIdType globalId,
       FwDpPriorityType priority,
       const Fw::Time& timeTag,
@@ -252,7 +253,7 @@ void Tester::checkProductSend(
   ASSERT_GE(bufferSize, FwSizeType(DpTest::DpContainer::Header::SIZE));
   // Deserialize the packet header
   Fw::TestUtil::DpContainerHeader header;
-  auto buffer = entry.buffer;
+  buffer = entry.buffer;
   header.deserialize(buffer);
   // Check the container id
   ASSERT_EQ(header.id, globalId);
@@ -291,11 +292,9 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     expectedNumElts = dataCapacity / eltSize;
     const auto expectedDataSize = expectedNumElts * eltSize;
     // Check the history entry
-    this->checkProductSend(entry, globalId, priority, timeTag, expectedDataSize);
-    // Deserialize the packet header. This step sets the deserialization size
-    // and advances the deserialization pointer to the start of the data payload.
-    Fw::TestUtil::DpContainerHeader header;
-    header.deserialize(outputBuffer);
+    // This sets fills the output buffer and sets the deserialization pointer
+    // to the start of the data payload
+    this->checkProductSend(entry, outputBuffer, globalId, priority, timeTag, expectedDataSize);
 }
 
 void Tester::productRecvIn_CheckFailure(FwDpIdType id, Fw::Buffer buffer) {

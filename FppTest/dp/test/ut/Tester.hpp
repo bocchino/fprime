@@ -104,6 +104,7 @@ class Tester : public DpTestGTestBase {
 
     void checkProductSend(
         const DpTestTesterBase::DpSend& entry,
+        Fw::Buffer& buffer,
         FwDpIdType globalId,
         FwDpPriorityType priority,
         const Fw::Time& timeTag,
@@ -111,6 +112,8 @@ class Tester : public DpTestGTestBase {
     );
 
     //! Invoke productRecvIn and check header
+    //! This sets the output buffer to the received buffer and sets the
+    //! deserialization pointer to the start of the data payload
     void productRecvIn_InvokeAndCheckHeader(FwDpIdType id,               //!< The container id
                                             FwSizeType dataEltSize,      //!< The data element size
                                             FwDpPriorityType priority,   //!< The priority
