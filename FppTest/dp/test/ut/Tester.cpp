@@ -238,16 +238,17 @@ Fw::Time Tester::randomizeTestTime() {
     return time;
 }
 
-void Tester::checkProductSend(const char* const file,
-                              U32 line,
-                              U32 index,
-                              FwDpIdType id,
-                              FwDpPriorityType priority,
-                              const Fw::Time& timeTag,
-                              Fw::DpCfg::ProcType procType,
-                              const Fw::DpContainer::Header::UserData& userData,
-                              FwSizeType dataSize,
-                              Fw::Buffer& buffer) {
+void Tester::__assertProductSend(const char* const file,
+                                 U32 line,
+                                 U32 index,
+                                 FwDpIdType id,
+                                 FwDpPriorityType priority,
+                                 const Fw::Time& timeTag,
+                                 Fw::DpCfg::ProcType procType,
+                                 const Fw::DpContainer::Header::UserData& userData,
+                                 FwSizeType dataSize,
+                                 Fw::Buffer& buffer) {
+    // Get the history entry
     const auto& entry = this->productSendHistory->at(0);
     buffer = entry.buffer;
     // Check the container id
@@ -285,8 +286,8 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     // Check the history entry
     // This sets the output buffer and sets the deserialization pointer
     // to the start of the data payload
-    this->checkProductSend(__FILE__, __LINE__, 0, globalId, priority, timeTag, Fw::DpCfg::ProcType::NONE, userData,
-                           expectedDataSize, outputBuffer);
+    __ASSERT_PRODUCT_SEND(0, globalId, priority, timeTag, Fw::DpCfg::ProcType::NONE, userData, expectedDataSize,
+                          outputBuffer);
 }
 
 void Tester::productRecvIn_CheckFailure(FwDpIdType id, Fw::Buffer buffer) {
