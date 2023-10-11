@@ -46,10 +46,10 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
     TestUtil::DpContainerHeader header;
     // Deserialize the header
-    header.deserialize(buffer);
+    header.deserialize(__FILE__, __LINE__, buffer);
     // Check the deserialized header fields
     // Data size should be zero because there is no data
-    header.check(buffer, id, priority, timeTag, procType, userData, 0);
+    header.check(__FILE__, __LINE__, buffer, id, priority, timeTag, procType, userData, 0);
 }
 
 TEST(Header, BufferInConstructor) {

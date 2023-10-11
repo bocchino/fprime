@@ -238,30 +238,24 @@ Fw::Time Tester::randomizeTestTime() {
     return time;
 }
 
-void Tester::checkProductSend(
-      const DpTestTesterBase::DpSend& entry,
-      Fw::Buffer& buffer,
-      FwDpIdType globalId,
-      FwDpPriorityType priority,
-      const Fw::Time& timeTag,
-      Fw::DpCfg::ProcType procType,
-      Fw::DpContainer::Header::UserData& userData,
-      FwSizeType dataSize
-) {
-  // Check the container id
-  ASSERT_EQ(entry.id, globalId);
-  // Check the header
-  Fw::TestUtil::DpContainerHeader header;
-  header.deserialize(buffer);
-  header.check(
-      buffer,
-      globalId,
-      priority,
-      timeTag,
-      procType,
-      userData,
-      dataSize
-  );
+void Tester::checkProductSend(const char* const file,
+                              U32 line,
+                              U32 index,
+                              FwDpIdType id,
+                              FwDpPriorityType priority,
+                              const Fw::Time& timeTag,
+                              Fw::DpCfg::ProcType procType,
+                              const Fw::DpContainer::Header::UserData& userData,
+                              FwSizeType dataSize,
+                              Fw::Buffer& buffer) {
+    const auto& entry = this->productSendHistory->at(0);
+    buffer = entry.buffer;
+    // Check the container id
+    ASSERT_EQ(entry.id, id) << "Test failure occurred at " << file << ":" << line;
+    // Check the header
+    Fw::TestUtil::DpContainerHeader header;
+    header.deserialize(file, line, buffer);
+    header.check(file, line, buffer, id, priority, timeTag, procType, userData, dataSize);
 }
 
 void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
@@ -278,30 +272,21 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     this->component.doDispatch();
     // Check the port history size
     ASSERT_PRODUCT_SEND_SIZE(1);
-    // Get the history entry
-    const auto entry = this->productSendHistory->at(0);
     // Compute the expected data size
-    outputBuffer = entry.buffer;
-    const auto bufferSize = outputBuffer.getSize();
+    const auto& entry = this->productSendHistory->at(0);
+    const auto bufferSize = entry.buffer.getSize();
     const auto dataCapacity = bufferSize - DpTest::DpContainer::Header::SIZE;
     const auto eltSize = sizeof(FwDpIdType) + dataEltSize;
     expectedNumElts = dataCapacity / eltSize;
     const auto expectedDataSize = expectedNumElts * eltSize;
+    // Set up the expected user data
     Fw::DpContainer::Header::UserData userData;
     memset(&userData[0], 0, sizeof userData);
     // Check the history entry
-    // This sets fills the output buffer and sets the deserialization pointer
+    // This sets the output buffer and sets the deserialization pointer
     // to the start of the data payload
-    this->checkProductSend(
-        entry,
-        outputBuffer,
-        globalId,
-        priority,
-        timeTag, 
-        Fw::DpCfg::ProcType::NONE,
-        userData,
-        expectedDataSize
-    );
+    this->checkProductSend(__FILE__, __LINE__, 0, globalId, priority, timeTag, Fw::DpCfg::ProcType::NONE, userData,
+                           expectedDataSize, outputBuffer);
 }
 
 void Tester::productRecvIn_CheckFailure(FwDpIdType id, Fw::Buffer buffer) {
