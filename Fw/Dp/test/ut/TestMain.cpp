@@ -15,9 +15,8 @@
 
 using namespace Fw;
 
-constexpr FwSizeType BUFFER_SIZE = 100;
-U8 bufferData[BUFFER_SIZE];
-U8 userData[DpCfg::CONTAINER_USER_DATA_SIZE];
+U8 bufferData[DpContainer::Header::SIZE];
+DpContainer::Header::UserData userData;
 
 void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     // Check the packet size
@@ -46,22 +45,11 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     auto status = container.serializeHeader();
     ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
     TestUtil::DpContainerHeader header;
+    // Deserialize the header
     header.deserialize(buffer);
-    // Check the deserialized id
-    ASSERT_EQ(id, header.id);
-    // Check the deserialized priority
-    ASSERT_EQ(priority, header.priority);
-    // Check the deserialized time tag
-    ASSERT_EQ(timeTag, header.timeTag);
-    // Check the deserialized processor id
-    ASSERT_EQ(procType, header.procType);
-    // Check the deserialized data
-    for (FwSizeType i = 0; i < DpCfg::CONTAINER_USER_DATA_SIZE; ++i) {
-        ASSERT_EQ(userData[i], header.userData[i]);
-    }
-    // Check the data size
+    // Check the deserialized header fields
     // Data size should be zero because there is no data
-    ASSERT_EQ(0, header.dataSize);
+    header.check(buffer, id, priority, timeTag, procType, userData, 0);
 }
 
 TEST(Header, BufferInConstructor) {

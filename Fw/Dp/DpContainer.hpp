@@ -23,6 +23,8 @@ class DpContainer {
 
     //! A DpContainer packet header
     struct Header {
+        //! The type of user data
+        using UserData = U8 [DpCfg::CONTAINER_USER_DATA_SIZE];
         //! The offset for the packet descriptor field
         static constexpr FwSizeType PACKET_DESCRIPTOR_OFFSET = 0;
         //! The offset for the id field
@@ -137,7 +139,7 @@ class DpContainer {
     // ----------------------------------------------------------------------
 
     //! The user data
-    U8 userData[DpCfg::CONTAINER_USER_DATA_SIZE];
+    Header::UserData userData;
 
   PROTECTED:
     // ----------------------------------------------------------------------

@@ -22,8 +22,8 @@ struct DpContainerHeader {
     DpContainerHeader() : id(0), priority(0), dataSize(0) {}
 
     //! Move the buffer deserialization to the specified offset
-    static void moveDeserToOffset(Buffer& buffer,          //!< The buffer
-                                            FwSizeType offset  //!< The offset
+    static void moveDeserToOffset(Buffer& buffer,    //!< The buffer
+                                  FwSizeType offset  //!< The offset
     ) {
         auto& serializeRepr = buffer.getSerializeRepr();
         const auto status = serializeRepr.moveDeserToOffset(offset);
@@ -31,7 +31,7 @@ struct DpContainerHeader {
     }
 
     //! Deserialize a header from a packet buffer
-    //! \return The serialize status
+    //! Check that the serialization succeeded at every step
     void deserialize(Fw::Buffer& buffer  //!< The packet buffer
     ) {
         auto& serializeRepr = buffer.getSerializeRepr();
@@ -77,6 +77,35 @@ struct DpContainerHeader {
         const auto buffLeft = serializeRepr.getBuffLeft();
         DpContainerHeader::moveDeserToOffset(buffer, DpContainer::Header::SIZE);
         ASSERT_EQ(buffLeft, serializeRepr.getBuffLeft());
+    }
+
+    //! Check a packet header against a buffer
+    void check(const Fw::Buffer& buffer,                       //!< The buffer
+               FwDpIdType id,                                  //!< The expected id
+               FwDpPriorityType priority,                      //!< The expected priority
+               const Fw::Time& timeTag,                        //!< The expected time tag
+               DpCfg::ProcType procType,                       //!< The expected processing type
+               const DpContainer::Header::UserData& userData,  //!< The expected user data
+               FwSizeType dataSize                             //!< The expected data size
+    ) const {
+        // Check the buffer size
+        const auto bufferSize = buffer.getSize();
+        const auto minBufferSize = Fw::DpContainer::Header::SIZE + dataSize;
+        ASSERT_GE(bufferSize, minBufferSize);
+        // Check the container id
+        ASSERT_EQ(this->id, id);
+        // Check the priority
+        ASSERT_EQ(this->priority, priority);
+        // Check the time tag
+        ASSERT_EQ(this->timeTag, timeTag);
+        // Check the deserialized processor id
+        ASSERT_EQ(this->procType, procType);
+        // Check the user data
+        for (FwSizeType i = 0; i < DpCfg::CONTAINER_USER_DATA_SIZE; ++i) {
+            ASSERT_EQ(this->userData[i], userData[i]);
+        }
+        // Check the data size
+        ASSERT_EQ(this->dataSize, dataSize);
     }
 
     //! The container id
