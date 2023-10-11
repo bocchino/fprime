@@ -12,9 +12,6 @@
 #include "Fw/Dp/test/util/DpContainerHeader.hpp"
 #include "STest/Pick/Pick.hpp"
 
-#define __ASSERT_PRODUCT_SEND(index, id, priority, timeTag, procType, userData, dataSize, buffer) \
-    __assertProductSend(__FILE__, __LINE__, index, id, priority, timeTag, procType, userData, dataSize, buffer);
-
 namespace FppTest {
 
 class Tester : public DpTestGTestBase {

@@ -286,8 +286,8 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     // Check the history entry
     // This sets the output buffer and sets the deserialization pointer
     // to the start of the data payload
-    __ASSERT_PRODUCT_SEND(0, globalId, priority, timeTag, Fw::DpCfg::ProcType::NONE, userData, expectedDataSize,
-                          outputBuffer);
+    ASSERT_PRODUCT_SEND(0, globalId, priority, timeTag, Fw::DpCfg::ProcType::NONE, userData, expectedDataSize,
+                        outputBuffer);
 }
 
 void Tester::productRecvIn_CheckFailure(FwDpIdType id, Fw::Buffer buffer) {
