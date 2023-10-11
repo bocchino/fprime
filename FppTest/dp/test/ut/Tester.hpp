@@ -108,6 +108,8 @@ class Tester : public DpTestGTestBase {
         FwDpIdType globalId,
         FwDpPriorityType priority,
         const Fw::Time& timeTag,
+        Fw::DpCfg::ProcType procType,
+        Fw::DpContainer::Header::UserData& userData,
         FwSizeType dataSize
     );
 
