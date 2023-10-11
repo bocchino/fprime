@@ -238,6 +238,35 @@ Fw::Time Tester::randomizeTestTime() {
     return time;
 }
 
+namespace {
+
+  void checkHeader(
+      Fw::Buffer& buffer,
+      FwDpIdType id,
+      FwDpPriorityType priority,
+      const Fw::Time& timeTag,
+      FwSizeType dataSize
+  ) {
+    // Check the buffer size
+    const auto bufferSize = buffer.getSize();
+    ASSERT_GE(bufferSize, FwSizeType(Fw::DpContainer::Header::SIZE));
+    const auto expectedBufferSize = Fw::DpContainer::Header::SIZE + dataSize;
+    ASSERT_EQ(bufferSize, expectedBufferSize);
+    // Deserialize the packet header
+    Fw::TestUtil::DpContainerHeader header;
+    header.deserialize(buffer);
+    // Check the container id
+    ASSERT_EQ(header.id, id);
+    // Check the priority
+    ASSERT_EQ(header.priority, priority);
+    // Check the time tag
+    ASSERT_EQ(header.timeTag, timeTag);
+    // Check the data size
+    ASSERT_EQ(header.dataSize, dataSize);
+  }
+
+}
+
 void Tester::checkProductSend(
       const DpTestTesterBase::DpSend& entry,
       Fw::Buffer& buffer,
@@ -248,24 +277,8 @@ void Tester::checkProductSend(
 ) {
   // Check the container id
   ASSERT_EQ(entry.id, globalId);
-  // Check the buffer size
-  const auto bufferSize = entry.buffer.getSize();
-  ASSERT_GE(bufferSize, FwSizeType(DpTest::DpContainer::Header::SIZE));
-  // Deserialize the packet header
-  Fw::TestUtil::DpContainerHeader header;
-  buffer = entry.buffer;
-  header.deserialize(buffer);
-  // Check the container id
-  ASSERT_EQ(header.id, globalId);
-  // Check the priority
-  ASSERT_EQ(header.priority, priority);
-  // Check the time tag
-  ASSERT_EQ(header.timeTag, timeTag);
-  // Check the data size
-  ASSERT_EQ(header.dataSize, dataSize);
-  // Check the buffer size
-  const auto expectedBufferSize = DpTest::DpContainer::Header::SIZE + dataSize;
-  ASSERT_EQ(bufferSize, expectedBufferSize);
+  // Check the header
+  checkHeader(buffer, globalId, priority, timeTag, dataSize);
 }
 
 void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
