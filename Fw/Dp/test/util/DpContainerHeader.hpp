@@ -13,9 +13,14 @@
 #include "Fw/Com/ComPacket.hpp"
 #include "Fw/Dp/DpContainer.hpp"
 
-#define DP_CONTAINER_HEADER_FILE_AND_LINE "Test failure occurred at " << file << ":" << line
-#define DP_CONTAINER_HEADER_ASSERT_EQ(a, b) ASSERT_EQ(a, b) << DP_CONTAINER_HEADER_FILE_AND_LINE
-#define DP_CONTAINER_HEADER_ASSERT_GE(a, b) ASSERT_GE(a, b) << DP_CONTAINER_HEADER_FILE_AND_LINE
+#define DP_CONTAINER_HEADER_ASSERT_MSG(actual, expected) \
+    << file << ":" << line << "\n"                       \
+    << "  Actual value is " << actual << "\n"            \
+    << "  Expected value is " << expected
+#define DP_CONTAINER_HEADER_ASSERT_EQ(actual, expected) \
+    ASSERT_EQ(actual, expected) DP_CONTAINER_HEADER_ASSERT_MSG(actual, expected)
+#define DP_CONTAINER_HEADER_ASSERT_GE(actual, expected) \
+    ASSERT_GE(actual, expected) DP_CONTAINER_HEADER_ASSERT_MSG(actual, expected)
 
 namespace Fw {
 namespace TestUtil {

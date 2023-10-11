@@ -238,27 +238,6 @@ Fw::Time Tester::randomizeTestTime() {
     return time;
 }
 
-void Tester::__assertProductSend(const char* const file,
-                                 U32 line,
-                                 U32 index,
-                                 FwDpIdType id,
-                                 FwDpPriorityType priority,
-                                 const Fw::Time& timeTag,
-                                 Fw::DpCfg::ProcType procType,
-                                 const Fw::DpContainer::Header::UserData& userData,
-                                 FwSizeType dataSize,
-                                 Fw::Buffer& buffer) {
-    // Get the history entry
-    const auto& entry = this->productSendHistory->at(0);
-    buffer = entry.buffer;
-    // Check the container id
-    ASSERT_EQ(entry.id, id) << "Test failure occurred at " << file << ":" << line;
-    // Check the header
-    Fw::TestUtil::DpContainerHeader header;
-    header.deserialize(file, line, buffer);
-    header.check(file, line, buffer, id, priority, timeTag, procType, userData, dataSize);
-}
-
 void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
                                                 FwSizeType dataEltSize,
                                                 FwDpPriorityType priority,

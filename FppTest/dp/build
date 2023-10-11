@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+dir=`dirname $0`
+cd $dir
+
+build_cache=../build-fprime-automatic-native-ut/FppTest/dp
+rm -f $build_cache/*GTestBase.* $build_cache/*TesterBase.*
+
+(cd ..; find . -name '*gcda' | xargs rm)
+fprime-util build --ut

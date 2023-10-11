@@ -102,18 +102,6 @@ class Tester : public DpTestGTestBase {
     //! \return The time
     Fw::Time randomizeTestTime();
 
-    void __assertProductSend(const char* const file,        //!< The source file (input)
-                             U32 line,                      //!< The source line number (input)
-                             U32 index,                     //!< The history index (input)
-                             FwDpIdType id,                 //!< The expected ID (input)
-                             FwDpPriorityType priority,     //!< The expected priority (input)
-                             const Fw::Time& timeTag,       //!< The expected time tag (input)
-                             Fw::DpCfg::ProcType procType,  //!< The expected processing type (input)
-                             const Fw::DpContainer::Header::UserData& userData,  //!< The expected user data (input)
-                             FwSizeType dataSize,                                //!< The expected data size (input)
-                             Fw::Buffer& buffer  //!< The buffer from the history (output)
-    );
-
     //! Invoke productRecvIn and check header
     //! This sets the output buffer to the received buffer and sets the
     //! deserialization pointer to the start of the data payload
