@@ -283,20 +283,21 @@ components that define data products.
 **History data structures:**
 The class _C_ `TesterBase` provides the following histories:
 
-1. If _C_ has a product get port, then _C_ `TesterBase` has a
-corresponding history called `productGetHistory`.
+1. If _C_ defines data products and has a product get port,
+then _C_ `TesterBase` has a history called `productGetHistory`.
 Each element in the history is of type `DpGet`.
 `DpGet` is a struct with fields storing the container ID and the
 size emitted on the product get port.
 
-1. If _C_ has a product request port, then _C_ `TesterBase` has a
+1. If _C_ defines data products and has a product request port,
+then _C_ `TesterBase` has a
 corresponding history called `productRequestHistory`.
 Each element in the history is of type `DpRequest`.
 `DpRequest` is a struct with fields storing the container ID and the
 size emitted on the product request port.
 
 1. If _C_ defines data products, then _C_ `TesterBase` has a
-corresponding history called `productSendHistory`.
+history called `productSendHistory`.
 Each element in the history is of type `DpSend`.
 `DpSend` is a struct with fields storing the container ID and
 a shallow copy of the buffer emitted on the product send port.
@@ -305,8 +306,8 @@ a shallow copy of the buffer emitted on the product send port.
 The class _C_ `TesterBase` provides the following functions
 for managing the histories:
 
-1. If _C_ has a product get port, then _C_ `TesterBase` provides
-   the following functions:
+1. If _C_ defines data products and has a product get port,
+   then _C_ `TesterBase` provides the following functions:
 
    1. `pushProductGetEntry`: This function takes a container ID and
       a size. It constructs the corresponding `DpGet` history object
@@ -324,8 +325,8 @@ for managing the histories:
       allocate a buffer, store the allocated buffer into _B_, and return
       `SUCCESS`.
 
-1. If _C_ has a product request port, then _C_ `TesterBase` provides
-   the following functions:
+1. If _C_ defines data products and has a product request port,
+   then _C_ `TesterBase` provides the following functions:
 
    1. `pushProductRequestEntry`: This function takes a container ID and
       a size. It constructs the corresponding `DpRequest` history object
@@ -359,8 +360,8 @@ for managing the histories:
 The class _C_ `GTestBase` provides the following macros for
 verifying the histories managed by _C_ `TesterBase`.
 
-1. If _C_ has a product get port, then _C_ `GTestBase` provides
-   the following macros:
+1. If _C_ defines data products and has a product get port, then _C_
+   `GTestBase` provides the following macros:
 
    1. `ASSERT_PRODUCT_GET_SIZE(size)`: This macro checks that `productGetHistory`
       has the specified size (number of entries).
@@ -369,8 +370,8 @@ verifying the histories managed by _C_ `TesterBase`.
       `productGetHistory` has the specified container ID and size
       at the specified history index.
 
-1. If _C_ has a product request port, then _C_ `GTestBase` provides
-   the following macros:
+1. If _C_ defines data products and has a product request port,
+   then _C_ `GTestBase` provides the following macros:
 
    1. `ASSERT_PRODUCT_REQUEST_SIZE(size)`: This macro checks that
       `productRequestHistory` has the specified size (number of entries).
@@ -379,7 +380,7 @@ verifying the histories managed by _C_ `TesterBase`.
       `productRequestHistory` has the specified container ID and size
       at the specified history index.
 
-1. If _C_ has a data products, then _C_ `GTestBase` provides
+1. If _C_ defines data products, then _C_ `GTestBase` provides
    the following macros:
 
    1. `ASSERT_PRODUCT_SEND_SIZE(size)`: This macro checks that
@@ -388,8 +389,8 @@ verifying the histories managed by _C_ `TesterBase`.
    1. `ASSERT_PRODUCT_SEND(index, id, priority, timeTag, procType, userData, dataSize, buffer)`:
       All the arguments of this macro are inputs (read-only) except `buffer`, which is
       a by-reference output and must be a variable of type `Fw::Buffer&`.
-      This macro verifies entry `( entryId, entryBuffer )` stored at the specified index of
-      `productSendHistory`. It does the following:
+      This macro verifies the entry `( entryId, entryBuffer )` stored at the specified
+      index of `productSendHistory`. It does the following:
 
       1. Check that `entryId` matches the specified ID.
 
@@ -399,7 +400,7 @@ verifying the histories managed by _C_ `TesterBase`.
          user data, and data size stored in the deserialized header
          match the specified values.
 
-      1. Store `entryBuffer` into `buffer`. After executing this macro,
+      1. Store `entryBuffer` into `buffer`. After this macro runs,
          the deserialization pointer of `buffer` points into the start
          of the data payload of `entryBuffer`. You can write additional
          code to deserialize and check the data payload.
