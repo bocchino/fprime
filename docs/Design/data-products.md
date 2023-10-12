@@ -355,7 +355,68 @@ for managing the histories:
 
 #### 3.4.2. The GTestBase Class
 
-TODO
+**Testing macros:**
+The class _C_ `GTestBase` provides the following macros for
+verifying the histories managed by _C_ `TesterBase`.
+
+1. If _C_ has a product get port, then _C_ `GTestBase` provides
+   the following macros:
+
+   1. `ASSERT_PRODUCT_GET_SIZE(size)`: This macro checks that `productGetHistory`
+      has the specified size (number of entries).
+
+   1. `ASSERT_PRODUCT_GET(index, id, size)`: This macro checks that
+      `productGetHistory` has the specified container ID and size
+      at the specified history index.
+
+1. If _C_ has a product request port, then _C_ `GTestBase` provides
+   the following macros:
+
+   1. `ASSERT_PRODUCT_REQUEST_SIZE(size)`: This macro checks that
+      `productRequestHistory` has the specified size (number of entries).
+
+   1. `ASSERT_PRODUCT_REQUEST(index, id, size)`: This macro checks that
+      `productRequestHistory` has the specified container ID and size
+      at the specified history index.
+
+1. If _C_ has a data products, then _C_ `GTestBase` provides
+   the following macros:
+
+   1. `ASSERT_PRODUCT_SEND_SIZE(size)`: This macro checks that
+      `productSendHistory` has the specified size (number of entries).
+
+   1. `ASSERT_PRODUCT_SEND(index, id, priority, timeTag, procType, userData, dataSize, buffer)`:
+      All the arguments of this macro are inputs (read-only) except `buffer`, which is
+      a by-reference output and must be a variable of type `Fw::Buffer&`.
+      This macro verifies entry `( entryId, entryBuffer )` stored at the specified index of
+      `productSendHistory`. It does the following:
+
+      1. Check that `entryId` matches the specified ID.
+
+      1. Deserialize the data product header stored in `entryBuffer`.
+
+      1. Check that the container ID, priority, time tag, processor type,
+         user data, and data size stored in the deserialized header
+         match the specified values.
+
+      1. Store `entryBuffer` into `buffer`. After executing this macro,
+         the deserialization pointer of `buffer` points into the start
+         of the data payload of `entryBuffer`. You can write additional
+         code to deserialize and check the data payload.
+
+**Container IDs:**
+The container IDs emitted by the component under test are global
+IDs.
+Therefore, when constructing specified IDs you must add
+the ID base specified in the tester component to the local
+ID specified in the component under test.
+For example, for container `CONTAINER` in component `Component`,
+you would write
+```cpp
+ID_BASE + Component::ContainerId::CONTAINER
+```
+`ID_BASE` is a standard constant defined in each Tester implementation
+and provided to the Tester base classes in their constructors.
 
 ## 4. Use Cases
 

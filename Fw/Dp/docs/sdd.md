@@ -59,12 +59,14 @@ The data product header has the following format.
 |Field Name|Data Type|Serialized Size|Description|
 |----------|---------|---------------|-----------|
 |`PacketDescriptor`|`FwPacketDescriptorType`|`sizeof(FwPacketDescriptorType)`|The F Prime packet descriptor [`FW_PACKET_DP`](../../../Fw/Com/ComPacket.hpp)|
-|`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The container ID. This is a system-global ID (component-local ID + component base ID)|
-|`Priority`|`FwDpPriorityType`|`sizeof(FwDpPriorityType)`|The container default priority|
-|`TimeTag`|`Fw::Time`|`Fw::Time::SERIALIZED_SIZE`|The time tag associated with the container|
-|`ProcType`|`Fw::DpCfg::ProcType`|`Fw::DpCfg::ProcType::SERIALIZED_SIZE`|The processing type|
-|`UserData`|Array of `U8`|`Fw::DpCfg::CONTAINER_USER_DATA_SIZE`|User-configurable data|
-|`DataSize`|`FwSizeType`|`sizeof(FwSizeType)`|The size of the data payload in bytes|
+|`id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The container ID. This is a system-global ID (component-local ID + component base ID)|
+|`priority`|`FwDpPriorityType`|`sizeof(FwDpPriorityType)`|The container default priority|
+|`timeTag`|`Fw::Time`|`Fw::Time::SERIALIZED_SIZE`|The time tag associated with the container|
+|`procType`|`Fw::DpCfg::ProcType`|`Fw::DpCfg::ProcType::SERIALIZED_SIZE`|The processing type|
+|`userData`|Header::UserData`|`Fw::DpCfg::CONTAINER_USER_DATA_SIZE`|User-configurable data|
+|`dataSize`|`FwSizeType`|`sizeof(FwSizeType)`|The size of the data payload in bytes|
+
+`Header::UserData` is an array of `U8` of size `Fw::DpCfg::CONTAINER_USER_DATA_SIZE`.
 
 #### 4.1.2. Data Payload
 
