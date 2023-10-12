@@ -59,12 +59,12 @@ The data product header has the following format.
 |Field Name|Data Type|Serialized Size|Description|
 |----------|---------|---------------|-----------|
 |`PacketDescriptor`|`FwPacketDescriptorType`|`sizeof(FwPacketDescriptorType)`|The F Prime packet descriptor [`FW_PACKET_DP`](../../../Fw/Com/ComPacket.hpp)|
-|`id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The container ID. This is a system-global ID (component-local ID + component base ID)|
-|`priority`|`FwDpPriorityType`|`sizeof(FwDpPriorityType)`|The container default priority|
-|`timeTag`|`Fw::Time`|`Fw::Time::SERIALIZED_SIZE`|The time tag associated with the container|
-|`procType`|`Fw::DpCfg::ProcType`|`Fw::DpCfg::ProcType::SERIALIZED_SIZE`|The processing type|
-|`userData`|Header::UserData`|`Fw::DpCfg::CONTAINER_USER_DATA_SIZE`|User-configurable data|
-|`dataSize`|`FwSizeType`|`sizeof(FwSizeType)`|The size of the data payload in bytes|
+|`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The container ID. This is a system-global ID (component-local ID + component base ID)|
+|`Priority`|`FwDpPriorityType`|`sizeof(FwDpPriorityType)`|The container default priority|
+|`TimeTag`|`Fw::Time`|`Fw::Time::SERIALIZED_SIZE`|The time tag associated with the container|
+|`ProcType`|`Fw::DpCfg::ProcType`|`Fw::DpCfg::ProcType::SERIALIZED_SIZE`|The processing type|
+|`UserData`|`Header::UserData`|`Fw::DpCfg::CONTAINER_USER_DATA_SIZE`|User-configurable data|
+|`DataSize`|`FwSizeType`|`sizeof(FwSizeType)`|The size of the data payload in bytes|
 
 `Header::UserData` is an array of `U8` of size `Fw::DpCfg::CONTAINER_USER_DATA_SIZE`.
 
@@ -95,7 +95,7 @@ Array records with _type = T_ have the following format:
 |----------|---------|---------------|-----------|
 |`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The record ID|
 |`Size`|`FwSizeType`|`sizeof(FwSizeType)`|The number _n_ of elements in the record|
-|`Data`|Array of _n_ _T_|_n_ * [`sizeof(`_t_`)` if _T_ is a primitive type; otherwise _T_`::SERIALIZED_SIZE`]|_n_ elements, each of type _T_|
+|`Data`|Array of _n_ _T_|_n_ * [`sizeof(`_T_`)` if _T_ is a primitive type; otherwise _T_`::SERIALIZED_SIZE`]|_n_ elements, each of type _T_|
 
 ### 4.2. Further Information
 
