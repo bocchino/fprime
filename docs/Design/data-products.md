@@ -298,12 +298,12 @@ for managing the histories:
 1. If _C_ has a product get port, then _C_ `TesterBase` provides
    the following functions:
 
-   a. `pushProductGetEntry`: This function takes a container ID and
+   1. `pushProductGetEntry`: This function takes a container ID and
       a size. It constructs the corresponding `DpGet` history object
       and pushes it on `productGetHistory`. Typically this function is
       called by `productGet_handler` (see below).
 
-   b. `productGet_handler`: This function is called when the tester
+   1. `productGet_handler`: This function is called when the tester
       component receives data emitted on the product get port of the
       component under test. It takes a container ID, a size, and a
       mutable reference to a buffer _B_. By default it calls
@@ -317,12 +317,12 @@ for managing the histories:
 1. If _C_ has a product request port, then _C_ `TesterBase` provides
    the following functions:
 
-   a. `pushProductRequestEntry`: This function takes a container ID and
+   1. `pushProductRequestEntry`: This function takes a container ID and
       a size. It constructs the corresponding `DpRequest` history object
       and pushes it on `productRequestHistory`. Typically this function is
       called by `productRequest_handler` (see below).
 
-   b. `productRequest_handler`: This function is called when the tester
+   1. `productRequest_handler`: This function is called when the tester
       component receives data emitted on the product request port of the
       component under test. It takes a container ID and a size. By default
       it calls `pushProductRequestEntry` with the ID and size. This function
@@ -331,12 +331,12 @@ for managing the histories:
 1. If _C_ defines data products, then _C_ `TesterBase` provides the
    following functions:
 
-   a. `pushProductSendEntry`: This function takes a container ID and a
+   1. `pushProductSendEntry`: This function takes a container ID and a
       const reference to a buffer.  It constructs the corresponding
       `DpSend` history object and pushes it on `productSendHistory`.
       Typically this function is called by `productSend_handler` (see below).
 
-   b. `productSend_handler`: This function is called when the tester
+   1. `productSend_handler`: This function is called when the tester
       component receives data emitted on the product send port of the
       component under test. It takes a container ID and a const reference
       to a buffer. By default it calls `pushProductSendEntry` with the
