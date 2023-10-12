@@ -156,16 +156,18 @@ ports in its component model:
 A record is a unit of data.
 When defining a producer component, you can specify one or more
 records.
-A record specification consists of a name, a type, and an optional identifier.
-The type may be one of the following:
+A record specification consists of a name, a type specifier, and an optional identifier.
+The type specifier may be one of the following:
 
 1. An FPP type _T_. In this case, the record contains a single value of type 
-   _T_. _T_ may be a struct type or a fixed-size array type.
+   _T_. _T_ may be any FPP type, including a struct or array type.
 
 1. An FPP type _T_ followed by the keyword `array`.
    In this case, the record is an array of values of type _T_
    of statically unknown size.
    The size of the array is stored in the record.
+
+In either case, _T_ may be any FPP type, including a struct or array type.
 
 Example syntax:
 ```
