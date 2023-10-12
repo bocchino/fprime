@@ -29,7 +29,7 @@ as for commands, telemetry, events, and parameters:
 The container IDs are local to _C_.
 Typically they have the values 0, 1, 2, ... .
 
-2. Each instance _I_ of _C_ contributes one container _I.c_ to the 
+2. Each instance _I_ of _C_ contributes one container _I.c_ to the
 dictionary for each container _c_ defined in _C_.
 The global identifier for _I.c_ is the base identifier of _I_ plus
 the local identifier for _c_.
@@ -140,7 +140,7 @@ FPP provides the following special ports for managing data products:
    ```
    product send port productSendOut
    ```
-   
+
 Each data product producer component must have the following
 ports in its component model:
 
@@ -159,7 +159,7 @@ records.
 A record specification consists of a name, a type specifier, and an optional identifier.
 The type specifier may be one of the following:
 
-1. An FPP type _T_. In this case, the record contains a single value of type 
+1. An FPP type _T_. In this case, the record contains a single value of type
    _T_. _T_ may be any FPP type, including a struct or array type.
 
 1. An FPP type _T_ followed by the keyword `array`.
@@ -305,7 +305,7 @@ a shallow copy of the buffer emitted on the product send port.
 The class _C_ `TesterBase` provides the following functions
 for managing the histories:
 
-1. If _C_ has a product get port, then _C_ `TesterBase` provides 
+1. If _C_ has a product get port, then _C_ `TesterBase` provides
    the following functions:
 
    1. `pushProductGetEntry`: This function takes a container ID and
