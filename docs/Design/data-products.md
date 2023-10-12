@@ -277,29 +277,26 @@ If for some reason you can't use the Google Test framework
 (e.g., because you are running on a platform that does not support it),
 then your _C_ `Tester` class can be derived from _C_ `TesterBase`.
 
-This section documents the unit test support for
-components that define data products.
+This section documents the unit test support for producer components.
 
 #### 3.4.1. The TesterBase Class
 
 **History data structures:**
 The class _C_ `TesterBase` provides the following histories:
 
-1. If _C_ defines data products and has a product get port,
+1. If _C_ has a product get port,
 then _C_ `TesterBase` has a history called `productGetHistory`.
 Each element in the history is of type `DpGet`.
 `DpGet` is a struct with fields storing the container ID and the
 size emitted on the product get port.
 
-1. If _C_ defines data products and has a product request port,
-then _C_ `TesterBase` has a
+1. If _C_ has a product request port, then _C_ `TesterBase` has a
 corresponding history called `productRequestHistory`.
 Each element in the history is of type `DpRequest`.
 `DpRequest` is a struct with fields storing the container ID and the
 size emitted on the product request port.
 
-1. If _C_ defines data products, then _C_ `TesterBase` has a
-history called `productSendHistory`.
+1. _C_ `TesterBase` has a history called `productSendHistory`.
 Each element in the history is of type `DpSend`.
 `DpSend` is a struct with fields storing the container ID and
 a shallow copy of the buffer emitted on the product send port.
@@ -308,8 +305,8 @@ a shallow copy of the buffer emitted on the product send port.
 The class _C_ `TesterBase` provides the following functions
 for managing the histories:
 
-1. If _C_ defines data products and has a product get port,
-   then _C_ `TesterBase` provides the following functions:
+1. If _C_ has a product get port, then _C_ `TesterBase` provides 
+   the following functions:
 
    1. `pushProductGetEntry`: This function takes a container ID and
       a size. It constructs the corresponding `DpGet` history object
@@ -327,8 +324,8 @@ for managing the histories:
       allocate a buffer, store the allocated buffer into _B_, and return
       `SUCCESS`.
 
-1. If _C_ defines data products and has a product request port,
-   then _C_ `TesterBase` provides the following functions:
+1. If _C_ has a product request port, then _C_ `TesterBase` provides
+   the following functions:
 
    1. `pushProductRequestEntry`: This function takes a container ID and
       a size. It constructs the corresponding `DpRequest` history object
@@ -341,8 +338,7 @@ for managing the histories:
       it calls `pushProductRequestEntry` with the ID and size. This function
       is virtual, so you can override it with your own behavior.
 
-1. If _C_ defines data products, then _C_ `TesterBase` provides the
-   following functions:
+1. _C_ `TesterBase` provides the following functions:
 
    1. `pushProductSendEntry`: This function takes a container ID and a
       const reference to a buffer.  It constructs the corresponding
