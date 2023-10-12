@@ -260,6 +260,67 @@ It does the following:
 
    1. Send _c_ on `productSendOut`.
 
+### 3.4. Unit Test Support
+
+In F Prime, each component _C_ comes with auto-generated
+classes _C_ `TesterBase` and _C_ `GTestBase` for writing
+unit tests against _C_.
+This section documents the unit test support for
+components that define data products.
+
+#### 3.4.1. The TesterBase Class
+
+**Histories:**
+The class _C_ `TesterBase` provides the following histories:
+
+1. If _C_ has a product get port, then _C_ `TesterBase` has a
+corresponding history called `productGetHistory`.
+Each element in the history is of type `DpGet`.
+`DpGet` is a struct with fields storing the container ID and the
+size emitted on the product get port.
+
+1. If _C_ has a product request port, then _C_ `TesterBase` has a
+corresponding history called `productRequestHistory`.
+Each element in the history is of type `DpRequest`.
+`DpRequest` is a struct with fields storing the container ID and the
+size emitted on the product request port.
+
+1. If _C_ defines data products, then _C_ `TesterBase` has a
+corresponding history called `productSendHistory`.
+Each element in the history is of type `DpSend`.
+`DpSend` is a struct with fields storing the container ID and the
+size emitted on the product send port.
+
+**Functions:**
+The class _C_ `TesterBase` provides the following functions
+for managing the histories:
+
+1. If _C_ has a product get port, then _C_ `TesterBase` provides
+the following functions:
+
+   a. `pushProductGetEntry`: This function takes a container ID and
+      a size. It constructs the corresponding `DpGet` history object
+      and pushes it on `productGetHistory`.
+
+   b. `productGet_handler`: This function is called when the tester
+      component receives data emitted on the `productGet` port of the
+      component under test. It takes a container ID, a size, and a
+      mutable reference to a buffer _B_. By default it calls
+      `pushProductGetEntry` with the ID and size and returns `FAILURE`,
+      indicating that no memory was allocated and _B_ was not updated.
+      This function is virtual, so you can override it with your own
+      behavior. For example, your function could call `pushProductGetEntry`,
+      allocate a buffer, store the allocated buffer into _B_, and return
+      `SUCCESS`.
+
+1. If _C_ has a product request port, then TODO.
+
+1. If _C_ defines data products, then TODO.
+
+#### 3.4.2. The GTestBase Class
+
+TODO
+
 ## 4. Use Cases
 
 In this section we discuss several common use cases involving
