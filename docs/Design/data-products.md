@@ -387,20 +387,20 @@ verifying the histories managed by _C_ `TesterBase`.
    1. `ASSERT_PRODUCT_SEND(index, id, priority, timeTag, procType, userData, dataSize, buffer)`:
       All the arguments of this macro are inputs (read-only) except `buffer`, which is
       a by-reference output and must be a variable of type `Fw::Buffer&`.
-      This macro verifies the entry `( entryId, entryBuffer )` stored at the specified
+      This macro verifies the entry `entry` stored at the specified
       index of `productSendHistory`. It does the following:
 
-      1. Check that `entryId` matches the specified ID.
+      1. Check that `entry.id` matches the specified ID.
 
-      1. Deserialize the data product header stored in `entryBuffer`.
+      1. Deserialize the data product header stored in `entry.buffer`.
 
       1. Check that the container ID, priority, time tag, processor type,
          user data, and data size stored in the deserialized header
          match the specified values.
 
-      1. Store `entryBuffer` into `buffer`. After this macro runs,
+      1. Assign `entry.buffer` to `buffer`. After this macro runs,
          the deserialization pointer of `buffer` points into the start
-         of the data payload of `entryBuffer`. You can write additional
+         of the data payload of `entry.buffer`. You can write additional
          code to deserialize and check the data payload.
 
 **Container IDs:**
