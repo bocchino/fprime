@@ -95,7 +95,7 @@ Array records with _type = T_ have the following format:
 |----------|---------|---------------|-----------|
 |`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The record ID|
 |`Size`|`FwSizeType`|`sizeof(FwSizeType)`|The number _n_ of elements in the record|
-|`Data`|Array of _n_ _T_|_n_ * [`sizeof(`_t_`)` if _T_ is a primitive type; otherwise _T_`::SERIALIZED_SIZE`|_n_ elements, each of type _T_|
+|`Data`|Array of _n_ _T_|_n_ * [`sizeof(`_t_`)` if _T_ is a primitive type; otherwise _T_`::SERIALIZED_SIZE`]|_n_ elements, each of type _T_|
 
 ### 4.2. Further Information
 
