@@ -71,31 +71,31 @@ The data product header has the following format.
 #### 4.1.2. Data Payload
 
 The data payload is a sequence of records.
-The serialized format of each record _R_ depends on whether _R_ is a typed
-record or a raw record.
+The serialized format of each record _R_ depends on whether _R_ is a
+single-value record or an array record.
 
-**Typed records:**
-A typed record is specified in FPP in the form `product record` _name_ `:` _type_.
+**Single-value records:**
+A single-value record is specified in FPP in the form `product record` _name_ `:` _type_.
 The record has name _name_ and represents one item of data of type _type_.
-The type may be a struct type with several fields or an array type with
-several indexed elements.
-Typed records with type _T_ have the following format:
+The type may be any FPP type, including a struct or array type.
+Single-value records with _type = T_ have the following format:
 
 |Field Name|Data Type|Serialized Size|Description|
 |----------|---------|---------------|-----------|
 |`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The record ID|
 |`Data`|_T_|`sizeof(`_T_`)` if _T_ is a primitive type; otherwise _T_`::SERIALIZED_SIZE`|The serialized data|
 
-**Raw records:**
-A raw record is specified in FPP in the form `product record` _name_ `: raw`.
-The record has name _name_ and represents raw byte data.
-Raw records have the following format:
+**Array records:**
+An array record is specified in FPP in the form `product record` _name_ `:` _type_ `array`.
+The record has name _name_ and represents an array of items of type _type_.
+The type may be any FPP type, including a struct or array type.
+Array records with _type = T_ have the following format:
 
 |Field Name|Data Type|Serialized Size|Description|
 |----------|---------|---------------|-----------|
 |`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The record ID|
-|`Size`|`FwSizeType`|`sizeof(FwSizeType)`|The number _n_ of bytes in the record|
-|`Data`|Array of bytes|_n_|_n_ bytes of raw data|
+|`Size`|`FwSizeType`|`sizeof(FwSizeType)`|The number _n_ of elements in the record|
+|`Data`|Array of _n_ _T_|_n_ * [`sizeof(`_t_`)` if _T_ is a primitive type; otherwise _T_`::SERIALIZED_SIZE`|_n_ elements, each of type _T_|
 
 ### 4.2. Further Information
 
