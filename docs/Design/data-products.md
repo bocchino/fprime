@@ -270,7 +270,7 @@ components that define data products.
 
 #### 3.4.1. The TesterBase Class
 
-**Histories:**
+**History data structures:**
 The class _C_ `TesterBase` provides the following histories:
 
 1. If _C_ has a product get port, then _C_ `TesterBase` has a
@@ -291,16 +291,17 @@ Each element in the history is of type `DpSend`.
 `DpSend` is a struct with fields storing the container ID and the
 size emitted on the product send port.
 
-**Functions:**
+**History functions:**
 The class _C_ `TesterBase` provides the following functions
 for managing the histories:
 
 1. If _C_ has a product get port, then _C_ `TesterBase` provides
-the following functions:
+   the following functions:
 
    a. `pushProductGetEntry`: This function takes a container ID and
       a size. It constructs the corresponding `DpGet` history object
-      and pushes it on `productGetHistory`.
+      and pushes it on `productGetHistory`. Typically this function is
+      called by `productGet_handler` (see below).
 
    b. `productGet_handler`: This function is called when the tester
       component receives data emitted on the `productGet` port of the
@@ -313,9 +314,26 @@ the following functions:
       allocate a buffer, store the allocated buffer into _B_, and return
       `SUCCESS`.
 
-1. If _C_ has a product request port, then TODO.
+1. If _C_ has a product request port, then _C_ `TesterBase` provides
+   the following functions:
 
-1. If _C_ defines data products, then TODO.
+   a. `pushProductRequestEntry`: This function takes a container ID and
+      a size. It constructs the corresponding `DpRequest` history object
+      and pushes it on `productRequestHistory`. Typically this function is
+      called by `productRequest_handler` (see below).
+
+   b. `productRequest_handler`: This function is called when the tester
+      component receives data emitted on the `productRequest` port of the
+      component under test. It takes a container ID and a size. By default
+      it calls `pushProductRequestEntry` with the ID and size. This function
+      is virtual, so you can override it with your own behavior.
+
+1. If _C_ defines data products, then _C_ `TesterBase` provides the
+   following functions:
+
+   a. `pushProductSendEntry`: TODO
+
+   b. `productSend_handler`: TODO
 
 #### 3.4.2. The GTestBase Class
 
