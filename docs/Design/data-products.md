@@ -266,8 +266,8 @@ In F Prime, each component _C_ comes with auto-generated
 classes _C_ `TesterBase` and _C_ `GTestBase` for writing
 unit tests against _C_.
 _C_ `GTestBase` is derived from _C_ `TesterBase`.
-To write unit tests, you construct a class derived from
-_C_ `GTestBase` (if you are using the Google Test framework,
+To write unit tests, you construct a class _C_ `Tester` derived
+from _C_ `GTestBase` (if you are using the Google Test framework,
 which is usually recommended) or _C_ `TesterBase`
 (if you are not using Google Test, e.g., because you are
 running on a platform that does not support it).
