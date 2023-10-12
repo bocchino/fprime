@@ -206,7 +206,7 @@ the following API elements:
 priorities, and record IDs.
 
 1. A member class _C_ `::DpContainer`. This class is derived from
-[`Fw::DpRecord`](../../Fw/Dp/docs/sdd.md) and represents a container
+[`Fw::DpContainer`](../../Fw/Dp/docs/sdd.md) and represents a container
 specialized to the data products defined in _C_.
 Each instance of _C_ `::DpContainer` is a wrapper for an `Fw::Buffer` _B_,
 which points to allocated memory.
