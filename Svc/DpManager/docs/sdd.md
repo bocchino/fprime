@@ -8,13 +8,16 @@ It does the following:
 
 1. Receive requests for buffers to hold data products.
 When a client component requests a data product buffer, 
-request an `Fw::Buffer` from a buffer manager.
+request an [`Fw::Buffer`](../../../Fw/Buffer/docs/sdd.md)
+from a buffer manager.
 Send the buffer to the component so that the component can fill it.
 
 1. Receive buffers filled with data products by
 client components.
 Upon receiving a buffer, send the buffer out on a port.
-Another component such as a Buffer Accumulator or Dp Writer
+Another component such as
+[`Svc::BufferAccumulator`](../../BufferAccumulator/BufferAccumulator.md)
+or [`Svc::DpWriter`](../../DpWriter/docs/sdd.md)
 will process the buffer and then send it back to the buffer manager
 for deallocation.
 
@@ -44,9 +47,10 @@ The diagram below shows the `DpManager` component.
 | Kind | Name | Port Type | Usage |
 |------|------|-----------|-------|
 | `async input` | `schedIn` | `Svc.Sched` | Schedule in port |
+| `sync input` | `productGetIn` | `Fw.DpGet` | Port for responding to a data product get from a client component |
 | `async input` | `productRequestIn` | `Fw.DpRequest` | Port for receiving data product buffer requests from a client component |
-| `output` | `bufferGetOut` | `Fw.BufferGet` | Port for getting buffers from a Buffer Manager |
 | `output` | `productResponseOut` | `Fw.DpResponse` | Port for sending requested data product buffers to a client component |
+| `output` | `bufferGetOut` | `Fw.BufferGet` | Port for getting buffers from a Buffer Manager |
 | `async input` | `productSendIn` | `Fw.DpSend` | Port for receiving filled data product buffers from a client component |
 | `output` | `productSendOut` | `Fw.BufferSend` | Port for sending filled data product buffers to a downstream component |
 | `time get` | `timeGetOut` | `Fw.Time` | Time get port |
@@ -76,7 +80,11 @@ No special runtime setup is required.
 
 The handler for this port sends out the state variables as telemetry.
 
-#### 3.5.2. productRequestIn
+#### 3.5.2. productGetIn
+
+TODO
+
+#### 3.5.3. productRequestIn
 
 This port receives container ID _id_ and a requested buffer size _size_.
 It does the following:
@@ -91,7 +99,7 @@ It does the following:
 
 1. send _(id, B, status)_ on `productResponseOut`.
 
-#### 3.5.3. productSendIn
+#### 3.5.4. productSendIn
 
 This port receives a data product ID _I_ and a buffer _B_.
 It does the following:
