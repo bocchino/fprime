@@ -8,11 +8,11 @@ productSendIn
 dpManager
 productSendOut
 0
-bufferLogger
+dpWriter
 bufferSendIn
 0
 
-bufferLogger
+dpWriter
 bufferSendOut
 0
 bufferManager

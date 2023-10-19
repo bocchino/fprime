@@ -132,10 +132,10 @@ It does the following:
 ### 5.1. Topology Diagrams
 
 The following topology diagrams show how to connect `Svc::DpManager`
-to a client component, a buffer manager, and a buffer logger.
+to a client component, a buffer manager, and a data product writer.
 The diagrams use the following instances:
 
-* `bufferLogger`: An instance of [`Svc::BufferLogger`](../../BufferLogger).
+* `dpWriter`: An instance of [`Svc::DpWriter`](../../DpWriter/docs/sdd.md).
 
 * `bufferManager`: An instance of [`Svc::BufferManager`](../../BufferManager/docs/sdd.md).
 
@@ -179,12 +179,12 @@ sequenceDiagram
 sequenceDiagram
     activate client
     activate dpManager
-    activate bufferLogger
+    activate dpWriter
     client-)dpManager: Send buffer B [productSendIn]
-    dpManager-)bufferLogger: Send B [productSendOut]
-    bufferLogger->>bufferManager: Deallocate B
-    bufferManager-->>bufferLogger: Return
-    deactivate bufferLogger
+    dpManager-)dpWriter: Send B [productSendOut]
+    dpWriter->>bufferManager: Deallocate B
+    bufferManager-->>dpWriter: Return
+    deactivate dpWriter
     deactivate dpManager
     deactivate client
 ```

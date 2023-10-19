@@ -37,7 +37,7 @@
     ],
     [
       {
-        "instanceName" : "bufferLogger",
+        "instanceName" : "dpWriter",
         "inputPorts" : [
           {
             "name" : "bufferSendIn",
