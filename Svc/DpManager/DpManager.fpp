@@ -4,20 +4,31 @@ module Svc {
   active component DpManager {
 
     # ----------------------------------------------------------------------
-    # General ports
+    # Scheduling ports
     # ----------------------------------------------------------------------
 
     @ Schedule in port
     async input port schedIn: Svc.Sched
 
+    # ----------------------------------------------------------------------
+    # Ports for handling buffer requests
+    # ----------------------------------------------------------------------
+
     @ Port for receiving data product buffer requests from a client component
     async input port productRequestIn: Fw.DpRequest
+
+    @ Port for sending requested data product buffers to a client component
+    output port productResponseOut: Fw.DpResponse
+
+    @ Port for responding to a data product get from a client component
+    sync input port productGetIn: Fw.DpGet
 
     @ Port for getting buffers from a Buffer Manager
     output port bufferGetOut: Fw.BufferGet
 
-    @ Port for sending requested data product buffers to a client component
-    output port productResponseOut: Fw.DpResponse
+    # ----------------------------------------------------------------------
+    # Ports for forwarding filled data products 
+    # ----------------------------------------------------------------------
 
     @ Port for receiving filled data product buffers from a client component
     async input port productSendIn: Fw.DpSend

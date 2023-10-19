@@ -7,7 +7,7 @@
 #ifndef Svc_Tester_HPP
 #define Svc_Tester_HPP
 
-#include "GTestBase.hpp"
+#include "DpManagerGTestBase.hpp"
 #include "Svc/DpManager/DpManager.hpp"
 #include "Svc/DpManager/test/ut/AbstractState.hpp"
 

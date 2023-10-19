@@ -29,6 +29,13 @@ class DpManager : public DpManagerComponentBase {
     // Handler implementations for user-defined typed input ports
     // ----------------------------------------------------------------------
 
+    //! Handler implementation for productGetIn
+    Fw::Success productGetIn_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
+                                     FwDpIdType id,                  //!< The container ID
+                                     FwSizeType size,                //!< The size of the requested buffer
+                                     Fw::Buffer& buffer              //!< The buffer
+                                     ) final;
+
     //! Handler implementation for productRequestIn
     void productRequestIn_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
                                   FwDpIdType id,                  //!< The container ID

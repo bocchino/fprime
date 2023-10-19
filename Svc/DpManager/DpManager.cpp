@@ -26,9 +26,17 @@ DpManager::~DpManager() {}
 // Handler implementations for user-defined typed input ports
 // ----------------------------------------------------------------------
 
+Fw::Success DpManager::productGetIn_handler(const NATIVE_INT_TYPE portNum,
+                                            FwDpIdType id,
+                                            FwSizeType size,
+                                            Fw::Buffer& buffer) {
+    // TODO
+    return Fw::Success::FAILURE;
+}
+
 void DpManager::productRequestIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, FwSizeType size) {
     // portNum is unused
-    (void) portNum;
+    (void)portNum;
     // Get a buffer
     Fw::Buffer buffer = this->bufferGetOut_out(0, size);
     Fw::Success status(Fw::Success::FAILURE);
@@ -47,8 +55,8 @@ void DpManager::productRequestIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdTy
 
 void DpManager::productSendIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, const Fw::Buffer& buffer) {
     // portNum and id are unused
-    (void) portNum;
-    (void) id;
+    (void)portNum;
+    (void)id;
     // Update state variables
     ++this->numDataProducts;
     this->numBytes += buffer.getSize();
