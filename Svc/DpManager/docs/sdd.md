@@ -7,15 +7,15 @@
 It does the following:
 
 1. Receive requests for buffers to hold data products.
-When a client component _C_ requests a data product buffer, 
-request an `Fw::Buffer` _B_ from a buffer manager.
-Send _B_ to _C_ so that _C_ can fill it.
+When a client component requests a data product buffer, 
+request an `Fw::Buffer` from a buffer manager.
+Send the buffer to the component so that the component can fill it.
 
 1. Receive buffers filled with data products by
 client components.
-Upon receiving a buffer _B_, send _B_ on a port.
+Upon receiving a buffer, send the buffer out on a port.
 Another component such as a Buffer Accumulator or Dp Writer
-will process _B_ and then send _B_ back to the buffer manager
+will process the buffer and then send it back to the buffer manager
 for deallocation.
 
 ## 2. Requirements
@@ -23,7 +23,7 @@ for deallocation.
 Requirement | Description | Rationale | Verification Method
 ----------- | ----------- | ----------| -------------------
 SVC-DPMANAGER-001 | `Svc::DpManager` shall provide ports for receiving and asynchronously responding to requests for data product buffers. | This capability supports the `product` `request` and `product` `recv` ports in the auto-generated code for components that define data products. | Unit test
-SVC-DPMANAGER-002 | `Svc::DpManager` shall provide a port for synchronously requesting and receiving data product buffer. | THis capability supports the `product` `get` port in the auto-generated code for components that define data products. | Unit test
+SVC-DPMANAGER-002 | `Svc::DpManager` shall provide a port for synchronously requesting and receiving data product buffer. | This capability supports the `product` `get` port in the auto-generated code for components that define data products. | Unit test
 SVC-DPMANAGER-003 | `Svc::DpManager` shall receive data product buffers and forward them for further processing. | This requirement provides a pass-through capability for sending data product buffers to downstream components. `Svc::DpManager` receives data product input on a port of type  `Fw::DpSend`. This input consists of a container ID _id_ and an `Fw::Buffer` _B_. `Svc::DpManager` sends _B_ on a port of type `Fw::BufferSend`. This port type is used by the standard F Prime components for managing and logging data, e.g., `Svc::BufferLogger`. | Unit test
 SVC-DPMANAGER-004 | `Svc::DpManager` shall provide the ground interface described in the [Ground Interface section](#ground_interface) below. | This requirement establishes the ground interface for the component. | Unit test
 
