@@ -74,7 +74,7 @@ The diagram below shows the `DpManager` component.
 
 1. `numDataProducts`: The number of data products handled.
 
-1. `numBytes:` The number of bytes handled.
+1. `numBytes`: The number of bytes handled.
 
 ### 3.4. Runtime Setup
 
