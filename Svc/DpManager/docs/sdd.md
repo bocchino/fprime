@@ -88,40 +88,40 @@ The handler for this port sends out the state variables as telemetry.
 
 #### 3.5.2. productGetIn
 
-This port receives a container ID _id_, a requested buffer size _size_,
-and a mutable reference to a buffer _B_.
+This port receives a container ID `id`, a requested buffer size `size`,
+and a mutable reference to a buffer `B`.
 It does the following:
 
-1. Set _status = FAILURE_.
+1. Set `status = FAILURE`.
 
-1. Invoke `bufferGetOut` to get a buffer _B'_.
+1. Invoke `bufferGetOut` to get a buffer `B'`.
 
-1. If _B'_ is valid, then set _B = B'_, increment `numAllocations`,
-   and set _status = SUCCESS_.
+1. If `B'` is valid, then set `B = B'`, increment `numAllocations`,
+   and set `status = SUCCESS`.
 
 1. Otherwise increment `numFailedAllocations` and emit a warning event.
 
-1. Return _status_.
+1. Return `status`.
 
 #### 3.5.3. productRequestIn
 
-This port receives a container ID _id_ and a requested buffer size _size_.
+This port receives a container ID `id` and a requested buffer size `size`.
 It does the following:
 
-1. Initialize the local variable _B_ with an invalid buffer.
+1. Initialize the local variable `B` with an invalid buffer.
 
-1. Set _status = productGetIn_handlerBase(id, size, B)_.
+1. Set `status = productGetIn`handlerBase(id, size, B)`.
 
-1. Send _(id, B, status)_ on `productResponseOut`.
+1. Send `(id, B, status)` on `productResponseOut`.
 
 #### 3.5.4. productSendIn
 
-This port receives a data product ID _I_ and a buffer _B_.
+This port receives a data product ID `I` and a buffer `B`.
 It does the following:
 
 1. Update `numDataProducts` and `numBytes`.
 
-1. Send _B_ on `productSendOut`.
+1. Send `B` on `productSendOut`.
 
 <a name="ground_interface"></a>
 ## 4. Ground Interface
