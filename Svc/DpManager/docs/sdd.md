@@ -33,7 +33,7 @@ Requirement | Description | Rationale | Verification Method
 ----------- | ----------- | ----------| -------------------
 SVC-DPMANAGER-001 | `Svc::DpManager` shall provide ports for receiving and asynchronously responding to requests for data product buffers. | This capability supports the `product` `request` and `product` `recv` ports in the auto-generated code for components that define data products. | Unit test
 SVC-DPMANAGER-002 | `Svc::DpManager` shall provide a port for synchronously requesting and receiving data product buffer. | This capability supports the `product` `get` port in the auto-generated code for components that define data products. | Unit test
-SVC-DPMANAGER-003 | `Svc::DpManager` shall receive data product buffers and forward them for further processing. | This requirement provides a pass-through capability for sending data product buffers to downstream components. `Svc::DpManager` receives data product input on a port of type  `Fw::DpSend`. This input consists of a container ID _id_ and an `Fw::Buffer` _B_. `Svc::DpManager` sends _B_ on a port of type `Fw::BufferSend`. This port type is used by the standard F Prime components for managing and logging data, e.g., `Svc::BufferLogger`. | Unit test
+SVC-DPMANAGER-003 | `Svc::DpManager` shall receive data product buffers and forward them for further processing. | This requirement provides a pass-through capability for sending data product buffers to downstream components. `Svc::DpManager` receives data product input on a port of type  `Fw::DpSend`. This input consists of a container ID and an `Fw::Buffer` _B_. `Svc::DpManager` sends _B_ on a port of type `Fw::BufferSend`. This port type is used by the standard F Prime components for managing and logging data, e.g., `Svc::BufferLogger`. | Unit test
 SVC-DPMANAGER-004 | `Svc::DpManager` shall provide the ground interface described in the [Ground Interface section](#ground_interface) below. | This requirement establishes the ground interface for the component. | Unit test
 
 ## 3. Design
@@ -92,16 +92,16 @@ This port receives a container ID _id_, a requested buffer size _size_,
 and a mutable reference to a buffer _B_.
 It does the following:
 
-1. Set `status = FAILURE`.
+1. Set _status = FAILURE_.
 
 1. Invoke `bufferGetOut` to get a buffer _B'_.
 
 1. If _B'_ is valid, then set _B = B'_, increment `numAllocations`,
-   and set `status = SUCCESS`.
+   and set _status = SUCCESS_.
 
 1. Otherwise increment `numFailedAllocations` and emit a warning event.
 
-1. Return `status`.
+1. Return _status_.
 
 #### 3.5.3. productRequestIn
 
@@ -110,9 +110,9 @@ It does the following:
 
 1. Initialize the local variable _B_ with an invalid buffer.
 
-1. Set `status = productGetIn(id, size, B)`.
+1. Set _status = productGetIn(id, size, B)_.
 
-1. send _(id, B, status)_ on `productResponseOut`.
+1. Send _(id, B, status)_ on `productResponseOut`.
 
 #### 3.5.4. productSendIn
 
