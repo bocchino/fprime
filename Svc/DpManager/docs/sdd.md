@@ -94,10 +94,9 @@ It does the following:
 
 1. Set `status = FAILURE`.
 
-1. Invoke `bufferGetOut` to get a buffer `B'`.
+1. Set `B = bufferGetOut_out(0, size)`.
 
-1. If `B'` is valid, then set `B = B'`, increment `numAllocations`,
-   and set `status = SUCCESS`.
+1. If `B` is valid, then increment `numAllocations` and set `status = SUCCESS`.
 
 1. Otherwise increment `numFailedAllocations` and emit a warning event.
 
