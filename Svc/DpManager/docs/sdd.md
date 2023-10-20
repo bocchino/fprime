@@ -7,10 +7,16 @@
 It does the following:
 
 1. Receive requests for buffers to hold data products.
-When a client component requests a data product buffer, 
-request an [`Fw::Buffer`](../../../Fw/Buffer/docs/sdd.md)
-from a buffer manager.
-Send the buffer to the component so that the component can fill it.
+
+   1.  When a client component synchronously requests a data product buffer, 
+       request an [`Fw::Buffer`](../../../Fw/Buffer/docs/sdd.md)
+       from a buffer manager.
+       Return the buffer to the client component so the component can fill it.
+
+   1.  When a client component asynchronously requests a data product buffer, 
+       request an [`Fw::Buffer`](../../../Fw/Buffer/docs/sdd.md)
+       from a buffer manager.
+       Send the buffer to the client component so the component can fill it.
 
 1. Receive buffers filled with data products by
 client components.
