@@ -110,7 +110,7 @@ It does the following:
 
 1. Initialize the local variable `B` with an invalid buffer.
 
-1. Set `status = productGetIn`handlerBase(id, size, B)`.
+1. Set `status = productGetIn_handlerBase(id, size, B)`.
 
 1. Send `(id, B, status)` on `productResponseOut`.
 
