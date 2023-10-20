@@ -53,7 +53,7 @@ The diagram below shows the `DpManager` component.
 | Kind | Name | Port Type | Usage |
 |------|------|-----------|-------|
 | `async input` | `schedIn` | `Svc.Sched` | Schedule in port |
-| `sync input` | `productGetIn` | `Fw.DpGet` | Port for responding to a data product get from a client component |
+| `guarded input` | `productGetIn` | `Fw.DpGet` | Port for responding to a data product get from a client component |
 | `async input` | `productRequestIn` | `Fw.DpRequest` | Port for receiving data product buffer requests from a client component |
 | `output` | `productResponseOut` | `Fw.DpResponse` | Port for sending requested data product buffers to a client component |
 | `output` | `bufferGetOut` | `Fw.BufferGet` | Port for getting buffers from a Buffer Manager |
@@ -111,6 +111,8 @@ It does the following:
 1. Initialize the local variable `B` with an invalid buffer.
 
 1. Set `status = productGetIn_handlerBase(id, size, B)`.
+   NOTE: The call to the handler base is guarded by the mutex lock
+   associated with the `productGetIn` port.
 
 1. Send `(id, B, status)` on `productResponseOut`.
 

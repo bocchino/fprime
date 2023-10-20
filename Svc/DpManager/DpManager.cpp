@@ -30,16 +30,12 @@ Fw::Success DpManager::productGetIn_handler(const NATIVE_INT_TYPE portNum,
                                             FwDpIdType id,
                                             FwSizeType size,
                                             Fw::Buffer& buffer) {
-    // TODO
-    return Fw::Success::FAILURE;
-}
-
-void DpManager::productRequestIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, FwSizeType size) {
     // portNum is unused
     (void)portNum;
-    // Get a buffer
-    Fw::Buffer buffer = this->bufferGetOut_out(0, size);
+    // Set status
     Fw::Success status(Fw::Success::FAILURE);
+    // Get a buffer
+    buffer = this->bufferGetOut_out(0, size);
     if (buffer.isValid()) {
         // Buffer is valid
         ++this->numSuccessfulAllocations;
@@ -49,6 +45,13 @@ void DpManager::productRequestIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdTy
         ++this->numFailedAllocations;
         this->log_WARNING_HI_BufferAllocationFailed(id);
     }
+    return status;
+}
+
+void DpManager::productRequestIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, FwSizeType size) {
+    // Get a buffer
+    Fw::Buffer buffer;
+    Fw::Success status = this->productGetIn_handlerBase(portNum, id, size, buffer);
     // Send buffer on productResponseOut
     this->productResponseOut_out(0, id, buffer, status);
 }
