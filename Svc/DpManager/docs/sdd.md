@@ -82,20 +82,29 @@ The handler for this port sends out the state variables as telemetry.
 
 #### 3.5.2. productGetIn
 
-TODO
-
-#### 3.5.3. productRequestIn
-
-This port receives container ID _id_ and a requested buffer size _size_.
+This port receives a container ID _id_, a requested buffer size _size_,
+and a mutable reference to a buffer _B_.
 It does the following:
-
-1. Invoke `bufferGetOut` to get a buffer _B_.
 
 1. Set `status = FAILURE`.
 
-1. If _B_ is valid, then increment `numAllocations` and set `status = SUCCESS`.
+1. Invoke `bufferGetOut` to get a buffer _B'_.
+
+1. If _B'_ is valid, then set _B = B'_, increment `numAllocations`,
+   and set `status = SUCCESS`.
 
 1. Otherwise increment `numFailedAllocations` and emit a warning event.
+
+1. Return `status`.
+
+#### 3.5.3. productRequestIn
+
+This port receives a container ID _id_ and a requested buffer size _size_.
+It does the following:
+
+1. Initialize the local variable _B_ with an invalid buffer.
+
+1. Set `status = productGetIn(id, size, B)`.
 
 1. send _(id, B, status)_ on `productResponseOut`.
 
