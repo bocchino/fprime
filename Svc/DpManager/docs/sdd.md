@@ -96,7 +96,7 @@ It does the following:
 
 1. Set `B = bufferGetOut_out(0, size)`.
 
-1. If `B` is valid, then increment `numAllocations` and set `status = SUCCESS`.
+1. If `B` is valid, then increment `numSuccessfulAllocations` and set `status = SUCCESS`.
 
 1. Otherwise increment `numFailedAllocations` and emit a warning event.
 
