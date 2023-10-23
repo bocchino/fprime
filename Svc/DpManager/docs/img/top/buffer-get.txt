@@ -1,0 +1,13 @@
+client
+productGetOut
+0
+dpManager
+productGetIn
+0
+
+dpManager
+bufferGetOut
+0
+bufferManager
+bufferGetCallee
+0

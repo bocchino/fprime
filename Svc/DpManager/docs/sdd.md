@@ -161,13 +161,19 @@ The diagrams use the following instances:
 
 * `dpManager`: An instance of `Svc::DpManager`.
 
-#### 5.1.1. Requesting Data Product Buffers
+#### 5.1.1. Synchronously Getting Data Product Buffers
+
+<div>
+<img src="img/top/buffer-get.png" width=800/>
+</div>
+
+#### 5.1.2. Asynchronously Requesting Data Product Buffers
 
 <div>
 <img src="img/top/buffer-request.png" width=800/>
 </div>
 
-#### 5.1.2. Sending Data Products
+#### 5.1.3. Sending Data Products
 
 <div>
 <img src="img/top/product-send.png" width=1000/>
@@ -175,7 +181,11 @@ The diagrams use the following instances:
 
 ### 5.2. Sequence Diagrams
 
-#### 5.2.1. Requesting a Data Product Buffer
+#### 5.2.1. Synchronously Getting a Data Product Buffer
+
+TODO
+
+#### 5.2.2. Asynchronously Requesting a Data Product Buffer
 
 ```mermaid
 sequenceDiagram
@@ -189,7 +199,7 @@ sequenceDiagram
     deactivate client
 ```
 
-#### 5.2.2. Sending a Data Product
+#### 5.2.3. Sending a Data Product
 
 ```mermaid
 sequenceDiagram
