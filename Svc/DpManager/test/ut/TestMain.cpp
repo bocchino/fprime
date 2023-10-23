@@ -23,40 +23,40 @@ namespace Svc {
 
   TEST(ProductRequestIn, BufferInvalid) {
     COMMENT("Invoke productRequestIn in a state where the test harness returns an invalid buffer.");
-    REQUIREMENT("SVC-DPMANAGER-001");
-    REQUIREMENT("SVC-DPMANAGER-003");
+    REQUIREMENT("SVC-DPMANAGER-002");
+    REQUIREMENT("SVC-DPMANAGER-004");
     ProductRequestIn::Tester tester;
     tester.BufferInvalid();
   }
 
   TEST(ProductRequestIn, BufferValid) {
     COMMENT("Invoke productRequestIn in a state where the test harness returns a valid buffer.");
-    REQUIREMENT("SVC-DPMANAGER-001");
-    REQUIREMENT("SVC-DPMANAGER-003");
+    REQUIREMENT("SVC-DPMANAGER-002");
+    REQUIREMENT("SVC-DPMANAGER-004");
     ProductRequestIn::Tester tester;
     tester.BufferValid();
   }
 
   TEST(ProductSendIn, OK) {
     COMMENT("Invoke productSendIn with nominal input.");
-    REQUIREMENT("SVC-DPMANAGER-002");
     REQUIREMENT("SVC-DPMANAGER-003");
+    REQUIREMENT("SVC-DPMANAGER-004");
     ProductSendIn::Tester tester;
     tester.OK();
   }
 
   TEST(SchedIn, OK) {
     COMMENT("Invoke schedIn with nominal input.");
-    REQUIREMENT("SVC-DPMANAGER-003");
+    REQUIREMENT("SVC-DPMANAGER-004");
     SchedIn::Tester tester;
     tester.OK();
   }
 
   TEST(Scenarios, Random) {
     COMMENT("Random scenario with all rules.");
-    REQUIREMENT("SVC-DPMANAGER-001");
     REQUIREMENT("SVC-DPMANAGER-002");
     REQUIREMENT("SVC-DPMANAGER-003");
+    REQUIREMENT("SVC-DPMANAGER-004");
     const FwSizeType numSteps = 10000;
     Scenarios::Random::Tester tester;
     tester.run(numSteps);
