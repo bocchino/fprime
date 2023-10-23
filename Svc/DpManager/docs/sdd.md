@@ -183,7 +183,17 @@ The diagrams use the following instances:
 
 #### 5.2.1. Synchronously Getting a Data Product Buffer
 
-TODO
+```mermaid
+sequenceDiagram
+    activate client
+    activate dpManager
+    client->>dpManager: Request buffer [productGetIn]
+    dpManager->>bufferManager: Request buffer B [bufferGetOut]
+    bufferManager-->>dpManager: Return B
+    dpManager-->>client: Return B
+    deactivate dpManager
+    deactivate client
+```
 
 #### 5.2.2. Asynchronously Requesting a Data Product Buffer
 
