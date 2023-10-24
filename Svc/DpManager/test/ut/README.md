@@ -66,6 +66,77 @@ Apply rule `BufferGetStatus::Invalid`.
 **Requirements tested:**
 None (helper rule).
 
+### 2.2. ProductGetIn
+
+This rule group sends test input to the `productGetIn` port.
+
+#### 2.2.1. BufferInvalid
+
+This rule invokes `productGetIn` in a state where the test harness returns
+an invalid buffer.
+
+**Precondition:**
+`bufferGetStatus == INVALID`.
+
+**Action:**
+
+1. Clear the history.
+1. Let _S_ be `bufferSize`, or a random value if `bufferSize == none`.
+   Invoke `productGetIn` with a random id _I_ and with size _S_.
+1. Assert that the status returned from the invocation is `FAILURE`.
+1. Assert that the event history contains one element.
+1. Assert that the event history for `BufferAllocationFailed` contains _I_ at index zero.
+1. Increment `NumFailedAllocations`.
+1. Assert that the from port history contains one item.
+1. Assert that the history for `from_bufferGetOut` contains one item.
+1. Assert that the `from_bufferGetOut` history contains size _S_
+   at index zero.
+
+**Test:**
+
+1. Apply rule `BufferGetStatus::Invalid`.
+1. Set `bufferSize` to `MIN_BUFFER_SIZE`.
+1. Apply rule `ProductGetIn::BufferInvalid`.
+1. Apply rule `SchedIn::OK`.
+1. Set `bufferSize` to `MAX_BUFFER_SIZE`.
+1. Apply rule `ProductGetIn::BufferInvalid`.
+1. Apply rule `SchedIn::OK`.
+
+**Requirements tested:**
+`SVC-DPMANAGER-001`, `SVC-DPMANAGER-004`.
+
+#### 2.2.2. BufferValid
+
+This rule invokes `productRequestIn` in a state where the test harness returns
+a valid buffer.
+
+**Precondition:**
+`bufferGetStatus == VALID`.
+
+**Action:**
+
+1. Clear history.
+1. Let _S_ be `bufferSize`, or a random value if `bufferSize == none`.
+   Invoke `productRequestIn` with a random id _I_ and with size _S_.
+1. Assert that the status returned from the invocation is `SUCCESS`.
+1. Assert that the event history is empty.
+1. Increment `NumSuccessfulAllocations`.
+1. Assert that the from port history contains one item.
+1. Assert that the `from_bufferGetOut` history contains one item.
+1. Assert that the `from_bufferGetOut` history contains size _S_.
+   at index zero.
+
+**Test:**
+
+1. Set `bufferSize` to `MIN_BUFFER_SIZE`.
+1. Apply rule `ProductGetIn::BufferValid`.
+1. Apply rule `SchedIn::OK`.
+1. Set `bufferSize` to `MAX_BUFFER_SIZE`.
+1. Apply rule `ProductGetIn::BufferValid`.
+1. Apply rule `SchedIn::OK`.
+
+**Requirements tested:**
+`SVC-DPMANAGER-001`, `SVC-DP-MANAGER-004`.
 
 ### 2.2. ProductRequestIn
 
@@ -106,7 +177,7 @@ an invalid buffer.
 1. Apply rule `SchedIn::OK`.
 
 **Requirements tested:**
-`SVC-DPMANAGER-001`, `SVC-DPMANAGER-003`.
+`SVC-DPMANAGER-002`, `SVC-DPMANAGER-004`.
 
 #### 2.2.2. BufferValid
 
@@ -119,7 +190,7 @@ a valid buffer.
 **Action:**
 
 1. Clear history.
-1. Let _S_ be `bufferSize`, or a random value if `buffersize == none`.
+1. Let _S_ be `bufferSize`, or a random value if `bufferSize == none`.
    Invoke `productRequestIn` with a random id _I_ and with size _S_.
 1. Assert that the event history is empty.
 1. Increment `NumSuccessfulAllocations`.
@@ -141,7 +212,7 @@ a valid buffer.
 1. Apply rule `SchedIn::OK`.
 
 **Requirements tested:**
-`SVC-DPMANAGER-001`, `SVC-DP-MANAGER-003`.
+`SVC-DPMANAGER-002`, `SVC-DP-MANAGER-004`.
 
 ### 2.3. ProductSendIn
 
@@ -175,7 +246,7 @@ This rule invokes `productSendIn` with nominal input.
 1. Apply rule `SchedIn::OK`.
 
 **Requirements tested:**
-`SVC-DPMANAGER-002`, `SVC-DPMANAGER-003`.
+`SVC-DPMANAGER-003`, `SVC-DPMANAGER-004`.
 
 ### 2.4. SchedIn
 
@@ -198,7 +269,7 @@ This rule invokes `schedIn` with nominal input.
 1. Apply rule `SchedIn::OK`.
 
 **Requirements tested:**
-`SVC-DPMANAGER-003`.
+`SVC-DPMANAGER-004`.
 
 ## 3. Implementation
 
