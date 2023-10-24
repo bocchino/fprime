@@ -21,6 +21,22 @@ namespace Svc {
     tester.Valid();
   }
 
+  TEST(ProductGetIn, BufferInvalid) {
+    COMMENT("Invoke productGetIn in a state where the test harness returns an invalid buffer.");
+    REQUIREMENT("SVC-DPMANAGER-001");
+    REQUIREMENT("SVC-DPMANAGER-004");
+    ProductGetIn::Tester tester;
+    tester.BufferInvalid();
+  }
+
+  TEST(ProductGetIn, BufferValid) {
+    COMMENT("Invoke productGetIn in a state where the test harness returns a valid buffer.");
+    REQUIREMENT("SVC-DPMANAGER-001");
+    REQUIREMENT("SVC-DPMANAGER-004");
+    ProductGetIn::Tester tester;
+    tester.BufferValid();
+  }
+
   TEST(ProductRequestIn, BufferInvalid) {
     COMMENT("Invoke productRequestIn in a state where the test harness returns an invalid buffer.");
     REQUIREMENT("SVC-DPMANAGER-002");

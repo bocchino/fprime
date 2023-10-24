@@ -17,6 +17,12 @@ namespace Svc {
     connectPorts()
   {
 
+    // productGetIn
+    this->connect_to_productGetIn(
+        0,
+        this->component.get_productGetIn_InputPort(0)
+    );
+
     // productRequestIn
     this->connect_to_productRequestIn(
         0,
