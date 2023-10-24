@@ -273,10 +273,10 @@ This rule invokes `schedIn` with nominal input.
 
 ## 3. Implementation
 
-### 3.1. Tester and TestState
+### 3.1. DpManagerTester and TestState
 
-The abstract state and the component under test are members of the `Tester` class.
-`TestState` is a derived class of `Tester`.
+The abstract state and the component under test are members of the `DpManagerTester` class.
+`TestState` is a derived class of `DpManagerTester`.
 The preconditions and actions of the rules are defined in `TestState` so they can use the functions
 and macros defined in `DpManagerGTestBase`.
 The header file for `TestState` is boilerplate and is defined using macro expansion.
@@ -285,7 +285,7 @@ They encode the preconditions and actions described above.
 
 ```mermaid
 classDiagram
-    class Tester {
+    class DpManagerTester {
         +AbstractState abstractState
         +DpManager component
     }
@@ -295,8 +295,8 @@ classDiagram
         +precondition__BufferGetStatus__Valid()
         +action__BufferGetStatus__Valid()
     }
-    DpManagerGTestBase <|-- Tester
-    Tester <|-- TestState
+    DpManagerGTestBase <|-- DpManagerTester
+    DpManagerTester <|-- TestState
 ```
 
 The preconditions and actions for the `BufferGetStatus` rule group are shown.

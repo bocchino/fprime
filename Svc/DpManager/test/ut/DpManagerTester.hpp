@@ -13,7 +13,7 @@
 
 namespace Svc {
 
-class Tester : public DpManagerGTestBase {
+class DpManagerTester : public DpManagerGTestBase {
   public:
     // ----------------------------------------------------------------------
     // Construction and destruction
@@ -26,11 +26,11 @@ class Tester : public DpManagerGTestBase {
     // Queue depth supplied to component instance under test
     static const NATIVE_INT_TYPE TEST_INSTANCE_QUEUE_DEPTH = 10;
 
-    //! Construct object Tester
-    Tester();
+    //! Construct object DpManagerTester
+    DpManagerTester();
 
-    //! Destroy object Tester
-    ~Tester();
+    //! Destroy object DpManagerTester
+    ~DpManagerTester();
 
   private:
     // ----------------------------------------------------------------------

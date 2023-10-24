@@ -21,7 +21,7 @@
 
 namespace Svc {
 
-class TestState : public Tester {
+class TestState : public DpManagerTester {
   public:
     // ----------------------------------------------------------------------
     // Rule definitions

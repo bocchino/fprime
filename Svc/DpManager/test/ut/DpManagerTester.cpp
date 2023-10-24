@@ -1,5 +1,5 @@
 // ======================================================================
-// \title  DpManager.hpp
+// \title  DpManagerTester.hpp
 // \author Rob Bocchino
 // \brief  cpp file for DpManager test harness implementation
 // ======================================================================
@@ -12,18 +12,19 @@ namespace Svc {
 // Construction and destruction
 // ----------------------------------------------------------------------
 
-Tester ::Tester() : DpManagerGTestBase("Tester", Tester::MAX_HISTORY_SIZE), component("DpManager") {
+DpManagerTester ::DpManagerTester()
+    : DpManagerGTestBase("DpManagerTester", DpManagerTester::MAX_HISTORY_SIZE), component("DpManager") {
     this->initComponents();
     this->connectPorts();
 }
 
-Tester ::~Tester() {}
+DpManagerTester ::~DpManagerTester() {}
 
 // ----------------------------------------------------------------------
 // Handlers for typed from ports
 // ----------------------------------------------------------------------
 
-Fw::Buffer Tester ::from_bufferGetOut_handler(const NATIVE_INT_TYPE portNum, U32 size) {
+Fw::Buffer DpManagerTester ::from_bufferGetOut_handler(const NATIVE_INT_TYPE portNum, U32 size) {
     this->pushFromPortEntry_bufferGetOut(size);
     Fw::Buffer buffer;
     switch (this->abstractState.bufferGetStatus) {
@@ -43,14 +44,14 @@ Fw::Buffer Tester ::from_bufferGetOut_handler(const NATIVE_INT_TYPE portNum, U32
     return buffer;
 }
 
-void Tester ::from_productResponseOut_handler(const NATIVE_INT_TYPE portNum,
-                                              FwDpIdType id,
-                                              const Fw::Buffer& buffer,
-                                              const Fw::Success& status) {
+void DpManagerTester::from_productResponseOut_handler(const NATIVE_INT_TYPE portNum,
+                                                      FwDpIdType id,
+                                                      const Fw::Buffer& buffer,
+                                                      const Fw::Success& status) {
     this->pushFromPortEntry_productResponseOut(id, buffer, status);
 }
 
-void Tester ::from_productSendOut_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& fwBuffer) {
+void DpManagerTester ::from_productSendOut_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& fwBuffer) {
     this->pushFromPortEntry_productSendOut(fwBuffer);
 }
 
@@ -69,7 +70,7 @@ void Tester ::from_productSendOut_handler(const NATIVE_INT_TYPE portNum, Fw::Buf
         }                                                                \
     }
 
-void Tester::checkTelemetry() {
+void DpManagerTester::checkTelemetry() {
     TESTER_CHECK_CHANNEL(NumSuccessfulAllocations);
     TESTER_CHECK_CHANNEL(NumFailedAllocations);
     TESTER_CHECK_CHANNEL(NumDataProducts);
