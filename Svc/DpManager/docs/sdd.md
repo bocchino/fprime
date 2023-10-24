@@ -189,7 +189,8 @@ sequenceDiagram
     client->>dpManager: Request buffer [productGetIn]
     dpManager->>bufferManager: Request buffer B [bufferGetOut]
     bufferManager-->>dpManager: Return B
-    dpManager-->>client: Return B
+    dpManager->>dpManager: Store B into client
+    dpManager-->>client: Return SUCCESS
     deactivate client
 ```
 
