@@ -13,7 +13,7 @@
 #ifndef Svc_TestState_HPP
 #define Svc_TestState_HPP
 
-#include "Svc/DpManager/test/ut/Tester.hpp"
+#include "Svc/DpManager/test/ut/DpManagerTester.hpp"
 
 #define TEST_STATE_DEF_RULE(GROUP_NAME, RULE_NAME)          \
     bool precondition__##GROUP_NAME##__##RULE_NAME() const; \

@@ -1,5 +1,5 @@
 // ======================================================================
-// \title  DpManager/test/ut/Tester.hpp
+// \title  DpManager/test/ut/DpManagerTester.hpp
 // \author Rob Bocchino
 // \brief  hpp file for DpManager test harness implementation
 // ======================================================================

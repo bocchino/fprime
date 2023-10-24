@@ -4,7 +4,7 @@
 // \brief  cpp file for DpManager test harness implementation
 // ======================================================================
 
-#include "Svc/DpManager/test/ut/Tester.hpp"
+#include "Svc/DpManager/test/ut/DpManagerTester.hpp"
 
 namespace Svc {
 

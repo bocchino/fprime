@@ -6,7 +6,7 @@
 // NOTE: this file was automatically generated
 //
 // ======================================================================
-#include "Tester.hpp"
+#include "DpManagerTester.hpp"
 
 namespace Svc {
   // ----------------------------------------------------------------------
