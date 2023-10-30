@@ -32,26 +32,16 @@ Fw::Success DpManager::productGetIn_handler(const NATIVE_INT_TYPE portNum,
                                             Fw::Buffer& buffer) {
     // portNum is unused
     (void)portNum;
-    // Set status
-    Fw::Success status(Fw::Success::FAILURE);
-    // Get a buffer
-    buffer = this->bufferGetOut_out(0, size);
-    if (buffer.isValid()) {
-        // Buffer is valid
-        ++this->numSuccessfulAllocations;
-        status = Fw::Success::SUCCESS;
-    } else {
-        // Buffer is invalid
-        ++this->numFailedAllocations;
-        this->log_WARNING_HI_BufferAllocationFailed(id);
-    }
+    const Fw::Success status = this->getBuffer(id, size, buffer);
     return status;
 }
 
 void DpManager::productRequestIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, FwSizeType size) {
+    // portNum is unused
+    (void)portNum;
     // Get a buffer
     Fw::Buffer buffer;
-    Fw::Success status = this->productGetIn_handlerBase(portNum, id, size, buffer);
+    const Fw::Success status = this->getBuffer(id, size, buffer);
     // Send buffer on productResponseOut
     this->productResponseOut_out(0, id, buffer, status);
 }
@@ -74,6 +64,27 @@ void DpManager::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE 
     this->tlmWrite_NumFailedAllocations(this->numFailedAllocations);
     this->tlmWrite_NumDataProducts(this->numDataProducts);
     this->tlmWrite_NumBytes(this->numBytes);
+}
+
+// ----------------------------------------------------------------------
+// Private helper functions
+// ----------------------------------------------------------------------
+
+Fw::Success DpManager::getBuffer(FwDpIdType id, FwSizeType size, Fw::Buffer& buffer) {
+    // Set status
+    Fw::Success status(Fw::Success::FAILURE);
+    // Get a buffer
+    buffer = this->bufferGetOut_out(0, size);
+    if (buffer.isValid()) {
+        // Buffer is valid
+        ++this->numSuccessfulAllocations;
+        status = Fw::Success::SUCCESS;
+    } else {
+        // Buffer is invalid
+        ++this->numFailedAllocations;
+        this->log_WARNING_HI_BufferAllocationFailed(id);
+    }
+    return status;
 }
 
 }  // end namespace Svc

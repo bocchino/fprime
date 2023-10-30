@@ -77,7 +77,7 @@ module Svc {
     telemetry NumDataProducts: U32 update on change
 
     @ Number of bytes handled
-    telemetry NumBytes: U32 update on change
+    telemetry NumBytes: U64 update on change
 
   }
 

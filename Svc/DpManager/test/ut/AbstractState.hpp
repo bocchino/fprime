@@ -160,7 +160,7 @@ class AbstractState {
     OnChangeChannel<U32> NumDataProducts;
 
     //! The number of bytes handled
-    OnChangeChannel<U32> NumBytes;
+    OnChangeChannel<U64> NumBytes;
 
     //! Data for buffers
     U8 bufferData[MAX_BUFFER_SIZE];

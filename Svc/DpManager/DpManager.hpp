@@ -7,6 +7,8 @@
 #ifndef Svc_DpManager_HPP
 #define Svc_DpManager_HPP
 
+#include <atomic>
+
 #include "Svc/DpManager/DpManagerComponentAc.hpp"
 
 namespace Svc {
@@ -55,20 +57,33 @@ class DpManager : public DpManagerComponentBase {
 
   PRIVATE:
     // ----------------------------------------------------------------------
+    // Private helper functions
+    // ----------------------------------------------------------------------
+
+    //! Get a buffer
+    //! \return Status
+    Fw::Success getBuffer(
+        FwDpIdType id, //!< The container ID (input)
+        FwSizeType size, //!< The requested size (input)
+        Fw::Buffer& buffer //!< The buffer (output)
+    );
+
+  PRIVATE:
+    // ----------------------------------------------------------------------
     // Private member variables
     // ----------------------------------------------------------------------
 
     //! The number of successful buffer allocations
-    U32 numSuccessfulAllocations;
+    std::atomic<U32> numSuccessfulAllocations;
 
     //! The number of failed buffer allocations
-    U32 numFailedAllocations;
+    std::atomic<U32> numFailedAllocations;
 
     //! The number of data products handled
     U32 numDataProducts;
 
     //! The number of bytes handled
-    U32 numBytes;
+    U64 numBytes;
 };
 
 }  // end namespace Svc
