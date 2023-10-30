@@ -3,9 +3,9 @@
 dir=`dirname $0`
 cd $dir
 
-# Force the build system to regenerate the test code
+# Force the build system to regenerate the auto-generated code
 build_cache=../build-fprime-automatic-native-ut/FppTest/dp
-rm -f $build_cache/*GTestBase.* $build_cache/*TesterBase.*
+rm -f $build_cache/*Ac.* $build_cache/*GTestBase.* $build_cache/*TesterBase.*
 
 (cd ..; find . -name '*gcda' | xargs rm)
 fprime-util check
