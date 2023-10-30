@@ -8,12 +8,12 @@ It does the following:
 
 1. Receive requests for buffers to hold data products.
 
-   1.  When a client component synchronously requests a data product buffer, 
+   1.  When a client component synchronously requests a data product buffer,
        request an [`Fw::Buffer`](../../../Fw/Buffer/docs/sdd.md)
        from a buffer manager.
        Return the buffer to the client component so the component can fill it.
 
-   1.  When a client component asynchronously requests a data product buffer, 
+   1.  When a client component asynchronously requests a data product buffer,
        request an [`Fw::Buffer`](../../../Fw/Buffer/docs/sdd.md)
        from a buffer manager.
        Send the buffer to the client component so the component can fill it.
@@ -68,13 +68,14 @@ The diagram below shows the `DpManager` component.
 
 `DpManager` maintains the following state:
 
-1. `numSuccessfulAllocations`: The number of successful buffer allocations.
+1. `numSuccessfulAllocations (U32)`: The number of successful buffer
+   allocations.
 
-1. `numFailedAllocations`: The number of failed buffer allocations.
+1. `numFailedAllocations (U32)`: The number of failed buffer allocations.
 
-1. `numDataProducts`: The number of data products handled.
+1. `numDataProducts (U32)`: The number of data products handled.
 
-1. `numBytes`: The number of bytes handled.
+1. `numBytes (U64)`: The number of bytes handled.
 
 ### 3.4. Runtime Setup
 
@@ -129,7 +130,7 @@ It does the following:
 
 1. Set `B = bufferGetOut_out(0, size)`.
 
-1. If `B` is valid, then atomically increment `numSuccessfulAllocations` and 
+1. If `B` is valid, then atomically increment `numSuccessfulAllocations` and
    set `status = SUCCESS`.
 
 1. Otherwise atomically increment `numFailedAllocations` and emit a warning event.
