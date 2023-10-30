@@ -53,7 +53,7 @@ The diagram below shows the `DpManager` component.
 | Kind | Name | Port Type | Usage |
 |------|------|-----------|-------|
 | `async input` | `schedIn` | `Svc.Sched` | Schedule in port |
-| `guarded input` | `productGetIn` | `Fw.DpGet` | Port for responding to a data product get from a client component |
+| `sync input` | `productGetIn` | `Fw.DpGet` | Port for responding to a data product get from a client component |
 | `async input` | `productRequestIn` | `Fw.DpRequest` | Port for receiving data product buffer requests from a client component |
 | `output` | `productResponseOut` | `Fw.DpResponse` | Port for sending requested data product buffers to a client component |
 | `output` | `bufferGetOut` | `Fw.BufferGet` | Port for getting buffers from a Buffer Manager |
@@ -92,13 +92,7 @@ This port receives a container ID `id`, a requested buffer size `size`,
 and a mutable reference to a buffer `B`.
 It does the following:
 
-1. Set `status = FAILURE`.
-
-1. Set `B = bufferGetOut_out(0, size)`.
-
-1. If `B` is valid, then increment `numSuccessfulAllocations` and set `status = SUCCESS`.
-
-1. Otherwise increment `numFailedAllocations` and emit a warning event.
+1. Set `status = getBuffer(id, size, B)`.
 
 1. Return `status`.
 
@@ -109,9 +103,7 @@ It does the following:
 
 1. Initialize the local variable `B` with an invalid buffer.
 
-1. Set `status = productGetIn_handlerBase(id, size, B)`.
-   NOTE: The call to the handler base is guarded by the mutex lock
-   associated with the `productGetIn` port.
+1. Set `status = getBuffer(id, size, B)`.
 
 1. Send `(id, B, status)` on `productResponseOut`.
 
@@ -123,6 +115,26 @@ It does the following:
 1. Update `numDataProducts` and `numBytes`.
 
 1. Send `B` on `productSendOut`.
+
+### 3.6. Helper Methods
+
+<a name="getBuffer"></a>
+#### 3.6.1. getBuffer
+
+This function receives a container ID `id`, a requested buffer size `size`,
+and a mutable reference to a buffer `B`.
+It does the following:
+
+1. Set `status = FAILURE`.
+
+1. Set `B = bufferGetOut_out(0, size)`.
+
+1. If `B` is valid, then atomically increment `numSuccessfulAllocations` and 
+   set `status = SUCCESS`.
+
+1. Otherwise atomically increment `numFailedAllocations` and emit a warning event.
+
+1. Return `status`.
 
 <a name="ground_interface"></a>
 ## 4. Ground Interface
