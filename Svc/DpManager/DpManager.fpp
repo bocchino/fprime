@@ -37,7 +37,7 @@ module Svc {
     output port productSendOut: Fw.BufferSend
 
     # ----------------------------------------------------------------------
-    # Special ports
+    # F' special ports
     # ----------------------------------------------------------------------
 
     @ Time get port
