@@ -102,7 +102,7 @@ It does the following:
 This port receives a container ID `id` and a requested buffer size `size`.
 It does the following:
 
-1. Initialize the local variable `B` with an invalid buffer.
+1. Initialize a local variable `B` with an invalid buffer.
 
 1. Set `status = getBuffer(id, size, B)`.
 
