@@ -12,6 +12,7 @@
 
 #include <limits>
 
+#include "config/FppConstantsAc.hpp"
 #include "STest/Pick/Pick.hpp"
 #include "Svc/DpManager/test/ut/Rules/ProductGetIn.hpp"
 #include "Svc/DpManager/test/ut/Rules/Testers.hpp"
@@ -30,10 +31,11 @@ void TestState::action__ProductGetIn__BufferValid() {
     // Clear history
     this->clearHistory();
     // Send the invocation
+    const FwIndexType portNum = STest::Pick::startLength(0, DpManagerNumPorts);
     const FwDpIdType id = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpIdType>::max());
     const FwSizeType size = this->abstractState.getBufferSize();
     Fw::Buffer buffer;
-    const auto status = this->invoke_to_productGetIn(0, id, size, buffer);
+    const auto status = this->invoke_to_productGetIn(portNum, id, size, buffer);
     ASSERT_EQ(status, Fw::Success::SUCCESS);
     // Check events
     ASSERT_EVENTS_SIZE(0);
@@ -57,10 +59,11 @@ void TestState ::action__ProductGetIn__BufferInvalid() {
     // Clear history
     this->clearHistory();
     // Send the invocation
+    const FwIndexType portNum = STest::Pick::startLength(0, DpManagerNumPorts);
     const FwDpIdType id = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpIdType>::max());
     const FwSizeType size = this->abstractState.getBufferSize();
     Fw::Buffer buffer;
-    const auto status = this->invoke_to_productGetIn(0, id, size, buffer);
+    const auto status = this->invoke_to_productGetIn(portNum, id, size, buffer);
     ASSERT_EQ(status, Fw::Success::FAILURE);
     // Check events
     ASSERT_EVENTS_SIZE(1);
