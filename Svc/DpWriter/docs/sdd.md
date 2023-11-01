@@ -32,13 +32,25 @@ SVC-DPWRITER-005 | When writing a buffer containing a data product _C_ to disk, 
 
 ### 3.1. Component Diagram
 
-TODO
+The diagram below shows the `DpWriter` component.
+
+<div>
+<img src="img/DpWriter.png" width=700/>
+</div>
 
 ### 3.2. Ports
 
 `DpWriter` has the following ports:
 
-TODO
+| Kind | Name | Port Type | Usage |
+|------|------|-----------|-------|
+| `async input` | `schedIn` | `Svc.Sched` | Schedule in port |
+| `async input` | `bufferSendIn` | `Fw.BufferSend` | Port for receiving data products to write to disk |
+| `output` | `procBufferSendOut` | `[DpWriterNumProcPorts] Fw.BufferSend` | Port for processing data products |
+| `time get` | `timeGetOut` | `Fw.Time` | Time get port |
+| `telemetry` | `tlmOut` | `Fw.Tlm` | Telemetry port |
+| `event` | `eventOut` | `Fw.Log` | Event port |
+| `text event` | `textEventOut` | `Fw.LogText` | Text event port |
 
 ### 3.3. State
 
