@@ -24,7 +24,7 @@ DpManagerTester ::~DpManagerTester() {}
 // Handlers for typed from ports
 // ----------------------------------------------------------------------
 
-Fw::Buffer DpManagerTester ::from_bufferGetOut_handler(const NATIVE_INT_TYPE portNum, U32 size) {
+Fw::Buffer DpManagerTester::from_bufferGetOut_handler(const NATIVE_INT_TYPE portNum, U32 size) {
     this->pushFromPortEntry_bufferGetOut(size);
     Fw::Buffer buffer;
     switch (this->abstractState.bufferGetStatus) {
@@ -51,7 +51,7 @@ void DpManagerTester::from_productResponseOut_handler(const NATIVE_INT_TYPE port
     this->pushFromPortEntry_productResponseOut(id, buffer, status);
 }
 
-void DpManagerTester ::from_productSendOut_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& fwBuffer) {
+void DpManagerTester::from_productSendOut_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& fwBuffer) {
     this->pushFromPortEntry_productSendOut(fwBuffer);
 }
 

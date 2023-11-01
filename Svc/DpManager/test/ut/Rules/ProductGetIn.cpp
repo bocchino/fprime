@@ -12,10 +12,10 @@
 
 #include <limits>
 
-#include "config/FppConstantsAc.hpp"
 #include "STest/Pick/Pick.hpp"
 #include "Svc/DpManager/test/ut/Rules/ProductGetIn.hpp"
 #include "Svc/DpManager/test/ut/Rules/Testers.hpp"
+#include "config/FppConstantsAc.hpp"
 
 namespace Svc {
 

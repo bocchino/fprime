@@ -13,6 +13,7 @@
 #include "STest/Pick/Pick.hpp"
 #include "Svc/DpManager/test/ut/Rules/ProductSendIn.hpp"
 #include "Svc/DpManager/test/ut/Rules/Testers.hpp"
+#include "config/FppConstantsAc.hpp"
 
 namespace Svc {
 
@@ -28,10 +29,11 @@ void TestState ::action__ProductSendIn__OK() {
     // Clear history
     this->clearHistory();
     // Send the invocation
+    const FwIndexType portNum = STest::Pick::startLength(0, DpManagerNumPorts);
     const FwDpIdType id = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpIdType>::max());
     const FwSizeType size = this->abstractState.getBufferSize();
     const Fw::Buffer buffer(this->abstractState.bufferData, size);
-    this->invoke_to_productSendIn(0, id, buffer);
+    this->invoke_to_productSendIn(portNum, id, buffer);
     this->component.doDispatch();
     // Check events
     ASSERT_EVENTS_SIZE(0);
