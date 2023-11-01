@@ -64,7 +64,14 @@ TODO
 
 ### 3.5. Port Handlers
 
+#### 3.5.1. schedIn
+
 TODO
+
+#### 3.5.2. bufferSendIn
+
+TODO
+
 <a name="ground_interface"></a>
 ## 4. Ground Interface
 
