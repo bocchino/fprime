@@ -22,7 +22,9 @@
 | `NumFailedAllocations` | `OnChangeChannel<U32>` | The number of failed buffer allocations | 0 |
 | `NumDataProducts` | `OnChangeChannel<U32>` | The number of data products handled | 0 |
 | `NumBytes` | `OnChangeChannel<U32>` | The number of bytes handled | 0 |
-
+| `bufferGetOutPortNumOpt` | `Option<FwIndexType>` | The last port number used for `bufferGetOut`. Updated in the port handler for `from_bufferGetOut`. | `none` |
+| `productResponseOutPortNumOpt` | `Option<FwIndexType>` | The last port number used for `productResponseOut`. Updated in the port handler for `from_productResponseOut`. | `none` |
+| `productSendOutPortNumOpt` | `Option<FwIndexType>` | The last port number used for `productSendOut`. Updated in the port handler for `from_productSendOut`. | `none` |
 
 ## 2. Rule Groups
 
@@ -82,15 +84,17 @@ an invalid buffer.
 
 1. Clear the history.
 1. Let _S_ be `bufferSize`, or a random value if `bufferSize == none`.
-   Invoke `productGetIn` with a random id _I_ and with size _S_.
+   Invoke `productGetIn` with a random port number _N_, with a random id _I_,
+   and with size _S_.
 1. Assert that the status returned from the invocation is `FAILURE`.
 1. Assert that the event history contains one element.
 1. Assert that the event history for `BufferAllocationFailed` contains _I_ at index zero.
 1. Increment `NumFailedAllocations`.
 1. Assert that the from port history contains one item.
-1. Assert that the history for `from_bufferGetOut` contains one item.
+1. Assert that the history for `bufferGetOut` contains one item.
 1. Assert that the `from_bufferGetOut` history contains size _S_
    at index zero.
+1. Assert that `bufferGetOutPortNumOpt` is _N_.
 
 **Test:**
 
@@ -117,7 +121,8 @@ a valid buffer.
 
 1. Clear history.
 1. Let _S_ be `bufferSize`, or a random value if `bufferSize == none`.
-   Invoke `productRequestIn` with a random id _I_ and with size _S_.
+   Invoke `productRequestIn` with a random port number _N_, with a random id _I_,
+   and with size _S_.
 1. Assert that the status returned from the invocation is `SUCCESS`.
 1. Assert that the event history is empty.
 1. Increment `NumSuccessfulAllocations`.
@@ -125,6 +130,7 @@ a valid buffer.
 1. Assert that the `from_bufferGetOut` history contains one item.
 1. Assert that the `from_bufferGetOut` history contains size _S_.
    at index zero.
+1. Assert that `bufferGetOutPortNumOpt` is _N_.
 
 **Test:**
 
@@ -154,17 +160,20 @@ an invalid buffer.
 
 1. Clear the history.
 1. Let _S_ be `bufferSize`, or a random value if `bufferSize == none`.
-   Invoke `productRequestIn` with a random id _I_ and with size _S_.
+   Invoke `productRequestIn` with a random port number _N_, with a random id _I_,
+   and with size _S_.
 1. Assert that the event history contains one element.
 1. Assert that the event history for `BufferAllocationFailed` contains _I_ at index zero.
 1. Increment `NumFailedAllocations`.
 1. Assert that the from port history contains two items.
-1. Assert that the history for `from_bufferGetOut` contains one item.
-1. Assert that the `from_bufferGetOut` history contains size _S_
+1. Assert that the history for `bufferGetOut` contains one item.
+1. Assert that the `bufferGetOut` history contains size _S_
    at index zero.
-1. Assert that the history for `from_productResponseOut` contains one item.
+1. Assert that `bufferGetOutPortNumOpt` is _N_.
+1. Assert that the history for `productResponseOut` contains one item.
 1. Assert that the history for `productResponseOut` contains the expected invalid buffer
    and status `FAILURE` at index zero.
+1. Assert that `productResponseOutPortNumOpt` is _N_.
 
 **Test:**
 
@@ -191,16 +200,19 @@ a valid buffer.
 
 1. Clear history.
 1. Let _S_ be `bufferSize`, or a random value if `bufferSize == none`.
-   Invoke `productRequestIn` with a random id _I_ and with size _S_.
+   Invoke `productRequestIn` with a random port number _N_, with a random id _I_,
+   and with size _S_.
 1. Assert that the event history is empty.
 1. Increment `NumSuccessfulAllocations`.
 1. Assert that the from port history contains two items.
 1. Assert that the `from_bufferGetOut` history contains one item.
 1. Assert that the `from_bufferGetOut` history contains size _S_.
    at index zero.
+1. Assert that `bufferGetOutPortNumOpt` is _N_.
 1. Assert that the `from_productResponseOut` history contains one item.
 1. Assert that the `from_productResponseOut` history contains the
    expected valid buffer value and status `SUCCESS` at index zero.
+1. Assert that `productResponseOutPortNumOpt` is _N_.
 
 **Test:**
 
@@ -228,14 +240,15 @@ This rule invokes `productSendIn` with nominal input.
 
 1. Clear history.
 1. Let _S_ be `bufferSize`, or a random value if `bufferSize == none`.
-   Invoke `productSendIn` with a random id _I_ and a buffer _B_ of
-   of size _S_.
+   Invoke `productSendIn` with a random port number _N_, with a random id _I_,
+   and with a buffer _B_ of of size _S_.
 1. Assert that the event history is empty.
 1. Increment `NumDataBroducts`.
 1. Increase `NumBytes` by the size of _B_.
 1. Assert that the from port history contains one item.
 1. Assert that the `from_productSendOut` history contains one item.
 1. Assert that the `from_productSendOut` history contains _B_ at index zero.
+1. Assert that `productSendOutPortNumOpt` is _N_.
 
 **Test:**
 1. Set `bufferSize` to `MIN_BUFFER_SIZE`.
