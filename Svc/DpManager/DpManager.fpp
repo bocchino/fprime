@@ -14,26 +14,26 @@ module Svc {
     # Ports for handling buffer requests
     # ----------------------------------------------------------------------
 
-    @ Port for responding to a data product get from a client component
+    @ Ports for responding to a data product get from a client component
     sync input port productGetIn: [DpManagerNumPorts] Fw.DpGet
 
-    @ Port for receiving data product buffer requests from a client component
+    @ Ports for receiving data product buffer requests from a client component
     async input port productRequestIn: [DpManagerNumPorts] Fw.DpRequest
 
-    @ Port for sending requested data product buffers to a client component
+    @ Ports for sending requested data product buffers to a client component
     output port productResponseOut: [DpManagerNumPorts] Fw.DpResponse
 
-    @ Port for getting buffers from a Buffer Manager
+    @ Ports for getting buffers from a Buffer Manager
     output port bufferGetOut: [DpManagerNumPorts] Fw.BufferGet
 
     # ----------------------------------------------------------------------
     # Ports for forwarding filled data products 
     # ----------------------------------------------------------------------
 
-    @ Port for receiving filled data product buffers from a client component
+    @ Ports for receiving filled data product buffers from a client component
     async input port productSendIn: [DpManagerNumPorts] Fw.DpSend
 
-    @ Port for sending filled data product buffers to a downstream component
+    @ Ports for sending filled data product buffers to a downstream component
     output port productSendOut: [DpManagerNumPorts] Fw.BufferSend
 
     # ----------------------------------------------------------------------
