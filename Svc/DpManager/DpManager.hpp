@@ -62,10 +62,9 @@ class DpManager : public DpManagerComponentBase {
 
     //! Get a buffer
     //! \return Status
-    Fw::Success getBuffer(
-        FwDpIdType id, //!< The container ID (input)
-        FwSizeType size, //!< The requested size (input)
-        Fw::Buffer& buffer //!< The buffer (output)
+    Fw::Success getBuffer(FwDpIdType id,      //!< The container ID (input)
+                          FwSizeType size,    //!< The requested size (input)
+                          Fw::Buffer& buffer  //!< The buffer (output)
     );
 
   PRIVATE:
