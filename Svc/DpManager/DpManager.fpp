@@ -24,7 +24,7 @@ module Svc {
     output port productResponseOut: [DpManagerNumPorts] Fw.DpResponse
 
     @ Port for getting buffers from a Buffer Manager
-    output port bufferGetOut: Fw.BufferGet
+    output port bufferGetOut: [DpManagerNumPorts] Fw.BufferGet
 
     # ----------------------------------------------------------------------
     # Ports for forwarding filled data products 

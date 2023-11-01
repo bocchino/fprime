@@ -30,16 +30,14 @@ Fw::Success DpManager::productGetIn_handler(const NATIVE_INT_TYPE portNum,
                                             FwDpIdType id,
                                             FwSizeType size,
                                             Fw::Buffer& buffer) {
-    // portNum is unused
-    (void)portNum;
-    const Fw::Success status = this->getBuffer(id, size, buffer);
+    const Fw::Success status = this->getBuffer(portNum, id, size, buffer);
     return status;
 }
 
 void DpManager::productRequestIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, FwSizeType size) {
     // Get a buffer
     Fw::Buffer buffer;
-    const Fw::Success status = this->getBuffer(id, size, buffer);
+    const Fw::Success status = this->getBuffer(portNum, id, size, buffer);
     // Send buffer on productResponseOut
     this->productResponseOut_out(portNum, id, buffer, status);
 }
@@ -67,11 +65,11 @@ void DpManager::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE 
 // Private helper functions
 // ----------------------------------------------------------------------
 
-Fw::Success DpManager::getBuffer(FwDpIdType id, FwSizeType size, Fw::Buffer& buffer) {
+Fw::Success DpManager::getBuffer(FwIndexType portNum, FwDpIdType id, FwSizeType size, Fw::Buffer& buffer) {
     // Set status
     Fw::Success status(Fw::Success::FAILURE);
     // Get a buffer
-    buffer = this->bufferGetOut_out(0, size);
+    buffer = this->bufferGetOut_out(portNum, size);
     if (buffer.isValid()) {
         // Buffer is valid
         ++this->numSuccessfulAllocations;
