@@ -15,6 +15,7 @@
 #include "STest/Pick/Pick.hpp"
 #include "Svc/DpManager/test/ut/Rules/ProductRequestIn.hpp"
 #include "Svc/DpManager/test/ut/Rules/Testers.hpp"
+#include "config/FppConstantsAc.hpp"
 
 namespace Svc {
 
@@ -30,9 +31,10 @@ void TestState::action__ProductRequestIn__BufferValid() {
     // Clear history
     this->clearHistory();
     // Send the invocation
+    const FwIndexType portNum = STest::Pick::startLength(0, DpManagerNumPorts);
     const FwDpIdType id = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpIdType>::max());
     const FwSizeType size = this->abstractState.getBufferSize();
-    this->invoke_to_productRequestIn(0, id, size);
+    this->invoke_to_productRequestIn(portNum, id, size);
     this->component.doDispatch();
     // Check events
     ASSERT_EVENTS_SIZE(0);
@@ -43,11 +45,13 @@ void TestState::action__ProductRequestIn__BufferValid() {
     // Check buffer get out
     ASSERT_from_bufferGetOut_SIZE(1);
     ASSERT_from_bufferGetOut(0, size);
+    ASSERT_EQ(this->abstractState.bufferGetOutPortNumOpt.get(), portNum);
     // Check product response out
     ASSERT_from_productResponseOut_SIZE(1);
     const Fw::Success failure(Fw::Success::SUCCESS);
     const Fw::Buffer buffer(this->abstractState.bufferData, size);
     ASSERT_from_productResponseOut(0, id, buffer, failure);
+    ASSERT_EQ(this->abstractState.productResponseOutPortNumOpt.get(), portNum);
 }
 
 bool TestState::precondition__ProductRequestIn__BufferInvalid() const {
@@ -58,9 +62,10 @@ void TestState ::action__ProductRequestIn__BufferInvalid() {
     // Clear history
     this->clearHistory();
     // Send the invocation
+    const FwIndexType portNum = STest::Pick::startLength(0, DpManagerNumPorts);
     const FwDpIdType id = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpIdType>::max());
     const FwSizeType size = this->abstractState.getBufferSize();
-    this->invoke_to_productRequestIn(0, id, size);
+    this->invoke_to_productRequestIn(portNum, id, size);
     this->component.doDispatch();
     // Check events
     ASSERT_EVENTS_SIZE(1);
@@ -72,11 +77,13 @@ void TestState ::action__ProductRequestIn__BufferInvalid() {
     // Check buffer get out
     ASSERT_from_bufferGetOut_SIZE(1);
     ASSERT_from_bufferGetOut(0, size);
+    ASSERT_EQ(this->abstractState.bufferGetOutPortNumOpt.get(), portNum);
     // Check product response out
     ASSERT_from_productResponseOut_SIZE(1);
     const Fw::Buffer buffer;
     const Fw::Success status(Fw::Success::FAILURE);
     ASSERT_from_productResponseOut(0, id, buffer, status);
+    ASSERT_EQ(this->abstractState.productResponseOutPortNumOpt.get(), portNum);
 }
 
 namespace ProductRequestIn {
