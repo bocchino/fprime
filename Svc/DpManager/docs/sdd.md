@@ -53,12 +53,12 @@ The diagram below shows the `DpManager` component.
 | Kind | Name | Port Type | Usage |
 |------|------|-----------|-------|
 | `async input` | `schedIn` | `Svc.Sched` | Schedule in port |
-| `sync input` | `productGetIn` | `[DpManagerNumPorts] Fw.DpGet` | Port for responding to a data product get from a client component |
-| `async input` | `productRequestIn` | `[DpManagerNumPorts] Fw.DpRequest` | Port for receiving data product buffer requests from a client component |
-| `output` | `productResponseOut` | `[DpManagerNumPorts] Fw.DpResponse` | Port for sending requested data product buffers to a client component |
-| `output` | `bufferGetOut` | `Fw.BufferGet` | Port for getting buffers from a Buffer Manager |
-| `async input` | `productSendIn` | `[DpManagerNumPorts] Fw.DpSend` | Port for receiving filled data product buffers from a client component |
-| `output` | `productSendOut` | `[DpManagerNumPorts] Fw.BufferSend` | Port for sending filled data product buffers to a downstream component |
+| `sync input` | `productGetIn` | `[DpManagerNumPorts] Fw.DpGet` | Ports for responding to a data product get from a client component |
+| `async input` | `productRequestIn` | `[DpManagerNumPorts] Fw.DpRequest` | Ports for receiving data product buffer requests from a client component |
+| `output` | `productResponseOut` | `[DpManagerNumPorts] Fw.DpResponse` | Ports for sending requested data product buffers to a client component |
+| `output` | `bufferGetOut` | `[DpManagerNumPorts] Fw.BufferGet` | Ports for getting buffers from a Buffer Manager |
+| `async input` | `productSendIn` | `[DpManagerNumPorts] Fw.DpSend` | Ports for receiving filled data product buffers from a client component |
+| `output` | `productSendOut` | `[DpManagerNumPorts] Fw.BufferSend` | Ports for sending filled data product buffers to a downstream component |
 | `time get` | `timeGetOut` | `Fw.Time` | Time get port |
 | `telemetry` | `tlmOut` | `Fw.Tlm` | Telemetry port |
 | `event` | `eventOut` | `Fw.Log` | Event port |
@@ -95,46 +95,48 @@ The handler for this port sends out the state variables as telemetry.
 
 #### 3.6.2. productGetIn
 
-This port receives a container ID `id`, a requested buffer size `size`,
-and a mutable reference to a buffer `B`.
+This handler receives a port number `portNum`, a container ID `id`, a requested
+buffer size `size`, and a mutable reference to a buffer `B`.
 It does the following:
 
-1. Set `status = getBuffer(id, size, B)`.
+1. Set `status = getBuffer(portNum, id, size, B)`.
 
 1. Return `status`.
 
 #### 3.6.3. productRequestIn
 
-This port receives a container ID `id` and a requested buffer size `size`.
+This handler receives a port number `portNum`, a container ID `id` and a
+requested buffer size `size`.
 It does the following:
 
 1. Initialize a local variable `B` with an invalid buffer.
 
-1. Set `status = getBuffer(id, size, B)`.
+1. Set `status = getBuffer(portNum id, size, B)`.
 
-1. Send `(id, B, status)` on `productResponseOut`.
+1. Send `(id, B, status)` on port `portNum` of `productResponseOut`.
 
 #### 3.6.4. productSendIn
 
-This port receives a data product ID `I` and a buffer `B`.
+This handler receives a port number `portNum`, a data product ID `I` and a
+buffer `B`.
 It does the following:
 
 1. Update `numDataProducts` and `numBytes`.
 
-1. Send `B` on `productSendOut`.
+1. Send `B` on port `portNum` of `productSendOut`.
 
 ### 3.7. Helper Methods
 
 <a name="getBuffer"></a>
 #### 3.7.1. getBuffer
 
-This function receives a container ID `id`, a requested buffer size `size`,
-and a mutable reference to a buffer `B`.
+This function receives a port number `portNum`, a container ID `id`, a
+requested buffer size `size`, and a mutable reference to a buffer `B`.
 It does the following:
 
 1. Set `status = FAILURE`.
 
-1. Set `B = bufferGetOut_out(0, size)`.
+1. Set `B = bufferGetOut_out(portNum, size)`.
 
 1. If `B` is valid, then atomically increment `numSuccessfulAllocations` and
    set `status = SUCCESS`.
