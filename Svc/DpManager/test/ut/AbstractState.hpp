@@ -119,7 +119,10 @@ class AbstractState {
           NumSuccessfulAllocations(0),
           NumFailedAllocations(0),
           NumDataProducts(0),
-          NumBytes(0) {}
+          NumBytes(0),
+          bufferGetOutPortNumOpt(),
+          productResponseOutPortNumOpt(),
+          productSendOutPortNumOpt() {}
 
   public:
     // ----------------------------------------------------------------------
@@ -164,6 +167,15 @@ class AbstractState {
 
     //! Data for buffers
     U8 bufferData[MAX_BUFFER_SIZE];
+
+    //! The last port number used for bufferGetOut
+    Option<FwIndexType> bufferGetOutPortNumOpt;
+
+    //! The last port number used for productResponseOut
+    Option<FwIndexType> productResponseOutPortNumOpt;
+
+    //! The last port number used for productSendOut
+    Option<FwIndexType> productSendOutPortNumOpt;
 };
 
 }  // namespace Svc

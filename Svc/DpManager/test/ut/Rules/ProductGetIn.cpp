@@ -46,6 +46,8 @@ void TestState::action__ProductGetIn__BufferValid() {
     // Check buffer get out
     ASSERT_from_bufferGetOut_SIZE(1);
     ASSERT_from_bufferGetOut(0, size);
+    // Check the port number
+    ASSERT_EQ(this->abstractState.bufferGetOutPortNumOpt.get(), portNum);
     // Check the buffer
     const Fw::Buffer expectedBuffer(this->abstractState.bufferData, size);
     ASSERT_EQ(buffer, expectedBuffer);
@@ -75,6 +77,8 @@ void TestState ::action__ProductGetIn__BufferInvalid() {
     // Check buffer get out
     ASSERT_from_bufferGetOut_SIZE(1);
     ASSERT_from_bufferGetOut(0, size);
+    // Check the port number
+    ASSERT_EQ(this->abstractState.bufferGetOutPortNumOpt.get(), portNum);
 }
 
 namespace ProductGetIn {

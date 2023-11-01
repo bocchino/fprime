@@ -25,6 +25,7 @@ DpManagerTester ::~DpManagerTester() {}
 // ----------------------------------------------------------------------
 
 Fw::Buffer DpManagerTester::from_bufferGetOut_handler(const NATIVE_INT_TYPE portNum, U32 size) {
+    this->abstractState.bufferGetOutPortNumOpt = AbstractState::Option<FwIndexType>::some(portNum);
     this->pushFromPortEntry_bufferGetOut(size);
     Fw::Buffer buffer;
     switch (this->abstractState.bufferGetStatus) {
@@ -48,10 +49,12 @@ void DpManagerTester::from_productResponseOut_handler(const NATIVE_INT_TYPE port
                                                       FwDpIdType id,
                                                       const Fw::Buffer& buffer,
                                                       const Fw::Success& status) {
+    this->abstractState.productResponseOutPortNumOpt = AbstractState::Option<FwIndexType>::some(portNum);
     this->pushFromPortEntry_productResponseOut(id, buffer, status);
 }
 
 void DpManagerTester::from_productSendOut_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& fwBuffer) {
+    this->abstractState.productSendOutPortNumOpt = AbstractState::Option<FwIndexType>::some(portNum);
     this->pushFromPortEntry_productSendOut(fwBuffer);
 }
 
