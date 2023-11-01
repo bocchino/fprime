@@ -58,25 +58,44 @@ The diagram below shows the `DpWriter` component.
 
 TODO
 
-### 3.4. Runtime Setup
+### 3.4. Compile-Time Setup
+
+The configuration constant [`DpWriterNumProcPorts`](../../../config/AcConstants.fpp)
+specifies the number of ports for connecting components that perform
+processing.
+
+### 3.5. Runtime Setup
+
+No special runtime setup is required.
+
+### 3.6. Port Handlers
+
+#### 3.6.1. schedIn
 
 TODO
 
-### 3.5. Port Handlers
-
-#### 3.5.1. schedIn
-
-TODO
-
-#### 3.5.2. bufferSendIn
+#### 3.6.2. bufferSendIn
 
 TODO
 
 <a name="ground_interface"></a>
 ## 4. Ground Interface
 
+### 4.1. Telemetry
+
+TODO
+
+### 4.2. Events
+
 TODO
 
 ## 5. Example Uses
+
+<a name="top-diagrams"></a>
+### 5.1. Topology Diagrams
+
+TODO
+
+### 5.2. Sequence Diagrams
 
 TODO
