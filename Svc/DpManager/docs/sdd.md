@@ -31,8 +31,8 @@ for deallocation.
 
 Requirement | Description | Rationale | Verification Method
 ----------- | ----------- | ----------| -------------------
-SVC-DPMANAGER-001 | `Svc::DpManager` shall provide a port for synchronously requesting and receiving data product buffers. | This capability supports the `product` `get` port in the auto-generated code for components that define data products. | Unit test
-SVC-DPMANAGER-002 | `Svc::DpManager` shall provide ports for receiving and asynchronously responding to requests for data product buffers. | This capability supports the `product` `request` and `product` `recv` ports in the auto-generated code for components that define data products. | Unit test
+SVC-DPMANAGER-001 | `Svc::DpManager` shall provide an array of ports for synchronously requesting and receiving data product buffers. | This capability supports the `product` `get` port in the auto-generated code for components that define data products. | Unit test
+SVC-DPMANAGER-002 | `Svc::DpManager` shall provide arrays of ports for receiving and asynchronously responding to requests for data product buffers. | This capability supports the `product` `request` and `product` `recv` ports in the auto-generated code for components that define data products. | Unit test
 SVC-DPMANAGER-003 | `Svc::DpManager` shall receive data product buffers and forward them for further processing. | This requirement provides a pass-through capability for sending data product buffers to downstream components. `Svc::DpManager` receives data product input on a port of type  `Fw::DpSend`. This input consists of a container ID and an `Fw::Buffer` _B_. `Svc::DpManager` sends _B_ on a port of type `Fw::BufferSend`. This port type is used by the standard F Prime components for managing and logging data, e.g., `Svc::BufferAccumulator`, `Svc::DpWriter`. | Unit test
 SVC-DPMANAGER-004 | `Svc::DpManager` shall provide telemetry that reports the number of successful allocations, the number of failed allocations, and the volume of data handled. | This requirement establishes the telemetry interface for the component. | Unit test
 
@@ -53,12 +53,12 @@ The diagram below shows the `DpManager` component.
 | Kind | Name | Port Type | Usage |
 |------|------|-----------|-------|
 | `async input` | `schedIn` | `Svc.Sched` | Schedule in port |
-| `sync input` | `productGetIn` | `Fw.DpGet` | Port for responding to a data product get from a client component |
-| `async input` | `productRequestIn` | `Fw.DpRequest` | Port for receiving data product buffer requests from a client component |
-| `output` | `productResponseOut` | `Fw.DpResponse` | Port for sending requested data product buffers to a client component |
+| `sync input` | `productGetIn` | `[DpManagerNumPorts] Fw.DpGet` | Port for responding to a data product get from a client component |
+| `async input` | `productRequestIn` | `[DpManagerNumPorts] Fw.DpRequest` | Port for receiving data product buffer requests from a client component |
+| `output` | `productResponseOut` | `[DpManagerNumPorts] Fw.DpResponse` | Port for sending requested data product buffers to a client component |
 | `output` | `bufferGetOut` | `Fw.BufferGet` | Port for getting buffers from a Buffer Manager |
-| `async input` | `productSendIn` | `Fw.DpSend` | Port for receiving filled data product buffers from a client component |
-| `output` | `productSendOut` | `Fw.BufferSend` | Port for sending filled data product buffers to a downstream component |
+| `async input` | `productSendIn` | `[DpManagerNumPorts] Fw.DpSend` | Port for receiving filled data product buffers from a client component |
+| `output` | `productSendOut` | `[DpManagerNumPorts] Fw.BufferSend` | Port for sending filled data product buffers to a downstream component |
 | `time get` | `timeGetOut` | `Fw.Time` | Time get port |
 | `telemetry` | `tlmOut` | `Fw.Tlm` | Telemetry port |
 | `event` | `eventOut` | `Fw.Log` | Event port |
@@ -77,17 +77,23 @@ The diagram below shows the `DpManager` component.
 
 1. `numBytes (U64)`: The number of bytes handled.
 
-### 3.4. Runtime Setup
+### 3.4. Compile-Time Setup
+
+The configuration constant [`DpManagerNumPorts`](../../../config/AcConstants.fpp)
+specifies the number of ports for
+requesting data product buffers and for sending filled data products.
+
+### 3.5. Runtime Setup
 
 No special runtime setup is required.
 
-### 3.5. Port Handlers
+### 3.6. Port Handlers
 
-#### 3.5.1. schedIn
+#### 3.6.1. schedIn
 
 The handler for this port sends out the state variables as telemetry.
 
-#### 3.5.2. productGetIn
+#### 3.6.2. productGetIn
 
 This port receives a container ID `id`, a requested buffer size `size`,
 and a mutable reference to a buffer `B`.
@@ -97,7 +103,7 @@ It does the following:
 
 1. Return `status`.
 
-#### 3.5.3. productRequestIn
+#### 3.6.3. productRequestIn
 
 This port receives a container ID `id` and a requested buffer size `size`.
 It does the following:
@@ -108,7 +114,7 @@ It does the following:
 
 1. Send `(id, B, status)` on `productResponseOut`.
 
-#### 3.5.4. productSendIn
+#### 3.6.4. productSendIn
 
 This port receives a data product ID `I` and a buffer `B`.
 It does the following:
@@ -117,10 +123,10 @@ It does the following:
 
 1. Send `B` on `productSendOut`.
 
-### 3.6. Helper Methods
+### 3.7. Helper Methods
 
 <a name="getBuffer"></a>
-#### 3.6.1. getBuffer
+#### 3.7.1. getBuffer
 
 This function receives a container ID `id`, a requested buffer size `size`,
 and a mutable reference to a buffer `B`.
@@ -173,6 +179,13 @@ The diagrams use the following instances:
 `productRecvIn` is the special `product recv` port.
 
 * `dpManager`: An instance of `Svc::DpManager`.
+
+The connections shown use port zero for requesting, receiving,
+and sending data product buffers.
+If `DpManagerNumPorts` is greater than one, then you can also use other ports,
+e.g., port one or port two.
+That way you can use one `DpManager` instance to support multiple sets of
+connections.
 
 #### 5.1.1. Synchronously Getting Data Product Buffers
 

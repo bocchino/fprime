@@ -15,13 +15,13 @@ module Svc {
     # ----------------------------------------------------------------------
 
     @ Port for responding to a data product get from a client component
-    sync input port productGetIn: Fw.DpGet
+    sync input port productGetIn: [DpManagerNumPorts] Fw.DpGet
 
     @ Port for receiving data product buffer requests from a client component
-    async input port productRequestIn: Fw.DpRequest
+    async input port productRequestIn: [DpManagerNumPorts] Fw.DpRequest
 
     @ Port for sending requested data product buffers to a client component
-    output port productResponseOut: Fw.DpResponse
+    output port productResponseOut: [DpManagerNumPorts] Fw.DpResponse
 
     @ Port for getting buffers from a Buffer Manager
     output port bufferGetOut: Fw.BufferGet
@@ -31,10 +31,10 @@ module Svc {
     # ----------------------------------------------------------------------
 
     @ Port for receiving filled data product buffers from a client component
-    async input port productSendIn: Fw.DpSend
+    async input port productSendIn: [DpManagerNumPorts] Fw.DpSend
 
     @ Port for sending filled data product buffers to a downstream component
-    output port productSendOut: Fw.BufferSend
+    output port productSendOut: [DpManagerNumPorts] Fw.BufferSend
 
     # ----------------------------------------------------------------------
     # F' special ports
