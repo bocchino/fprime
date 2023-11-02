@@ -133,7 +133,10 @@ Then the file name is `container_data_100000_1000.dat`.
 
 ### 5.2. Events
 
-TODO
+| Name | Severity | Description |
+|------|----------|-------------|
+| `BufferTooSmall` | `warning high` | Incoming buffer is too small to hold a data product container |
+| `InvalidPacketDescriptor` | `warning high` | Incoming buffer had an invalid packet descriptor |
 
 ## 6. Example Uses
 
