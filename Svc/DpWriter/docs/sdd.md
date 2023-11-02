@@ -7,9 +7,9 @@
 It does the following:
 
 1. Receive buffers containing filled data product containers.
-The buffers typically come from an instance of 
+The buffers typically come from an instance of
 [`Svc::DpManager`](../../DpManager/docs/sdd.md),
-either directly or via an instance 
+either directly or via an instance
 of[`Svc::BufferAccumulator`](../../BufferAccumulator/docs/BufferAccumulator.md).
 
 1. For each buffer _B_ received in step 1,
@@ -81,26 +81,48 @@ This handler sends out the state variables as telemetry.
 This handler receives a mutable reference to a buffer `B`.
 It does the following:
 
-1. TODO
+1. Check that `B` is valid and that the first `sizeof(FwPacketDescriptorType)`
+   bytes of the memory referred to by `B` hold the serialized value
+   [`Fw_PACKET_DP`](../../../Fw/Com/ComPacket.hpp).
+   If not, emit a warning event and stop processing.
+
+1. Read the `ProcType` field out of the container header stored in the
+   memory pointed to by `B`.
+   If the value is a valid port number `N` for `procBufferSendOut`, then invoke
+   `procBufferSendOut` at port number `N`, passing in `B`.
+   This step updates the memory pointed to by `B` in place.
+
+
+## 4. File Format
+
+The following table shows the format of the files written by `Svc::DpWriter`.
+
+|Field Name|Serialized Size|Description|
+|----------|---------------|-----------|
+|`Priority`|`sizeof(FwDpPriorityType)`|The updated priority.|
+|`Priority Hash`|[`HASH_DIGEST_LENGTH`](../../../Utils/Hash/README.md)|The hash value guarding the `Priority` field.|
+|`Container Header`|See the definition [here](../../../Fw/Dp/docs/sdd.md).|The container header.|
+|`Container Data`|Variable; given by the `DataSize` field in the container header.|The container data.|
+|`Container Hash`|[`HASH_DIGEST_LENGTH`](../../../Utils/Hash/README.md)|The hash value guarding the `Container Header` and `Container Data` fields.|
 
 <a name="ground_interface"></a>
-## 4. Ground Interface
+## 5. Ground Interface
 
-### 4.1. Telemetry
-
-TODO
-
-### 4.2. Events
+### 5.1. Telemetry
 
 TODO
 
-## 5. Example Uses
+### 5.2. Events
+
+TODO
+
+## 6. Example Uses
 
 <a name="top-diagrams"></a>
-### 5.1. Topology Diagrams
+### 6.1. Topology Diagrams
 
 TODO
 
-### 5.2. Sequence Diagrams
+### 6.2. Sequence Diagrams
 
 TODO
