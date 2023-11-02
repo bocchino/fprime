@@ -70,7 +70,7 @@ struct DpContainerHeader {
         status = serializeRepr.deserialize(this->timeTag);
         DP_CONTAINER_HEADER_ASSERT_EQ(status, FW_SERIALIZE_OK);
         // Deserialize the processing type
-        DpContainerHeader::moveDeserToOffset(file, line, buffer, DpContainer::Header::PROC_ID_OFFSET);
+        DpContainerHeader::moveDeserToOffset(file, line, buffer, DpContainer::Header::PROC_TYPE_OFFSET);
         status = serializeRepr.deserialize(procType);
         DP_CONTAINER_HEADER_ASSERT_EQ(status, FW_SERIALIZE_OK);
         // Deserialize the user data

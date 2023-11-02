@@ -24,7 +24,7 @@ class DpContainer {
     //! A DpContainer packet header
     struct Header {
         //! The type of user data
-        using UserData = U8 [DpCfg::CONTAINER_USER_DATA_SIZE];
+        using UserData = U8[DpCfg::CONTAINER_USER_DATA_SIZE];
         //! The offset for the packet descriptor field
         static constexpr FwSizeType PACKET_DESCRIPTOR_OFFSET = 0;
         //! The offset for the id field
@@ -33,10 +33,10 @@ class DpContainer {
         static constexpr FwDpPriorityType PRIORITY_OFFSET = ID_OFFSET + sizeof(FwDpIdType);
         //! The offset for the time tag field
         static constexpr FwSizeType TIME_TAG_OFFSET = PRIORITY_OFFSET + sizeof(FwDpPriorityType);
-        //! The offset for the processing ID field
-        static constexpr FwSizeType PROC_ID_OFFSET = TIME_TAG_OFFSET + Time::SERIALIZED_SIZE;
+        //! The offset for the processing type field
+        static constexpr FwSizeType PROC_TYPE_OFFSET = TIME_TAG_OFFSET + Time::SERIALIZED_SIZE;
         //! The offset for the user data field
-        static constexpr FwSizeType USER_DATA_OFFSET = PROC_ID_OFFSET + sizeof(DpCfg::ProcType::SerialType);
+        static constexpr FwSizeType USER_DATA_OFFSET = PROC_TYPE_OFFSET + sizeof(DpCfg::ProcType::SerialType);
         //! The offset for the data size field
         static constexpr FwSizeType DATA_SIZE_OFFSET = USER_DATA_OFFSET + DpCfg::CONTAINER_USER_DATA_SIZE;
         //! The header size
