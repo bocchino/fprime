@@ -1,0 +1,13 @@
+dpManager
+productSendOut
+0
+dpWriter
+bufferSendIn
+0
+
+dpWriter
+procBufferSendOut
+0
+processor
+bufferSendIn
+0

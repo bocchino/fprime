@@ -143,7 +143,19 @@ Then the file name is `container_data_100000_1000.dat`.
 <a name="top-diagrams"></a>
 ### 6.1. Topology Diagrams
 
-TODO
+The following topology diagram shows how to connect `Svc::DpWriter`
+to a `DpManager` component and a processor component.
+The diagrams use the following instances:
+
+* `dpWriter`: An instance of `Svc::DpWriter`.
+
+* `dpManager`: An instance of [`Svc::DpManager`](../../DpManager/docs/sdd.md).
+
+* `processor`: A component that processes data product containers.
+
+<div>
+<img src="img/top/product-write.png" width=800/>
+</div>
 
 ### 6.2. Sequence Diagrams
 
