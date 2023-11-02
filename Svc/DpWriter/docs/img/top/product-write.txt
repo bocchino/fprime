@@ -8,7 +8,7 @@ bufferSendIn
 dpWriter
 procBufferSendOut
 0
-processor
+dpProcessor
 bufferSendIn
 0
 

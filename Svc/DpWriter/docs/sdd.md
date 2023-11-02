@@ -156,7 +156,7 @@ The diagrams use the following instances:
 
 * `dpManager`: An instance of [`Svc::DpManager`](../../DpManager/docs/sdd.md).
 
-* `processor`: A component that processes data product containers.
+* `dpProcessor`: A component that processes data product containers.
 
 <div>
 <img src="img/top/product-write.png" width=800/>
@@ -172,8 +172,8 @@ sequenceDiagram
     activate dpManager
     activate dpWriter
     dpManager->dpWriter: Send buffer [bufferSendIn]
-    dpWriter->>processor: Process buffer B [procBufferSendOut]
-    processor-->>dpWriter: Return
+    dpWriter->>dpProcessor: Process buffer B [procBufferSendOut]
+    dpProcessor-->>dpWriter: Return
     dpWriter->>dpWriter: Store B to disk
     dpWriter->>bufferManager: Deallocate B [deallocBufferSendOut]
     bufferManager-->>dpWriter: Return
