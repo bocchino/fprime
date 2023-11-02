@@ -174,7 +174,7 @@ sequenceDiagram
     dpManager->dpWriter: Send buffer [bufferSendIn]
     dpWriter->>dpProcessor: Process buffer B [procBufferSendOut]
     dpProcessor-->>dpWriter: Return
-    dpWriter->>dpWriter: Store B to disk
+    dpWriter->>dpWriter: Write B to disk
     dpWriter->>bufferManager: Deallocate B [deallocBufferSendOut]
     bufferManager-->>dpWriter: Return
     deactivate dpWriter
