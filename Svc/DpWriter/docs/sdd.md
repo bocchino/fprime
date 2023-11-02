@@ -68,7 +68,11 @@ processing.
 
 ### 3.5. Runtime Setup
 
-No special runtime setup is required.
+The `config` function specifies the following constants:
+
+1. `logFilePrefix` (string): The prefix to use for log file names.
+
+1. `logFileSuffix` (string): The suffix to use for log file names.
 
 ### 3.6. Port Handlers
 
@@ -92,7 +96,10 @@ It does the following:
    `procBufferSendOut` at port number `N`, passing in `B`.
    This step updates the memory pointed to by `B` in place.
 
+1. Write `B` to a file, using the format described in the [*File Format*](#file_format)
+   section.
 
+<a name="file_format"></a>
 ## 4. File Format
 
 The following table shows the format of the files written by `Svc::DpWriter`.
@@ -104,6 +111,16 @@ The following table shows the format of the files written by `Svc::DpWriter`.
 |`Container Header`|See the definition [here](../../../Fw/Dp/docs/sdd.md).|The container header.|
 |`Container Data`|Variable; given by the `DataSize` field in the container header.|The container data.|
 |`Container Hash`|[`HASH_DIGEST_LENGTH`](../../../Utils/Hash/README.md)|The hash value guarding the `Container Header` and `Container Data` fields.|
+
+The name of each file consists of `logFilePrefix` followed by a time stamp 
+followed by `logFileSuffix`.
+The time stamp consists of an underscore character `_` followed by a seconds 
+value followed
+by an underscore character followed by a microseconds value.
+For example, suppose that the log file prefix is `container_data` and the log 
+file suffix is `.dat`.
+Suppose that the seconds value is 100000 and the microseconds value is 1000.
+Then the file name is `container_data_100000_1000.dat`.
 
 <a name="ground_interface"></a>
 ## 5. Ground Interface
