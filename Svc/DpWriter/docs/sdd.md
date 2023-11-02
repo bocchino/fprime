@@ -12,7 +12,7 @@ The buffers typically come from an instance of
 either directly or via an instance
 of[`Svc::BufferAccumulator`](../../BufferAccumulator/docs/BufferAccumulator.md).
 
-1. For each buffer _B_ received in step 1,
+1. For each buffer _B_ received in step 1:
 
    1. Perform any requested processing, such as data compression, on _B_.
 
