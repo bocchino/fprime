@@ -40,13 +40,26 @@ module Svc {
     # Events
     # ----------------------------------------------------------------------
 
-    # TODO
+    @ Incoming buffer is too small to hold a data product container
+    event BufferTooSmall(
+                          $size: U32 @< The buffer size
+                        ) \
+      severity warning high \
+      format "Buffer of size {} is too small to hold a data product container"
+
+    @ Incoming buffer had an invalid packet descriptor
+    event InvalidPacketDescriptor(
+                                   descriptor: U32 @< The descriptor
+                                 ) \
+      severity warning high \
+      format "Packet descriptor {} is invalid"
 
     # ----------------------------------------------------------------------
     # Telemetry
     # ----------------------------------------------------------------------
 
-    # TODO
+    @ The number of data products handled
+    telemetry NumDataProducts: U32 update on change
 
   }
 
