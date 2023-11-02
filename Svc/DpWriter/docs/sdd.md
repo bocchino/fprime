@@ -49,6 +49,7 @@ The diagram below shows the `DpWriter` component.
 | `async input` | `schedIn` | `Svc.Sched` | Schedule in port |
 | `async input` | `bufferSendIn` | `Fw.BufferSend` | Port for receiving data products to write to disk |
 | `output` | `procBufferSendOut` | `[DpWriterNumProcPorts] Fw.BufferSend` | Port for processing data products |
+| `output` | `deallocBufferSendOut` | `Fw.BufferSend` | Port for deallocating data product buffers |
 | `time get` | `timeGetOut` | `Fw.Time` | Time get port |
 | `telemetry` | `tlmOut` | `Fw.Tlm` | Telemetry port |
 | `event` | `eventOut` | `Fw.Log` | Event port |
@@ -88,17 +89,21 @@ It does the following:
 1. Check that `B` is valid and that the first `sizeof(FwPacketDescriptorType)`
    bytes of the memory referred to by `B` hold the serialized value
    [`Fw_PACKET_DP`](../../../Fw/Com/ComPacket.hpp).
-   If not, emit a warning event and stop processing.
+   If not, emit a warning event.
 
-1. Read the `ProcType` field out of the container header stored in the
-   memory pointed to by `B`.
-   If the value is a valid port number `N` for `procBufferSendOut`, then invoke
-   `procBufferSendOut` at port number `N`, passing in `B`.
-   This step updates the memory pointed to by `B` in place.
+1. If step 1 succeeded, then
 
-1. Write `B` to a file, using the format described in the [**File 
-   Format**](#file_format) section. For the time stamp, use the time
-   provided by `timeGetOut`.
+   1. Read the `ProcType` field out of the container header stored in the
+      memory pointed to by `B`.
+      If the value is a valid port number `N` for `procBufferSendOut`, then invoke
+      `procBufferSendOut` at port number `N`, passing in `B`.
+      This step updates the memory pointed to by `B` in place.
+
+   1. Write `B` to a file, using the format described in the [**File
+      Format**](#file_format) section. For the time stamp, use the time
+      provided by `timeGetOut`.
+
+1. Send `B` on `deallocBufferSendOut`.
 
 <a name="file_format"></a>
 ## 4. File Format
@@ -159,4 +164,19 @@ The diagrams use the following instances:
 
 ### 6.2. Sequence Diagrams
 
-TODO
+The following diagram shows what happens when a buffer is sent to `DpWriter`,
+is processed, and is written to disk.
+
+```mermaid
+sequenceDiagram
+    activate dpManager
+    activate dpWriter
+    dpManager->dpWriter: Send buffer [bufferSendIn]
+    dpWriter->>processor: Process buffer B [procBufferSendOut]
+    processor-->>dpWriter: Return
+    dpWriter->>dpWriter: Store B to disk
+    dpWriter->>buffermanager: Deallocate B [deallocBufferSendOut]
+    bufferManager-->>dpWriter: Return
+    deactivate dpWriter
+    deactivate dpManager
+```

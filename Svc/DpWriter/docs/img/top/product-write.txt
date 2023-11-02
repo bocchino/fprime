@@ -11,3 +11,10 @@ procBufferSendOut
 processor
 bufferSendIn
 0
+
+dpWriter
+deallocBufferSendOut
+0
+bufferManager
+bufferSendIn
+0
