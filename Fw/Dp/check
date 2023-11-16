@@ -6,7 +6,7 @@ file=Fw_Dp_ut_exe
 dir=`dirname $0`
 cd $dir
 
-./build --ut
+./build --ut "$@"
 cp $path/build-fprime-automatic-native-ut/bin/`uname`/$file .
 find $path -name '*.gcda' | xargs rm
 ./$file
