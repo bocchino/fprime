@@ -390,6 +390,7 @@ gettime
 gettimeofday
 getty
 ghprb
+gitmodules
 gmock
 Gnc
 Gnd
@@ -784,6 +785,7 @@ ptf
 pthread
 ptmcg
 pton
+ptrt
 puml
 punc
 pushd
