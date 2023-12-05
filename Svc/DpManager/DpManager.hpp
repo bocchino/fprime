@@ -24,7 +24,7 @@ class DpManager : public DpManagerComponentBase {
     );
 
     //! Destroy the DpManager
-    virtual ~DpManager();
+    ~DpManager();
 
   PRIVATE:
     // ----------------------------------------------------------------------

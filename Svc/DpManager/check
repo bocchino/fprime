@@ -5,5 +5,8 @@ cd $dir
 
 ./build --ut "$@"
 cp ../../build-fprime-automatic-native-ut/bin/`uname`/Svc_DpManager_ut_exe .
-find ../.. -name '*.gcda' | xargs rm
+for file in `find ../.. -name '*.gcda'`
+do
+  rm $file
+done
 ./Svc_DpManager_ut_exe
