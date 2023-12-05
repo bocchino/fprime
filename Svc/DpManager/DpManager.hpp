@@ -20,11 +20,11 @@ class DpManager : public DpManagerComponentBase {
     // ----------------------------------------------------------------------
 
     //! Construct a DpManager
-    DpManager(const char* const compName  //!< The component name
+    explicit DpManager(const char* const compName  //!< The component name
     );
 
     //! Destroy the DpManager
-    ~DpManager();
+    ~DpManager() final;
 
   PRIVATE:
     // ----------------------------------------------------------------------
