@@ -47,10 +47,11 @@ It provides all the generic operations defined in `DpContainer`
 plus the operations that are specific to _C_, for example
 serializing the specific types of data that _C_ can store.
 
+<a name="serial-format"></a>
 ### 4.1. Serialized Container Format
 
-In serialized form, each data product container consists of a header
-followed by a data payload.
+In serialized form, each data product container consists of the following
+elements: a header, a header hash, data, and a data hash.
 
 #### 4.1.1. Header
 
@@ -68,9 +69,17 @@ The data product header has the following format.
 
 `Header::UserData` is an array of `U8` of size `Fw::DpCfg::CONTAINER_USER_DATA_SIZE`.
 
-#### 4.1.2. Data Payload
+#### 4.1.2. Header Hash
 
-The data payload is a sequence of records.
+The header hash has the following format.
+
+|Field Name|Serialized Size|Description|
+|----------|---------------|-----------|
+|`Header Hash`|[`HASH_DIGEST_LENGTH`](../../../Utils/Hash/README.md)|The hash value guarding the header field.|
+
+#### 4.1.3. Data
+
+The data is a sequence of records.
 The serialized format of each record _R_ depends on whether _R_ is a
 single-value record or an array record.
 
@@ -96,6 +105,14 @@ Array records with _type = T_ have the following format:
 |`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The record ID|
 |`Size`|`FwSizeType`|`sizeof(FwSizeType)`|The number _n_ of elements in the record|
 |`Data`|Array of _n_ _T_|_n_ * [`sizeof(`_T_`)` if _T_ is a primitive type; otherwise _T_`::SERIALIZED_SIZE`]|_n_ elements, each of type _T_|
+
+#### 4.1.4. Data Hash
+
+The data hash has the following format.
+
+|Field Name|Serialized Size|Description|
+|----------|---------------|-----------|
+|`Data Hash`|[`HASH_DIGEST_LENGTH`](../../../Utils/Hash/README.md)|The hash value guarding the data field.|
 
 ### 4.2. Further Information
 

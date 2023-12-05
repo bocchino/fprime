@@ -29,8 +29,6 @@ SVC-DPWRITER-001 | `Svc::DpWriter` shall provide a port for receiving `Fw::Buffe
 SVC-DPWRITER-002 | `Svc::DpWriter` shall provide an array of ports for sending `Fw::Buffer` objects for processing. | This requirement supports downstream processing of the data in the buffer. | Unit Test
 SVC-DPWRITER-003 | On receiving a data product container _C_, `Svc::DpWriter` shall use the processing type field of the header of _C_ to select zero or more processing ports to invoke, in port order. | The processing type field is a bit mask. A one in bit `2^n` in the bit mask selects port index `n`. | Unit Test
 SVC-DPWRITER-004 | On receiving an `Fw::Buffer` _B_, and after performing any requested processing on _B_, `Svc::DpWriter` shall write _B_ to disk. | The purpose of `DpWriter` is to write data products to the disk. | Unit Test
-SVC-DPWRITER-005 | When writing a buffer containing a data product _C_ to disk, `DpWriter` shall prepend (1) the priority value stored in the header of _C_ and (2) a hash value guarding the priority value. | This requirement allows another component, such as [`Svc::DpCatalog`](../../DpCatalog/docs/sdd.md), to update the priority without recomputing the hash for _C_. | Unit Test
-SVC-DPWRITER-006 | When writing a buffer containing a data product _C_ to disk, `DpWriter` shall append a hash value guarding the data in the buffer. | This requirement allows the ground to verify the integrity of the data in the buffer. | Unit Test
 SVC-DPWRITER-007 | `Svc::DpManager` shall provide telemetry that reports the number of data products written and the number of bytes handled. | This requirement establishes the telemetry interface for the component. | Unit test
 
 ## 3. Design
@@ -111,15 +109,9 @@ It does the following:
 <a name="file_format"></a>
 ## 4. File Format
 
-The following table shows the format of the files written by `Svc::DpWriter`.
-
-|Field Name|Serialized Size|Description|
-|----------|---------------|-----------|
-|`Priority`|`sizeof(FwDpPriorityType)`|The updated priority.|
-|`Priority Hash`|[`HASH_DIGEST_LENGTH`](../../../Utils/Hash/README.md)|The hash value guarding the `Priority` field.|
-|`Container Header`|See the definition [here](../../../Fw/Dp/docs/sdd.md).|The container header.|
-|`Container Data`|Variable; given by the `DataSize` field in the container header.|The container data.|
-|`Container Hash`|[`HASH_DIGEST_LENGTH`](../../../Utils/Hash/README.md)|The hash value guarding the `Container Header` and `Container Data` fields.|
+**Data format:** Each file stores a serialized data product record,
+with the format described in the
+[data products documentation](../../../Fw/Dp/docs/sdd.md#serial-format).
 
 **File name:** The name of each file consists of `fileNamePrefix` followed by an
 ID, a time stamp, and `fileNameSuffix`.
