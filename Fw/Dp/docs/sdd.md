@@ -75,7 +75,7 @@ The header hash has the following format.
 
 |Field Name|Serialized Size|Description|
 |----------|---------------|-----------|
-|`Header Hash`|[`HASH_DIGEST_LENGTH`](../../../Utils/Hash/README.md)|The hash value guarding the header field.|
+|`Header Hash`|[`HASH_DIGEST_LENGTH`](../../../Utils/Hash/README.md)|The hash value guarding the header.|
 
 #### 4.1.3. Data
 
@@ -112,7 +112,7 @@ The data hash has the following format.
 
 |Field Name|Serialized Size|Description|
 |----------|---------------|-----------|
-|`Data Hash`|[`HASH_DIGEST_LENGTH`](../../../Utils/Hash/README.md)|The hash value guarding the data field.|
+|`Data Hash`|[`HASH_DIGEST_LENGTH`](../../../Utils/Hash/README.md)|The hash value guarding the data.|
 
 ### 4.2. Further Information
 
