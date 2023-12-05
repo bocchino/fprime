@@ -27,7 +27,7 @@ Requirement | Description | Rationale | Verification Method
 ----------- | ----------- | ----------| -------------------
 SVC-DPWRITER-001 | `Svc::DpWriter` shall provide a port for receiving `Fw::Buffer` objects pointing to filled data product containers. | The purpose of `DpWriter` is to write the data products to disk. | Unit Test
 SVC-DPWRITER-002 | `Svc::DpWriter` shall provide an array of ports for sending `Fw::Buffer` objects for processing. | This requirement supports downstream processing of the data in the buffer. | Unit Test
-SVC-DPWRITER-003 | On receiving a data product container _C_, `Svc::DpWriter` shall use the processing type field of the header of _C_ to select the port index to use for processing. An out-of-bounds index shall signify no processing. | This requirement allows the data product producer to control the type of processing done. | Unit Test
+SVC-DPWRITER-003 | On receiving a data product container _C_, `Svc::DpWriter` shall use the processing type field of the header of _C_ to select zero or more port indexes to use for processing. | The processing type field is a bit mask. A one in bit `2^n` in the bit mask selects port index `n`. | Unit Test
 SVC-DPWRITER-004 | On receiving an `Fw::Buffer` _B_, and after performing any requested processing on _B_, `Svc::DpWriter` shall write _B_ to disk. | The purpose of `DpWriter` is to write data products to the disk. | Unit Test
 SVC-DPWRITER-005 | When writing a buffer containing a data product _C_ to disk, `DpWriter` shall prepend (1) the priority value stored in the header of _C_ and (2) a hash value guarding the priority value. | This requirement allows another component, such as [`Svc::DpCatalog`](../../DpCatalog/docs/sdd.md), to update the priority without recomputing the hash for _C_. | Unit Test
 SVC-DPWRITER-006 | When writing a buffer containing a data product _C_ to disk, `DpWriter` shall append a hash value guarding the data in the buffer. | This requirement allows the ground to verify the integrity of the data in the buffer. | Unit Test
@@ -138,6 +138,7 @@ Then the file name is `container_data_100000_1000.dat`.
 | Name | Type | Description |
 |------|------|-------------|
 | `NumDataProducts` | `U32` | The number of data products handled |
+| `NumBytes` | `U64` | The number of bytes handled |
 
 ### 5.2. Events
 
