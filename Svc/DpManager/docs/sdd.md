@@ -172,15 +172,15 @@ The following topology diagrams show how to connect `Svc::DpManager`
 to a client component, a buffer manager, and a data product writer.
 The diagrams use the following instances:
 
-* `dpWriter`: An instance of [`Svc::DpWriter`](../../DpWriter/docs/sdd.md).
-
 * `bufferManager`: An instance of [`Svc::BufferManager`](../../BufferManager/docs/sdd.md).
 
-* `client`: A client component that generates data products.
+* `dpManager`: An instance of `Svc::DpManager`.
+
+* `dpWriter`: An instance of [`Svc::DpWriter`](../../DpWriter/docs/sdd.md).
+
+* `producer`: A client component that produces data products.
 `productRequestOut` is the special `product request` port.
 `productRecvIn` is the special `product recv` port.
-
-* `dpManager`: An instance of `Svc::DpManager`.
 
 The connections shown use port zero for requesting, receiving,
 and sending data product buffers.
@@ -213,41 +213,41 @@ connections.
 
 ```mermaid
 sequenceDiagram
-    activate client
-    client->>dpManager: Request buffer [productGetIn]
+    activate producer
+    producer->>dpManager: Request buffer [productGetIn]
     dpManager->>bufferManager: Request buffer B [bufferGetOut]
     bufferManager-->>dpManager: Return B
-    dpManager->>dpManager: Store B into client
-    dpManager-->>client: Return SUCCESS
-    deactivate client
+    dpManager->>dpManager: Store B into producer
+    dpManager-->>producer: Return SUCCESS
+    deactivate producer
 ```
 
 #### 5.2.2. Asynchronously Requesting a Data Product Buffer
 
 ```mermaid
 sequenceDiagram
-    activate client
+    activate producer
     activate dpManager
-    client-)dpManager: Request buffer [productRequestIn]
+    producer-)dpManager: Request buffer [productRequestIn]
     dpManager->>bufferManager: Request buffer B [bufferGetOut]
     bufferManager-->>dpManager: Return B
-    dpManager-)client: Send B [productResponseOut]
+    dpManager-)producer: Send B [productResponseOut]
     deactivate dpManager
-    deactivate client
+    deactivate producer
 ```
 
 #### 5.2.3. Sending a Data Product
 
 ```mermaid
 sequenceDiagram
-    activate client
+    activate producer
     activate dpManager
     activate dpWriter
-    client-)dpManager: Send buffer B [productSendIn]
+    producer-)dpManager: Send buffer B [productSendIn]
     dpManager-)dpWriter: Send B [productSendOut]
     dpWriter->>bufferManager: Deallocate B
     bufferManager-->>dpWriter: Return
     deactivate dpWriter
     deactivate dpManager
-    deactivate client
+    deactivate producer
 ```

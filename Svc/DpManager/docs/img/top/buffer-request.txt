@@ -1,4 +1,4 @@
-client
+producer
 productRequestOut
 0
 dpManager
@@ -15,6 +15,6 @@ bufferGetCallee
 dpManager
 productResponseOut
 0
-client
+producer
 productRecvIn
 0
