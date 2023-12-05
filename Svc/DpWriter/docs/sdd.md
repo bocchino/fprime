@@ -7,8 +7,9 @@
 It does the following:
 
 1. Receive buffers containing filled data product containers.
-The buffers typically come from a component that produces
-data products, passing through an instance of
+The buffers typically come from one or more components that produce
+data products.
+They typically pass through an instance of
 [`Svc::DpManager`](../../DpManager/docs/sdd.md), and possibly through
 an instance of
 [`Svc::BufferAccumulator`](../../BufferAccumulator/docs/BufferAccumulator.md),
