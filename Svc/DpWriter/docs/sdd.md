@@ -109,11 +109,15 @@ It does the following:
 <a name="file_format"></a>
 ## 4. File Format
 
-**Data format:** Each file stores a serialized data product record,
+### 4.1. Data Format
+
+Each file stores a serialized data product record,
 with the format described in the
 [data products documentation](../../../Fw/Dp/docs/sdd.md#serial-format).
 
-**File name:** The name of each file consists of `fileNamePrefix` followed by an
+### 4.2. File Name
+
+The name of each file consists of `fileNamePrefix` followed by an
 ID, a time stamp, and `fileNameSuffix`.
 The ID consists of an underscore character `_` followed by the container ID.
 The time stamp consists of an underscore character `_` followed by a seconds 
