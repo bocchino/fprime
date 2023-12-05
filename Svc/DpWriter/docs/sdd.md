@@ -7,10 +7,12 @@
 It does the following:
 
 1. Receive buffers containing filled data product containers.
-The buffers typically come from an instance of
-[`Svc::DpManager`](../../DpManager/docs/sdd.md),
-either directly or via an instance
-of[`Svc::BufferAccumulator`](../../BufferAccumulator/docs/BufferAccumulator.md).
+The buffers typically come from a component that produces
+data products, passing through an instance of
+[`Svc::DpManager`](../../DpManager/docs/sdd.md), and possibly through
+an instance of
+[`Svc::BufferAccumulator`](../../BufferAccumulator/docs/BufferAccumulator.md),
+before reaching `DpWriter`.
 
 1. For each buffer _B_ received in step 1:
 
