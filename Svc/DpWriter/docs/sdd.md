@@ -155,11 +155,13 @@ The following topology diagram shows how to connect `Svc::DpWriter`
 to a `DpManager` component and a processor component.
 The diagrams use the following instances:
 
-* `dpWriter`: An instance of `Svc::DpWriter`.
-
 * `dpManager`: An instance of [`Svc::DpManager`](../../DpManager/docs/sdd.md).
 
 * `dpProcessor`: A component that processes data product containers.
+
+* `dpWriter`: An instance of `Svc::DpWriter`.
+
+* `producer`: A component that produces data products.
 
 <div>
 <img src="img/top/product-write.png" width=800/>
@@ -172,9 +174,11 @@ is processed, and is written to disk.
 
 ```mermaid
 sequenceDiagram
+    activate producer
     activate dpManager
     activate dpWriter
-    dpManager->dpWriter: Send buffer [bufferSendIn]
+    producer-)dpManager: Send buffer
+    dpManager-)dpWriter: Send buffer [bufferSendIn]
     dpWriter->>dpProcessor: Process buffer B [procBufferSendOut]
     dpProcessor-->>dpWriter: Return
     dpWriter->>dpWriter: Write B to disk
@@ -182,4 +186,5 @@ sequenceDiagram
     bufferManager-->>dpWriter: Return
     deactivate dpWriter
     deactivate dpManager
+    deactivate producer
 ```

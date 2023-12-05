@@ -1,3 +1,10 @@
+producer
+productSendOut
+0
+dpManager
+productSendIn
+0
+
 dpManager
 productSendOut
 0
