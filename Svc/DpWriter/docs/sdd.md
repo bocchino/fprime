@@ -31,7 +31,7 @@ SVC-DPWRITER-003 | On receiving a data product container _C_, `Svc::DpWriter` sh
 SVC-DPWRITER-004 | On receiving an `Fw::Buffer` _B_, and after performing any requested processing on _B_, `Svc::DpWriter` shall write _B_ to disk. | The purpose of `DpWriter` is to write data products to the disk. | Unit Test
 SVC-DPWRITER-005 | When writing a buffer containing a data product _C_ to disk, `DpWriter` shall prepend (1) the priority value stored in the header of _C_ and (2) a hash value guarding the priority value. | This requirement allows another component, such as [`Svc::DpCatalog`](../../DpCatalog/docs/sdd.md), to update the priority without recomputing the hash for _C_. | Unit Test
 SVC-DPWRITER-006 | When writing a buffer containing a data product _C_ to disk, `DpWriter` shall append a hash value guarding the data in the buffer. | This requirement allows the ground to verify the integrity of the data in the buffer. | Unit Test
-SVC-DPWRITER-007 | `Svc::DpManager` shall provide telemetry that reports the number of data products written. | This requirement establishes the telemetry interface for the component. | Unit test
+SVC-DPWRITER-007 | `Svc::DpManager` shall provide telemetry that reports the number of data products written and the number of bytes handled. | This requirement establishes the telemetry interface for the component. | Unit test
 
 ## 3. Design
 
