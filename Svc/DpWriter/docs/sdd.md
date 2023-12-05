@@ -121,14 +121,17 @@ The following table shows the format of the files written by `Svc::DpWriter`.
 |`Container Data`|Variable; given by the `DataSize` field in the container header.|The container data.|
 |`Container Hash`|[`HASH_DIGEST_LENGTH`](../../../Utils/Hash/README.md)|The hash value guarding the `Container Header` and `Container Data` fields.|
 
-The name of each file consists of `fileNamePrefix` followed by a time stamp 
-and `fileNameSuffix`.
+**File name:** The name of each file consists of `fileNamePrefix` followed by an
+ID, a time stamp, and `fileNameSuffix`.
+The ID consists of an underscore character `_` followed by the container ID.
 The time stamp consists of an underscore character `_` followed by a seconds 
 value, an underscore character, and a microseconds value.
+
 For example, suppose that the file name prefix is `container_data` and the
 file name suffix is `.dat`.
-Suppose that the seconds value is 100000 and the microseconds value is 1000.
-Then the file name is `container_data_100000_1000.dat`.
+Suppose that container ID is 100, the seconds value is 100000,
+and the microseconds value is 1000.
+Then the file name is `container_data_100_100000_1000.dat`.
 
 <a name="ground_interface"></a>
 ## 5. Ground Interface
