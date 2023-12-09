@@ -15,12 +15,19 @@ The following types and constants are configurable via the file
 
 | Name | Kind | Description |
 | ---- | ---- | ---- |
-| `Fw::DpCfg::ProcType` | Type | The type of the identifier for the kind of processing to perform on a container before writing it to disk. |
+| `Fw::DpCfg::ProcType` | Type | The enumeration type that defines the bit mask for selecting a type of processing. The processing is applied to a container before writing it to disk. |
 | `Fw::DpCfg::CONTAINER_DATA_SIZE` | Constant | The size of the user-configurable data in the container packet header. |
 
-## 3. FPP Ports
+## 3. FPP Types
 
-This module defines the following FPP ports:
+This build module defines the following FPP types:
+
+1. `DpState`: An enumeration describing the state of a data product
+(transmitted or untransmitted).
+
+## 4. FPP Ports
+
+This build module defines the following FPP ports:
 
 1. `DpGet`: A port for synchronously getting a buffer to back
    a data product container.
@@ -35,7 +42,7 @@ This module defines the following FPP ports:
 For more information, see the file [`Dp.fpp`](../Dp.fpp) in the parent
 directory.
 
-## 4. C++ Classes
+## 5. C++ Classes
 
 This module defines a C++ class `DpContainer`.
 `DpContainer` is the base class for a data product container.
@@ -48,12 +55,12 @@ plus the operations that are specific to _C_, for example
 serializing the specific types of data that _C_ can store.
 
 <a name="serial-format"></a>
-### 4.1. Serialized Container Format
+### 5.1. Serialized Container Format
 
 In serialized form, each data product container consists of the following
 elements: a header, a header hash, data, and a data hash.
 
-#### 4.1.1. Header
+#### 5.1.1. Header
 
 The data product header has the following format.
 
@@ -63,13 +70,14 @@ The data product header has the following format.
 |`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The container ID. This is a system-global ID (component-local ID + component base ID)|
 |`Priority`|`FwDpPriorityType`|`sizeof(FwDpPriorityType)`|The container default priority|
 |`TimeTag`|`Fw::Time`|`Fw::Time::SERIALIZED_SIZE`|The time tag associated with the container|
-|`ProcType`|`Fw::DpCfg::ProcType`|`Fw::DpCfg::ProcType::SERIALIZED_SIZE`|The processing type|
-|`UserData`|`Header::UserData`|`Fw::DpCfg::CONTAINER_USER_DATA_SIZE`|User-configurable data|
+|`ProcTypes`|`U32`|`sizeof(U32)`|The processing types, represented as a bit mask|
+|`UserData`|`Header::UserData`|`DpCfg::CONTAINER_USER_DATA_SIZE`|User-configurable data|
+|`DpState`|`DpState`|`DpState::SERIALIZED_SIZE`|The data product state (transmitted or untransmitted)|
 |`DataSize`|`FwSizeType`|`sizeof(FwSizeType)`|The size of the data payload in bytes|
 
 `Header::UserData` is an array of `U8` of size `Fw::DpCfg::CONTAINER_USER_DATA_SIZE`.
 
-#### 4.1.2. Header Hash
+#### 5.1.2. Header Hash
 
 The header hash has the following format.
 
@@ -77,7 +85,7 @@ The header hash has the following format.
 |----------|---------------|-----------|
 |`Header Hash`|[`HASH_DIGEST_LENGTH`](../../../Utils/Hash/README.md)|The hash value guarding the header.|
 
-#### 4.1.3. Data
+#### 5.1.3. Data
 
 The data is a sequence of records.
 The serialized format of each record _R_ depends on whether _R_ is a
@@ -106,7 +114,7 @@ Array records with _type = T_ have the following format:
 |`Size`|`FwSizeType`|`sizeof(FwSizeType)`|The number _n_ of elements in the record|
 |`Data`|Array of _n_ _T_|_n_ * [`sizeof(`_T_`)` if _T_ is a primitive type; otherwise _T_`::SERIALIZED_SIZE`]|_n_ elements, each of type _T_|
 
-#### 4.1.4. Data Hash
+#### 5.1.4. Data Hash
 
 The data hash has the following format.
 
@@ -114,7 +122,7 @@ The data hash has the following format.
 |----------|---------------|-----------|
 |`Data Hash`|[`HASH_DIGEST_LENGTH`](../../../Utils/Hash/README.md)|The hash value guarding the data.|
 
-### 4.2. Further Information
+### 5.2. Further Information
 
 For more information on the `DpContainer` class, see the file [`DpContainer.hpp`](../DpContainer.hpp) in
 the parent directory.
