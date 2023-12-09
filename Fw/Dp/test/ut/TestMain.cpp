@@ -41,6 +41,9 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     }
     FW_ASSERT(sizeof userData == sizeof container.userData);
     (void)::memcpy(container.userData, userData, sizeof container.userData);
+    // Set the DP state
+    const DpState dpState(static_cast<DpState::T>(STest::Pick::startLength(0, DpState::NUM_CONSTANTS)));
+    container.setDpState(dpState);
     // Serialize and deserialize the header
     auto status = container.serializeHeader();
     ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
@@ -49,7 +52,7 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     header.deserialize(__FILE__, __LINE__, buffer);
     // Check the deserialized header fields
     // Data size should be zero because there is no data
-    header.check(__FILE__, __LINE__, buffer, id, priority, timeTag, procType, userData, 0);
+    header.check(__FILE__, __LINE__, buffer, id, priority, timeTag, procType, userData, dpState, 0);
 }
 
 TEST(Header, BufferInConstructor) {

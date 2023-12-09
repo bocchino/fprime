@@ -1,5 +1,20 @@
 module Fw {
 
+  # ----------------------------------------------------------------------
+  # Types
+  # ----------------------------------------------------------------------
+
+  enum DpState: U8 {
+    @ The untransmitted state
+    UNTRANSMITTED
+    @ The transmitted state
+    TRANSMITTED
+  } default UNTRANSMITTED
+
+  # ----------------------------------------------------------------------
+  # Ports
+  # ----------------------------------------------------------------------
+
   @ Port for synchronously getting a data product buffer
   @ Returns the status
   @

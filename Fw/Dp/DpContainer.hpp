@@ -8,6 +8,7 @@
 #define Fw_DpContainer_HPP
 
 #include "Fw/Buffer/Buffer.hpp"
+#include "Fw/Dp/DpStateEnumAc.hpp"
 #include "Fw/Time/Time.hpp"
 #include "config/FppConstantsAc.hpp"
 #include "config/ProcTypeEnumAc.hpp"
@@ -37,8 +38,10 @@ class DpContainer {
         static constexpr FwSizeType PROC_TYPE_OFFSET = TIME_TAG_OFFSET + Time::SERIALIZED_SIZE;
         //! The offset for the user data field
         static constexpr FwSizeType USER_DATA_OFFSET = PROC_TYPE_OFFSET + sizeof(DpCfg::ProcType::SerialType);
+        //! The offset of the data product state field
+        static constexpr FwSizeType DP_STATE_OFFSET = USER_DATA_OFFSET + DpCfg::CONTAINER_USER_DATA_SIZE;
         //! The offset for the data size field
-        static constexpr FwSizeType DATA_SIZE_OFFSET = USER_DATA_OFFSET + DpCfg::CONTAINER_USER_DATA_SIZE;
+        static constexpr FwSizeType DATA_SIZE_OFFSET = DP_STATE_OFFSET + DpState::SERIALIZED_SIZE;
         //! The header size
         static constexpr FwSizeType SIZE = DATA_SIZE_OFFSET + sizeof(FwSizeType);
     };
@@ -121,6 +124,12 @@ class DpContainer {
         this->procType = procType;
     }
 
+    //! Set the data product state
+    void setDpState(DpState dpState  //!< The data product state
+    ) {
+        this->dpState = dpState;
+    }
+
     //! Set the packet buffer
     void setBuffer(const Buffer& buffer  //!< The buffer
     );
@@ -158,6 +167,9 @@ class DpContainer {
 
     //! The processing type
     DpCfg::ProcType procType;
+
+    //! The data product state
+    DpState dpState;
 
     //! The data size
     FwSizeType dataSize;
