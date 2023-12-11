@@ -259,13 +259,9 @@ namespace FppTest {
     ) :
       Fw::PassiveComponentBase(compName)
   {
-    // Initialize data product get history
+    // Initialize data product histories
     this->productGetHistory = new History<DpGet>(maxHistorySize);
-
-    // Initialize data product request history
     this->productRequestHistory = new History<DpRequest>(maxHistorySize);
-
-    // Initialize data product send history
     this->productSendHistory = new History<DpSend>(maxHistorySize);
 
     // Clear history
@@ -277,7 +273,6 @@ namespace FppTest {
   {
     // Destroy product request history
     delete this->productRequestHistory;
-
     // Destroy product send history
     delete this->productSendHistory;
   }
@@ -299,26 +294,6 @@ namespace FppTest {
     );
     this->m_to_schedIn[portNum].invoke(
       context
-    );
-  }
-
-  void DpTestTesterBase ::
-    invoke_to_productRecvIn(
-        NATIVE_INT_TYPE portNum,
-        FwDpIdType id,
-        const Fw::Buffer& buffer,
-        const Fw::Success& status
-    )
-  {
-    // Make sure port number is valid
-    FW_ASSERT(
-      portNum < this->getNum_to_productRecvIn(),
-      static_cast<FwAssertArgType>(portNum)
-    );
-    this->m_to_productRecvIn[portNum].invoke(
-      id,
-      buffer,
-      status
     );
   }
 
@@ -402,6 +377,16 @@ namespace FppTest {
   // Functions for testing data products
   // ----------------------------------------------------------------------
 
+  void DpTestTesterBase ::
+    pushProductGetEntry(
+        FwDpIdType id,
+        FwSizeType size
+    )
+  {
+    DpGet e = { id, size };
+    this->productGetHistory->push_back(e);
+  }
+
   Fw::Success::T DpTestTesterBase ::
     productGet_handler(
         FwDpIdType id,
@@ -410,15 +395,12 @@ namespace FppTest {
     )
   {
     (void) buffer;
-    DpGet e = { id, size };
-    this->productGetHistory->push_back(e);
-    // Default behavior: do not allocate a buffer and return FAILURE
-    // Client code can override this behavior
+    this->pushProductGetEntry(id, size);
     return Fw::Success::FAILURE;
   }
 
   void DpTestTesterBase ::
-    productRequest_handler(
+    pushProductRequestEntry(
         FwDpIdType id,
         FwSizeType size
     )
@@ -428,13 +410,43 @@ namespace FppTest {
   }
 
   void DpTestTesterBase ::
-    productSend_handler(
+    productRequest_handler(
         FwDpIdType id,
-        Fw::Buffer buffer
+        FwSizeType size
+    )
+  {
+    this->pushProductRequestEntry(id, size);
+  }
+
+  void DpTestTesterBase ::
+    sendProductResponse(
+        FwDpIdType id,
+        const Fw::Buffer& buffer,
+        const Fw::Success& status
+    )
+  {
+    FW_ASSERT(this->getNum_to_productRecvIn() > 0);
+    FW_ASSERT(this->m_to_productRecvIn[0].isConnected());
+    this->m_to_productRecvIn[0].invoke(id, buffer, status);
+  }
+
+  void DpTestTesterBase ::
+    pushProductSendEntry(
+        FwDpIdType id,
+        const Fw::Buffer& buffer
     )
   {
     DpSend e = { id, buffer };
     this->productSendHistory->push_back(e);
+  }
+
+  void DpTestTesterBase ::
+    productSend_handler(
+        FwDpIdType id,
+        const Fw::Buffer& buffer
+    )
+  {
+    this->pushProductSendEntry(id, buffer);
   }
 
   // ----------------------------------------------------------------------

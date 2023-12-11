@@ -259,13 +259,15 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     const auto eltSize = sizeof(FwDpIdType) + dataEltSize;
     expectedNumElts = dataCapacity / eltSize;
     const auto expectedDataSize = expectedNumElts * eltSize;
+    // DP state should be the default value
+    Fw::DpState dpState;
     // Set up the expected user data
     Fw::DpContainer::Header::UserData userData;
     memset(&userData[0], 0, sizeof userData);
     // Check the history entry
     // This sets the output buffer and sets the deserialization pointer
     // to the start of the data payload
-    ASSERT_PRODUCT_SEND(0, globalId, priority, timeTag, Fw::DpCfg::ProcType::NONE, userData, expectedDataSize,
+    ASSERT_PRODUCT_SEND(0, globalId, priority, timeTag, Fw::DpCfg::ProcType::NONE, userData, dpState, expectedDataSize,
                         outputBuffer);
 }
 

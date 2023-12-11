@@ -11,6 +11,7 @@
 
 #include "FppTest/dp/DpTestComponentAc.hpp"
 #include "Fw/Comp/PassiveComponentBase.hpp"
+#include "Fw/Dp/test/util/DpContainerHeader.hpp"
 #include "Fw/Port/InputSerializePort.hpp"
 #include "Fw/Types/Assert.hpp"
 
@@ -216,14 +217,6 @@ namespace FppTest {
           NATIVE_UINT_TYPE context //!< The call order
       );
 
-      //! Invoke the to port connected to productRecvIn
-      void invoke_to_productRecvIn(
-          NATIVE_INT_TYPE portNum, //!< The port number
-          FwDpIdType id, //!< The container ID
-          const Fw::Buffer& buffer, //!< The buffer
-          const Fw::Success& status //!< The status
-      );
-
     protected:
 
       // ----------------------------------------------------------------------
@@ -297,23 +290,58 @@ namespace FppTest {
       // Functions for testing data products
       // ----------------------------------------------------------------------
 
-      //! Handle a data product get
-      virtual Fw::Success::T productGet_handler(
-          FwDpIdType id, //!< The container ID
-          FwSizeType size, //!< The size of the requested buffer
-          Fw::Buffer& buffer //!< The buffer
+      //! Push an entry on the product get history
+      void pushProductGetEntry(
+          FwDpIdType id, //!< The container ID (input)
+          FwSizeType size //!< The size of the requested buffer (input)
       );
 
-      //! Handle a data product request
+      //! Handle a data product get from the component under test
+      //!
+      //! By default, (1) call pushProductGetEntry; (2) do not allocate a buffer
+      //! and return FAILURE. You can override this behavior, e.g., to call
+      //! pushProductGetEntry, allocate a buffer and return SUCCESS.
+      virtual Fw::Success::T productGet_handler(
+          FwDpIdType id, //!< The container ID (input)
+          FwSizeType size, //!< The size of the requested buffer (input)
+          Fw::Buffer& buffer //!< The buffer (output)
+      );
+
+      //! Push an entry on the product request history
+      void pushProductRequestEntry(
+          FwDpIdType id, //!< The container ID
+          FwSizeType size //!< The size of the requested buffer
+      );
+
+      //! Handle a data product request from the component under test
+      //!
+      //! By default, call pushProductRequestEntry. You can override
+      //! this behavior.
       virtual void productRequest_handler(
           FwDpIdType id, //!< The container ID
           FwSizeType size //!< The size of the requested buffer
       );
 
-      //! Handle a data product send
+      //! Send a data product response to the component under test
+      void sendProductResponse(
+          FwDpIdType id, //!< The container ID
+          const Fw::Buffer& buffer, //!< The buffer
+          const Fw::Success& status //!< The status
+      );
+
+      //! Push an entry on the product send history
+      void pushProductSendEntry(
+          FwDpIdType id, //!< The container ID
+          const Fw::Buffer& buffer //!< The buffer
+      );
+
+      //! Handle a data product send from the component under test
+      //!
+      //! By default, call pushProductSendEntry. You can override
+      //! this behavior.
       virtual void productSend_handler(
           FwDpIdType id, //!< The container ID
-          Fw::Buffer buffer //!< The buffer
+          const Fw::Buffer& buffer //!< The buffer
       );
 
     protected:
@@ -335,9 +363,9 @@ namespace FppTest {
       static Fw::Success from_productGetOut_static(
           Fw::PassiveComponentBase* const callComp, //!< The component instance
           NATIVE_INT_TYPE portNum, //!< The port number
-          FwDpIdType id, //!< The container ID
-          FwSizeType size, //!< The size of the requested buffer
-          Fw::Buffer& buffer //!< The buffer
+          FwDpIdType id, //!< The container ID (input)
+          FwSizeType size, //!< The size of the requested buffer (input)
+          Fw::Buffer& buffer //!< The buffer (output)
       );
 
       //! Static function for port from_productRequestOut

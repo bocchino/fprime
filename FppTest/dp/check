@@ -5,7 +5,8 @@ cd $dir
 
 # Force the build system to regenerate the auto-generated code
 build_cache=../build-fprime-automatic-native-ut
-rm -f $build_cache/FppTest/dp/*Ac.* $build_cache/FppTest/dp/*GTestBase.* $build_cache/*TesterBase.*
+# For debugging, temporarily disable forced rebuild
+#rm -f $build_cache/FppTest/dp/*Ac.* $build_cache/FppTest/dp/*GTestBase.* $build_cache/*TesterBase.*
 
 (cd ..; find . -name '*gcda' | xargs rm)
 fprime-util build --ut
