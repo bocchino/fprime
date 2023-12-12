@@ -132,7 +132,7 @@ namespace FppTest {
           FwDpIdType id, //!< The expected container ID (input)
           FwDpPriorityType priority, //!< The expected priority (input)
           const Fw::Time& timeTag, //!< The expected time tag (input)
-          Fw::DpCfg::ProcType procType, //!< The expected processing type (input)
+          Fw::DpCfg::ProcType::SerialType procTypes, //!< The expected processing types (input)
           const Fw::DpContainer::Header::UserData& userData, //!< The expected user data (input)
           Fw::DpState dpState, //!< The expected data product state (input)
           FwSizeType dataSize, //!< The expected data size (input)

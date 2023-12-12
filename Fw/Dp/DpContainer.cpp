@@ -17,7 +17,7 @@ namespace Fw {
 // ----------------------------------------------------------------------
 
 DpContainer::DpContainer(FwDpIdType id, const Fw::Buffer& buffer)
-    : id(id), priority(0), procType(DpCfg::ProcType::NONE), dpState(), dataSize(0), buffer() {
+    : id(id), priority(0), procTypes(0), dpState(), dataSize(0), buffer() {
     // Initialize the user data field
     this->initUserDataField();
     // Set the buffer
@@ -25,7 +25,7 @@ DpContainer::DpContainer(FwDpIdType id, const Fw::Buffer& buffer)
 }
 
 DpContainer::DpContainer()
-    : id(0), priority(0), procType(DpCfg::ProcType::NONE), dataSize(0), buffer() {
+    : id(0), priority(0), procTypes(0), dataSize(0), buffer() {
     // Initialize the user data field
     this->initUserDataField();
 }
@@ -59,8 +59,8 @@ Fw::SerializeStatus DpContainer::serializeHeader() {
         // Serialize the time tag
         status = serializeRepr.serialize(this->timeTag);
         FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
-        // Serialize the processing type
-        status = serializeRepr.serialize(this->procType);
+        // Serialize the processing types
+        status = serializeRepr.serialize(this->procTypes);
         FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
         // Serialize the user data
         const bool omitLength = true;

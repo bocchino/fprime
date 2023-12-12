@@ -70,8 +70,8 @@ struct DpContainerHeader {
         status = serializeRepr.deserialize(this->timeTag);
         DP_CONTAINER_HEADER_ASSERT_EQ(status, FW_SERIALIZE_OK);
         // Deserialize the processing type
-        DpContainerHeader::moveDeserToOffset(file, line, buffer, DpContainer::Header::PROC_TYPE_OFFSET);
-        status = serializeRepr.deserialize(this->procType);
+        DpContainerHeader::moveDeserToOffset(file, line, buffer, DpContainer::Header::PROC_TYPES_OFFSET);
+        status = serializeRepr.deserialize(this->procTypes);
         DP_CONTAINER_HEADER_ASSERT_EQ(status, FW_SERIALIZE_OK);
         // Deserialize the user data
         DpContainerHeader::moveDeserToOffset(file, line, buffer, DpContainer::Header::USER_DATA_OFFSET);
@@ -102,7 +102,7 @@ struct DpContainerHeader {
                FwDpIdType id,                                  //!< The expected id
                FwDpPriorityType priority,                      //!< The expected priority
                const Fw::Time& timeTag,                        //!< The expected time tag
-               DpCfg::ProcType procType,                       //!< The expected processing type
+               DpCfg::ProcType::SerialType procTypes,          //!< The expected processing types
                const DpContainer::Header::UserData& userData,  //!< The expected user data
                DpState dpState,                                //!< The expected dp state
                FwSizeType dataSize                             //!< The expected data size
@@ -117,8 +117,8 @@ struct DpContainerHeader {
         DP_CONTAINER_HEADER_ASSERT_EQ(this->priority, priority);
         // Check the time tag
         DP_CONTAINER_HEADER_ASSERT_EQ(this->timeTag, timeTag);
-        // Check the deserialized processor id
-        DP_CONTAINER_HEADER_ASSERT_EQ(this->procType, procType);
+        // Check the deserialized processing types
+        DP_CONTAINER_HEADER_ASSERT_EQ(this->procTypes, procTypes);
         // Check the user data
         for (FwSizeType i = 0; i < DpCfg::CONTAINER_USER_DATA_SIZE; ++i) {
             DP_CONTAINER_HEADER_ASSERT_EQ(this->userData[i], userData[i]);
@@ -138,8 +138,8 @@ struct DpContainerHeader {
     //! The time tag
     Time timeTag;
 
-    //! The processing type
-    DpCfg::ProcType procType;
+    //! The processing types
+    DpCfg::ProcType::SerialType procTypes;
 
     //! The user data
     U8 userData[DpCfg::CONTAINER_USER_DATA_SIZE];

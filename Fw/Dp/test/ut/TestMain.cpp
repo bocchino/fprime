@@ -31,10 +31,10 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     const U32 useconds = STest::Pick::startLength(0, 1000000);
     Fw::Time timeTag(seconds, useconds);
     container.setTimeTag(timeTag);
-    // Set the processing type
-    const DpCfg::ProcType procType(
-        static_cast<DpCfg::ProcType::T>(STest::Pick::startLength(0, DpCfg::ProcType::NUM_CONSTANTS)));
-    container.setProcType(procType);
+    // Set the processing types
+    // FIXME: Set random bits in the mask
+    const DpCfg::ProcType::SerialType procTypes = 0;
+    container.setProcTypes(procTypes);
     // Set the user data
     for (U8& data : userData) {
         data = static_cast<U8>(STest::Pick::any());
@@ -52,7 +52,7 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     header.deserialize(__FILE__, __LINE__, buffer);
     // Check the deserialized header fields
     // Data size should be zero because there is no data
-    header.check(__FILE__, __LINE__, buffer, id, priority, timeTag, procType, userData, dpState, 0);
+    header.check(__FILE__, __LINE__, buffer, id, priority, timeTag, procTypes, userData, dpState, 0);
 }
 
 TEST(Header, BufferInConstructor) {

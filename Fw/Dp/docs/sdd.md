@@ -69,7 +69,7 @@ The data product header has the following format.
 |`Id`|`FwDpIdType`|`sizeof(FwDpIdType)`|The container ID. This is a system-global ID (component-local ID + component base ID)|
 |`Priority`|`FwDpPriorityType`|`sizeof(FwDpPriorityType)`|The container default priority|
 |`TimeTag`|`Fw::Time`|`Fw::Time::SERIALIZED_SIZE`|The time tag associated with the container|
-|`ProcTypes`|`U32`|`sizeof(U32)`|The processing types, represented as a bit mask|
+|`ProcTypes`|`Fw::DpCfg::ProcType::SerialType`|`sizeof(Fw::DpCfg::ProcType::SerialType)`|The processing types, represented as a bit mask|
 |`UserData`|`Header::UserData`|`DpCfg::CONTAINER_USER_DATA_SIZE`|User-configurable data|
 |`DpState`|`DpState`|`DpState::SERIALIZED_SIZE`|The data product state
 |`DataSize`|`FwSizeType`|`sizeof(FwSizeType)`|The size of the data payload in bytes|
