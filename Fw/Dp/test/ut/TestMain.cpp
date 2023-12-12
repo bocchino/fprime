@@ -32,8 +32,8 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     Fw::Time timeTag(seconds, useconds);
     container.setTimeTag(timeTag);
     // Set the processing types
-    // FIXME: Set random bits in the mask
-    const DpCfg::ProcType::SerialType procTypes = 0;
+    const FwSizeType numProcTypeStates = 1 << DpCfg::ProcType::NUM_CONSTANTS;
+    const DpCfg::ProcType::SerialType procTypes = STest::Pick::startLength(0, numProcTypeStates);
     container.setProcTypes(procTypes);
     // Set the user data
     for (U8& data : userData) {

@@ -24,8 +24,7 @@ DpContainer::DpContainer(FwDpIdType id, const Fw::Buffer& buffer)
     this->setBuffer(buffer);
 }
 
-DpContainer::DpContainer()
-    : id(0), priority(0), procTypes(0), dataSize(0), buffer() {
+DpContainer::DpContainer() : id(0), priority(0), procTypes(0), dataSize(0), buffer() {
     // Initialize the user data field
     this->initUserDataField();
 }
@@ -72,8 +71,7 @@ Fw::SerializeStatus DpContainer::serializeHeader() {
         // Serialize the data size
         status = serializeRepr.serialize(this->dataSize);
         FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
-    }
-    else {
+    } else {
         status = Fw::FW_SERIALIZE_NO_ROOM_LEFT;
     }
     return status;

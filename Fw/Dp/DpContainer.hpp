@@ -118,9 +118,8 @@ class DpContainer {
         this->timeTag = timeTag;
     }
 
-    //! Set the processing types
-    // TODO: This function should set and clear bits in the mask
-    void setProcTypes(DpCfg::ProcType::SerialType procTypes  //!< The processing type
+    //! Set the processing types bit mask
+    void setProcTypes(DpCfg::ProcType::SerialType procTypes  //!< The processing types
     ) {
         this->procTypes = procTypes;
     }
