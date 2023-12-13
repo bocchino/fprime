@@ -79,16 +79,16 @@ Fw::SerializeStatus DpContainer::serializeHeader() {
 }
 
 void DpContainer::setBuffer(const Buffer& buffer) {
+    // Set the buffer
     this->buffer = buffer;
+    // Check that the buffer is large enough to hold a data product packet
     FW_ASSERT(buffer.getSize() >= MIN_PACKET_SIZE, buffer.getSize(), MIN_PACKET_SIZE);
-    // Move the serialization index to the end of the header
-    // FIXME: Use the data buffer instead
-    const auto status = this->moveSerToOffset(DATA_OFFSET);
-    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
     // Initialize the data buffer
     U8 *const buffPtr = buffer.getData();
-    U8 *const dataPtr = &buffPtr[DATA_OFFSET];
     const FwSizeType dataCapacity = buffer.getSize() - MIN_PACKET_SIZE;
+    // Check that data buffer is in bounds for packet buffer
+    FW_ASSERT(DATA_OFFSET + dataCapacity <= buffer.getSize());
+    U8 *const dataPtr = &buffPtr[DATA_OFFSET];
     this->dataBuffer.setExtBuffer(dataPtr, dataCapacity);
 }
 
