@@ -118,11 +118,6 @@ class Tester : public DpTestGTestBase {
                                     Fw::Buffer buffer  //!< The buffer
     );
 
-    //! Check that the serialize repr is at the specified deserialization offset
-    static void checkDeserialAtOffset(Fw::SerializeBufferBase& serialRepr,  //!< The serialize repr
-                                      FwSizeType offset                     //!< The offset
-    );
-
   PRIVATE:
     // ----------------------------------------------------------------------
     // Variables

@@ -15,8 +15,7 @@
 
 using namespace Fw;
 
-constexpr FwSizeType BUFFER_SIZE = DpContainer::getPacketSizeForDataSize(0);
-U8 bufferData[BUFFER_SIZE];
+U8 bufferData[Fw::DpContainer::MIN_PACKET_SIZE];
 DpContainer::Header::UserData userData;
 
 void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {

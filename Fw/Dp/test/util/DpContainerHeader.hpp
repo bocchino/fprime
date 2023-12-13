@@ -88,11 +88,12 @@ struct DpContainerHeader {
         DpContainerHeader::moveDeserToOffset(file, line, buffer, DpContainer::Header::DATA_SIZE_OFFSET);
         status = serializeRepr.deserialize(this->dataSize);
         DP_CONTAINER_HEADER_ASSERT_EQ(status, FW_SERIALIZE_OK);
-        // After deserializing time, the deserialization index should match the
-        // header size
-        const FwSizeType buffLeft = serializeRepr.getBuffLeft();
-        DpContainerHeader::moveDeserToOffset(file, line, buffer, DpContainer::Header::SIZE);
-        DP_CONTAINER_HEADER_ASSERT_EQ(buffLeft, serializeRepr.getBuffLeft());
+        // After deserializing time, the deserialization index should be at
+        // the header hash offset
+        checkDeserialAtOffset(serializeRepr, DpContainer::HEADER_HASH_OFFSET);
+        // TODO: Verify the hashes
+        // Move the deserialization pointer to the data offset
+        DpContainerHeader::moveDeserToOffset(file, line, buffer, DpContainer::DATA_OFFSET);
     }
 
     //! Check a packet header against a buffer
@@ -109,8 +110,7 @@ struct DpContainerHeader {
     ) const {
         // Check the buffer size
         const FwSizeType bufferSize = buffer.getSize();
-        // FIXME: Add 2 * HASH_DIGEST_LENGTH
-        const FwSizeType minBufferSize = Fw::DpContainer::Header::SIZE + dataSize;
+        const FwSizeType minBufferSize = Fw::DpContainer::MIN_PACKET_SIZE;
         DP_CONTAINER_HEADER_ASSERT_GE(bufferSize, minBufferSize);
         // Check the container id
         DP_CONTAINER_HEADER_ASSERT_EQ(this->id, id);
@@ -128,6 +128,15 @@ struct DpContainerHeader {
         DP_CONTAINER_HEADER_ASSERT_EQ(this->dpState, dpState);
         // Check the data size
         DP_CONTAINER_HEADER_ASSERT_EQ(this->dataSize, dataSize);
+    }
+
+    //! Check that the serialize repr is at the specified deserialization offset
+    static void checkDeserialAtOffset(SerializeBufferBase& serialRepr,  //!< The serialize repr
+                                      FwSizeType offset                 //!< The offset
+    ) {
+        const U8* buffAddr = serialRepr.getBuffAddr();
+        const U8* buffAddrLeft = serialRepr.getBuffAddrLeft();
+        ASSERT_EQ(buffAddrLeft, &buffAddr[offset]);
     }
 
     //! The container id

@@ -77,7 +77,7 @@ void Tester::productRecvIn_Container1_SUCCESS() {
                                              expectedNumElts);
     // Check the data
     Fw::SerializeBufferBase& serialRepr = buffer.getSerializeRepr();
-    checkDeserialAtOffset(serialRepr, Fw::DpContainer::DATA_OFFSET);
+    Fw::TestUtil::DpContainerHeader::checkDeserialAtOffset(serialRepr, Fw::DpContainer::DATA_OFFSET);
     for (FwSizeType i = 0; i < expectedNumElts; ++i) {
         FwDpIdType id;
         U32 elt;
@@ -104,7 +104,7 @@ void Tester::productRecvIn_Container2_SUCCESS() {
                                              expectedNumElts);
     // Check the data
     Fw::SerializeBufferBase& serialRepr = buffer.getSerializeRepr();
-    checkDeserialAtOffset(serialRepr, Fw::DpContainer::DATA_OFFSET);
+    Fw::TestUtil::DpContainerHeader::checkDeserialAtOffset(serialRepr, Fw::DpContainer::DATA_OFFSET);
     for (FwSizeType i = 0; i < expectedNumElts; ++i) {
         FwDpIdType id;
         DpTest_Data elt;
@@ -133,7 +133,7 @@ void Tester::productRecvIn_Container3_SUCCESS() {
 
     // Check the data
     Fw::SerializeBufferBase& serialRepr = buffer.getSerializeRepr();
-    checkDeserialAtOffset(serialRepr, Fw::DpContainer::DATA_OFFSET);
+    Fw::TestUtil::DpContainerHeader::checkDeserialAtOffset(serialRepr, Fw::DpContainer::DATA_OFFSET);
     for (FwSizeType i = 0; i < expectedNumElts; ++i) {
         FwDpIdType id;
         auto status = serialRepr.deserialize(id);
@@ -169,7 +169,7 @@ void Tester::productRecvIn_Container4_SUCCESS() {
 
     // Check the data
     Fw::SerializeBufferBase& serialRepr = buffer.getSerializeRepr();
-    checkDeserialAtOffset(serialRepr, Fw::DpContainer::DATA_OFFSET);
+    Fw::TestUtil::DpContainerHeader::checkDeserialAtOffset(serialRepr, Fw::DpContainer::DATA_OFFSET);
     for (FwSizeType i = 0; i < expectedNumElts; ++i) {
         FwDpIdType id;
         auto status = serialRepr.deserialize(id);
@@ -205,7 +205,7 @@ void Tester::productRecvIn_Container5_SUCCESS() {
 
     // Check the data
     Fw::SerializeBufferBase& serialRepr = buffer.getSerializeRepr();
-    checkDeserialAtOffset(serialRepr, Fw::DpContainer::DATA_OFFSET);
+    Fw::TestUtil::DpContainerHeader::checkDeserialAtOffset(serialRepr, Fw::DpContainer::DATA_OFFSET);
     for (FwSizeType i = 0; i < expectedNumElts; ++i) {
         FwDpIdType id;
         auto status = serialRepr.deserialize(id);
@@ -282,12 +282,6 @@ void Tester::productRecvIn_CheckFailure(FwDpIdType id, Fw::Buffer buffer) {
     this->component.doDispatch();
     // Check the port history size
     ASSERT_PRODUCT_SEND_SIZE(0);
-}
-
-void Tester::checkDeserialAtOffset(Fw::SerializeBufferBase& serialRepr, FwSizeType offset) {
-    const U8* buffAddr = serialRepr.getBuffAddr();
-    const U8* buffAddrLeft = serialRepr.getBuffAddrLeft();
-    ASSERT_EQ(buffAddrLeft, &buffAddr[offset]);
 }
 
 // ----------------------------------------------------------------------

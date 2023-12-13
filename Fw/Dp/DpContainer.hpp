@@ -20,7 +20,7 @@ namespace Fw {
 class DpContainer {
   public:
     // ----------------------------------------------------------------------
-    // Types
+    // Constants and Types
     // ----------------------------------------------------------------------
 
     //! A DpContainer packet header
@@ -52,6 +52,8 @@ class DpContainer {
     //! The data offset
     //! FIXME: This should be HEADER_HASH_OFFSET + HASH_DIGEST_LENGTH
     static constexpr FwSizeType DATA_OFFSET = HEADER_HASH_OFFSET;
+    //! The minimum packet size
+    static constexpr FwSizeType MIN_PACKET_SIZE = Header::SIZE + 2 * HASH_DIGEST_LENGTH;
 
   public:
     // ----------------------------------------------------------------------
