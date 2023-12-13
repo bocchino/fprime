@@ -54,13 +54,6 @@ class DpContainer {
       HASH_DIGEST_LENGTH;
     // FIXME: The data offset should be HEADER_HASH_OFFSET + HASH_DIGEST_LENGTH
     // The other hash digest length should go at the end.
-    //
-    // Right now, since everything is in one buffer, we have to put all the
-    // reserved space for hashes at the beginning.
-    // We will fix this by maintaining an external serialize buffer for the
-    // data. The capacity of that buffer is the max data size.
-    // The FPP code gen will need to be modified to serialize data into this 
-    // buffer.
     //! The data hash offset
     static constexpr FwSizeType DATA_HASH_OFFSET = HEADER_HASH_OFFSET + HASH_DIGEST_LENGTH;
     // FIXME: See above
