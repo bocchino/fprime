@@ -45,6 +45,7 @@ struct DpContainerHeader {
 
     //! Deserialize a header from a packet buffer
     //! Check that the serialization succeeded at every step
+    //! Check the header hash and the data hash
     void deserialize(const char* const file,  //!< The call site file name
                      const U32 line,          //!< The call site line number
                      Fw::Buffer& buffer       //!< The packet buffer
@@ -91,9 +92,32 @@ struct DpContainerHeader {
         // After deserializing time, the deserialization index should be at
         // the header hash offset
         checkDeserialAtOffset(serializeRepr, DpContainer::HEADER_HASH_OFFSET);
-        // TODO: Verify the hashes
+        // Check the header hash
+        checkHeaderHash(file, line, buffer);
+        // Check the data hash
+        checkDataHash(file, line, buffer);
         // Move the deserialization pointer to the data offset
         DpContainerHeader::moveDeserToOffset(file, line, buffer, DpContainer::DATA_OFFSET);
+    }
+
+    //! Check the header hash
+    static void checkHeaderHash(const char* const file,  //!< The call site file name
+                                const U32 line,          //!< The call site line number
+                                Fw::Buffer& buffer       //!< The packet buffer
+    ) {
+        Utils::HashBuffer computedHashBuffer;
+        U8* const buffAddr = buffer.getData();
+        Utils::Hash::hash(buffAddr, DpContainer::Header::SIZE, computedHashBuffer);
+        Utils::HashBuffer storedHashBuffer(&buffAddr[DpContainer::HEADER_HASH_OFFSET], HASH_DIGEST_LENGTH);
+        DP_CONTAINER_HEADER_ASSERT_EQ(computedHashBuffer, storedHashBuffer);
+    }
+
+    //! Check the data hash
+    static void checkDataHash(const char* const file,  //!< The call site file name
+                              const U32 line,          //!< The call site line number
+                              Fw::Buffer& buffer       //!< The packet buffer
+    ) {
+        // TODO
     }
 
     //! Check a packet header against a buffer

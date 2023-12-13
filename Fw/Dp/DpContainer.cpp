@@ -99,7 +99,7 @@ void DpContainer::updateHeaderHash() {
     U8* const buffAddr = this->buffer.getData();
     Utils::Hash::hash(buffAddr, Header::SIZE, hashBuffer);
     ExternalSerializeBuffer serialBuffer(&buffAddr[HEADER_HASH_OFFSET], HASH_DIGEST_LENGTH);
-    const Fw::SerializeStatus status = serialBuffer.copyRaw(hashBuffer, HASH_DIGEST_LENGTH);
+    const Fw::SerializeStatus status = hashBuffer.copyRaw(serialBuffer, HASH_DIGEST_LENGTH);
     FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
 }
 
