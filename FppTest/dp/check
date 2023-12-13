@@ -5,7 +5,7 @@ cd $dir
 
 build_cache=../build-fprime-automatic-native-ut
 
-./build
+./build --ut
 dp_exe_base=FppTest_dp_ut_exe
 dp_exe=`find $build_cache/bin -name $dp_exe_base`
 cp $dp_exe .

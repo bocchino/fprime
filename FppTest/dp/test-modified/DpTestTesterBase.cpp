@@ -380,42 +380,42 @@ namespace FppTest {
   void DpTestTesterBase ::
     pushProductGetEntry(
         FwDpIdType id,
-        FwSizeType size
+        FwSizeType dataSize
     )
   {
-    DpGet e = { id, size };
+    DpGet e = { id, dataSize };
     this->productGetHistory->push_back(e);
   }
 
   Fw::Success::T DpTestTesterBase ::
     productGet_handler(
         FwDpIdType id,
-        FwSizeType size,
+        FwSizeType dataSize,
         Fw::Buffer& buffer
     )
   {
     (void) buffer;
-    this->pushProductGetEntry(id, size);
+    this->pushProductGetEntry(id, dataSize);
     return Fw::Success::FAILURE;
   }
 
   void DpTestTesterBase ::
     pushProductRequestEntry(
         FwDpIdType id,
-        FwSizeType size
+        FwSizeType dataSize
     )
   {
-    DpRequest e = { id, size };
+    DpRequest e = { id, dataSize };
     this->productRequestHistory->push_back(e);
   }
 
   void DpTestTesterBase ::
     productRequest_handler(
         FwDpIdType id,
-        FwSizeType size
+        FwSizeType dataSize
     )
   {
-    this->pushProductRequestEntry(id, size);
+    this->pushProductRequestEntry(id, dataSize);
   }
 
   void DpTestTesterBase ::
@@ -470,12 +470,12 @@ namespace FppTest {
         Fw::PassiveComponentBase* const callComp,
         NATIVE_INT_TYPE portNum,
         FwDpIdType id,
-        FwSizeType size,
+        FwSizeType dataSize,
         Fw::Buffer& buffer
     )
   {
     DpTestTesterBase* _testerBase = static_cast<DpTestTesterBase*>(callComp);
-    return _testerBase->productGet_handler(id, size, buffer);
+    return _testerBase->productGet_handler(id, dataSize, buffer);
   }
 
   void DpTestTesterBase ::
@@ -483,11 +483,11 @@ namespace FppTest {
         Fw::PassiveComponentBase* const callComp,
         NATIVE_INT_TYPE portNum,
         FwDpIdType id,
-        FwSizeType size
+        FwSizeType dataSize
     )
   {
     DpTestTesterBase* _testerBase = static_cast<DpTestTesterBase*>(callComp);
-    _testerBase->productRequest_handler(id, size);
+    _testerBase->productRequest_handler(id, dataSize);
   }
 
   void DpTestTesterBase ::

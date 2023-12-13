@@ -37,8 +37,8 @@
 #define ASSERT_PRODUCT_SEND_SIZE(size) \
   this->assertProductSend_size(__FILE__, __LINE__, size)
 
-#define ASSERT_PRODUCT_SEND(index, id, priority, timeTag, procType, userData, dpState, dataSize, buffer) \
-    assertProductSend(__FILE__, __LINE__, index, id, priority, timeTag, procType, userData, dpState, dataSize, buffer)
+#define ASSERT_PRODUCT_SEND(index, id, priority, timeTag, procTypes, userData, dpState, dataSize, buffer) \
+    assertProductSend(__FILE__, __LINE__, index, id, priority, timeTag, procTypes, userData, dpState, dataSize, buffer)
 
 namespace FppTest {
 

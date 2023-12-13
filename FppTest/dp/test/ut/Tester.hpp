@@ -124,31 +124,31 @@ class Tester : public DpTestGTestBase {
     // ----------------------------------------------------------------------
 
     //! Buffer data for Container 1
-    U8 container1Data[DpTest::CONTAINER_1_SIZE];
+    U8 container1Data[DpTest::CONTAINER_1_PACKET_SIZE];
 
     //! Buffer for Container 1
     const Fw::Buffer container1Buffer;
 
     //! Buffer data for Container 2
-    U8 container2Data[DpTest::CONTAINER_2_SIZE];
+    U8 container2Data[DpTest::CONTAINER_2_PACKET_SIZE];
 
     //! Buffer for Container 2
     const Fw::Buffer container2Buffer;
 
     //! Buffer data for Container 3
-    U8 container3Data[DpTest::CONTAINER_3_SIZE];
+    U8 container3Data[DpTest::CONTAINER_3_PACKET_SIZE];
 
     //! Buffer for Container 3
     const Fw::Buffer container3Buffer;
 
     //! Buffer data for Container 4
-    U8 container4Data[DpTest::CONTAINER_4_SIZE];
+    U8 container4Data[DpTest::CONTAINER_4_PACKET_SIZE];
 
     //! Buffer for Container 4
     const Fw::Buffer container4Buffer;
 
     //! Buffer data for Container 5
-    U8 container5Data[DpTest::CONTAINER_5_SIZE];
+    U8 container5Data[DpTest::CONTAINER_5_PACKET_SIZE];
 
     //! Buffer for Container 5
     const Fw::Buffer container5Buffer;

@@ -19,11 +19,16 @@ class DpTest : public DpTestComponentBase {
     // Constants
     // ----------------------------------------------------------------------
 
-    static constexpr FwSizeType CONTAINER_1_SIZE = 100;
-    static constexpr FwSizeType CONTAINER_2_SIZE = 1000;
-    static constexpr FwSizeType CONTAINER_3_SIZE = 1000;
-    static constexpr FwSizeType CONTAINER_4_SIZE = 1000;
-    static constexpr FwSizeType CONTAINER_5_SIZE = 1000;
+    static constexpr FwSizeType CONTAINER_1_DATA_SIZE = 100;
+    static constexpr FwSizeType CONTAINER_1_PACKET_SIZE = DpContainer::getPacketSizeForDataSize(CONTAINER_1_DATA_SIZE);
+    static constexpr FwSizeType CONTAINER_2_DATA_SIZE = 1000;
+    static constexpr FwSizeType CONTAINER_2_PACKET_SIZE = DpContainer::getPacketSizeForDataSize(CONTAINER_2_DATA_SIZE);
+    static constexpr FwSizeType CONTAINER_3_DATA_SIZE = 1000;
+    static constexpr FwSizeType CONTAINER_3_PACKET_SIZE = DpContainer::getPacketSizeForDataSize(CONTAINER_3_DATA_SIZE);
+    static constexpr FwSizeType CONTAINER_4_DATA_SIZE = 1000;
+    static constexpr FwSizeType CONTAINER_4_PACKET_SIZE = DpContainer::getPacketSizeForDataSize(CONTAINER_4_DATA_SIZE);
+    static constexpr FwSizeType CONTAINER_5_DATA_SIZE = 1000;
+    static constexpr FwSizeType CONTAINER_5_PACKET_SIZE = DpContainer::getPacketSizeForDataSize(CONTAINER_5_DATA_SIZE);
 
   public:
     // ----------------------------------------------------------------------

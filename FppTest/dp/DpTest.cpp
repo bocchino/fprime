@@ -41,31 +41,31 @@ DpTest ::~DpTest() {}
 
 void DpTest::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
     // Request a buffer for Container 1
-    this->dpRequest_Container1(CONTAINER_1_SIZE);
+    this->dpRequest_Container1(CONTAINER_1_DATA_SIZE);
     // Request a buffer for Container 2
-    this->dpRequest_Container2(CONTAINER_2_SIZE);
+    this->dpRequest_Container2(CONTAINER_2_DATA_SIZE);
     // Request a buffer for Container 3
-    this->dpRequest_Container3(CONTAINER_3_SIZE);
+    this->dpRequest_Container3(CONTAINER_3_DATA_SIZE);
     // Get a buffer for Container 1
     {
         DpContainer container;
-        Fw::Success status = this->dpGet_Container1(CONTAINER_1_SIZE, container);
+        Fw::Success status = this->dpGet_Container1(CONTAINER_1_DATA_SIZE, container);
         FW_ASSERT(status == Fw::Success::SUCCESS, status);
         // Check the container
-        this->checkContainer(container, ContainerId::Container1, CONTAINER_1_SIZE);
+        this->checkContainer(container, ContainerId::Container1, CONTAINER_1_PACKET_SIZE);
     }
     // Get a buffer for Container 2
     {
         DpContainer container;
-        Fw::Success status = this->dpGet_Container2(CONTAINER_2_SIZE, container);
+        Fw::Success status = this->dpGet_Container2(CONTAINER_2_DATA_SIZE, container);
         FW_ASSERT(status == Fw::Success::SUCCESS);
         // Check the container
-        this->checkContainer(container, ContainerId::Container2, CONTAINER_2_SIZE);
+        this->checkContainer(container, ContainerId::Container2, CONTAINER_2_PACKET_SIZE);
     }
     // Get a buffer for Container 3
     {
         DpContainer container;
-        Fw::Success status = this->dpGet_Container3(CONTAINER_3_SIZE, container);
+        Fw::Success status = this->dpGet_Container3(CONTAINER_3_DATA_SIZE, container);
         // This one should fail
         FW_ASSERT(status == Fw::Success::FAILURE);
     }
@@ -78,7 +78,7 @@ void DpTest::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE con
 void DpTest ::dpRecv_Container1_handler(DpContainer& container, Fw::Success::T status) {
     if (status == Fw::Success::SUCCESS) {
         auto serializeStatus = Fw::FW_SERIALIZE_OK;
-        for (FwSizeType i = 0; i < CONTAINER_1_SIZE; ++i) {
+        for (FwSizeType i = 0; i < CONTAINER_1_DATA_SIZE; ++i) {
             serializeStatus = container.serializeRecord_U32Record(this->u32RecordData);
             if (serializeStatus == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
                 break;
@@ -94,7 +94,7 @@ void DpTest ::dpRecv_Container2_handler(DpContainer& container, Fw::Success::T s
     if (status == Fw::Success::SUCCESS) {
         const DpTest_Data dataRecord(this->dataRecordData);
         auto serializeStatus = Fw::FW_SERIALIZE_OK;
-        for (FwSizeType i = 0; i < CONTAINER_2_SIZE; ++i) {
+        for (FwSizeType i = 0; i < CONTAINER_2_DATA_SIZE; ++i) {
             serializeStatus = container.serializeRecord_DataRecord(dataRecord);
             if (serializeStatus == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
                 break;
@@ -109,7 +109,7 @@ void DpTest ::dpRecv_Container2_handler(DpContainer& container, Fw::Success::T s
 void DpTest ::dpRecv_Container3_handler(DpContainer& container, Fw::Success::T status) {
     if (status == Fw::Success::SUCCESS) {
         auto serializeStatus = Fw::FW_SERIALIZE_OK;
-        for (FwSizeType i = 0; i < CONTAINER_3_SIZE; ++i) {
+        for (FwSizeType i = 0; i < CONTAINER_3_DATA_SIZE; ++i) {
             serializeStatus =
                 container.serializeRecord_U8ArrayRecord(this->u8ArrayRecordData.data(), this->u8ArrayRecordData.size());
             if (serializeStatus == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
@@ -125,7 +125,7 @@ void DpTest ::dpRecv_Container3_handler(DpContainer& container, Fw::Success::T s
 void DpTest ::dpRecv_Container4_handler(DpContainer& container, Fw::Success::T status) {
     if (status == Fw::Success::SUCCESS) {
         auto serializeStatus = Fw::FW_SERIALIZE_OK;
-        for (FwSizeType i = 0; i < CONTAINER_4_SIZE; ++i) {
+        for (FwSizeType i = 0; i < CONTAINER_4_DATA_SIZE; ++i) {
             serializeStatus = container.serializeRecord_U32ArrayRecord(this->u32ArrayRecordData.data(),
                                                                        this->u32ArrayRecordData.size());
             if (serializeStatus == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {
@@ -141,7 +141,7 @@ void DpTest ::dpRecv_Container4_handler(DpContainer& container, Fw::Success::T s
 void DpTest ::dpRecv_Container5_handler(DpContainer& container, Fw::Success::T status) {
     if (status == Fw::Success::SUCCESS) {
         auto serializeStatus = Fw::FW_SERIALIZE_OK;
-        for (FwSizeType i = 0; i < CONTAINER_5_SIZE; ++i) {
+        for (FwSizeType i = 0; i < CONTAINER_5_DATA_SIZE; ++i) {
             serializeStatus = container.serializeRecord_DataArrayRecord(this->dataArrayRecordData.data(),
                                                                         this->dataArrayRecordData.size());
             if (serializeStatus == Fw::FW_SERIALIZE_NO_ROOM_LEFT) {

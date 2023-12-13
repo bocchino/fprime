@@ -221,18 +221,23 @@ for [`Fw::DpContainer`](../../Fw/Dp/docs/sdd.md).
 
 1. If _C_ has a `product` `get` port, a member function `dpGet_`
 _c_ for each container defined in _C_.
-This function takes a container ID, a size, and a reference
+This function takes a container ID, a data size, and a reference
 to a data product container _D_.
-It gets an `Fw::Buffer` _B_ of the requested size.
-Then it uses the ID, the size, and _B_ to initialize _D_.
+It invokes `productGetOut`, which is typically connected
+to a data product manager component.
+In the nominal case, the invocation returns an `Fw::Buffer` _B_ large enough
+to store a data product packet with the requested data size.
+The `dpGet` function then uses the ID and _B_ to initialize _D_.
 It returns a status value indicating whether the buffer
 allocation succeeded.
 
 1. If _C_ has a `product` `request` port, a member function
 `dpRequest_` _c_ for each container defined in _C_.
-This function takes a container ID and a size.
+This function takes a container ID and a data size.
 It sends out a request on `productRequestOut`, which is
 typically connected to a data product manager component.
+The request is for a buffer large enough to store a data
+product packet with the requested data size.
 
 1. If _C_ has a `product` `recv` port, a pure virtual
 member function `dpRecv_` _c_ `_handler` for each container _c_

@@ -19,15 +19,15 @@ namespace FppTest {
 Tester::Tester()
     : DpTestGTestBase("Tester", Tester::MAX_HISTORY_SIZE),
       container1Data{},
-      container1Buffer(this->container1Data, DpTest::CONTAINER_1_SIZE),
+      container1Buffer(this->container1Data, sizeof this->container1Data),
       container2Data{},
-      container2Buffer(this->container2Data, DpTest::CONTAINER_2_SIZE),
+      container2Buffer(this->container2Data, sizeof this->container2Data),
       container3Data{},
-      container3Buffer(this->container3Data, DpTest::CONTAINER_3_SIZE),
+      container3Buffer(this->container3Data, sizeof this->container3Data),
       container4Data{},
-      container4Buffer(this->container4Data, DpTest::CONTAINER_4_SIZE),
+      container4Buffer(this->container4Data, sizeof this->container4Data),
       container5Data{},
-      container5Buffer(this->container5Data, DpTest::CONTAINER_5_SIZE),
+      container5Buffer(this->container5Data, sizeof this->container5Data),
       component("DpTest",
                 STest::Pick::any(),
                 STest::Pick::any(),
@@ -59,13 +59,13 @@ void Tester::schedIn_OK() {
     this->invoke_to_schedIn(0, 0);
     this->component.doDispatch();
     ASSERT_PRODUCT_REQUEST_SIZE(3);
-    ASSERT_PRODUCT_REQUEST(0, ID_BASE + DpTest::ContainerId::Container1, FwSizeType(DpTest::CONTAINER_1_SIZE));
-    ASSERT_PRODUCT_REQUEST(1, ID_BASE + DpTest::ContainerId::Container2, FwSizeType(DpTest::CONTAINER_2_SIZE));
-    ASSERT_PRODUCT_REQUEST(2, ID_BASE + DpTest::ContainerId::Container3, FwSizeType(DpTest::CONTAINER_3_SIZE));
+    ASSERT_PRODUCT_REQUEST(0, ID_BASE + DpTest::ContainerId::Container1, FwSizeType(DpTest::CONTAINER_1_PACKET_SIZE));
+    ASSERT_PRODUCT_REQUEST(1, ID_BASE + DpTest::ContainerId::Container2, FwSizeType(DpTest::CONTAINER_2_PACKET_SIZE));
+    ASSERT_PRODUCT_REQUEST(2, ID_BASE + DpTest::ContainerId::Container3, FwSizeType(DpTest::CONTAINER_3_PACKET_SIZE));
     ASSERT_PRODUCT_GET_SIZE(3);
-    ASSERT_PRODUCT_GET(0, ID_BASE + DpTest::ContainerId::Container1, FwSizeType(DpTest::CONTAINER_1_SIZE));
-    ASSERT_PRODUCT_GET(1, ID_BASE + DpTest::ContainerId::Container2, FwSizeType(DpTest::CONTAINER_2_SIZE));
-    ASSERT_PRODUCT_GET(2, ID_BASE + DpTest::ContainerId::Container3, FwSizeType(DpTest::CONTAINER_3_SIZE));
+    ASSERT_PRODUCT_GET(0, ID_BASE + DpTest::ContainerId::Container1, FwSizeType(DpTest::CONTAINER_1_PACKET_SIZE));
+    ASSERT_PRODUCT_GET(1, ID_BASE + DpTest::ContainerId::Container2, FwSizeType(DpTest::CONTAINER_2_PACKET_SIZE));
+    ASSERT_PRODUCT_GET(2, ID_BASE + DpTest::ContainerId::Container3, FwSizeType(DpTest::CONTAINER_3_PACKET_SIZE));
 }
 
 void Tester::productRecvIn_Container1_SUCCESS() {
@@ -295,12 +295,12 @@ Fw::Success::T Tester::productGet_handler(FwDpIdType id, FwSizeType size, Fw::Bu
     const FwDpIdType localId = id - ID_BASE;
     switch (localId) {
         case DpTest::ContainerId::Container1:
-            FW_ASSERT(size == DpTest::CONTAINER_1_SIZE);
+            FW_ASSERT(size == DpTest::CONTAINER_1_PACKET_SIZE);
             buffer = this->container1Buffer;
             status = Fw::Success::SUCCESS;
             break;
         case DpTest::ContainerId::Container2:
-            FW_ASSERT(size == DpTest::CONTAINER_2_SIZE);
+            FW_ASSERT(size == DpTest::CONTAINER_2_PACKET_SIZE);
             buffer = this->container2Buffer;
             status = Fw::Success::SUCCESS;
             break;
