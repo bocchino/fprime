@@ -50,15 +50,10 @@ class DpContainer {
     //! The header hash offset
     static constexpr FwSizeType HEADER_HASH_OFFSET = Header::SIZE;
     //! The data offset
-    static constexpr FwSizeType DATA_OFFSET = HEADER_HASH_OFFSET + 2 * 
-      HASH_DIGEST_LENGTH;
-    // FIXME: The data offset should be HEADER_HASH_OFFSET + HASH_DIGEST_LENGTH
-    // The other hash digest length should go at the end.
-    //! The data hash offset
-    static constexpr FwSizeType DATA_HASH_OFFSET = HEADER_HASH_OFFSET + HASH_DIGEST_LENGTH;
-    // FIXME: See above
-
+    static constexpr FwSizeType DATA_OFFSET = HEADER_HASH_OFFSET + HASH_DIGEST_LENGTH;
     //! The minimum packet size
+    //! Reserve space for the header, the header hash, and the data hash
+    //! This is also the number of non-data bytes in the packet
     static constexpr FwSizeType MIN_PACKET_SIZE = Header::SIZE + 2 * HASH_DIGEST_LENGTH;
 
   public:
@@ -148,6 +143,12 @@ class DpContainer {
     //! Set the packet buffer
     void setBuffer(const Buffer& buffer  //!< The packet buffer
     );
+
+    //! Get the data hash offset
+    FwSizeType getDataHashOffset() const {
+        // Data hash goes after the header, the header hash, and the data
+        return Header::SIZE + HASH_DIGEST_LENGTH + dataSize;
+    }
 
   public:
     // ----------------------------------------------------------------------
