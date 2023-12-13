@@ -10,6 +10,7 @@
 #include "Fw/Buffer/Buffer.hpp"
 #include "Fw/Dp/DpStateEnumAc.hpp"
 #include "Fw/Time/Time.hpp"
+#include "Utils/Hash/Hash.hpp"
 #include "config/FppConstantsAc.hpp"
 #include "config/ProcTypeEnumAc.hpp"
 
@@ -46,6 +47,12 @@ class DpContainer {
         static constexpr FwSizeType SIZE = DATA_SIZE_OFFSET + sizeof(FwSizeType);
     };
 
+    //! The header hash offset
+    static constexpr FwSizeType HEADER_HASH_OFFSET = Header::SIZE;
+    //! The data offset
+    //! FIXME: This should be HEADER_HASH_OFFSET + HASH_DIGEST_LENGTH
+    static constexpr FwSizeType DATA_OFFSET = HEADER_HASH_OFFSET;
+
   public:
     // ----------------------------------------------------------------------
     // Constructor
@@ -77,6 +84,7 @@ class DpContainer {
     Fw::Buffer getBuffer() const { return this->buffer; }
 
     //! Get the packet size corresponding to the data size
+    // FIXME: This should be augmented by 2 * HASH_DIGEST_LENGTH
     FwSizeType getPacketSize() const { return Header::SIZE + this->dataSize; }
 
     //! Get the priority
@@ -133,6 +141,17 @@ class DpContainer {
     //! Set the packet buffer
     void setBuffer(const Buffer& buffer  //!< The buffer
     );
+
+  public:
+    // ----------------------------------------------------------------------
+    // Public static functions
+    // ----------------------------------------------------------------------
+
+    //! Get the packet size for a given data size
+    static constexpr FwSizeType getPacketSizeForDataSize(FwSizeType dataSize  //!< The data size
+    ) {
+        return Header::SIZE + dataSize + 2 * HASH_DIGEST_LENGTH;
+    }
 
   PRIVATE:
     // ----------------------------------------------------------------------

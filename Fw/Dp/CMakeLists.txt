@@ -2,6 +2,7 @@ set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/Dp.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/DpContainer.cpp"
 )
+set(MOD_DEPS Utils/Hash)
 register_fprime_module()
 
 set(UT_SOURCE_FILES

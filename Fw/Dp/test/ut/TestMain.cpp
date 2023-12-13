@@ -15,13 +15,14 @@
 
 using namespace Fw;
 
-U8 bufferData[DpContainer::Header::SIZE];
+constexpr FwSizeType BUFFER_SIZE = DpContainer::getPacketSizeForDataSize(0);
+U8 bufferData[BUFFER_SIZE];
 DpContainer::Header::UserData userData;
 
 void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     // Check the packet size
-    // Packet size should be header size because there is no data
-    const auto headerSize = DpContainer::Header::SIZE;
+    // FIXME: Add 2 * hash size
+    const FwSizeType headerSize = DpContainer::Header::SIZE;
     ASSERT_EQ(container.getPacketSize(), headerSize);
     // Set the priority
     const FwDpPriorityType priority = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpPriorityType>::max());
@@ -45,7 +46,7 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     const DpState dpState(static_cast<DpState::T>(STest::Pick::startLength(0, DpState::NUM_CONSTANTS)));
     container.setDpState(dpState);
     // Serialize and deserialize the header
-    auto status = container.serializeHeader();
+    Fw::SerializeStatus status = container.serializeHeader();
     ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
     TestUtil::DpContainerHeader header;
     // Deserialize the header

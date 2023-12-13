@@ -35,9 +35,9 @@ struct DpContainerHeader {
                                   Buffer& buffer,          //!< The buffer
                                   FwSizeType offset        //!< The offset
     ) {
-        auto& serializeRepr = buffer.getSerializeRepr();
+        Fw::SerializeBufferBase& serializeRepr = buffer.getSerializeRepr();
         // Reset deserialization
-        auto status = serializeRepr.setBuffLen(buffer.getSize());
+        Fw::SerializeStatus status = serializeRepr.setBuffLen(buffer.getSize());
         DP_CONTAINER_HEADER_ASSERT_EQ(status, FW_SERIALIZE_OK);
         status = serializeRepr.moveDeserToOffset(offset);
         DP_CONTAINER_HEADER_ASSERT_EQ(status, FW_SERIALIZE_OK);
@@ -49,12 +49,12 @@ struct DpContainerHeader {
                      const U32 line,          //!< The call site line number
                      Fw::Buffer& buffer       //!< The packet buffer
     ) {
-        auto& serializeRepr = buffer.getSerializeRepr();
+        Fw::SerializeBufferBase& serializeRepr = buffer.getSerializeRepr();
         // Deserialize the packet descriptor
         FwPacketDescriptorType packetDescriptor = Fw::ComPacket::FW_PACKET_UNKNOWN;
         // Deserialize the packet descriptor
         DpContainerHeader::moveDeserToOffset(file, line, buffer, DpContainer::Header::PACKET_DESCRIPTOR_OFFSET);
-        auto status = serializeRepr.deserialize(packetDescriptor);
+        Fw::SerializeStatus status = serializeRepr.deserialize(packetDescriptor);
         DP_CONTAINER_HEADER_ASSERT_EQ(status, FW_SERIALIZE_OK);
         DP_CONTAINER_HEADER_ASSERT_EQ(packetDescriptor, Fw::ComPacket::FW_PACKET_DP);
         // Deserialize the container id
@@ -90,7 +90,7 @@ struct DpContainerHeader {
         DP_CONTAINER_HEADER_ASSERT_EQ(status, FW_SERIALIZE_OK);
         // After deserializing time, the deserialization index should match the
         // header size
-        const auto buffLeft = serializeRepr.getBuffLeft();
+        const FwSizeType buffLeft = serializeRepr.getBuffLeft();
         DpContainerHeader::moveDeserToOffset(file, line, buffer, DpContainer::Header::SIZE);
         DP_CONTAINER_HEADER_ASSERT_EQ(buffLeft, serializeRepr.getBuffLeft());
     }
@@ -108,8 +108,9 @@ struct DpContainerHeader {
                FwSizeType dataSize                             //!< The expected data size
     ) const {
         // Check the buffer size
-        const auto bufferSize = buffer.getSize();
-        const auto minBufferSize = Fw::DpContainer::Header::SIZE + dataSize;
+        const FwSizeType bufferSize = buffer.getSize();
+        // FIXME: Add 2 * HASH_DIGEST_LENGTH
+        const FwSizeType minBufferSize = Fw::DpContainer::Header::SIZE + dataSize;
         DP_CONTAINER_HEADER_ASSERT_GE(bufferSize, minBufferSize);
         // Check the container id
         DP_CONTAINER_HEADER_ASSERT_EQ(this->id, id);
