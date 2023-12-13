@@ -107,6 +107,7 @@ class DpContainer {
     );
 
     //! Serialize the header into the packet buffer
+    //! On success, update the header hash
     //! \return The serialize status
     Fw::SerializeStatus serializeHeader();
 
@@ -143,6 +144,9 @@ class DpContainer {
     //! Set the packet buffer
     void setBuffer(const Buffer& buffer  //!< The packet buffer
     );
+
+    //! Update the header hash
+    void updateHeaderHash();
 
     //! Get the data hash offset
     FwSizeType getDataHashOffset() const {
