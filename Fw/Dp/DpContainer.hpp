@@ -61,6 +61,9 @@ class DpContainer {
     // data. The capacity of that buffer is the max data size.
     // The FPP code gen will need to be modified to serialize data into this 
     // buffer.
+    //! The data hash offset
+    static constexpr FwSizeType DATA_HASH_OFFSET = HEADER_HASH_OFFSET + HASH_DIGEST_LENGTH;
+    // FIXME: See above
 
     //! The minimum packet size
     static constexpr FwSizeType MIN_PACKET_SIZE = Header::SIZE + 2 * HASH_DIGEST_LENGTH;
