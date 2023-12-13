@@ -260,7 +260,8 @@ void Tester::productRecvIn_InvokeAndCheckHeader(FwDpIdType id,
     // Compute the expected data size
     const auto& entry = this->productSendHistory->at(0);
     const auto bufferSize = entry.buffer.getSize();
-    const auto dataCapacity = bufferSize - DpTest::DpContainer::Header::SIZE;
+    FW_ASSERT(bufferSize >= Fw::DpContainer::MIN_PACKET_SIZE);
+    const auto dataCapacity = bufferSize - Fw::DpContainer::MIN_PACKET_SIZE;
     const auto eltSize = sizeof(FwDpIdType) + dataEltSize;
     expectedNumElts = dataCapacity / eltSize;
     const auto expectedDataSize = expectedNumElts * eltSize;

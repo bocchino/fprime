@@ -20,9 +20,8 @@ DpContainer::Header::UserData userData;
 
 void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     // Check the packet size
-    // FIXME: Add 2 * hash size
-    const FwSizeType headerSize = DpContainer::Header::SIZE;
-    ASSERT_EQ(container.getPacketSize(), headerSize);
+    const FwSizeType expectedPacketSize = Fw::DpContainer::MIN_PACKET_SIZE;
+    ASSERT_EQ(container.getPacketSize(), expectedPacketSize);
     // Set the priority
     const FwDpPriorityType priority = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpPriorityType>::max());
     container.setPriority(priority);

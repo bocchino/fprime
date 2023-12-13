@@ -50,8 +50,17 @@ class DpContainer {
     //! The header hash offset
     static constexpr FwSizeType HEADER_HASH_OFFSET = Header::SIZE;
     //! The data offset
-    //! FIXME: This should be HEADER_HASH_OFFSET + HASH_DIGEST_LENGTH
-    static constexpr FwSizeType DATA_OFFSET = HEADER_HASH_OFFSET;
+    static constexpr FwSizeType DATA_OFFSET = HEADER_HASH_OFFSET + 2 * HASH_DIGEST_LENGTH;
+    // FIXME: The data offset should be HEADER_HASH_OFFSET + HASH_DIGEST_LENGTH
+    // The other hash digest length should go at the end.
+    //
+    // Right now, since everything is in one buffer, we have to put all the
+    // reserved space for hashes at the beginning.
+    // We will fix this by having four external serial buffers: one for the header,
+    // one for the data, and one for each of the two hashes. Then each buffer
+    // has its own capacity, and the capacities sum to the packet size.
+    // The FPP code gen will need to be modified to serialize into these buffers.
+
     //! The minimum packet size
     static constexpr FwSizeType MIN_PACKET_SIZE = Header::SIZE + 2 * HASH_DIGEST_LENGTH;
 
@@ -86,8 +95,7 @@ class DpContainer {
     Fw::Buffer getBuffer() const { return this->buffer; }
 
     //! Get the packet size corresponding to the data size
-    // FIXME: This should be augmented by 2 * HASH_DIGEST_LENGTH
-    FwSizeType getPacketSize() const { return Header::SIZE + this->dataSize; }
+    FwSizeType getPacketSize() const { return getPacketSizeForDataSize(this->dataSize); }
 
     //! Get the priority
     //! \return The priority
