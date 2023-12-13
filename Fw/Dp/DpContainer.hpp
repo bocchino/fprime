@@ -153,7 +153,7 @@ class DpContainer {
     }
 
     //! Set the packet buffer
-    void setBuffer(const Buffer& buffer  //!< The buffer
+    void setBuffer(const Buffer& buffer  //!< The packet buffer
     );
 
   public:
@@ -209,6 +209,9 @@ class DpContainer {
 
     //! The packet buffer
     Buffer buffer;
+
+    //! The data buffer
+    Fw::ExternalSerializeBuffer dataBuffer;
 };
 
 }  // end namespace Fw

@@ -54,6 +54,17 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     header.check(__FILE__, __LINE__, buffer, id, priority, timeTag, procTypes, userData, dpState, 0);
 }
 
+void checkBuffers(DpContainer& container, FwSizeType bufferSize) {
+  // Check the packet buffer
+  ASSERT_EQ(container.buffer.getSize(), bufferSize);
+  // Check the data buffer
+  U8 *const buffPtr = container.buffer.getData();
+  U8 *const dataPtr = &buffPtr[Fw::DpContainer::DATA_OFFSET];
+  const FwSizeType dataCapacity = container.buffer.getSize() - Fw::DpContainer::MIN_PACKET_SIZE;
+  ASSERT_EQ(container.dataBuffer.getBuffAddr(), dataPtr);
+  ASSERT_EQ(container.dataBuffer.getBuffCapacity(), dataCapacity);
+}
+
 TEST(Header, BufferInConstructor) {
     COMMENT("Test header serialization with buffer in constructor");
     // Create a buffer
@@ -63,6 +74,8 @@ TEST(Header, BufferInConstructor) {
     DpContainer container(id, buffer);
     // Check the header
     checkHeader(id, buffer, container);
+    // Check the buffers
+    checkBuffers(container, sizeof bufferData);
 }
 
 TEST(Header, BufferSet) {
@@ -76,6 +89,8 @@ TEST(Header, BufferSet) {
     container.setBuffer(buffer);
     // Check the header
     checkHeader(id, buffer, container);
+    // Check the buffers
+    checkBuffers(container, sizeof bufferData);
 }
 
 int main(int argc, char** argv) {
