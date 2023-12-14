@@ -95,7 +95,7 @@ struct DpContainerHeader {
         // Check the header hash
         checkHeaderHash(file, line, buffer);
         // Check the data hash
-        checkDataHash(file, line, buffer);
+        this->checkDataHash(file, line, buffer);
         // Move the deserialization pointer to the data offset
         DpContainerHeader::moveDeserToOffset(file, line, buffer, DpContainer::DATA_OFFSET);
     }
@@ -113,11 +113,19 @@ struct DpContainerHeader {
     }
 
     //! Check the data hash
-    static void checkDataHash(const char* const file,  //!< The call site file name
+    void checkDataHash(const char* const file,  //!< The call site file name
                               const U32 line,          //!< The call site line number
                               Fw::Buffer& buffer       //!< The packet buffer
     ) {
-        // TODO
+        Utils::HashBuffer computedHashBuffer;
+        U8* const buffAddrBase = buffer.getData();
+        U8* const dataAddr = &buffAddrBase[DpContainer::DATA_OFFSET];
+        Utils::Hash::hash(dataAddr, this->dataSize, computedHashBuffer);
+        DpContainer container(this->id, buffer);
+        container.setDataSize(this->dataSize);
+        const FwSizeType dataHashOffset = container.getDataHashOffset();
+        Utils::HashBuffer storedHashBuffer(&buffAddrBase[dataHashOffset], HASH_DIGEST_LENGTH);
+        DP_CONTAINER_HEADER_ASSERT_EQ(computedHashBuffer, storedHashBuffer);
     }
 
     //! Check a packet header against a buffer

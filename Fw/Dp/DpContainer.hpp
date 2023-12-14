@@ -106,10 +106,8 @@ class DpContainer {
     Fw::SerializeStatus moveSerToOffset(FwSizeType offset  //!< The offset
     );
 
-    //! Serialize the header into the packet buffer
-    //! On success, update the header hash
-    //! \return The serialize status
-    Fw::SerializeStatus serializeHeader();
+    //! Serialize the header into the packet buffer and update the header hash
+    void serializeHeader();
 
     //! Set the id
     void setId(FwDpIdType id  //!< The id
@@ -141,6 +139,12 @@ class DpContainer {
         this->dpState = dpState;
     }
 
+    //! Set the data size
+    void setDataSize(FwSizeType dataSize //!< The data size
+    ) {
+        this->dataSize = dataSize;
+    }
+
     //! Set the packet buffer
     void setBuffer(const Buffer& buffer  //!< The packet buffer
     );
@@ -151,8 +155,11 @@ class DpContainer {
     //! Get the data hash offset
     FwSizeType getDataHashOffset() const {
         // Data hash goes after the header, the header hash, and the data
-        return Header::SIZE + HASH_DIGEST_LENGTH + dataSize;
+        return Header::SIZE + HASH_DIGEST_LENGTH + this->dataSize;
     }
+
+    //! Update the data hash
+    void updateDataHash();
 
   public:
     // ----------------------------------------------------------------------

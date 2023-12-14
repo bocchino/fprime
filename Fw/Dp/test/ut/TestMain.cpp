@@ -15,7 +15,9 @@
 
 using namespace Fw;
 
-U8 bufferData[Fw::DpContainer::MIN_PACKET_SIZE];
+constexpr FwSizeType DATA_SIZE = 100;
+constexpr FwSizeType PACKET_SIZE = DpContainer::getPacketSizeForDataSize(DATA_SIZE);
+U8 bufferData[PACKET_SIZE];
 DpContainer::Header::UserData userData;
 
 void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
@@ -43,15 +45,18 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     // Set the DP state
     const DpState dpState(static_cast<DpState::T>(STest::Pick::startLength(0, DpState::NUM_CONSTANTS)));
     container.setDpState(dpState);
-    // Serialize and deserialize the header
+    // Set the data size
+    container.setDataSize(DATA_SIZE);
+    // Serialize the header
     Fw::SerializeStatus status = container.serializeHeader();
     ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
     TestUtil::DpContainerHeader header;
-    // Deserialize the header
+    // Update the data hash
+    container.updateDataHash();
+    // Deserialize the header and check the hashes
     header.deserialize(__FILE__, __LINE__, buffer);
     // Check the deserialized header fields
-    // Data size should be zero because there is no data
-    header.check(__FILE__, __LINE__, buffer, id, priority, timeTag, procTypes, userData, dpState, 0);
+    header.check(__FILE__, __LINE__, buffer, id, priority, timeTag, procTypes, userData, dpState, DATA_SIZE);
 }
 
 void checkBuffers(DpContainer& container, FwSizeType bufferSize) {
@@ -65,10 +70,20 @@ void checkBuffers(DpContainer& container, FwSizeType bufferSize) {
   ASSERT_EQ(container.dataBuffer.getBuffCapacity(), dataCapacity);
 }
 
+void fillWithData(Fw::Buffer& buffer) {
+    U8 *const buffAddrBase = buffer.getData();
+    U8 *const dataAddr = &buffAddrBase[DpContainer::DATA_OFFSET];
+    for (FwSizeType i = 0; i < DATA_SIZE; i++) {
+      dataAddr[i] = static_cast<U8>(STest::Pick::any());
+    }
+}
+
 TEST(Header, BufferInConstructor) {
     COMMENT("Test header serialization with buffer in constructor");
     // Create a buffer
     Fw::Buffer buffer(bufferData, sizeof bufferData);
+    // Fill with data
+    fillWithData(buffer);
     // Use the buffer to create a container
     const FwDpIdType id = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpIdType>::max());
     DpContainer container(id, buffer);
@@ -82,6 +97,8 @@ TEST(Header, BufferSet) {
     COMMENT("Test header serialization with buffer set");
     // Create a buffer
     Fw::Buffer buffer(bufferData, sizeof bufferData);
+    // Fill with data
+    fillWithData(buffer);
     // Use the buffer to create a container
     const FwDpIdType id = STest::Pick::lowerUpper(0, std::numeric_limits<FwDpIdType>::max());
     DpContainer container;

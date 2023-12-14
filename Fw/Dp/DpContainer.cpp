@@ -40,44 +40,38 @@ Fw::SerializeStatus DpContainer::moveSerToOffset(FwSizeType offset  //!< The off
     return serializeRepr.moveSerToOffset(offset);
 }
 
-Fw::SerializeStatus DpContainer::serializeHeader() {
+void DpContainer::serializeHeader() {
     Fw::SerializeBufferBase& serializeRepr = this->buffer.getSerializeRepr();
     // Reset serialization
     serializeRepr.resetSer();
-    // Serialize the header
-    Fw::SerializeStatus status = Fw::FW_SERIALIZE_OK;
-    if (Header::SIZE <= serializeRepr.getBuffCapacity()) {
-        // Serialize the packet type
-        status = serializeRepr.serialize(static_cast<FwPacketDescriptorType>(Fw::ComPacket::FW_PACKET_DP));
-        FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
-        // Serialize the container id
-        status = serializeRepr.serialize(this->id);
-        FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
-        // Serialize the priority
-        status = serializeRepr.serialize(this->priority);
-        FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
-        // Serialize the time tag
-        status = serializeRepr.serialize(this->timeTag);
-        FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
-        // Serialize the processing types
-        status = serializeRepr.serialize(this->procTypes);
-        FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
-        // Serialize the user data
-        const bool omitLength = true;
-        status = serializeRepr.serialize(this->userData, sizeof userData, omitLength);
-        FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
-        // Serialize the data product state
-        status = serializeRepr.serialize(this->dpState);
-        FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
-        // Serialize the data size
-        status = serializeRepr.serialize(this->dataSize);
-        FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
-        // Update the header hash
-        this->updateHeaderHash();
-    } else {
-        status = Fw::FW_SERIALIZE_NO_ROOM_LEFT;
-    }
-    return status;
+    // Serialize the packet type
+    Fw::SerializeStatus status =
+        serializeRepr.serialize(static_cast<FwPacketDescriptorType>(Fw::ComPacket::FW_PACKET_DP));
+    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+    // Serialize the container id
+    status = serializeRepr.serialize(this->id);
+    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+    // Serialize the priority
+    status = serializeRepr.serialize(this->priority);
+    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+    // Serialize the time tag
+    status = serializeRepr.serialize(this->timeTag);
+    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+    // Serialize the processing types
+    status = serializeRepr.serialize(this->procTypes);
+    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+    // Serialize the user data
+    const bool omitLength = true;
+    status = serializeRepr.serialize(this->userData, sizeof userData, omitLength);
+    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+    // Serialize the data product state
+    status = serializeRepr.serialize(this->dpState);
+    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+    // Serialize the data size
+    status = serializeRepr.serialize(this->dataSize);
+    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+    // Update the header hash
+    this->updateHeaderHash();
 }
 
 void DpContainer::setBuffer(const Buffer& buffer) {
@@ -99,6 +93,22 @@ void DpContainer::updateHeaderHash() {
     U8* const buffAddr = this->buffer.getData();
     Utils::Hash::hash(buffAddr, Header::SIZE, hashBuffer);
     ExternalSerializeBuffer serialBuffer(&buffAddr[HEADER_HASH_OFFSET], HASH_DIGEST_LENGTH);
+    const Fw::SerializeStatus status = hashBuffer.copyRaw(serialBuffer, HASH_DIGEST_LENGTH);
+    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
+}
+
+void DpContainer::updateDataHash() {
+    Utils::HashBuffer hashBuffer;
+    U8* const buffAddrBase = this->buffer.getData();
+    const U8* const dataAddr = &buffAddrBase[DATA_OFFSET];
+    const FwSizeType dataSize = this->getDataSize();
+    const FwSizeType bufferSize = buffer.getSize();
+    FW_ASSERT(DATA_OFFSET + dataSize <= bufferSize, DATA_OFFSET + dataSize, bufferSize);
+    Utils::Hash::hash(dataAddr, dataSize, hashBuffer);
+    const FwSizeType dataHashOffset = this->getDataHashOffset();
+    U8* const dataHashAddr = &buffAddrBase[dataHashOffset];
+    FW_ASSERT(dataHashOffset + HASH_DIGEST_LENGTH <= bufferSize, dataHashOffset + HASH_DIGEST_LENGTH, bufferSize);
+    ExternalSerializeBuffer serialBuffer(dataHashAddr, HASH_DIGEST_LENGTH);
     const Fw::SerializeStatus status = hashBuffer.copyRaw(serialBuffer, HASH_DIGEST_LENGTH);
     FW_ASSERT(status == Fw::FW_SERIALIZE_OK, status);
 }
