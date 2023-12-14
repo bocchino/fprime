@@ -48,8 +48,7 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     // Set the data size
     container.setDataSize(DATA_SIZE);
     // Serialize the header
-    Fw::SerializeStatus status = container.serializeHeader();
-    ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+    container.serializeHeader();
     TestUtil::DpContainerHeader header;
     // Update the data hash
     container.updateDataHash();
