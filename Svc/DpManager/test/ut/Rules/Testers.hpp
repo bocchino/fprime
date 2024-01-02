@@ -1,4 +1,4 @@
-// ====================================================================== 
+// ======================================================================
 // \title  Testers.hpp
 // \author Rob Bocchino
 // \brief  Testers class interface
@@ -22,7 +22,7 @@
 namespace Svc {
 
   namespace Testers {
-    
+
     extern BufferGetStatus::Tester bufferGetStatus;
 
     extern ProductGetIn::Tester productGetIn;
@@ -32,7 +32,7 @@ namespace Svc {
     extern ProductSendIn::Tester productSendIn;
 
     extern SchedIn::Tester schedIn;
-    
+
   }
 
 }

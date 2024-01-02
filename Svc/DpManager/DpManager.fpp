@@ -27,7 +27,7 @@ module Svc {
     output port bufferGetOut: [DpManagerNumPorts] Fw.BufferGet
 
     # ----------------------------------------------------------------------
-    # Ports for forwarding filled data products 
+    # Ports for forwarding filled data products
     # ----------------------------------------------------------------------
 
     @ Ports for receiving filled data product buffers from a client component

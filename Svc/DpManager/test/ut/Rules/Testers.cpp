@@ -1,4 +1,4 @@
-// ====================================================================== 
+// ======================================================================
 // \title  Testers.cpp
 // \author Rob Bocchino
 // \brief  Testers class implementation
@@ -15,7 +15,7 @@
 namespace Svc {
 
   namespace Testers {
-    
+
     BufferGetStatus::Tester bufferGetStatus;
 
     ProductGetIn::Tester productGetIn;
