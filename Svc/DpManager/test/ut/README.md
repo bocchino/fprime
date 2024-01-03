@@ -25,7 +25,7 @@
 | `bufferGetOutPortNumOpt` | `Option<FwIndexType>` | The last port number used for `bufferGetOut`. Updated in the port handler for `from_bufferGetOut`. | `none` |
 | `productResponseOutPortNumOpt` | `Option<FwIndexType>` | The last port number used for `productResponseOut`. Updated in the port handler for `from_productResponseOut`. | `none` |
 | `productSendOutPortNumOpt` | `Option<FwIndexType>` | The last port number used for `productSendOut`. Updated in the port handler for `from_productSendOut`. | `none` |
-| `bufferAllocationFailedEventCount` | `FwSizeType` | The number of buffer allocation failed events since the last throttle clear |
+| `bufferAllocationFailedEventCount` | `FwSizeType` | The number of buffer allocation failed events since the last throttle clear |0 |
 
 ## 2. Rule Groups
 
@@ -292,19 +292,19 @@ This rule invokes `schedIn` with nominal input.
 **Requirements tested:**
 `SVC-DPMANAGER-004`.
 
-### 2.6. CLEAR_THROTTLE
+### 2.6. CLEAR_EVENT_THROTTLE
 
-This rule group tests the `CLEAR_THROTTLE` command.
+This rule group tests the `CLEAR_EVENT_THROTTLE` command.
 
 #### 2.6.1. OK
 
-This rule invokes the `CLEAR_THROTTLE` command.
+This rule invokes the `CLEAR_EVENT_THROTTLE` command.
 
 **Precondition:** `true`
 
 **Action:**
 
-1. Invoke `CLEAR_THROTTLE`.
+1. Invoke `CLEAR_EVENT_THROTTLE`.
 1. Assert `DpManagerComponentBase::m_BufferAllocationFailedThrottle` == 0.
 1. Set `bufferAllocationFailedEventCount` = 0.
 
@@ -312,7 +312,7 @@ This rule invokes the `CLEAR_THROTTLE` command.
 
 1. Apply rule `BufferGetStatus::Invalid`.
 1. Apply rule `ProductRequestIn::BufferInvalid` `DpManagerComponentBase::EVENTID_BUFFERALLOCATIONFAILED_THROTTLE` + 1 times.
-1. Apply rule `CLEAR_THROTTLE::OK`.
+1. Apply rule `CLEAR_EVENT_THROTTLE::OK`.
 1. Apply rule `ProductRequestIn::BufferInvalid` `DpManagerComponentBase::EVENTID_BUFFERALLOCATIONFAILED_THROTTLE`.
 
 ## 3. Implementation
