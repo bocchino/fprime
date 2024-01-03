@@ -61,6 +61,15 @@ void DpManager::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE 
 }
 
 // ----------------------------------------------------------------------
+// Handler implementations for commands
+// ----------------------------------------------------------------------
+
+void DpManager ::CLEAR_THROTTLE_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) {
+    // TODO
+    this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
+}
+
+// ----------------------------------------------------------------------
 // Private helper functions
 // ----------------------------------------------------------------------
 

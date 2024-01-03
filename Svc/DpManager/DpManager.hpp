@@ -9,43 +9,12 @@
 
 #include <atomic>
 
-#include "config/FppConstantsAc.hpp"
 #include "Svc/DpManager/DpManagerComponentAc.hpp"
+#include "config/FppConstantsAc.hpp"
 
 namespace Svc {
 
 class DpManager : public DpManagerComponentBase {
-
-    // ----------------------------------------------------------------------
-    // Assumptions about the FPP model
-    // ----------------------------------------------------------------------
-
-    void verifyPortNumbers() {
-      static_assert(
-          FW_NUM_ARRAY_ELEMENTS(this->m_productGetIn_InputPort) == DpManagerNumPorts,
-          "number of product get in ports must equal number of configured ports"
-      );
-      static_assert(
-          FW_NUM_ARRAY_ELEMENTS(this->m_productRequestIn_InputPort) == DpManagerNumPorts,
-          "number of product request in ports must equal number of configured ports"
-      );
-      static_assert(
-          FW_NUM_ARRAY_ELEMENTS(this->m_productResponseOut_OutputPort) == DpManagerNumPorts,
-          "number of product response out ports must equal number of configured ports"
-      );
-      static_assert(
-          FW_NUM_ARRAY_ELEMENTS(this->m_bufferGetOut_OutputPort) == DpManagerNumPorts,
-          "number of buffer get out ports must equal number of configured ports"
-      );
-      static_assert(
-          FW_NUM_ARRAY_ELEMENTS(this->m_productSendIn_InputPort) == DpManagerNumPorts,
-          "number of product send in ports must equal number of configured ports"
-      );
-      static_assert(
-          FW_NUM_ARRAY_ELEMENTS(this->m_productSendOut_OutputPort) == DpManagerNumPorts,
-          "number of product send out ports must equal number of configured ports"
-      );
-    }
 
   public:
     // ----------------------------------------------------------------------
@@ -87,6 +56,18 @@ class DpManager : public DpManagerComponentBase {
     void schedIn_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
                          NATIVE_UINT_TYPE context        //!< The call order
                          ) final;
+
+  PRIVATE:
+    // ----------------------------------------------------------------------
+    // Handler implementations for commands
+    // ----------------------------------------------------------------------
+
+    //! Handler implementation for command CLEAR_THROTTLE
+    //!
+    //! Clear throttling
+    void CLEAR_THROTTLE_cmdHandler(FwOpcodeType opCode,  //!< The opcode
+                                   U32 cmdSeq            //!< The command sequence number
+                                   ) override;
 
   PRIVATE:
     // ----------------------------------------------------------------------

@@ -40,24 +40,37 @@ module Svc {
     # F' special ports
     # ----------------------------------------------------------------------
 
-    @ Time get port
-    time get port timeGetOut
+    @ Command receive port
+    command recv port cmdIn
 
-    @ Telemetry port
-    telemetry port tlmOut
+    @ Command registration port
+    command reg port cmdRegIn
+
+    @ Command response port
+    command resp port cmdResponseOut
 
     @ Event port
     event port eventOut
 
+    @ Telemetry port
+    telemetry port tlmOut
+
     @ Text event port
     text event port textEventOut
+
+    @ Time get port
+    time get port timeGetOut
+
+    # ----------------------------------------------------------------------
+    # Commands 
+    # ----------------------------------------------------------------------
+
+    @ Clear throttling
+    async command CLEAR_THROTTLE opcode 0x00
 
     # ----------------------------------------------------------------------
     # Events
     # ----------------------------------------------------------------------
-
-    @ Throttle limit
-    constant ThrottleLimit = 10
 
     @ Buffer allocation failed
     event BufferAllocationFailed(
@@ -65,7 +78,7 @@ module Svc {
                                 ) \
       severity warning high \
       format "Buffer allocation failed for container id {}" \
-      throttle ThrottleLimit
+      throttle 10
 
     # ----------------------------------------------------------------------
     # Telemetry
