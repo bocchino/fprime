@@ -15,7 +15,6 @@
 namespace Svc {
 
 class DpManager : public DpManagerComponentBase {
-
   public:
     // ----------------------------------------------------------------------
     // Construction, initialization, and destruction
@@ -62,12 +61,12 @@ class DpManager : public DpManagerComponentBase {
     // Handler implementations for commands
     // ----------------------------------------------------------------------
 
-    //! Handler implementation for command CLEAR_THROTTLE
+    //! Handler implementation for command CLEAR_EVENT_THROTTLE
     //!
-    //! Clear throttling
-    void CLEAR_THROTTLE_cmdHandler(FwOpcodeType opCode,  //!< The opcode
-                                   U32 cmdSeq            //!< The command sequence number
-                                   ) override;
+    //! Clear event throttling
+    void CLEAR_EVENT_THROTTLE_cmdHandler(FwOpcodeType opCode,  //!< The opcode
+                                         U32 cmdSeq            //!< The command sequence number
+                                         ) override;
 
   PRIVATE:
     // ----------------------------------------------------------------------

@@ -65,8 +65,8 @@ module Svc {
     # Commands 
     # ----------------------------------------------------------------------
 
-    @ Clear throttling
-    async command CLEAR_THROTTLE opcode 0x00
+    @ Clear event throttling
+    async command CLEAR_EVENT_THROTTLE opcode 0x00
 
     # ----------------------------------------------------------------------
     # Events

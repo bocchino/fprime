@@ -64,8 +64,8 @@ void DpManager::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE 
 // Handler implementations for commands
 // ----------------------------------------------------------------------
 
-void DpManager ::CLEAR_THROTTLE_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) {
-    // TODO
+void DpManager ::CLEAR_EVENT_THROTTLE_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) {
+    this->log_WARNING_HI_BufferAllocationFailed_ThrottleClear();
     this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
 }
 
