@@ -30,8 +30,7 @@ Fw::Success DpManager::productGetIn_handler(const NATIVE_INT_TYPE portNum,
                                             FwDpIdType id,
                                             FwSizeType size,
                                             Fw::Buffer& buffer) {
-    const Fw::Success status = this->getBuffer(portNum, id, size, buffer);
-    return status;
+    return this->getBuffer(portNum, id, size, buffer);
 }
 
 void DpManager::productRequestIn_handler(const NATIVE_INT_TYPE portNum, FwDpIdType id, FwSizeType size) {
