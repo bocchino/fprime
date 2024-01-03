@@ -9,11 +9,44 @@
 
 #include <atomic>
 
+#include "config/FppConstantsAc.hpp"
 #include "Svc/DpManager/DpManagerComponentAc.hpp"
 
 namespace Svc {
 
 class DpManager : public DpManagerComponentBase {
+
+    // ----------------------------------------------------------------------
+    // Assumptions about the FPP model
+    // ----------------------------------------------------------------------
+
+    void verifyPortNumbers() {
+      static_assert(
+          FW_NUM_ARRAY_ELEMENTS(this->m_productGetIn_InputPort) == DpManagerNumPorts,
+          "number of product get in ports must equal number of configured ports"
+      );
+      static_assert(
+          FW_NUM_ARRAY_ELEMENTS(this->m_productRequestIn_InputPort) == DpManagerNumPorts,
+          "number of product request in ports must equal number of configured ports"
+      );
+      static_assert(
+          FW_NUM_ARRAY_ELEMENTS(this->m_productResponseOut_OutputPort) == DpManagerNumPorts,
+          "number of product response out ports must equal number of configured ports"
+      );
+      static_assert(
+          FW_NUM_ARRAY_ELEMENTS(this->m_bufferGetOut_OutputPort) == DpManagerNumPorts,
+          "number of buffer get out ports must equal number of configured ports"
+      );
+      static_assert(
+          FW_NUM_ARRAY_ELEMENTS(this->m_productSendIn_InputPort) == DpManagerNumPorts,
+          "number of product send in ports must equal number of configured ports"
+      );
+      static_assert(
+          FW_NUM_ARRAY_ELEMENTS(this->m_productSendOut_OutputPort) == DpManagerNumPorts,
+          "number of product send out ports must equal number of configured ports"
+      );
+    }
+
   public:
     // ----------------------------------------------------------------------
     // Construction, initialization, and destruction
