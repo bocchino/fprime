@@ -1,4 +1,4 @@
-// ====================================================================== 
+// ======================================================================
 // \title  BufferGetStatus.hpp
 // \author Rob Bocchino
 // \brief  BufferGetStatus class interface
