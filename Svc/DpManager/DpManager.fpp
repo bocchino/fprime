@@ -56,12 +56,16 @@ module Svc {
     # Events
     # ----------------------------------------------------------------------
 
+    @ Throttle limit
+    constant ThrottleLimit = 10
+
     @ Buffer allocation failed
     event BufferAllocationFailed(
                                   $id: U32 @< The container ID
                                 ) \
       severity warning high \
-      format "Buffer allocation failed for container id {}"
+      format "Buffer allocation failed for container id {}" \
+      throttle ThrottleLimit
 
     # ----------------------------------------------------------------------
     # Telemetry

@@ -13,6 +13,7 @@
 #include <limits>
 
 #include "STest/Pick/Pick.hpp"
+#include "Svc/DpManager/FppConstantsAc.hpp"
 #include "Svc/DpManager/test/ut/Rules/ProductRequestIn.hpp"
 #include "Svc/DpManager/test/ut/Rules/Testers.hpp"
 #include "config/FppConstantsAc.hpp"
@@ -68,8 +69,14 @@ void TestState ::action__ProductRequestIn__BufferInvalid() {
     this->invoke_to_productRequestIn(portNum, id, size);
     this->component.doDispatch();
     // Check events
-    ASSERT_EVENTS_SIZE(1);
-    ASSERT_EVENTS_BufferAllocationFailed(0, id);
+    if (this->abstractState.throttleCount < DpManager_ThrottleLimit) {
+      ASSERT_EVENTS_SIZE(1);
+      ASSERT_EVENTS_BufferAllocationFailed(0, id);
+      ++this->abstractState.throttleCount;
+    }
+    else {
+      ASSERT_EVENTS_SIZE(0);
+    }
     // Update test state
     ++this->abstractState.NumFailedAllocations.value;
     // Check port history
