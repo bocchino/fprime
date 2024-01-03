@@ -25,6 +25,7 @@
 | `bufferGetOutPortNumOpt` | `Option<FwIndexType>` | The last port number used for `bufferGetOut`. Updated in the port handler for `from_bufferGetOut`. | `none` |
 | `productResponseOutPortNumOpt` | `Option<FwIndexType>` | The last port number used for `productResponseOut`. Updated in the port handler for `from_productResponseOut`. | `none` |
 | `productSendOutPortNumOpt` | `Option<FwIndexType>` | The last port number used for `productSendOut`. Updated in the port handler for `from_productSendOut`. | `none` |
+| `bufferAllocationFailedEventCount` | `FwSizeType` | The number of buffer allocation failed events since the last throttle clear |
 
 ## 2. Rule Groups
 
@@ -88,7 +89,11 @@ an invalid buffer.
    and with size _S_.
 1. Assert that the status returned from the invocation is `FAILURE`.
 1. Assert that the event history contains one element.
-1. Assert that the event history for `BufferAllocationFailed` contains _I_ at index zero.
+1. If `bufferAllocationFailedEventCount` < `DpManagerComponentBase::EVENTID_BUFFERALLOCATIONFAILED_THROTTLE`,
+   then
+   1. Assert that the event history for `BufferAllocationFailed` contains _I_ at index zero.
+   1. Increment `bufferAllocationFailedEventCount`.
+1. Otherwise assert that the event history for `BufferAllocationFailed` is empty.
 1. Increment `NumFailedAllocations`.
 1. Assert that the from port history contains one item.
 1. Assert that the history for `bufferGetOut` contains one item.
@@ -144,11 +149,11 @@ a valid buffer.
 **Requirements tested:**
 `SVC-DPMANAGER-001`, `SVC-DP-MANAGER-004`.
 
-### 2.2. ProductRequestIn
+### 2.3. ProductRequestIn
 
 This rule group sends test input to the `productRequestIn` port.
 
-#### 2.2.1. BufferInvalid
+#### 2.3.1. BufferInvalid
 
 This rule invokes `productRequestIn` in a state where the test harness returns
 an invalid buffer.
@@ -163,7 +168,10 @@ an invalid buffer.
    Invoke `productRequestIn` with a random port number _N_, with a random id _I_,
    and with size _S_.
 1. Assert that the event history contains one element.
-1. Assert that the event history for `BufferAllocationFailed` contains _I_ at index zero.
+1. If `bufferAllocationFailedEventCount` < `DpManagerComponentBase::EVENTID_BUFFERALLOCATIONFAILED_THROTTLE`,
+   then
+   1. Assert that the event history for `BufferAllocationFailed` contains _I_ at index zero.
+   1. Increment `bufferAllocationFailedEventCount`.
 1. Increment `NumFailedAllocations`.
 1. Assert that the from port history contains two items.
 1. Assert that the history for `bufferGetOut` contains one item.
@@ -188,7 +196,7 @@ an invalid buffer.
 **Requirements tested:**
 `SVC-DPMANAGER-002`, `SVC-DPMANAGER-004`.
 
-#### 2.2.2. BufferValid
+#### 2.3.2. BufferValid
 
 This rule invokes `productRequestIn` in a state where the test harness returns
 a valid buffer.
@@ -226,11 +234,11 @@ a valid buffer.
 **Requirements tested:**
 `SVC-DPMANAGER-002`, `SVC-DP-MANAGER-004`.
 
-### 2.3. ProductSendIn
+### 2.4. ProductSendIn
 
 This rule group sends test input to the `productSendIn` port.
 
-#### 2.3.1. OK
+#### 2.4.1. OK
 
 This rule invokes `productSendIn` with nominal input.
 
@@ -261,11 +269,11 @@ This rule invokes `productSendIn` with nominal input.
 **Requirements tested:**
 `SVC-DPMANAGER-003`, `SVC-DPMANAGER-004`.
 
-### 2.4. SchedIn
+### 2.5. SchedIn
 
 This rule group sends test input to the `schedIn` port.
 
-#### 2.4.1. OK
+#### 2.5.1. OK
 
 This rule invokes `schedIn` with nominal input.
 
@@ -283,6 +291,29 @@ This rule invokes `schedIn` with nominal input.
 
 **Requirements tested:**
 `SVC-DPMANAGER-004`.
+
+### 2.6. CLEAR_THROTTLE
+
+This rule group tests the `CLEAR_THROTTLE` command.
+
+#### 2.6.1. OK
+
+This rule invokes the `CLEAR_THROTTLE` command.
+
+**Precondition:** `true`
+
+**Action:**
+
+1. Invoke `CLEAR_THROTTLE`.
+1. Assert `DpManagerComponentBase::m_BufferAllocationFailedThrottle` == 0.
+1. Set `bufferAllocationFailedEventCount` = 0.
+
+**Test:**
+
+1. Apply rule `BufferGetStatus::Invalid`.
+1. Apply rule `ProductRequestIn::BufferInvalid` `DpManagerComponentBase::EVENTID_BUFFERALLOCATIONFAILED_THROTTLE` + 1 times.
+1. Apply rule `CLEAR_THROTTLE::OK`.
+1. Apply rule `ProductRequestIn::BufferInvalid` `DpManagerComponentBase::EVENTID_BUFFERALLOCATIONFAILED_THROTTLE`.
 
 ## 3. Implementation
 

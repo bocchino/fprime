@@ -68,13 +68,13 @@ void TestState ::action__ProductRequestIn__BufferInvalid() {
     this->invoke_to_productRequestIn(portNum, id, size);
     this->component.doDispatch();
     // Check events
-    if (this->abstractState.throttleCount < DpManagerComponentBase::EVENTID_BUFFERALLOCATIONFAILED_THROTTLE) {
-      ASSERT_EVENTS_SIZE(1);
-      ASSERT_EVENTS_BufferAllocationFailed(0, id);
-      ++this->abstractState.throttleCount;
-    }
-    else {
-      ASSERT_EVENTS_SIZE(0);
+    if (this->abstractState.bufferAllocationFailedEventCount <
+        DpManagerComponentBase::EVENTID_BUFFERALLOCATIONFAILED_THROTTLE) {
+        ASSERT_EVENTS_SIZE(1);
+        ASSERT_EVENTS_BufferAllocationFailed(0, id);
+        ++this->abstractState.bufferAllocationFailedEventCount;
+    } else {
+        ASSERT_EVENTS_SIZE(0);
     }
     // Update test state
     ++this->abstractState.NumFailedAllocations.value;

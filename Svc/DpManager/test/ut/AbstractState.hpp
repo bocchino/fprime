@@ -123,7 +123,7 @@ class AbstractState {
           bufferGetOutPortNumOpt(),
           productResponseOutPortNumOpt(),
           productSendOutPortNumOpt(),
-          throttleCount(0) {}
+          bufferAllocationFailedEventCount(0) {}
 
   public:
     // ----------------------------------------------------------------------
@@ -178,8 +178,8 @@ class AbstractState {
     //! The last port number used for productSendOut
     Option<FwIndexType> productSendOutPortNumOpt;
 
-    //! The throttle count
-    FwSizeType throttleCount;
+    //! The number of buffer allocation failed events since the last throttle clear
+    FwSizeType bufferAllocationFailedEventCount;
 };
 
 }  // namespace Svc
