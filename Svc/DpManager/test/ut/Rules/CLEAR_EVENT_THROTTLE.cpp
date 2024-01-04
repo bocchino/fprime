@@ -25,9 +25,14 @@ bool TestState ::precondition__CLEAR_EVENT_THROTTLE__OK() const {
 }
 
 void TestState ::action__CLEAR_EVENT_THROTTLE__OK() {
-    // Clear history
-    this->clearHistory();
-    // TODO
+    const NATIVE_INT_TYPE instance = static_cast<NATIVE_INT_TYPE>(STest::Pick::any());
+    const U32 cmdSeq = STest::Pick::any();
+    this->sendCmd_CLEAR_EVENT_THROTTLE(instance, cmdSeq);
+    this->component.doDispatch();
+    ASSERT_CMD_RESPONSE_SIZE(1);
+    ASSERT_CMD_RESPONSE(0, DpManagerComponentBase::OPCODE_CLEAR_EVENT_THROTTLE, cmdSeq, Fw::CmdResponse::OK);
+    ASSERT_EQ(this->component.DpManagerComponentBase::m_BufferAllocationFailedThrottle, 0);
+    this->abstractState.bufferAllocationFailedEventCount = 0;
 }
 
 namespace CLEAR_EVENT_THROTTLE {
@@ -37,7 +42,12 @@ namespace CLEAR_EVENT_THROTTLE {
 // ----------------------------------------------------------------------
 
 void Tester ::OK() {
-    // TODO
+    Testers::bufferGetStatus.ruleInvalid.apply(this->testState);
+    for (FwSizeType i = 0; i <= DpManagerComponentBase::EVENTID_BUFFERALLOCATIONFAILED_THROTTLE; ++i) {
+        Testers::productRequestIn.ruleBufferInvalid.apply(this->testState);
+    } 
+    this->ruleOK.apply(this->testState);
+    Testers::productRequestIn.ruleBufferInvalid.apply(this->testState);
 }
 
 }  // namespace CLEAR_EVENT_THROTTLE

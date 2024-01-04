@@ -304,7 +304,8 @@ This rule sends the `CLEAR_EVENT_THROTTLE` command.
 
 **Action:**
 
-1. Invoke `CLEAR_EVENT_THROTTLE`.
+1. Send command `CLEAR_EVENT_THROTTLE`.
+1. Check the command response.
 1. Assert `DpManagerComponentBase::m_BufferAllocationFailedThrottle` == 0.
 1. Set `bufferAllocationFailedEventCount` = 0.
 
@@ -313,7 +314,7 @@ This rule sends the `CLEAR_EVENT_THROTTLE` command.
 1. Apply rule `BufferGetStatus::Invalid`.
 1. Apply rule `ProductRequestIn::BufferInvalid` `DpManagerComponentBase::EVENTID_BUFFERALLOCATIONFAILED_THROTTLE` + 1 times.
 1. Apply rule `CLEAR_EVENT_THROTTLE::OK`.
-1. Apply rule `ProductRequestIn::BufferInvalid` `DpManagerComponentBase::EVENTID_BUFFERALLOCATIONFAILED_THROTTLE`.
+1. Apply rule `ProductRequestIn::BufferInvalid`
 
 ## 3. Implementation
 
