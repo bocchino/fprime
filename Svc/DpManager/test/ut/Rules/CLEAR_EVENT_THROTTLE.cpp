@@ -20,11 +20,11 @@ namespace Svc {
 // Rule definitions
 // ----------------------------------------------------------------------
 
-bool TestState ::precondition__CLEAR_EVENT_THROTTLE__OK() const {
+bool TestState::precondition__CLEAR_EVENT_THROTTLE__OK() const {
     return true;
 }
 
-void TestState ::action__CLEAR_EVENT_THROTTLE__OK() {
+void TestState::action__CLEAR_EVENT_THROTTLE__OK() {
     // Clear history
     this->clearHistory();
     // Send the command
@@ -46,7 +46,7 @@ namespace CLEAR_EVENT_THROTTLE {
 // Tests
 // ----------------------------------------------------------------------
 
-void Tester ::OK() {
+void Tester::OK() {
     Testers::bufferGetStatus.ruleInvalid.apply(this->testState);
     for (FwSizeType i = 0; i <= DpManagerComponentBase::EVENTID_BUFFERALLOCATIONFAILED_THROTTLE; ++i) {
         Testers::productRequestIn.ruleBufferInvalid.apply(this->testState);
