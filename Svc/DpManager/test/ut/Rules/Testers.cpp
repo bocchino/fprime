@@ -18,6 +18,8 @@ namespace Svc {
 
     BufferGetStatus::Tester bufferGetStatus;
 
+    CLEAR_EVENT_THROTTLE::Tester clearEventThrottle;
+
     ProductGetIn::Tester productGetIn;
 
     ProductRequestIn::Tester productRequestIn;

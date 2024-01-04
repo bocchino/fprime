@@ -298,7 +298,7 @@ This rule group tests the `CLEAR_EVENT_THROTTLE` command.
 
 #### 2.6.1. OK
 
-This rule invokes the `CLEAR_EVENT_THROTTLE` command.
+This rule sends the `CLEAR_EVENT_THROTTLE` command.
 
 **Precondition:** `true`
 

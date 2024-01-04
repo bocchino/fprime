@@ -14,6 +14,7 @@
 #define Svc_Testers_HPP
 
 #include "Svc/DpManager/test/ut/Rules/BufferGetStatus.hpp"
+#include "Svc/DpManager/test/ut/Rules/CLEAR_EVENT_THROTTLE.hpp"
 #include "Svc/DpManager/test/ut/Rules/ProductGetIn.hpp"
 #include "Svc/DpManager/test/ut/Rules/ProductRequestIn.hpp"
 #include "Svc/DpManager/test/ut/Rules/ProductSendIn.hpp"
@@ -24,6 +25,8 @@ namespace Svc {
   namespace Testers {
 
     extern BufferGetStatus::Tester bufferGetStatus;
+
+    extern CLEAR_EVENT_THROTTLE::Tester clearEventThrottle;
 
     extern ProductGetIn::Tester productGetIn;
 

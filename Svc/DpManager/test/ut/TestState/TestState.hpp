@@ -29,6 +29,7 @@ class TestState : public DpManagerTester {
 
     TEST_STATE_DEF_RULE(BufferGetStatus, Invalid)
     TEST_STATE_DEF_RULE(BufferGetStatus, Valid)
+    TEST_STATE_DEF_RULE(CLEAR_EVENT_THROTTLE, OK)
     TEST_STATE_DEF_RULE(ProductGetIn, BufferInvalid)
     TEST_STATE_DEF_RULE(ProductGetIn, BufferValid)
     TEST_STATE_DEF_RULE(ProductRequestIn, BufferInvalid)

@@ -68,6 +68,12 @@ namespace Svc {
     tester.OK();
   }
 
+  TEST(CLEAR_EVENT_THROTTLE, OK) {
+    COMMENT("Send command CLEAR_EVENT_THROTTLE.");
+    CLEAR_EVENT_THROTTLE::Tester tester;
+    tester.OK();
+  }
+
   TEST(Scenarios, Random) {
     COMMENT("Random scenario with all rules.");
     REQUIREMENT("SVC-DPMANAGER-002");

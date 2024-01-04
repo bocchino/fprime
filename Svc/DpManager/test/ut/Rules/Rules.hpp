@@ -35,6 +35,7 @@ namespace Rules {
 
 RULES_DEF_RULE(BufferGetStatus, Invalid)
 RULES_DEF_RULE(BufferGetStatus, Valid)
+RULES_DEF_RULE(CLEAR_EVENT_THROTTLE, OK)
 RULES_DEF_RULE(ProductGetIn, BufferInvalid)
 RULES_DEF_RULE(ProductGetIn, BufferValid)
 RULES_DEF_RULE(ProductRequestIn, BufferInvalid)
