@@ -97,7 +97,7 @@ an invalid buffer.
 1. Increment `NumFailedAllocations`.
 1. Assert that the from port history contains one item.
 1. Assert that the history for `bufferGetOut` contains one item.
-1. Assert that the `from_bufferGetOut` history contains size _S_
+1. Assert that the `bufferGetOut` history contains size _S_
    at index zero.
 1. Assert that `bufferGetOutPortNumOpt` is _N_.
 
@@ -132,8 +132,8 @@ a valid buffer.
 1. Assert that the event history is empty.
 1. Increment `NumSuccessfulAllocations`.
 1. Assert that the from port history contains one item.
-1. Assert that the `from_bufferGetOut` history contains one item.
-1. Assert that the `from_bufferGetOut` history contains size _S_.
+1. Assert that the `bufferGetOut` history contains one item.
+1. Assert that the `bufferGetOut` history contains size _S_.
    at index zero.
 1. Assert that `bufferGetOutPortNumOpt` is _N_.
 
@@ -213,12 +213,12 @@ a valid buffer.
 1. Assert that the event history is empty.
 1. Increment `NumSuccessfulAllocations`.
 1. Assert that the from port history contains two items.
-1. Assert that the `from_bufferGetOut` history contains one item.
-1. Assert that the `from_bufferGetOut` history contains size _S_.
+1. Assert that the `bufferGetOut` history contains one item.
+1. Assert that the `bufferGetOut` history contains size _S_.
    at index zero.
 1. Assert that `bufferGetOutPortNumOpt` is _N_.
-1. Assert that the `from_productResponseOut` history contains one item.
-1. Assert that the `from_productResponseOut` history contains the
+1. Assert that the `productResponseOut` history contains one item.
+1. Assert that the `productResponseOut` history contains the
    expected valid buffer value and status `SUCCESS` at index zero.
 1. Assert that `productResponseOutPortNumOpt` is _N_.
 
@@ -254,8 +254,8 @@ This rule invokes `productSendIn` with nominal input.
 1. Increment `NumDataBroducts`.
 1. Increase `NumBytes` by the size of _B_.
 1. Assert that the from port history contains one item.
-1. Assert that the `from_productSendOut` history contains one item.
-1. Assert that the `from_productSendOut` history contains _B_ at index zero.
+1. Assert that the `productSendOut` history contains one item.
+1. Assert that the `productSendOut` history contains _B_ at index zero.
 1. Assert that `productSendOutPortNumOpt` is _N_.
 
 **Test:**
