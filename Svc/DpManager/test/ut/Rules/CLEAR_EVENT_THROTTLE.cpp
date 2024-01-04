@@ -25,12 +25,17 @@ bool TestState ::precondition__CLEAR_EVENT_THROTTLE__OK() const {
 }
 
 void TestState ::action__CLEAR_EVENT_THROTTLE__OK() {
+    // Clear history
+    this->clearHistory();
+    // Send the command
     const NATIVE_INT_TYPE instance = static_cast<NATIVE_INT_TYPE>(STest::Pick::any());
     const U32 cmdSeq = STest::Pick::any();
     this->sendCmd_CLEAR_EVENT_THROTTLE(instance, cmdSeq);
     this->component.doDispatch();
+    // Check the command response
     ASSERT_CMD_RESPONSE_SIZE(1);
     ASSERT_CMD_RESPONSE(0, DpManagerComponentBase::OPCODE_CLEAR_EVENT_THROTTLE, cmdSeq, Fw::CmdResponse::OK);
+    // Check the state
     ASSERT_EQ(this->component.DpManagerComponentBase::m_BufferAllocationFailedThrottle, 0);
     this->abstractState.bufferAllocationFailedEventCount = 0;
 }

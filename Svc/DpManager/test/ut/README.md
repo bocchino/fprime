@@ -304,6 +304,7 @@ This rule sends the `CLEAR_EVENT_THROTTLE` command.
 
 **Action:**
 
+1. Clear the history.
 1. Send command `CLEAR_EVENT_THROTTLE`.
 1. Check the command response.
 1. Assert `DpManagerComponentBase::m_BufferAllocationFailedThrottle` == 0.

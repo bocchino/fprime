@@ -27,6 +27,7 @@ namespace Random {
 
 Rules::BufferGetStatus::Invalid bufferGetStatusInvalid;
 Rules::BufferGetStatus::Valid bufferGetStatusValid;
+Rules::CLEAR_EVENT_THROTTLE::OK clearEventThrottleOK;
 Rules::ProductRequestIn::BufferInvalid productRequestInBufferInvalid;
 Rules::ProductRequestIn::BufferValid productRequestInBufferValid;
 Rules::ProductSendIn::OK productSendInOK;
@@ -40,10 +41,11 @@ void Tester ::run(FwSizeType maxNumSteps) {
     STest::Rule<TestState>* rules[] = {
         &bufferGetStatusInvalid,
         &bufferGetStatusValid,
+        &clearEventThrottleOK,
         &productRequestInBufferInvalid,
         &productRequestInBufferValid,
         &productSendInOK,
-        &schedInOK,
+        &schedInOK
     };
     STest::RandomScenario<TestState> scenario("RandomScenario", rules,
                                               sizeof(rules) / sizeof(STest::RandomScenario<TestState>*));
