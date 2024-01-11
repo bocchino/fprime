@@ -10,11 +10,42 @@
 #include <atomic>
 
 #include "Svc/DpManager/DpManagerComponentAc.hpp"
+#include "Svc/DpManager/FppConstantsAc.hpp"
 #include "config/FppConstantsAc.hpp"
 
 namespace Svc {
 
 class DpManager : public DpManagerComponentBase {
+  private:
+    // ----------------------------------------------------------------------
+    // Static assertions against the assumptions about the model
+    // ----------------------------------------------------------------------
+
+    static_assert(
+        DpManager::NUM_PRODUCTGETIN_INPUT_PORTS == DpManagerNumPorts,
+        "Number of product get in ports must equal DpManagerNumPorts"
+    );
+    static_assert(
+        DpManager::NUM_PRODUCTREQUESTIN_INPUT_PORTS == DpManagerNumPorts,
+        "Number of product request in ports must equal DpManagerNumPorts"
+    );
+    static_assert(
+        DpManager::NUM_PRODUCTRESPONSEOUT_OUTPUT_PORTS == DpManagerNumPorts,
+        "Number of product response out ports must equal DpManagerNumPorts"
+    );
+    static_assert(
+        DpManager::NUM_BUFFERGETOUT_OUTPUT_PORTS == DpManagerNumPorts,
+        "Number of buffer get out ports must equal DpManagerNumPorts"
+    );
+    static_assert(
+        DpManager::NUM_PRODUCTSENDIN_INPUT_PORTS == DpManagerNumPorts,
+        "Number of product send in ports must equal DpManagerNumPorts"
+    );
+    static_assert(
+        DpManager::NUM_PRODUCTSENDOUT_OUTPUT_PORTS == DpManagerNumPorts,
+        "Number of product send out ports must equal DpManagerNumPorts"
+    );
+
   public:
     // ----------------------------------------------------------------------
     // Construction, initialization, and destruction
