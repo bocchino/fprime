@@ -8,6 +8,7 @@
 #define Svc_DpWriter_HPP
 
 #include "Fw/Types/String.hpp"
+#include "Fw/Types/SuccessEnumAc.hpp"
 #include "Svc/DpWriter/DpWriterComponentAc.hpp"
 
 namespace Svc {
@@ -20,7 +21,7 @@ class DpWriter : public DpWriterComponentBase {
 
     //! Construct object DpWriter
     //!
-    DpWriter(const char* const compName //!< The component name
+    DpWriter(const char* const compName  //!< The component name
     );
 
     //! Destroy object DpWriter
@@ -32,9 +33,8 @@ class DpWriter : public DpWriterComponentBase {
     // Runtime configuration
     // ----------------------------------------------------------------------
 
-    void configure(
-        const Fw::String& fileNamePrefix, //!< The file name prefix
-        const Fw::String& fileNameSuffix //!< The file name suffix
+    void configure(const Fw::String& fileNamePrefix,  //!< The file name prefix
+                   const Fw::String& fileNameSuffix   //!< The file name suffix
     );
 
   PRIVATE:
@@ -56,6 +56,15 @@ class DpWriter : public DpWriterComponentBase {
 
   PRIVATE:
     // ----------------------------------------------------------------------
+    // Private helper functions
+    // ----------------------------------------------------------------------
+
+    //! Validate an incoming packet packet buffer
+    Fw::Success::T validatePacketBuffer(const Fw::Buffer& buffer  //!< The packet buffer
+    );
+
+  PRIVATE:
+    // ----------------------------------------------------------------------
     // Private member variables
     // ----------------------------------------------------------------------
 
@@ -70,7 +79,6 @@ class DpWriter : public DpWriterComponentBase {
 
     //! The file name suffix
     Fw::String m_fileNameSuffix;
-
 };
 
 }  // end namespace Svc

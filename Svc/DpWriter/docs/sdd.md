@@ -99,15 +99,18 @@ It does the following:
 1. If the previous steps succeeded, then check that the first
    `sizeof(FwPacketDescriptorType)`
    bytes of the memory referred to by `B` hold the serialized value
-   [`Fw_PACKET_DP`](../../../Fw/Com/ComPacket.hpp).
+   [`FW_PACKET_DP`](../../../Fw/Com/ComPacket.hpp).
    If not, emit a warning event.
 
 1. If the previous steps succeeded, then
 
    1. Read the `ProcType` field out of the container header stored in the
-      memory pointed to by `B`.
-      If the value is a valid port number `N` for `procBufferSendOut`, then invoke
-      `procBufferSendOut` at port number `N`, passing in `B`.
+      memory pointed to by `B`. Let the resulting bit mask be `M`.
+
+   1. Visit the bits of `M` that correspond to port numbers `N` of
+      `procBufferSendOut` in order.
+      For each bit that is set, invoke `procBufferSendOut` at port number `N`,
+      passing in `B`.
       This step updates the memory pointed to by `B` in place.
 
    1. Write `B` to a file, using the format described in the [**File
