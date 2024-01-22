@@ -107,10 +107,9 @@ It does the following:
    1. Read the `ProcType` field out of the container header stored in the
       memory pointed to by `B`. Let the resulting bit mask be `M`.
 
-   1. Visit the bits of `M` that correspond to port numbers `N` of
-      `procBufferSendOut` in order.
-      For each bit that is set, invoke `procBufferSendOut` at port number `N`,
-      passing in `B`.
+   1. Visit the port numbers of `procBufferSendOut` in order.
+      For each port number `N`, if `N` is set in `M`, then invoke
+      `procBufferSendOut` at port number `N`, passing in `B`.
       This step updates the memory pointed to by `B` in place.
 
    1. Write `B` to a file, using the format described in the [**File

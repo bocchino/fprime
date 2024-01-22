@@ -63,6 +63,22 @@ class DpWriter : public DpWriterComponentBase {
     Fw::Success::T validatePacketBuffer(const Fw::Buffer& buffer  //!< The packet buffer
     );
 
+    //! Perform processing on a packet buffer
+    void performProcessing(Fw::Buffer& buffer //!< The packet buffer
+    );
+
+    //! Write the file
+    void writeFile(Fw::Buffer& buffer //!< The packet buffer
+    );
+
+    //! Send the DpWritten notification
+    void sendNotification(Fw::Buffer& buffer //!< The packet buffer
+    );
+
+    //! Update the telemetry values
+    void updateTlmValues(Fw::Buffer& buffer //!< The packet buffer
+    );
+
   PRIVATE:
     // ----------------------------------------------------------------------
     // Private member variables

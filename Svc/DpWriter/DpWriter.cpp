@@ -34,17 +34,18 @@ void DpWriter::configure(const Fw::String& fileNamePrefix, const Fw::String& fil
 // ----------------------------------------------------------------------
 
 void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& buffer) {
+    // portNum is unused
+    (void) portNum;
     // Validate the packet buffer
-    Fw::Success::T status = this->validatePacketBuffer(buffer);
-    if (status == Fw::Success::SUCCESS) {
+    if (this->validatePacketBuffer(buffer) == Fw::Success::SUCCESS) {
         // Perform requested processing
-        // TODO
+        this->performProcessing(buffer);
         // Write the file
-        // TODO
+        this->writeFile(buffer);
         // Send the DpWritten notification
-        // TODO
-        // Update telemetry
-        // TODO
+        this->sendNotification(buffer);
+        // Update telemetry values
+        this->updateTlmValues(buffer);
     }
     // Deallocate the buffer
     if (buffer.isValid()) {
@@ -53,6 +54,7 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
 }
 
 void DpWriter::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
+    (void) portNum;
     // Write telemetry
     this->tlmWrite_NumDataProducts(this->m_numDataProducts);
     this->tlmWrite_NumBytes(this->m_numBytes);
@@ -94,6 +96,18 @@ Fw::Success::T DpWriter::validatePacketBuffer(const Fw::Buffer& buffer) {
         }
     }
     return status;
+}
+
+void DpWriter::performProcessing(Fw::Buffer& buffer) {
+    // TODO
+}
+
+void DpWriter::writeFile(Fw::Buffer& buffer) {
+    // TODO
+}
+
+void DpWriter::updateTlmValues(Fw::Buffer& buffer) {
+    // TODO
 }
 
 }  // end namespace Svc
