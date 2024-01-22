@@ -68,15 +68,15 @@ class DpWriter : public DpWriterComponentBase {
     );
 
     //! Write the file
-    void writeFile(Fw::Buffer& buffer //!< The packet buffer
+    void writeFile(const Fw::Buffer& buffer //!< The packet buffer
     );
 
     //! Send the DpWritten notification
-    void sendNotification(Fw::Buffer& buffer //!< The packet buffer
+    void sendNotification(const Fw::Buffer& buffer //!< The packet buffer
     );
 
     //! Update the telemetry values
-    void updateTlmValues(Fw::Buffer& buffer //!< The packet buffer
+    void updateTlmValues(const Fw::Buffer& buffer //!< The packet buffer
     );
 
   PRIVATE:

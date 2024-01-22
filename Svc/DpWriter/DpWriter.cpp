@@ -54,6 +54,7 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
 }
 
 void DpWriter::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
+    // portNum is not used
     (void) portNum;
     // Write telemetry
     this->tlmWrite_NumDataProducts(this->m_numDataProducts);
@@ -102,11 +103,11 @@ void DpWriter::performProcessing(Fw::Buffer& buffer) {
     // TODO
 }
 
-void DpWriter::writeFile(Fw::Buffer& buffer) {
+void DpWriter::writeFile(const Fw::Buffer& buffer) {
     // TODO
 }
 
-void DpWriter::updateTlmValues(Fw::Buffer& buffer) {
+void DpWriter::updateTlmValues(const Fw::Buffer& buffer) {
     // TODO
 }
 
