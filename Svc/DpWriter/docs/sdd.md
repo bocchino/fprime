@@ -91,12 +91,18 @@ This handler sends out the state variables as telemetry.
 This handler receives a mutable reference to a buffer `B`.
 It does the following:
 
-1. Check that `B` is valid and that the first `sizeof(FwPacketDescriptorType)`
+1. Check that `B` is valid. If not, emit a warning event.
+
+1. If the previous succeeded, then check that the size of `B` is large enough to
+   hold a container header  if not, emit a warning event.
+
+1. If the previous steps succeeded, then check that the first
+   `sizeof(FwPacketDescriptorType)`
    bytes of the memory referred to by `B` hold the serialized value
    [`Fw_PACKET_DP`](../../../Fw/Com/ComPacket.hpp).
    If not, emit a warning event.
 
-1. If step 1 succeeded, then
+1. If the previous steps succeeded, then
 
    1. Read the `ProcType` field out of the container header stored in the
       memory pointed to by `B`.
@@ -150,6 +156,7 @@ Then the file name is `container_data_100_100000_1000.dat`.
 
 | Name | Severity | Description |
 |------|----------|-------------|
+| `BufferInvalid` | `warning high` | Incoming buffer is invalid |
 | `BufferTooSmall` | `warning high` | Incoming buffer is too small to hold a data product container |
 | `InvalidPacketDescriptor` | `warning high` | Incoming buffer had an invalid packet descriptor |
 

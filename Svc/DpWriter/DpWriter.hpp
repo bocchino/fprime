@@ -4,9 +4,10 @@
 // \brief  hpp file for DpWriter component implementation class
 // ======================================================================
 
-#ifndef DpWriter_HPP
-#define DpWriter_HPP
+#ifndef Svc_DpWriter_HPP
+#define Svc_DpWriter_HPP
 
+#include "Fw/Types/String.hpp"
 #include "Svc/DpWriter/DpWriterComponentAc.hpp"
 
 namespace Svc {
@@ -19,12 +20,22 @@ class DpWriter : public DpWriterComponentBase {
 
     //! Construct object DpWriter
     //!
-    DpWriter(const char* const compName /*!< The component name*/
+    DpWriter(const char* const compName //!< The component name
     );
 
     //! Destroy object DpWriter
     //!
     ~DpWriter();
+
+  public:
+    // ----------------------------------------------------------------------
+    // Runtime configuration
+    // ----------------------------------------------------------------------
+
+    void configure(
+        const Fw::String& fileNamePrefix, //!< The file name prefix
+        const Fw::String& fileNameSuffix //!< The file name suffix
+    );
 
   PRIVATE:
     // ----------------------------------------------------------------------
@@ -42,6 +53,24 @@ class DpWriter : public DpWriterComponentBase {
     void schedIn_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
                          NATIVE_UINT_TYPE context        //!< The call order
     );
+
+  PRIVATE:
+    // ----------------------------------------------------------------------
+    // Private member variables
+    // ----------------------------------------------------------------------
+
+    //! The number of data products written
+    U32 m_numDataProducts = 0;
+
+    //! The number of bytes written
+    U64 m_numBytes = 0;
+
+    //! The file name prefix
+    Fw::String m_fileNamePrefix;
+
+    //! The file name suffix
+    Fw::String m_fileNameSuffix;
+
 };
 
 }  // end namespace Svc
