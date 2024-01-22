@@ -74,7 +74,7 @@ processing.
 
 ### 3.5. Runtime Setup
 
-The `config` function specifies the following constants:
+The `configure` function specifies the following constants:
 
 1. `fileNamePrefix (string)`: The prefix to use for file names.
 
