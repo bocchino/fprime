@@ -29,7 +29,8 @@ SVC-DPWRITER-001 | `Svc::DpWriter` shall provide a port for receiving `Fw::Buffe
 SVC-DPWRITER-002 | `Svc::DpWriter` shall provide an array of ports for sending `Fw::Buffer` objects for processing. | This requirement supports downstream processing of the data in the buffer. | Unit Test
 SVC-DPWRITER-003 | On receiving a data product container _C_, `Svc::DpWriter` shall use the processing type field of the header of _C_ to select zero or more processing ports to invoke, in port order. | The processing type field is a bit mask. A one in bit `2^n` in the bit mask selects port index `n`. | Unit Test
 SVC-DPWRITER-004 | On receiving an `Fw::Buffer` _B_, and after performing any requested processing on _B_, `Svc::DpWriter` shall write _B_ to disk. | The purpose of `DpWriter` is to write data products to the disk. | Unit Test
-SVC-DPWRITER-005 | `Svc::DpManager` shall provide telemetry that reports the number of data products written and the number of bytes written. | This requirement establishes the telemetry interface for the component. | Unit test
+SVC-DPWRITER-005 | `Svc::DpWriter` shall provide a port for notifying other components that data products have been written. | This requirement allows `Svc::DpCatalog` or a similar component to update its catalog in real time. | Unit Test
+SVC-DPWRITER-006 | `Svc::DpManager` shall provide telemetry that reports the number of data products written and the number of bytes written. | This requirement establishes the telemetry interface for the component. | Unit test
 
 ## 3. Design
 
@@ -50,6 +51,7 @@ The diagram below shows the `DpWriter` component.
 | `async input` | `schedIn` | `Svc.Sched` | Schedule in port |
 | `async input` | `bufferSendIn` | `Fw.BufferSend` | Port for receiving data products to write to disk |
 | `output` | `procBufferSendOut` | `[DpWriterNumProcPorts] Fw.BufferSend` | Port for processing data products |
+| `output` | `dpWrittenOut` | `DpWritten` | Port for sending `DpWritten` notifications |
 | `output` | `deallocBufferSendOut` | `Fw.BufferSend` | Port for deallocating data product buffers |
 | `time get` | `timeGetOut` | `Fw.Time` | Time get port |
 | `telemetry` | `tlmOut` | `Fw.Tlm` | Telemetry port |
@@ -105,6 +107,9 @@ It does the following:
    1. Write `B` to a file, using the format described in the [**File
       Format**](#file_format) section. For the time stamp, use the time
       provided by `timeGetOut`.
+
+   1. If `dpWrittenOut` is connected, then send the file name, priority,
+      and file size out on `dpWrittenOut`.
 
 1. Send `B` on `deallocBufferSendOut`.
 

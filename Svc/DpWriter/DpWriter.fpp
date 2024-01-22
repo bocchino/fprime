@@ -20,7 +20,7 @@ module Svc {
     @ Port for processing data products
     output port procBufferSendOut: [DpWriterNumProcPorts] Fw.BufferSend
 
-    @ Port for sending dp written notifications
+    @ Port for sending DpWritten notifications
     output port dpWrittenOut: DpWritten
 
     @ Port for deallocating data product buffers
