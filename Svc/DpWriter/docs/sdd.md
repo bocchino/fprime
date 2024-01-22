@@ -93,8 +93,8 @@ It does the following:
 
 1. Check that `B` is valid. If not, emit a warning event.
 
-1. If the previous succeeded, then check that the size of `B` is large enough to
-   hold a container header  if not, emit a warning event.
+1. If the previous step succeeded, then check that the size of `B` is large enough to
+   hold a data product container packet. If not, emit a warning event.
 
 1. If the previous steps succeeded, then check that the first
    `sizeof(FwPacketDescriptorType)`
@@ -117,7 +117,7 @@ It does the following:
    1. If `dpWrittenOut` is connected, then send the file name, priority,
       and file size out on `dpWrittenOut`.
 
-1. Send `B` on `deallocBufferSendOut`.
+1. If `B` is valid, then send `B` on `deallocBufferSendOut`.
 
 <a name="file_format"></a>
 ## 4. File Format
@@ -158,7 +158,7 @@ Then the file name is `container_data_100_100000_1000.dat`.
 |------|----------|-------------|
 | `BufferInvalid` | `warning high` | Incoming buffer is invalid |
 | `BufferTooSmall` | `warning high` | Incoming buffer is too small to hold a data product container |
-| `InvalidPacketDescriptor` | `warning high` | Incoming buffer had an invalid packet descriptor |
+| `InvalidPacketDescriptor` | `warning high` | Incoming buffer has an invalid packet descriptor |
 
 ## 6. Example Uses
 

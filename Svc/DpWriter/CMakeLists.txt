@@ -3,6 +3,10 @@ set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/DpWriter.fpp"
 )
 
+set(MOD_DEPS
+  Fw/Dp
+)
+
 register_fprime_module()
 
 #set(UT_SOURCE_FILES
