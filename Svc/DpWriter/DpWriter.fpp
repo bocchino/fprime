@@ -68,8 +68,8 @@ module Svc {
       format "Received buffer is invalid" \
       throttle 10
 
-    @ Received buffer is too small to hold a data product container packet
-    event BufferTooSmallForContainer(
+    @ Received buffer is too small to hold a data product packet
+    event BufferTooSmall(
                           bufferSize: U32 @< The incoming buffer size
                           minSize: U32 @< The minimum required size
                         ) \

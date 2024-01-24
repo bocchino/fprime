@@ -30,17 +30,30 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
     (void)portNum;
     // Update num data products received
     ++this->m_numBuffersReceived;
-    // Validate the packet buffer
-    Fw::Success::T status = this->validatePacketBuffer(buffer);
+    Fw::Success::T status = Fw::Success::SUCCESS;
+    // Check that the buffer is valid
+    if (!buffer.isValid()) {
+        this->log_WARNING_HI_BufferInvalid();
+        status = Fw::Success::FAILURE;
+    }
+    // Set up the serial packet buffer
+    Fw::SerializeBufferBase& serialBuffer = buffer.getSerializeRepr();
     if (status == Fw::Success::SUCCESS) {
+        const Fw::SerializeStatus serialStatus = serialBuffer.setBuffLen(buffer.getSize());
+        FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(serialStatus));
+    }
+    FwSizeType fileSize = 0;
+    if (status == Fw::Success::SUCCESS) {
+        // Validate the packet buffer
+        status = this->validatePacketBuffer(serialBuffer);
         // Perform the requested processing
         this->performProcessing(buffer);
         // Write the file
-        status = this->writeFile(buffer);
+        status = this->writeFile(buffer, fileSize);
     }
     if (status == Fw::Success::SUCCESS) {
         // Send the DpWritten notification
-        this->sendNotification(buffer);
+        this->sendNotification(buffer, fileSize);
     }
     // Deallocate the buffer
     if (buffer.isValid()) {
@@ -68,7 +81,7 @@ void DpWriter::CLEAR_EVENT_THROTTLE_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) 
     (void)cmdSeq;
     // Clear throttling
     this->log_WARNING_HI_BufferInvalid_ThrottleClear();
-    this->log_WARNING_HI_BufferTooSmallForContainer_ThrottleClear();
+    this->log_WARNING_HI_BufferTooSmall_ThrottleClear();
     this->log_WARNING_HI_InvalidPacketDescriptor_ThrottleClear();
     this->log_WARNING_HI_FileOpenError_ThrottleClear();
     this->log_WARNING_HI_FileWriteError_ThrottleClear();
@@ -80,32 +93,24 @@ void DpWriter::CLEAR_EVENT_THROTTLE_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) 
 // Private helper functions
 // ----------------------------------------------------------------------
 
-Fw::Success::T DpWriter::validatePacketBuffer(const Fw::Buffer& buffer) {
+Fw::Success::T DpWriter::validatePacketBuffer(Fw::SerializeBufferBase& serialBuffer) {
     Fw::Success status = Fw::Success::SUCCESS;
-    // Check that the buffer is valid
-    if (!buffer.isValid()) {
-        this->log_WARNING_HI_BufferInvalid();
-        status = Fw::Success::FAILURE;
-    }
     // Check that the buffer is large enough to hold a data product container packet
     if (status == Fw::Success::SUCCESS) {
-        const FwSizeType bufferSize = buffer.getSize();
+        const FwSizeType bufferSize = serialBuffer.getBuffLength();
         const FwSizeType minPacketSize = Fw::DpContainer::MIN_PACKET_SIZE;
         if (bufferSize < minPacketSize) {
-            this->log_WARNING_HI_BufferTooSmallForContainer(bufferSize, minPacketSize);
+            this->log_WARNING_HI_BufferTooSmall(bufferSize, minPacketSize);
             status = Fw::Success::FAILURE;
         }
     }
     // Check that the packet header starts with FW_PACKET_DP
     if (status == Fw::Success::SUCCESS) {
-        const FwSizeType bufferSize = buffer.getSize();
-        FwPacketDescriptorType packetDescriptor;
-        FW_ASSERT(sizeof packetDescriptor <= bufferSize, sizeof packetDescriptor, bufferSize);
-        U8* const data = buffer.getData();
-        FW_ASSERT(data != nullptr);
-        Fw::ExternalSerializeBuffer serialBuffer(&data[Fw::DpContainer::Header::PACKET_DESCRIPTOR_OFFSET],
-                                                 sizeof packetDescriptor);
-        const Fw::SerializeStatus serialStatus = serialBuffer.deserialize(packetDescriptor);
+        Fw::SerializeStatus serialStatus =
+            serialBuffer.moveDeserToOffset(Fw::DpContainer::Header::PACKET_DESCRIPTOR_OFFSET);
+        FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK);
+        FwPacketDescriptorType packetDescriptor = 0;
+        serialStatus = serialBuffer.deserialize(packetDescriptor);
         FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK);
         if (packetDescriptor != Fw::ComPacket::FW_PACKET_DP) {
             this->log_WARNING_HI_InvalidPacketDescriptor(static_cast<U32>(packetDescriptor));
@@ -116,17 +121,15 @@ Fw::Success::T DpWriter::validatePacketBuffer(const Fw::Buffer& buffer) {
 }
 
 void DpWriter::performProcessing(Fw::Buffer& buffer) {
-    // Get the buffer size
-    const FwSizeType bufferSize = buffer.getSize();
+    // Set up the serial buffer
+    Fw::SerializeBufferBase& serialBuffer = buffer.getSerializeRepr();
+    Fw::SerializeStatus serialStatus = serialBuffer.setBuffLen(buffer.getSize());
     // Get the bit mask for the processing types
+    serialStatus = serialBuffer.moveDeserToOffset(Fw::DpContainer::Header::PROC_TYPES_OFFSET);
+    FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(serialStatus));
     Fw::DpCfg::ProcType::SerialType procTypes = 0;
-    const FwSizeType minDataSize = Fw::DpContainer::Header::PROC_TYPES_OFFSET + (sizeof procTypes);
-    FW_ASSERT(minDataSize <= bufferSize, minDataSize, bufferSize);
-    U8* const data = buffer.getData();
-    FW_ASSERT(data != nullptr);
-    Fw::ExternalSerializeBuffer serialBuffer(&data[Fw::DpContainer::Header::PROC_TYPES_OFFSET], sizeof procTypes);
-    const Fw::SerializeStatus serialStatus = serialBuffer.deserialize(procTypes);
-    FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK);
+    serialStatus = serialBuffer.deserialize(procTypes);
+    FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(serialStatus));
     // Do the processing
     for (FwIndexType portNum = 0; portNum < NUM_PROCBUFFERSENDOUT_OUTPUT_PORTS; ++portNum) {
         if ((procTypes & (1 << portNum)) != 0) {
@@ -135,12 +138,42 @@ void DpWriter::performProcessing(Fw::Buffer& buffer) {
     }
 }
 
-Fw::Success::T DpWriter::writeFile(const Fw::Buffer& buffer) {
+Fw::Success::T DpWriter::writeFile(const Fw::Buffer& buffer, FwSizeType& packetSize) {
+    Fw::Success::T status = Fw::Success::SUCCESS;
+    // Get the buffer size
+    const FwSizeType bufferSize = buffer.getSize();
+    // Get the data size out of the packet
+    Fw::ExternalSerializeBuffer serialBuffer(buffer.getData(), buffer.getSize());
+    Fw::SerializeStatus serialStatus = serialBuffer.setBuffLen(buffer.getSize());
+    FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK);
+    serialStatus = serialBuffer.moveDeserToOffset(Fw::DpContainer::Header::DATA_SIZE_OFFSET);
+    FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK);
+    FwSizeType dataSize = 0;
+    serialStatus = serialBuffer.deserialize(dataSize);
+    FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK);
+    // Compute the packet size
+    packetSize = Fw::DpContainer::getPacketSizeForDataSize(dataSize);
+    // If the packet size doesn't fit in the buffer, error: buffer too small
+    if (packetSize < bufferSize) {
+        this->log_WARNING_HI_BufferTooSmall(bufferSize, packetSize);
+        status = Fw::Success::FAILURE;
+    }
+    // Construct the file name
     // TODO
-    return Fw::Success::SUCCESS;
+    // Open the file
+    if (status == Fw::Success::SUCCESS) {
+        // TODO
+    }
+    // If status is success, write the file
+    if (status == Fw::Success::SUCCESS) {
+        // TODO
+    }
+    // Update telemetry
+    // TODO
+    return status;
 }
 
-void DpWriter::sendNotification(const Fw::Buffer& buffer) {
+void DpWriter::sendNotification(const Fw::Buffer& buffer, FwSizeType fileSize) {
     // TODO
 }
 
