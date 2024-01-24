@@ -54,6 +54,19 @@ void DpWriter::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE c
 }
 
 // ----------------------------------------------------------------------
+// Handler implementations for commands
+// ----------------------------------------------------------------------
+
+void DpWriter::CLEAR_EVENT_THROTTLE_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) {
+    this->log_WARNING_HI_BufferInvalid_ThrottleClear();
+    this->log_WARNING_HI_BufferTooSmall_ThrottleClear();
+    this->log_WARNING_HI_InvalidPacketDescriptor_ThrottleClear();
+    this->log_WARNING_HI_FileOpenError_ThrottleClear();
+    this->log_WARNING_HI_FileWriteError_ThrottleClear();
+    this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
+}
+
+// ----------------------------------------------------------------------
 // Private helper functions
 // ----------------------------------------------------------------------
 

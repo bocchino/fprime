@@ -30,6 +30,15 @@ module Svc {
     # F' special ports
     # ----------------------------------------------------------------------
 
+    @ Command receive port
+    command recv port cmdIn
+
+    @ Command registration port
+    command reg port cmdRegIn
+
+    @ Command response port
+    command resp port cmdResponseOut
+
     @ Time get port
     time get port timeGetOut
 
@@ -43,27 +52,37 @@ module Svc {
     text event port textEventOut
 
     # ----------------------------------------------------------------------
+    # Commands 
+    # ----------------------------------------------------------------------
+
+    @ Clear event throttling
+    async command CLEAR_EVENT_THROTTLE
+
+    # ----------------------------------------------------------------------
     # Events
     # ----------------------------------------------------------------------
 
     @ Incoming buffer is invalid
     event BufferInvalid \
       severity warning high \
-      format "Received buffer is invalid"
+      format "Received buffer is invalid" \
+      throttle 10
 
     @ Incoming buffer is too small to hold a data product container
     event BufferTooSmall(
                           $size: U32 @< The buffer size
                         ) \
       severity warning high \
-      format "Received buffer of size {} is too small to hold a data product container"
+      format "Received buffer of size {} is too small to hold a data product container" \
+      throttle 10
 
     @ Incoming buffer has an invalid packet descriptor
     event InvalidPacketDescriptor(
                                    descriptor: U32 @< The descriptor
                                  ) \
       severity warning high \
-      format "Packet descriptor {} is invalid"
+      format "Packet descriptor {} is invalid" \
+      throttle 10
 
     @ An error occurred when opening a file
     event FileOpenError(
@@ -71,7 +90,8 @@ module Svc {
                          file: string size FileNameStringSize @< The file
                        ) \
       severity warning high \
-      format "Error {} opening file {}"
+      format "Error {} opening file {}" \
+      throttle 10
 
     @ An error occurred when writing to a file
     event FileWriteError(
@@ -81,7 +101,8 @@ module Svc {
                           file: string size FileNameStringSize @< The file
                         ) \
       severity warning high \
-      format "Error {} while writing {} of {} bytes to {}"
+      format "Error {} while writing {} of {} bytes to {}" \
+      throttle 10
 
     # ----------------------------------------------------------------------
     # Telemetry

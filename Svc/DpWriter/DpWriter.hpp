@@ -37,13 +37,25 @@ class DpWriter : public DpWriterComponentBase {
     //!
     void bufferSendIn_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
                               Fw::Buffer& fwBuffer            //!< The buffer
-    );
+    ) override;
 
     //! Handler implementation for schedIn
     //!
     void schedIn_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
                          NATIVE_UINT_TYPE context        //!< The call order
-    );
+    ) override;
+
+  PRIVATE:
+    // ----------------------------------------------------------------------
+    // Handler implementations for commands
+    // ----------------------------------------------------------------------
+
+    //! Handler implementation for command CLEAR_EVENT_THROTTLE
+    //!
+    //! Clear event throttling
+    void CLEAR_EVENT_THROTTLE_cmdHandler(FwOpcodeType opCode,  //!< The opcode
+                                         U32 cmdSeq            //!< The command sequence number
+                                         ) override;
 
   PRIVATE:
     // ----------------------------------------------------------------------
