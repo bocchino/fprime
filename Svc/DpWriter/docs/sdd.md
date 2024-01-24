@@ -21,6 +21,11 @@ before reaching `DpWriter`.
 
    1. Write _B_ to disk.
 
+   1. If a notification port is connected, then send out a notification
+that the write occurred.
+An instance of [`Svc::DpCatalog`](../../DpCatalog/docs/sdd.md) can
+receive this notification and use it to update the data product catalog.
+
 ## 2. Requirements
 
 Requirement | Description | Rationale | Verification Method
@@ -145,14 +150,20 @@ Time microseconds | `PRI_u32`
 <a name="ground_interface"></a>
 ## 5. Ground Interface
 
-### 5.1. Telemetry
+### 5.1. Commands
+
+| Kind | Name | Description |
+|------|------|-------------|
+| `async` | `CLEAR_EVENT_THROTTLE` | Clear event throttling |
+
+### 5.2. Telemetry
 
 | Name | Type | Description |
 |------|------|-------------|
 | `NumDataProducts` | `U32` | The number of data products handled |
 | `NumBytes` | `U64` | The number of bytes handled |
 
-### 5.2. Events
+### 5.3. Events
 
 | Name | Severity | Description |
 |------|----------|-------------|
