@@ -28,15 +28,6 @@ class DpWriter : public DpWriterComponentBase {
     //!
     ~DpWriter();
 
-  public:
-    // ----------------------------------------------------------------------
-    // Runtime configuration
-    // ----------------------------------------------------------------------
-
-    void configure(const Fw::String& fileNamePrefix,  //!< The file name prefix
-                   const Fw::String& fileNameSuffix   //!< The file name suffix
-    );
-
   PRIVATE:
     // ----------------------------------------------------------------------
     // Handler implementations for user-defined typed input ports
@@ -90,11 +81,6 @@ class DpWriter : public DpWriterComponentBase {
     //! The number of bytes written
     U64 m_numBytes = 0;
 
-    //! The file name prefix
-    Fw::String m_fileNamePrefix;
-
-    //! The file name suffix
-    Fw::String m_fileNameSuffix;
 };
 
 }  // end namespace Svc

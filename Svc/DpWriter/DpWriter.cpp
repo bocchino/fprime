@@ -22,15 +22,6 @@ DpWriter::DpWriter(const char* const compName) : DpWriterComponentBase(compName)
 DpWriter::~DpWriter() {}
 
 // ----------------------------------------------------------------------
-// Runtime configuration
-// ----------------------------------------------------------------------
-
-void DpWriter::configure(const Fw::String& fileNamePrefix, const Fw::String& fileNameSuffix) {
-    this->m_fileNamePrefix = fileNamePrefix;
-    this->m_fileNameSuffix = fileNameSuffix;
-}
-
-// ----------------------------------------------------------------------
 // Handler implementations for user-defined typed input ports
 // ----------------------------------------------------------------------
 
