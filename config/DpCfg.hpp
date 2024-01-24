@@ -1,5 +1,5 @@
 // ======================================================================
-// \title  IpCfg.hpp
+// \title  DpCfg.hpp
 // \author bocchino
 // \brief  hpp file for data product configuration
 //
