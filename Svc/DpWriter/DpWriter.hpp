@@ -37,13 +37,13 @@ class DpWriter : public DpWriterComponentBase {
     //!
     void bufferSendIn_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
                               Fw::Buffer& fwBuffer            //!< The buffer
-    ) override;
+                              ) override;
 
     //! Handler implementation for schedIn
     //!
     void schedIn_handler(const NATIVE_INT_TYPE portNum,  //!< The port number
                          NATIVE_UINT_TYPE context        //!< The call order
-    ) override;
+                         ) override;
 
   PRIVATE:
     // ----------------------------------------------------------------------
@@ -67,19 +67,16 @@ class DpWriter : public DpWriterComponentBase {
     );
 
     //! Perform processing on a packet buffer
-    void performProcessing(Fw::Buffer& buffer //!< The packet buffer
+    void performProcessing(Fw::Buffer& buffer  //!< The packet buffer
     );
 
     //! Write the file
-    void writeFile(const Fw::Buffer& buffer //!< The packet buffer
+    //! \return Whether the write succeeded
+    Fw::Success::T writeFile(const Fw::Buffer& buffer  //!< The packet buffer
     );
 
     //! Send the DpWritten notification
-    void sendNotification(const Fw::Buffer& buffer //!< The packet buffer
-    );
-
-    //! Update the telemetry values
-    void updateTlmValues(const Fw::Buffer& buffer //!< The packet buffer
+    void sendNotification(const Fw::Buffer& buffer  //!< The packet buffer
     );
 
   PRIVATE:
@@ -87,12 +84,17 @@ class DpWriter : public DpWriterComponentBase {
     // Private member variables
     // ----------------------------------------------------------------------
 
-    //! The number of data products written
-    U32 m_numDataProducts = 0;
+    //! The number of buffers received
+    U32 m_numBuffersReceived = 0;
 
     //! The number of bytes written
-    U64 m_numBytes = 0;
+    U64 m_numBytesWritten = 0;
 
+    //! The number of successful writes
+    U32 m_numSuccessfulWrites = 0;
+
+    //! The number of failed writes
+    U32 m_numFailedWrites = 0;
 };
 
 }  // end namespace Svc

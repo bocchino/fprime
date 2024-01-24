@@ -28,16 +28,19 @@ DpWriter::~DpWriter() {}
 void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& buffer) {
     // portNum is unused
     (void)portNum;
+    // Update num data products received
+    ++this->m_numBuffersReceived;
     // Validate the packet buffer
-    if (this->validatePacketBuffer(buffer) == Fw::Success::SUCCESS) {
+    Fw::Success::T status = this->validatePacketBuffer(buffer);
+    if (status == Fw::Success::SUCCESS) {
         // Perform the requested processing
         this->performProcessing(buffer);
         // Write the file
-        this->writeFile(buffer);
+        status = this->writeFile(buffer);
+    }
+    if (status == Fw::Success::SUCCESS) {
         // Send the DpWritten notification
         this->sendNotification(buffer);
-        // Update telemetry values
-        this->updateTlmValues(buffer);
     }
     // Deallocate the buffer
     if (buffer.isValid()) {
@@ -49,8 +52,10 @@ void DpWriter::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE c
     // portNum is not used
     (void)portNum;
     // Write telemetry
-    this->tlmWrite_NumDataProducts(this->m_numDataProducts);
-    this->tlmWrite_NumBytes(this->m_numBytes);
+    this->tlmWrite_NumBuffersReceived(this->m_numBuffersReceived);
+    this->tlmWrite_NumBytesWritten(this->m_numBytesWritten);
+    this->tlmWrite_NumSuccessfulWrites(this->m_numSuccessfulWrites);
+    this->tlmWrite_NumFailedWrites(this->m_numFailedWrites);
 }
 
 // ----------------------------------------------------------------------
@@ -58,11 +63,16 @@ void DpWriter::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE c
 // ----------------------------------------------------------------------
 
 void DpWriter::CLEAR_EVENT_THROTTLE_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) {
+    // opCode and cmdSeq are not used
+    (void) opCode;
+    (void) cmdSeq;
+    // Clear throttling
     this->log_WARNING_HI_BufferInvalid_ThrottleClear();
     this->log_WARNING_HI_BufferTooSmallForContainer_ThrottleClear();
     this->log_WARNING_HI_InvalidPacketDescriptor_ThrottleClear();
     this->log_WARNING_HI_FileOpenError_ThrottleClear();
     this->log_WARNING_HI_FileWriteError_ThrottleClear();
+    // Return command response
     this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
 }
 
@@ -125,12 +135,9 @@ void DpWriter::performProcessing(Fw::Buffer& buffer) {
     }
 }
 
-void DpWriter::writeFile(const Fw::Buffer& buffer) {
+Fw::Success::T DpWriter::writeFile(const Fw::Buffer& buffer) {
     // TODO
-}
-
-void DpWriter::updateTlmValues(const Fw::Buffer& buffer) {
-    // TODO
+    return Fw::Success::SUCCESS;
 }
 
 }  // end namespace Svc

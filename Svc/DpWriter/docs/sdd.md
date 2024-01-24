@@ -120,8 +120,8 @@ It does the following:
       Format**](#file_format) section. For the time stamp, use the time
       provided by `timeGetOut`.
 
-   1. If `dpWrittenOut` is connected, then send the file name, priority,
-      and file size out on `dpWrittenOut`.
+1. If the file write succeeded and `dpWrittenOut` is connected, then send the
+   file name, priority, and file size out on `dpWrittenOut`.
 
 1. If `B` is valid, then send `B` on `deallocBufferSendOut`.
 

@@ -109,11 +109,17 @@ module Svc {
     # Telemetry
     # ----------------------------------------------------------------------
 
-    @ The number of data products handled
-    telemetry NumDataProducts: U32 update on change
+    @ The number of buffers received
+    telemetry NumBuffersReceived: U32 update on change
 
     @ The number of bytes written
-    telemetry NumBytes: U64 update on change
+    telemetry NumBytesWritten: U64 update on change
+
+    @ The number of successful writes
+    telemetry NumSuccessfulWrites: U32 update on change
+
+    @ The number of failed writes
+    telemetry NumFailedWrites: U32 update on change
 
   }
 
