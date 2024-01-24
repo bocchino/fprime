@@ -8,6 +8,7 @@
 #include "Fw/Dp/DpContainer.hpp"
 #include "Fw/Types/Serializable.hpp"
 #include "Svc/DpWriter/DpWriter.hpp"
+#include "config/DpCfg.hpp"
 #include "config/FpConfig.hpp"
 
 namespace Svc {
@@ -38,7 +39,7 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
     (void) portNum;
     // Validate the packet buffer
     if (this->validatePacketBuffer(buffer) == Fw::Success::SUCCESS) {
-        // Perform requested processing
+        // Perform the requested processing
         this->performProcessing(buffer);
         // Write the file
         this->writeFile(buffer);
@@ -100,7 +101,24 @@ Fw::Success::T DpWriter::validatePacketBuffer(const Fw::Buffer& buffer) {
 }
 
 void DpWriter::performProcessing(Fw::Buffer& buffer) {
-    // TODO
+    // Get the buffer size
+    const FwSizeType bufferSize = buffer.getSize();
+    // Get the bit mask for the processing types
+    Fw::DpCfg::ProcType::SerialType procTypes = 0;
+    const FwSizeType minDataSize = Fw::DpContainer::Header::PROC_TYPES_OFFSET + (sizeof procTypes);
+    FW_ASSERT(minDataSize <= bufferSize, minDataSize, bufferSize);
+    U8 *const data = buffer.getData();
+    FW_ASSERT(data != nullptr);
+    Fw::ExternalSerializeBuffer serialBuffer(&data[Fw::DpContainer::Header::PROC_TYPES_OFFSET],
+                                             sizeof procTypes);
+    const Fw::SerializeStatus serialStatus = serialBuffer.deserialize(procTypes);
+    FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK);
+    // Do the processing
+    for (FwIndexType portNum = 0; portNum < NUM_PROCBUFFERSENDOUT_OUTPUT_PORTS; ++portNum) {
+        if ((procTypes & (1 << portNum)) != 0) {
+            this->procBufferSendOut_out(portNum, buffer);
+        }
+    }
 }
 
 void DpWriter::writeFile(const Fw::Buffer& buffer) {

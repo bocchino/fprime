@@ -65,6 +65,24 @@ module Svc {
       severity warning high \
       format "Packet descriptor {} is invalid"
 
+    @ An error occurred when opening a file
+    event FileOpenError(
+                         errorNum: U32 @< The error number returned from the open operation
+                         file: string size FileNameStringSize @< The file
+                       ) \
+      severity warning high \
+      format "Error {} opening file {}"
+
+    @ An error occurred when writing to a file
+    event FileWriteError(
+                          errornum: U32 @< The error number returned from the write operation
+                          bytesWritten: U32 @< The number of bytes successfully written
+                          bytesToWrite: U32 @< The number of bytes attempted
+                          file: string size FileNameStringSize @< The file
+                        ) \
+      severity warning high \
+      format "Error {} while writing {} of {} bytes to {}"
+
     # ----------------------------------------------------------------------
     # Telemetry
     # ----------------------------------------------------------------------

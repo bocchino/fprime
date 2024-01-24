@@ -68,17 +68,16 @@ The diagram below shows the `DpWriter` component.
 
 ### 3.4. Compile-Time Setup
 
-The configuration constant [`DpWriterNumProcPorts`](../../../config/AcConstants.fpp)
-specifies the number of ports for connecting components that perform
-processing.
+1. The configuration constant [`DpWriterNumProcPorts`](../../../config/AcConstants.fpp)
+   specifies the number of ports for connecting components that perform
+   processing.
+
+1. The configuration [`DP_FILENAME_FORMAT`](../../../config/DpCfg.hpp)
+   specifies the file name format.
 
 ### 3.5. Runtime Setup
 
-The `configure` function specifies the following constants:
-
-1. `fileNamePrefix (string)`: The prefix to use for file names.
-
-1. `fileNameSuffix (string)`: The suffix to use for file names.
+No special runtime setup is required.
 
 ### 3.6. Port Handlers
 
@@ -132,17 +131,16 @@ with the format described in the
 
 ### 4.2. File Name
 
-The name of each file consists of `fileNamePrefix` followed by an
-ID, a time stamp, and `fileNameSuffix`.
-The ID consists of an underscore character `_` followed by the container ID.
-The time stamp consists of an underscore character `_` followed by a seconds 
-value, an underscore character, and a microseconds value.
+The name of each file is formatted with the configurable format string
+[`DP_FILENAME_FORMAT`](../../../config/DpCfg.hpp).
+The format string must contain format specifications for the following arguments,
+in order.
 
-For example, suppose that the file name prefix is `container_data` and the
-file name suffix is `.dat`.
-Suppose that container ID is 100, the seconds value is 100000,
-and the microseconds value is 1000.
-Then the file name is `container_data_100_100000_1000.dat`.
+Format Specifier | Type |
+---------------- | -----|
+Container ID | `PRI_FwDpIdType`
+Time seconds | `PRI_u32`
+Time microseconds | `PRI_u32`
 
 <a name="ground_interface"></a>
 ## 5. Ground Interface
@@ -161,6 +159,8 @@ Then the file name is `container_data_100_100000_1000.dat`.
 | `BufferInvalid` | `warning high` | Incoming buffer is invalid |
 | `BufferTooSmall` | `warning high` | Incoming buffer is too small to hold a data product container |
 | `InvalidPacketDescriptor` | `warning high` | Incoming buffer has an invalid packet descriptor |
+| `FileOpenError` | `warning high` | An error occurred when opening a file |
+| `FileWriteError` | `warning high` | An error occurred when writing to a file |
 
 ## 6. Example Uses
 
