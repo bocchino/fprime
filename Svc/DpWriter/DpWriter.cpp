@@ -64,8 +64,8 @@ void DpWriter::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE c
 
 void DpWriter::CLEAR_EVENT_THROTTLE_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) {
     // opCode and cmdSeq are not used
-    (void) opCode;
-    (void) cmdSeq;
+    (void)opCode;
+    (void)cmdSeq;
     // Clear throttling
     this->log_WARNING_HI_BufferInvalid_ThrottleClear();
     this->log_WARNING_HI_BufferTooSmallForContainer_ThrottleClear();
@@ -138,6 +138,10 @@ void DpWriter::performProcessing(Fw::Buffer& buffer) {
 Fw::Success::T DpWriter::writeFile(const Fw::Buffer& buffer) {
     // TODO
     return Fw::Success::SUCCESS;
+}
+
+void DpWriter::sendNotification(const Fw::Buffer& buffer) {
+    // TODO
 }
 
 }  // end namespace Svc
