@@ -152,7 +152,7 @@ Fw::Success::T DpWriter::writeFile(Fw::Buffer& buffer, FwSizeType& packetSize) {
     FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(serialStatus));
     // Compute the packet size
     packetSize = Fw::DpContainer::getPacketSizeForDataSize(dataSize);
-    // If the packet size doesn't fit in the buffer, error: buffer too small
+    // Check that the packet size fits in the buffer
     const FwSizeType bufferSize = serialBuffer.getBuffLength();
     if (packetSize < bufferSize) {
         this->log_WARNING_HI_BufferTooSmall(bufferSize, packetSize);

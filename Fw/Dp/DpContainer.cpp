@@ -41,6 +41,7 @@ Fw::SerializeStatus DpContainer::moveSerToOffset(FwSizeType offset  //!< The off
 }
 
 void DpContainer::serializeHeader() {
+    FW_ASSERT(this->buffer.isValid());
     Fw::SerializeBufferBase& serializeRepr = this->buffer.getSerializeRepr();
     // Reset serialization
     serializeRepr.resetSer();
