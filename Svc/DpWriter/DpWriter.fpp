@@ -62,21 +62,22 @@ module Svc {
     # Events
     # ----------------------------------------------------------------------
 
-    @ Incoming buffer is invalid
+    @ Received buffer is invalid
     event BufferInvalid \
       severity warning high \
       format "Received buffer is invalid" \
       throttle 10
 
-    @ Incoming buffer is too small to hold a data product container
-    event BufferTooSmall(
-                          $size: U32 @< The buffer size
+    @ Received buffer is too small to hold a data product container packet
+    event BufferTooSmallForContainer(
+                          bufferSize: U32 @< The incoming buffer size
+                          minSize: U32 @< The minimum required size
                         ) \
       severity warning high \
-      format "Received buffer of size {} is too small to hold a data product container" \
+      format "Received buffer has size {}; minimum required size is {}" \
       throttle 10
 
-    @ Incoming buffer has an invalid packet descriptor
+    @ Received buffer has an invalid packet descriptor
     event InvalidPacketDescriptor(
                                    descriptor: U32 @< The descriptor
                                  ) \
