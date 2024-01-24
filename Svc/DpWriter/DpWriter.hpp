@@ -63,7 +63,7 @@ class DpWriter : public DpWriterComponentBase {
     // ----------------------------------------------------------------------
 
     //! Validate an incoming packet packet buffer
-    Fw::Success::T validatePacketBuffer(Fw::SerializeBufferBase& serialBuffer //!< The packet buffer
+    Fw::Success::T validatePacketBuffer(Fw::Buffer& buffer  //!< The packet buffer
     );
 
     //! Perform processing on a packet buffer
@@ -72,8 +72,8 @@ class DpWriter : public DpWriterComponentBase {
 
     //! Write the file
     //! \return Whether the write succeeded
-    Fw::Success::T writeFile(const Fw::Buffer& buffer,  //!< The packet buffer (input)
-                             FwSizeType& packetSize     //!< The packet size (output)
+    Fw::Success::T writeFile(Fw::Buffer& buffer,     //!< The packet buffer (input)
+                             FwSizeType& packetSize  //!< The packet size (output)
     );
 
     //! Send the DpWritten notification
