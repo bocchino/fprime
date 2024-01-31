@@ -6,6 +6,7 @@
 
 #include "Fw/Com/ComPacket.hpp"
 #include "Fw/Dp/DpContainer.hpp"
+#include "Fw/Types/FileNameString.hpp"
 #include "Fw/Types/Serializable.hpp"
 #include "Svc/DpWriter/DpWriter.hpp"
 #include "config/DpCfg.hpp"
@@ -44,10 +45,14 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
     }
     // Validate the packet buffer
     status = this->validatePacketBuffer(buffer);
+    // Deserialize the packet header
+    Fw::DpContainer container;
+    container.setBuffer(buffer);
+    container.deserializeHeader();
     FwSizeType fileSize = 0;
     if (status == Fw::Success::SUCCESS) {
         // Perform the requested processing
-        this->performProcessing(buffer);
+        this->performProcessing(container);
         // Write the file
         status = this->writeFile(buffer, fileSize);
     }
@@ -121,17 +126,11 @@ Fw::Success::T DpWriter::validatePacketBuffer(Fw::Buffer& buffer) {
     return status;
 }
 
-void DpWriter::performProcessing(Fw::Buffer& buffer) {
-    // Set up the serial buffer
-    Fw::SerializeBufferBase& serialBuffer = buffer.getSerializeRepr();
-    Fw::SerializeStatus serialStatus = serialBuffer.setBuffLen(buffer.getSize());
-    FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(serialStatus));
+void DpWriter::performProcessing(const Fw::DpContainer& container) {
+    // Get the buffer
+    Fw::Buffer buffer = container.getBuffer();
     // Get the bit mask for the processing types
-    serialStatus = serialBuffer.moveDeserToOffset(Fw::DpContainer::Header::PROC_TYPES_OFFSET);
-    FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(serialStatus));
-    Fw::DpCfg::ProcType::SerialType procTypes = 0;
-    serialStatus = serialBuffer.deserialize(procTypes);
-    FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(serialStatus));
+    const Fw::DpCfg::ProcType::SerialType procTypes = container.getProcTypes();
     // Do the processing
     for (FwIndexType portNum = 0; portNum < NUM_PROCBUFFERSENDOUT_OUTPUT_PORTS; ++portNum) {
         if ((procTypes & (1 << portNum)) != 0) {
@@ -158,8 +157,27 @@ Fw::Success::T DpWriter::writeFile(Fw::Buffer& buffer, FwSizeType& packetSize) {
         this->log_WARNING_HI_BufferTooSmall(bufferSize, packetSize);
         status = Fw::Success::FAILURE;
     }
+    // Get the container ID out of the packet
+    FwDpIdType containerId = 0;
+    if (status == Fw::Success::SUCCESS) {
+        serialStatus = serialBuffer.moveDeserToOffset(Fw::DpContainer::Header::ID_OFFSET);
+        FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(serialStatus));
+        serialStatus = serialBuffer.deserialize(containerId);
+        FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(serialStatus));
+    }
+    // Get the time tag out of the packet
+    Fw::Time timeTag;
+    if (status == Fw::Success::SUCCESS) {
+        serialStatus = serialBuffer.moveDeserToOffset(Fw::DpContainer::Header::TIME_TAG_OFFSET);
+        FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(serialStatus));
+        serialStatus = serialBuffer.deserialize(timeTag);
+        FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(serialStatus));
+    }
     // Construct the file name
-    // TODO
+    Fw::FileNameString fileName;
+    if (status == Fw::Success::SUCCESS) {
+        fileName.format("TODO");
+    }
     // Open the file
     if (status == Fw::Success::SUCCESS) {
         // TODO
