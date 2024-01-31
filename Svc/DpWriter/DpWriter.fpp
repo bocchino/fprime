@@ -87,8 +87,8 @@ module Svc {
 
     @ An error occurred when opening a file
     event FileOpenError(
-                         errorNum: U32 @< The error number returned from the open operation
                          file: string size FileNameStringSize @< The file
+                         status: U32 @< The status code returned from the open operation
                        ) \
       severity warning high \
       format "Error {} opening file {}" \
@@ -96,10 +96,10 @@ module Svc {
 
     @ An error occurred when writing to a file
     event FileWriteError(
-                          errornum: U32 @< The error number returned from the write operation
-                          bytesWritten: U32 @< The number of bytes successfully written
-                          bytesToWrite: U32 @< The number of bytes attempted
                           file: string size FileNameStringSize @< The file
+                          bytesToWrite: U32 @< The number of bytes attempted
+                          bytesWritten: U32 @< The number of bytes successfully written
+                          status: U32 @< The status code returned from the write operation
                         ) \
       severity warning high \
       format "Error {} while writing {} of {} bytes to {}" \

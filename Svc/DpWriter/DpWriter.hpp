@@ -74,11 +74,12 @@ class DpWriter : public DpWriterComponentBase {
     //! Write the file
     //! \return Whether the write succeeded
     Fw::Success::T writeFile(const Fw::DpContainer& container, //! The container (input)
+                             const Fw::FileNameString& fileName, //!< The file name
                              FwSizeType& packetSize  //!< The packet size (output)
     );
 
     //! Send the DpWritten notification
-    void sendNotification(const Fw::Buffer& buffer,  //!< The packet buffer
+    void sendNotification(const Fw::DpContainer& container,  //!< The container
                           FwSizeType packetSize      //!< The packet size
     );
 

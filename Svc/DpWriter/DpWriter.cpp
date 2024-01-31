@@ -7,6 +7,7 @@
 #include "Fw/Com/ComPacket.hpp"
 #include "Fw/Types/FileNameString.hpp"
 #include "Fw/Types/Serializable.hpp"
+#include "Os/File.hpp"
 #include "Svc/DpWriter/DpWriter.hpp"
 #include "config/DpCfg.hpp"
 #include "config/FpConfig.hpp"
@@ -46,18 +47,29 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
     status = this->validatePacketBuffer(buffer);
     // Deserialize the packet header
     Fw::DpContainer container;
-    container.setBuffer(buffer);
-    container.deserializeHeader();
-    FwSizeType fileSize = 0;
     if (status == Fw::Success::SUCCESS) {
-        // Perform the requested processing
-        this->performProcessing(container);
-        // Write the file
-        status = this->writeFile(container, fileSize);
+        container.setBuffer(buffer);
+        container.deserializeHeader();
     }
+    // Perform the requested processing
     if (status == Fw::Success::SUCCESS) {
-        // Send the DpWritten notification
-        this->sendNotification(buffer, fileSize);
+        this->performProcessing(container);
+    }
+    // Construct the file name
+    Fw::FileNameString fileName;
+    if (status == Fw::Success::SUCCESS) {
+        const FwDpIdType containerId = container.getId();
+        const Fw::Time timeTag = container.getTimeTag();
+        fileName.format(DP_FILENAME_FORMAT, containerId, timeTag.getSeconds(), timeTag.getUSeconds());
+    }
+    FwSizeType fileSize = 0;
+    // Write the file
+    if (status == Fw::Success::SUCCESS) {
+        status = this->writeFile(container, fileName, fileSize);
+    }
+    // Send the DpWritten notification
+    if (status == Fw::Success::SUCCESS) {
+        this->sendNotification(container, fileSize);
     }
     // Deallocate the buffer
     if (buffer.isValid()) {
@@ -138,7 +150,9 @@ void DpWriter::performProcessing(const Fw::DpContainer& container) {
     }
 }
 
-Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container, FwSizeType& packetSize) {
+Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container,
+                                   const Fw::FileNameString& fileName,
+                                   FwSizeType& packetSize) {
     // Get the buffer
     Fw::Buffer buffer = container.getBuffer();
     Fw::Success::T status = Fw::Success::SUCCESS;
@@ -146,13 +160,6 @@ Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container, FwSizeType&
     const FwSizeType dataSize = container.getDataSize();
     // Compute the packet size
     packetSize = Fw::DpContainer::getPacketSizeForDataSize(dataSize);
-    // Get the container ID
-    const FwDpIdType containerId = container.getId();
-    // Get the time tag
-    const Fw::Time timeTag = container.getTimeTag();
-    // Construct the file name
-    Fw::FileNameString fileName;
-    fileName.format(DP_FILENAME_FORMAT, containerId, timeTag.getSeconds(), timeTag.getUSeconds());
     // Check that the packet size fits in the buffer
     const FwSizeType bufferSize = buffer.getSize();
     if (packetSize < bufferSize) {
@@ -160,20 +167,51 @@ Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container, FwSizeType&
         status = Fw::Success::FAILURE;
     }
     // Open the file
+    Os::File file;
     if (status == Fw::Success::SUCCESS) {
-        // TODO
+        const Os::File::Status fileStatus = file.open(fileName.toChar(), Os::File::OPEN_CREATE);
+        if (fileStatus != Os::File::OP_OK) {
+            this->log_WARNING_HI_FileOpenError(fileName.toChar(), static_cast<U32>(fileStatus));
+            status = Fw::Success::FAILURE;
+        }
     }
     // Write the file
     if (status == Fw::Success::SUCCESS) {
-        // TODO
+        // Set write size to packet size
+        // On entry to the write call, this is the number of bytes to write
+        // On return from the write call, this is the number of bytes written
+        NATIVE_INT_TYPE writeSize = packetSize;
+        const Os::File::Status fileStatus = file.write(fileName.toChar(), writeSize);
+        // If a successful write occurred, then update the number of bytes written
+        if (fileStatus == Os::File::OP_OK) {
+            this->m_numBytesWritten += writeSize;
+        }
+        // If the write status indicates failure, or if the number of bytes written
+        // is not the expected number, then record the failure
+        if ((fileStatus != Os::File::OP_OK) or (writeSize != static_cast<NATIVE_INT_TYPE>(packetSize))) {
+            this->log_WARNING_HI_FileWriteError(fileName.toChar(), static_cast<U32>(packetSize),
+                                                static_cast<U32>(writeSize), static_cast<U32>(fileStatus));
+            status = Fw::Success::FAILURE;
+        }
     }
-    // Update telemetry
-    // TODO
+    // Update the count of successful and failed writes
+    if (status == Fw::Success::SUCCESS) {
+        this->m_numSuccessfulWrites++;
+    } else {
+        this->m_numFailedWrites++;
+    }
+    // Return the status
     return status;
 }
 
-void DpWriter::sendNotification(const Fw::Buffer& buffer, FwSizeType fileSize) {
-    // TODO
+void DpWriter::sendNotification(const Fw::DpContainer& container, FwSizeType fileSize) {
+    if (isConnected_dpWrittenOut_OutputPort(0)) {
+        // Construct the file name
+        Svc::DpWrittenPortStrings::StringSize256 fileName("TODO");
+        // Get the priority
+        const FwDpPriorityType priority = container.getPriority();
+        this->dpWrittenOut_out(0, fileName, priority, fileSize);
+    }
 }
 
 }  // end namespace Svc
