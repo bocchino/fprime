@@ -72,7 +72,7 @@ class DpWriter : public DpWriterComponentBase {
 
     //! Write the file
     //! \return Whether the write succeeded
-    Fw::Success::T writeFile(Fw::Buffer& buffer,     //!< The packet buffer (input)
+    Fw::Success::T writeFile(const Fw::DpContainer& container, //! The container (input)
                              FwSizeType& packetSize  //!< The packet size (output)
     );
 
