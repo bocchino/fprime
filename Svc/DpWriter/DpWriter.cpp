@@ -151,10 +151,8 @@ Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container, FwSizeType&
     // Get the time tag
     const Fw::Time timeTag = container.getTimeTag();
     // Construct the file name
-    (void) containerId;
-    (void) timeTag;
     Fw::FileNameString fileName;
-    fileName.format("TODO");
+    fileName.format(DP_FILENAME_FORMAT, containerId, timeTag.getSeconds(), timeTag.getUSeconds());
     // Check that the packet size fits in the buffer
     const FwSizeType bufferSize = buffer.getSize();
     if (packetSize < bufferSize) {
