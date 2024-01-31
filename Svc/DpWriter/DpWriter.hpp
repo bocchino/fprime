@@ -7,6 +7,7 @@
 #ifndef Svc_DpWriter_HPP
 #define Svc_DpWriter_HPP
 
+#include "Fw/Dp/DpContainer.hpp"
 #include "Fw/Types/String.hpp"
 #include "Fw/Types/SuccessEnumAc.hpp"
 #include "Svc/DpWriter/DpWriterComponentAc.hpp"

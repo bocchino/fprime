@@ -5,7 +5,6 @@
 // ======================================================================
 
 #include "Fw/Com/ComPacket.hpp"
-#include "Fw/Dp/DpContainer.hpp"
 #include "Fw/Types/FileNameString.hpp"
 #include "Fw/Types/Serializable.hpp"
 #include "Svc/DpWriter/DpWriter.hpp"
@@ -147,22 +146,20 @@ Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container, FwSizeType&
     const FwSizeType dataSize = container.getDataSize();
     // Compute the packet size
     packetSize = Fw::DpContainer::getPacketSizeForDataSize(dataSize);
-    // Check that the packet size fits in the buffer
-    const FwSizeType bufferSize = buffer.getSize();
-    if (packetSize < bufferSize) {
-        this->log_WARNING_HI_BufferTooSmall(bufferSize, packetSize);
-        status = Fw::Success::FAILURE;
-    }
     // Get the container ID
     const FwDpIdType containerId = container.getId();
     // Get the time tag
     const Fw::Time timeTag = container.getTimeTag();
     // Construct the file name
+    (void) containerId;
+    (void) timeTag;
     Fw::FileNameString fileName;
-    if (status == Fw::Success::SUCCESS) {
-        (void) containerId;
-        (void) timeTag;
-        fileName.format("TODO");
+    fileName.format("TODO");
+    // Check that the packet size fits in the buffer
+    const FwSizeType bufferSize = buffer.getSize();
+    if (packetSize < bufferSize) {
+        this->log_WARNING_HI_BufferTooSmall(bufferSize, packetSize);
+        status = Fw::Success::FAILURE;
     }
     // Open the file
     if (status == Fw::Success::SUCCESS) {
