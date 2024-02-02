@@ -69,7 +69,7 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
     }
     // Send the DpWritten notification
     if (status == Fw::Success::SUCCESS) {
-        this->sendNotification(container, fileSize);
+        this->sendNotification(container, fileName, fileSize);
     }
     // Deallocate the buffer
     if (buffer.isValid()) {
@@ -194,7 +194,7 @@ Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container,
             status = Fw::Success::FAILURE;
         }
     }
-    // Update the count of successful and failed writes
+    // Update the count of successful or failed writes
     if (status == Fw::Success::SUCCESS) {
         this->m_numSuccessfulWrites++;
     } else {
@@ -204,13 +204,15 @@ Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container,
     return status;
 }
 
-void DpWriter::sendNotification(const Fw::DpContainer& container, FwSizeType fileSize) {
+void DpWriter::sendNotification(const Fw::DpContainer& container,
+                                const Fw::FileNameString& fileName,
+                                FwSizeType fileSize) {
     if (isConnected_dpWrittenOut_OutputPort(0)) {
         // Construct the file name
-        Svc::DpWrittenPortStrings::StringSize256 fileName("TODO");
+        fileNameString portFileName(fileName.toChar());
         // Get the priority
         const FwDpPriorityType priority = container.getPriority();
-        this->dpWrittenOut_out(0, fileName, priority, fileSize);
+        this->dpWrittenOut_out(0, portFileName, priority, fileSize);
     }
 }
 

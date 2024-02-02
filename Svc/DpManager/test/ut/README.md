@@ -7,11 +7,6 @@
 * `BufferGetStatus`: The status of the `bufferGet` response in
   the test harness (`VALID` or `INVALID`).
 
-* `OnChangeChannel<T>`: A model of an on-change telemetry channel that
-  stores type `T`.
-
-* `Option<T>`: An optional value of type `T`.
-
 ### 1.2. Variables
 
 | Variable | Type | Description | Initial Value |

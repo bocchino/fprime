@@ -18,6 +18,8 @@
 #include "Fw/Types/Assert.hpp"
 #include "STest/Pick/Pick.hpp"
 #include "Svc/DpManager/DpManager.hpp"
+#include "TestUtils/OnChangeChannel.hpp"
+#include "TestUtils/Option.hpp"
 
 namespace Svc {
 
@@ -44,67 +46,6 @@ class AbstractState {
         VALID,
         //! Invalid
         INVALID
-    };
-
-    //! Change status
-    enum class ChangeStatus { CHANGED, NOT_CHANGED };
-
-    //! An optional value
-    template <typename T>
-    class Option {
-      private:
-        enum class State { VALUE, NO_VALUE };
-
-      public:
-        Option<T>(T value) : state(State::VALUE), value(value) {}
-        Option<T>() : state(State::NO_VALUE) { ::memset(&this->value, 0, sizeof this->value); }
-
-      public:
-        static Option<T> some(T value) { return Option(value); }
-        static constexpr Option<T> none() { return Option(); }
-
-      public:
-        bool hasValue() const { return this->state == State::VALUE; }
-        void set(T value) {
-            this->state = State::VALUE;
-            this->value = value;
-        }
-        void clear() { this->state = State::NO_VALUE; }
-        T get() const {
-            FW_ASSERT(this->hasValue());
-            return this->value;
-        }
-        T getOrElse(T value) const {
-            T result = value;
-            if (this->hasValue()) {
-                result = this->value;
-            }
-            return result;
-        }
-
-      private:
-        State state;
-        T value;
-    };
-
-    //! A model of an on-change telemetry channel
-    template <typename T>
-    class OnChangeChannel {
-      public:
-        OnChangeChannel(T value) : value(value) {}
-        ChangeStatus updatePrev() {
-            const auto status = ((!this->prev.hasValue()) || (this->value != this->prev.get()))
-                                    ? ChangeStatus::CHANGED
-                                    : ChangeStatus::NOT_CHANGED;
-            this->prev.set(this->value);
-            return status;
-        }
-
-      public:
-        T value;
-
-      private:
-        Option<T> prev;
     };
 
   public:
@@ -144,7 +85,7 @@ class AbstractState {
     // ----------------------------------------------------------------------
 
     //! The current buffer size
-    Option<FwSizeType> bufferSizeOpt;
+    TestUtils::Option<FwSizeType> bufferSizeOpt;
 
   public:
     // ----------------------------------------------------------------------
@@ -155,28 +96,28 @@ class AbstractState {
     BufferGetStatus bufferGetStatus;
 
     //! The number of successful buffer allocations
-    OnChangeChannel<U32> NumSuccessfulAllocations;
+    TestUtils::OnChangeChannel<U32> NumSuccessfulAllocations;
 
     //! The number of failed buffer allocations
-    OnChangeChannel<U32> NumFailedAllocations;
+    TestUtils::OnChangeChannel<U32> NumFailedAllocations;
 
     //! The number of data products handled
-    OnChangeChannel<U32> NumDataProducts;
+    TestUtils::OnChangeChannel<U32> NumDataProducts;
 
     //! The number of bytes handled
-    OnChangeChannel<U64> NumBytes;
+    TestUtils::OnChangeChannel<U64> NumBytes;
 
     //! Data for buffers
     U8 bufferData[MAX_BUFFER_SIZE];
 
     //! The last port number used for bufferGetOut
-    Option<FwIndexType> bufferGetOutPortNumOpt;
+    TestUtils::Option<FwIndexType> bufferGetOutPortNumOpt;
 
     //! The last port number used for productResponseOut
-    Option<FwIndexType> productResponseOutPortNumOpt;
+    TestUtils::Option<FwIndexType> productResponseOutPortNumOpt;
 
     //! The last port number used for productSendOut
-    Option<FwIndexType> productSendOutPortNumOpt;
+    TestUtils::Option<FwIndexType> productSendOutPortNumOpt;
 
     //! The number of buffer allocation failed events since the last throttle clear
     FwSizeType bufferAllocationFailedEventCount;
