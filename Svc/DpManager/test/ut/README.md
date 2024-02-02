@@ -16,7 +16,7 @@
 | `NumSuccessfulAllocations` | `OnChangeChannel<U32>` | The number of successful buffer allocations | 0 |
 | `NumFailedAllocations` | `OnChangeChannel<U32>` | The number of failed buffer allocations | 0 |
 | `NumDataProducts` | `OnChangeChannel<U32>` | The number of data products handled | 0 |
-| `NumBytes` | `OnChangeChannel<U32>` | The number of bytes handled | 0 |
+| `NumBytes` | `OnChangeChannel<U64>` | The number of bytes handled | 0 |
 | `bufferGetOutPortNumOpt` | `Option<FwIndexType>` | The last port number used for `bufferGetOut`. Updated in the port handler for `from_bufferGetOut`. | `none` |
 | `productResponseOutPortNumOpt` | `Option<FwIndexType>` | The last port number used for `productResponseOut`. Updated in the port handler for `from_productResponseOut`. | `none` |
 | `productSendOutPortNumOpt` | `Option<FwIndexType>` | The last port number used for `productSendOut`. Updated in the port handler for `from_productSendOut`. | `none` |
