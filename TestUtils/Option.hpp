@@ -13,19 +13,17 @@
 #ifndef TestUtils_Option_HPP
 #define TestUtils_Option_HPP
 
-#include <cstring>
-
 namespace TestUtils {
 
 //! An optional value
-template <typename T>
+template <typename T, T noValue = T()>
 class Option {
   private:
     enum class State { VALUE, NO_VALUE };
 
   public:
     Option<T>(T value) : state(State::VALUE), value(value) {}
-    Option<T>() : state(State::NO_VALUE) { ::memset(&this->value, 0, sizeof this->value); }
+    Option<T>() : state(State::NO_VALUE), value(noValue) {}
 
   public:
     static Option<T> some(T value) { return Option(value); }
