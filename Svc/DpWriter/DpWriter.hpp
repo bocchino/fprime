@@ -64,12 +64,8 @@ class DpWriter : public DpWriterComponentBase {
     // Private helper functions
     // ----------------------------------------------------------------------
 
-    //! Check that the buffer is large enough to hold a data product packet
-    //! \return Success or failure
-    Fw::Success::T checkBufferSize(Fw::Buffer& buffer  //!< The packet buffer
-    );
-
     //! Deserialize the packet header
+    //! \return Success or failure
     Fw::Success::T deserializePacketHeader(Fw::Buffer& buffer,     //!< The packet buffer
                                            Fw::DpContainer& container  //!< The container
     );
@@ -107,6 +103,9 @@ class DpWriter : public DpWriterComponentBase {
 
     //! The number of failed writes
     U32 m_numFailedWrites = 0;
+
+    //! The number of errors
+    U32 m_numErrors = 0;
 };
 
 }  // end namespace Svc

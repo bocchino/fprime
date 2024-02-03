@@ -83,12 +83,13 @@ an invalid buffer.
    Invoke `productGetIn` with a random port number _N_, with a random id _I_,
    and with size _S_.
 1. Assert that the status returned from the invocation is `FAILURE`.
-1. Assert that the event history contains one element.
 1. If `bufferAllocationFailedEventCount` < `DpManagerComponentBase::EVENTID_BUFFERALLOCATIONFAILED_THROTTLE`,
    then
+   1. Assert that the event history contains one element.
+   1. Assert that the event history for `BufferAllocationFailed` contains one element.
    1. Assert that the event history for `BufferAllocationFailed` contains _I_ at index zero.
    1. Increment `bufferAllocationFailedEventCount`.
-1. Otherwise assert that the event history for `BufferAllocationFailed` is empty.
+1. Otherwise assert that the event history is empty.
 1. Increment `NumFailedAllocations`.
 1. Assert that the from port history contains one item.
 1. Assert that the history for `bufferGetOut` contains one item.
@@ -162,11 +163,13 @@ an invalid buffer.
 1. Let _S_ be `bufferSize`, or a random value if `bufferSize == none`.
    Invoke `productRequestIn` with a random port number _N_, with a random id _I_,
    and with size _S_.
-1. Assert that the event history contains one element.
 1. If `bufferAllocationFailedEventCount` < `DpManagerComponentBase::EVENTID_BUFFERALLOCATIONFAILED_THROTTLE`,
    then
+   1. Assert that the event history contains one element.
+   1. Assert that the event history for `BufferAllocationFailed` contains one element.
    1. Assert that the event history for `BufferAllocationFailed` contains _I_ at index zero.
    1. Increment `bufferAllocationFailedEventCount`.
+1. Otherwise assert that the event history is empty.
 1. Increment `NumFailedAllocations`.
 1. Assert that the from port history contains two items.
 1. Assert that the history for `bufferGetOut` contains one item.

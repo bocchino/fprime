@@ -10,7 +10,8 @@
 | `NumBytesWritten` | `OnChangeChannel<U64>` | The number of bytes written | 0 |
 | `NumFailedWrites | `OnChangeChannel<U32>` | The number of failed writes | 0 |
 | `NumSuccessfulWrites | `OnChangeChannel<U32>` | The number of successful writes | 0 |
-| `bufferInvalidEventCount` | `FwSizeType` | The number of buffer invalid events since the last throttle clear |0 |
+| `NumErrors | `OnChangeChannel<U32>` | The number of errors | 0 |
+| `invalidBufferEventCount` | `FwSizeType` | The number of buffer invalid events since the last throttle clear |0 |
 | `bufferTooSmallEventCount` | `FwSizeType` | The number of buffer too small events since the last throttle clear |0 |
 | `fileOpenErrorEventCount` | `FwSizeType` | The number of file open error events since the last throttle clear |0 |
 | `fileOpenStatus` | `Os::File::Status` | The status returned by `Os::File::open` in the test harness | `Os::File::OP_OK` |
@@ -139,6 +140,8 @@ This rule invokes `bufferSendIn` with nominal input.
 
 **Action:**
 1. Clear history.
+1. Update `NumBuffersReceived`.
+1. Delete the data product file, if any.
 1. Construct a random buffer _B_ with valid packet data.
 1. In _B_, randomly set the processing bits.
 1. Send _B_ to `bufferSendIn`.
@@ -147,6 +150,8 @@ This rule invokes `bufferSendIn` with nominal input.
 1. Check output on notification port.
 1. Check output on deallocation port.
 1. Verify existence and contents of data product file.
+1. Update `NumBytesWritten`.
+1. Update `NumSuccessfulWrites`.
 
 **Test:**
 1. Apply rule `BufferSendIn::OK`.
@@ -157,6 +162,74 @@ This rule invokes `bufferSendIn` with nominal input.
 `SVC-DPWRITER-003`,
 `SVC-DPWRITER-004`,
 `SVC-DPWRITER-005`
+
+#### 2.4.2. InvalidBuffer
+
+This rule invokes `bufferSendIn` with an invalid buffer.
+
+**Precondition:**
+`true`
+
+**Action:**
+1. Clear history.
+1. Update `NumBuffersReceived`.
+1. Delete the data product file, if any.
+1. Construct an invalid buffer _B_.
+1. If `invalidBufferEventCount` < `DpManagerComponentBase::EVENTID_INVALIDBUFFER_THROTTLE`,
+   then
+   1. Assert that the event history contains one element.
+   1. Assert that the event history for `InvalidBuffer` contains one element.
+   1. Increment `invalidBufferEventCount`.
+1. Otherwise assert that the event history is empty.
+1. Verify no data product file.
+1. Increment `NumErrors`.
+
+**Test:**
+1. Apply rule `BufferSendIn::InvalidBuffer`.
+
+**Requirements tested:**
+`SVC-DPWRITER-001`
+
+#### 2.4.3. InvalidPacketHeader
+
+This rule invokes `bufferSendIn` with an invalid packet header.
+
+**Precondition:**
+`true`
+
+**Action:**
+1. Clear history.
+1. Update `NumBuffersReceived`.
+1. Delete the data product file, if any.
+1. Construct a valid buffer _B_ with an invalid packet header.
+1. If `invalidPacketHeaderEventCount` < `DpManagerComponentBase::EVENTID_INVALIDPACKETHEADER_THROTTLE`,
+   then
+   1. Assert that the event history contains one element.
+   1. Assert that the event history for `InvalidPacketHeader` contains one element.
+   1. Increment `invalidPacketHeaderEventCount`.
+1. Otherwise assert that the event history is empty.
+1. Assert no dp written notification.
+1. Assert buffer sent for deallocation.
+1. Verify no data product file.
+1. Increment `NumErrors`.
+
+**Test:**
+1. Apply rule `BufferSendIn::InvalidPacketHeader`.
+
+**Requirements tested:**
+`SVC-DPWRITER-001`
+
+#### 2.4.4. BufferTooSmall
+
+TODO
+
+#### 2.4.5. FileOpenError
+
+TODO
+
+#### 2.4.6. FileWriteError
+
+TODO
 
 ### 2.5. CLEAR_EVENT_THROTTLE
 
@@ -173,8 +246,8 @@ This rule sends the `CLEAR_EVENT_THROTTLE` command.
 1. Clear the history.
 1. Send command `CLEAR_EVENT_THROTTLE`.
 1. Check the command response.
-1. Assert `DpManagerComponentBase::m_BufferInvalidThrottle` == 0.
-1. Set `bufferInvalidEventCount` = 0.
+1. Assert `DpManagerComponentBase::m_InvalidBufferThrottle` == 0.
+1. Set `invalidBufferEventCount` = 0.
 1. Set `bufferTooSmallEventCount` = 0.
 1. Set `invalidPacketDescriptorEventCount` = 0.
 1. Set `fileOpenErrorEventCount` = 0.
@@ -183,9 +256,9 @@ This rule sends the `CLEAR_EVENT_THROTTLE` command.
 **Test:**
 
 1. Apply rule `BufferGetStatus::Invalid`.
-1. Apply rule `ProductRequestIn::BufferInvalid` `DpManagerComponentBase::EVENTID_BUFFERALLOCATIONFAILED_THROTTLE` + 1 times.
+1. Apply rule `ProductRequestIn::InvalidBuffer` `DpManagerComponentBase::EVENTID_INVALIDBUFFER_THROTTLE` + 1 times.
 1. Apply rule `CLEAR_EVENT_THROTTLE::OK`.
-1. Apply rule `ProductRequestIn::BufferInvalid`
+1. Apply rule `ProductRequestIn::InvalidBuffer`
 
 ## 3. Implementation
 
