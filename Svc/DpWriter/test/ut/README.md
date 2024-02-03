@@ -199,7 +199,7 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 
 **Action:**
 1. Clear history.
-1. Update `NumBuffersReceived`.
+1. Increment `NumBuffersReceived`.
 1. Delete the data product file, if any.
 1. Construct a valid buffer _B_ with an invalid packet header.
 1. If `invalidPacketHeaderEventCount` < `DpManagerComponentBase::EVENTID_INVALIDPACKETHEADER_THROTTLE`,
@@ -221,7 +221,31 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 
 #### 2.4.4. BufferTooSmall
 
-TODO
+**Precondition:**
+`true`
+
+**Action:**
+1. Clear history.
+1. Increment `NumBuffersReceived`.
+1. Delete the data product file, if any.
+1. Construct a valid buffer _B_ with a valid packet header, but
+   a data size that will not fit in _B_.
+1. If `bufferTooSmallEventCount` < `DpManagerComponentBase::EVENTID_BUFFERTOOSMALL_THROTTLE`,
+   then
+   1. Assert that the event history contains one element.
+   1. Assert that the event history for `BufferTooSmall` contains one element.
+   1. Increment `bufferTooSmallEventCount`.
+1. Otherwise assert that the event history is empty.
+1. Assert no dp written notification.
+1. Assert buffer sent for deallocation.
+1. Verify no data product file.
+1. Increment `NumErrors`.
+
+**Test:**
+1. Apply rule `BufferSendIn::BufferTooSmall`.
+
+**Requirements tested:**
+`SVC-DPWRITER-001`
 
 #### 2.4.5. FileOpenError
 
