@@ -5,7 +5,6 @@
 // ======================================================================
 
 #include "Fw/Com/ComPacket.hpp"
-#include "Fw/Types/FileNameString.hpp"
 #include "Fw/Types/Serializable.hpp"
 #include "Os/File.hpp"
 #include "Svc/DpWriter/DpWriter.hpp"
@@ -30,7 +29,7 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
     Fw::Success::T status = Fw::Success::SUCCESS;
     // portNum is unused
     (void)portNum;
-    // Update num data products received
+    // Update num buffers received
     ++this->m_numBuffersReceived;
     // Check that the buffer is valid
     if (!buffer.isValid()) {
@@ -38,18 +37,19 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
         status = Fw::Success::FAILURE;
     }
     // Set up the serial packet buffer
-    Fw::SerializeBufferBase& serialBuffer = buffer.getSerializeRepr();
     if (status == Fw::Success::SUCCESS) {
+        Fw::SerializeBufferBase& serialBuffer = buffer.getSerializeRepr();
         const Fw::SerializeStatus serialStatus = serialBuffer.setBuffLen(buffer.getSize());
         FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(serialStatus));
     }
-    // Validate the packet buffer
-    status = this->validatePacketBuffer(buffer);
+    // Check the buffer size
+    if (status == Fw::Success::SUCCESS) {
+        status = this->checkBufferSize(buffer);
+    }
     // Deserialize the packet header
     Fw::DpContainer container;
     if (status == Fw::Success::SUCCESS) {
-        container.setBuffer(buffer);
-        container.deserializeHeader();
+        status = this->deserializePacketHeader(buffer, container);
     }
     // Perform the requested processing
     if (status == Fw::Success::SUCCESS) {
@@ -98,7 +98,7 @@ void DpWriter::CLEAR_EVENT_THROTTLE_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) 
     // Clear throttling
     this->log_WARNING_HI_BufferInvalid_ThrottleClear();
     this->log_WARNING_HI_BufferTooSmall_ThrottleClear();
-    this->log_WARNING_HI_InvalidPacketDescriptor_ThrottleClear();
+    this->log_WARNING_HI_InvalidPacketHeader_ThrottleClear();
     this->log_WARNING_HI_FileOpenError_ThrottleClear();
     this->log_WARNING_HI_FileWriteError_ThrottleClear();
     // Return command response
@@ -109,7 +109,7 @@ void DpWriter::CLEAR_EVENT_THROTTLE_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) 
 // Private helper functions
 // ----------------------------------------------------------------------
 
-Fw::Success::T DpWriter::validatePacketBuffer(Fw::Buffer& buffer) {
+Fw::Success::T DpWriter::checkBufferSize(Fw::Buffer& buffer) {
     Fw::Success status = Fw::Success::SUCCESS;
     Fw::SerializeBufferBase& serialBuffer = buffer.getSerializeRepr();
     // Check that the buffer is large enough to hold a data product container packet
@@ -121,18 +121,16 @@ Fw::Success::T DpWriter::validatePacketBuffer(Fw::Buffer& buffer) {
             status = Fw::Success::FAILURE;
         }
     }
-    // Check that the packet header starts with FW_PACKET_DP
-    if (status == Fw::Success::SUCCESS) {
-        Fw::SerializeStatus serialStatus =
-            serialBuffer.moveDeserToOffset(Fw::DpContainer::Header::PACKET_DESCRIPTOR_OFFSET);
-        FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK);
-        FwPacketDescriptorType packetDescriptor = 0;
-        serialStatus = serialBuffer.deserialize(packetDescriptor);
-        FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK);
-        if (packetDescriptor != Fw::ComPacket::FW_PACKET_DP) {
-            this->log_WARNING_HI_InvalidPacketDescriptor(static_cast<U32>(packetDescriptor));
-            status = Fw::Success::FAILURE;
-        }
+    return status;
+}
+
+Fw::Success::T DpWriter::deserializePacketHeader(Fw::Buffer& buffer, Fw::DpContainer& container) {
+    Fw::Success::T status = Fw::Success::SUCCESS;
+    container.setBuffer(buffer);
+    const Fw::SerializeStatus serialStatus = container.deserializeHeader();
+    if (serialStatus != Fw::FW_SERIALIZE_OK) {
+        this->log_WARNING_HI_InvalidPacketHeader(static_cast<U32>(serialStatus));
+        status = Fw::Success::FAILURE;
     }
     return status;
 }

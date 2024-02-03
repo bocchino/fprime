@@ -8,6 +8,7 @@
 #define Svc_DpWriter_HPP
 
 #include "Fw/Dp/DpContainer.hpp"
+#include "Fw/Types/FileNameString.hpp"
 #include "Fw/Types/String.hpp"
 #include "Fw/Types/SuccessEnumAc.hpp"
 #include "Svc/DpWriter/DpWriterComponentAc.hpp"
@@ -63,25 +64,31 @@ class DpWriter : public DpWriterComponentBase {
     // Private helper functions
     // ----------------------------------------------------------------------
 
-    //! Validate an incoming packet packet buffer
-    Fw::Success::T validatePacketBuffer(Fw::Buffer& buffer  //!< The packet buffer
+    //! Check that the buffer is large enough to hold a data product packet
+    //! \return Success or failure
+    Fw::Success::T checkBufferSize(Fw::Buffer& buffer  //!< The packet buffer
+    );
+
+    //! Deserialize the packet header
+    Fw::Success::T deserializePacketHeader(Fw::Buffer& buffer,     //!< The packet buffer
+                                           Fw::DpContainer& container  //!< The container
     );
 
     //! Perform processing on a packet buffer
-    void performProcessing(const Fw::DpContainer& container //!< The container
+    void performProcessing(const Fw::DpContainer& container  //!< The container
     );
 
     //! Write the file
-    //! \return Whether the write succeeded
-    Fw::Success::T writeFile(const Fw::DpContainer& container, //! The container (input)
-                             const Fw::FileNameString& fileName, //!< The file name
-                             FwSizeType& packetSize  //!< The packet size (output)
+    //! \return Success or failure
+    Fw::Success::T writeFile(const Fw::DpContainer& container,    //! The container (input)
+                             const Fw::FileNameString& fileName,  //!< The file name
+                             FwSizeType& packetSize               //!< The packet size (output)
     );
 
     //! Send the DpWritten notification
-    void sendNotification(const Fw::DpContainer& container,  //!< The container
-                          const Fw::FileNameString& fileName, //!< The file name
-                          FwSizeType packetSize      //!< The packet size
+    void sendNotification(const Fw::DpContainer& container,    //!< The container
+                          const Fw::FileNameString& fileName,  //!< The file name
+                          FwSizeType packetSize                //!< The packet size
     );
 
   PRIVATE:

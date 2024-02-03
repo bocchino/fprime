@@ -77,12 +77,12 @@ module Svc {
       format "Received buffer has size {}; minimum required size is {}" \
       throttle 10
 
-    @ Received buffer has an invalid packet descriptor
-    event InvalidPacketDescriptor(
-                                   descriptor: U32 @< The descriptor
-                                 ) \
+    @ Received buffer has an invalid packet header
+    event InvalidPacketHeader(
+                               errorCode: U32 @< The error code
+                             ) \
       severity warning high \
-      format "Packet descriptor {} is invalid" \
+      format "Deserialization of packet header failed with error code {}" \
       throttle 10
 
     @ An error occurred when opening a file
