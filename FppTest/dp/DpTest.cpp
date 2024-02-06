@@ -73,6 +73,22 @@ void DpTest::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE con
         // This one should fail
         FW_ASSERT(status == Fw::Success::FAILURE);
     }
+    // Get a buffer for Container 4
+    {
+        DpContainer container;
+        Fw::Success status = this->dpGet_Container4(CONTAINER_4_DATA_SIZE, container);
+        FW_ASSERT(status == Fw::Success::SUCCESS);
+        // Check the container
+        this->checkContainer(container, ContainerId::Container4, CONTAINER_4_PACKET_SIZE);
+    }
+    // Get a buffer for Container 5
+    {
+        DpContainer container;
+        Fw::Success status = this->dpGet_Container5(CONTAINER_5_DATA_SIZE, container);
+        FW_ASSERT(status == Fw::Success::SUCCESS);
+        // Check the container
+        this->checkContainer(container, ContainerId::Container5, CONTAINER_5_PACKET_SIZE);
+    }
 }
 
 // ----------------------------------------------------------------------
