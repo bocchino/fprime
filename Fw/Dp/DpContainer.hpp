@@ -101,6 +101,9 @@ class DpContainer {
     //! \return The processing types
     DpCfg::ProcType::SerialType getProcTypes() const { return this->m_procTypes; }
 
+    //! Get the data product state
+    DpState getDpState() const { return this->m_dpState; }
+
     //! Deserialize the header from the packet buffer
     //! Buffer must be valid and large enough to hold a DP container packet
     //! \return The serialize status
