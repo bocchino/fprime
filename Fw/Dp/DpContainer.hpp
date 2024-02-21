@@ -10,6 +10,7 @@
 #include "Fw/Buffer/Buffer.hpp"
 #include "Fw/Dp/DpStateEnumAc.hpp"
 #include "Fw/Time/Time.hpp"
+#include "Fw/Types/SuccessEnumAc.hpp"
 #include "Utils/Hash/Hash.hpp"
 #include "config/FppConstantsAc.hpp"
 #include "config/ProcTypeEnumAc.hpp"
@@ -156,6 +157,10 @@ class DpContainer {
     //! Update the header hash
     void updateHeaderHash();
 
+    //! Check the header hash
+    Success::T checkHeaderHash(Utils::HashBuffer& computedHashBuffer  //!< The computed hash buffer (output)
+    ) const;
+
     //! Get the data hash offset
     FwSizeType getDataHashOffset() const {
         // Data hash goes after the header, the header hash, and the data
@@ -164,6 +169,10 @@ class DpContainer {
 
     //! Update the data hash
     void updateDataHash();
+
+    //! Check the data hash
+    Success::T checkDataHash(Utils::HashBuffer& computedHashBuffer  //!< The computed hash buffer (output)
+    ) const;
 
   public:
     // ----------------------------------------------------------------------
