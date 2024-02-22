@@ -81,21 +81,21 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
 }
 
 void checkBuffers(DpContainer& container, FwSizeType bufferSize) {
-  // Check the packet buffer
-  ASSERT_EQ(container.m_buffer.getSize(), bufferSize);
-  // Check the data buffer
-  U8 *const buffPtr = container.m_buffer.getData();
-  U8 *const dataPtr = &buffPtr[Fw::DpContainer::DATA_OFFSET];
-  const FwSizeType dataCapacity = container.m_buffer.getSize() - Fw::DpContainer::MIN_PACKET_SIZE;
-  ASSERT_EQ(container.m_dataBuffer.getBuffAddr(), dataPtr);
-  ASSERT_EQ(container.m_dataBuffer.getBuffCapacity(), dataCapacity);
+    // Check the packet buffer
+    ASSERT_EQ(container.m_buffer.getSize(), bufferSize);
+    // Check the data buffer
+    U8* const buffPtr = container.m_buffer.getData();
+    U8* const dataPtr = &buffPtr[Fw::DpContainer::DATA_OFFSET];
+    const FwSizeType dataCapacity = container.m_buffer.getSize() - Fw::DpContainer::MIN_PACKET_SIZE;
+    ASSERT_EQ(container.m_dataBuffer.getBuffAddr(), dataPtr);
+    ASSERT_EQ(container.m_dataBuffer.getBuffCapacity(), dataCapacity);
 }
 
 void fillWithData(Fw::Buffer& buffer) {
-    U8 *const buffAddrBase = buffer.getData();
-    U8 *const dataAddr = &buffAddrBase[DpContainer::DATA_OFFSET];
+    U8* const buffAddrBase = buffer.getData();
+    U8* const dataAddr = &buffAddrBase[DpContainer::DATA_OFFSET];
     for (FwSizeType i = 0; i < DATA_SIZE; i++) {
-      dataAddr[i] = static_cast<U8>(STest::Pick::any());
+        dataAddr[i] = static_cast<U8>(STest::Pick::any());
     }
 }
 
@@ -112,6 +112,28 @@ TEST(Header, BufferInConstructor) {
     checkHeader(id, buffer, container);
     // Check the buffers
     checkBuffers(container, sizeof bufferData);
+    // Perturb the header hash
+    Utils::HashBuffer goodHash = container.getHeaderHash();
+    Utils::HashBuffer badHash = goodHash;
+    ++(badHash.getBuffAddr()[0]);
+    container.setHeaderHash(badHash);
+    // Check that the hashes don't match
+    Utils::HashBuffer storedHash;
+    Utils::HashBuffer computedHash;
+    Fw::Success status = container.checkHeaderHash(storedHash, computedHash);
+    ASSERT_EQ(status, Fw::Success::FAILURE);
+    ASSERT_EQ(storedHash, badHash);
+    ASSERT_EQ(computedHash, goodHash);
+    // Perturb the data hash
+    goodHash = container.getDataHash();
+    badHash = goodHash;
+    ++(badHash.getBuffAddr()[0]);
+    container.setDataHash(badHash);
+    // Check that the hashes don't match
+    status = container.checkDataHash(storedHash, computedHash);
+    ASSERT_EQ(status, Fw::Success::FAILURE);
+    ASSERT_EQ(storedHash, badHash);
+    ASSERT_EQ(computedHash, goodHash);
 }
 
 TEST(Header, BufferSet) {
