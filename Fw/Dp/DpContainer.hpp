@@ -158,7 +158,7 @@ class DpContainer {
     void updateHeaderHash();
 
     //! Check the header hash
-    Success::T checkHeaderHash(Utils::HashBuffer& computedHashBuffer  //!< The computed hash buffer (output)
+    Success::T checkHeaderHash(Utils::HashBuffer& computedHash  //!< The computed hash buffer (output)
     ) const;
 
     //! Get the data hash offset
@@ -171,7 +171,7 @@ class DpContainer {
     void updateDataHash();
 
     //! Check the data hash
-    Success::T checkDataHash(Utils::HashBuffer& computedHashBuffer  //!< The computed hash buffer (output)
+    Success::T checkDataHash(Utils::HashBuffer& computedHash  //!< The computed hash buffer (output)
     ) const;
 
   public:
