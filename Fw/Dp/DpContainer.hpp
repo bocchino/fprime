@@ -106,14 +106,14 @@ class DpContainer {
     DpState getDpState() const { return this->m_dpState; }
 
     //! Deserialize the header from the packet buffer
-    //! Buffer must be valid and large enough to hold a DP container packet
+    //! Buffer must be valid, and its size must be at least MIN_PACKET_SIZE
     //! Before calling this function, you should call checkHeaderHash() to
     //! check the header hash
     //! \return The serialize status
     Fw::SerializeStatus deserializeHeader();
 
     //! Serialize the header into the packet buffer and update the header hash
-    //! Buffer must be valid and large enough to hold a DP container packet
+    //! Buffer must be valid, and its size must be at least MIN_PACKET_SIZE
     void serializeHeader();
 
     //! Set the id
