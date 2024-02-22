@@ -151,16 +151,29 @@ void DpContainer::updateHeaderHash() {
     FW_ASSERT(status == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(status));
 }
 
-Success::T DpContainer::checkHeaderHash(Utils::HashBuffer& computedHash) const {
+Utils::HashBuffer DpContainer::getHeaderHash() const {
     const FwSizeType bufferSize = this->m_buffer.getSize();
     const FwSizeType minBufferSize = HEADER_HASH_OFFSET + HASH_DIGEST_LENGTH;
     FW_ASSERT(bufferSize >= minBufferSize, static_cast<FwAssertArgType>(bufferSize),
               static_cast<FwAssertArgType>(minBufferSize));
+    const U8* const buffAddr = this->m_buffer.getData();
+    return Utils::HashBuffer(&buffAddr[HEADER_HASH_OFFSET], HASH_DIGEST_LENGTH);
+}
+
+Utils::HashBuffer DpContainer::computeHeaderHash() const {
+    const FwSizeType bufferSize = this->m_buffer.getSize();
+    FW_ASSERT(bufferSize >= Header::SIZE, static_cast<FwAssertArgType>(bufferSize),
+              static_cast<FwAssertArgType>(Header::SIZE));
     U8* const buffAddr = this->m_buffer.getData();
+    Utils::HashBuffer computedHash;
     Utils::Hash::hash(buffAddr, Header::SIZE, computedHash);
-    ExternalSerializeBuffer serialBuffer(&buffAddr[HEADER_HASH_OFFSET], HASH_DIGEST_LENGTH);
-    Utils::HashBuffer storedHash(&buffAddr[HEADER_HASH_OFFSET], HASH_DIGEST_LENGTH);
-    return (computedHash == storedHash) ? Success::SUCCESS : Success::FAILURE;
+    return computedHash;
+}
+
+Success::T DpContainer::checkHeaderHash(Utils::HashBuffer& storedHash, Utils::HashBuffer& computedHash) const {
+    storedHash = this->getHeaderHash();
+    computedHash = this->computeHeaderHash();
+    return (storedHash == computedHash) ? Success::SUCCESS : Success::FAILURE;
 }
 
 void DpContainer::updateDataHash() {
@@ -182,20 +195,32 @@ void DpContainer::updateDataHash() {
     FW_ASSERT(status == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(status));
 }
 
-Success::T DpContainer::checkDataHash(Utils::HashBuffer& computedHash) const {
+Utils::HashBuffer DpContainer::getDataHash() const {
+    const U8* const buffAddr = this->m_buffer.getData();
+    const FwSizeType dataHashOffset = this->getDataHashOffset();
+    const FwSizeType bufferSize = this->m_buffer.getSize();
+    FW_ASSERT(dataHashOffset + HASH_DIGEST_LENGTH <= bufferSize,
+              static_cast<FwAssertArgType>(dataHashOffset + HASH_DIGEST_LENGTH),
+              static_cast<FwAssertArgType>(bufferSize));
+    const U8* const dataHashAddr = &buffAddr[dataHashOffset];
+    return Utils::HashBuffer(dataHashAddr, HASH_DIGEST_LENGTH);
+}
+
+Utils::HashBuffer DpContainer::computeDataHash() const {
     U8* const buffAddr = this->m_buffer.getData();
     const U8* const dataAddr = &buffAddr[DATA_OFFSET];
     const FwSizeType dataSize = this->getDataSize();
     const FwSizeType bufferSize = this->m_buffer.getSize();
     FW_ASSERT(DATA_OFFSET + dataSize <= bufferSize, static_cast<FwAssertArgType>(DATA_OFFSET + dataSize),
               static_cast<FwAssertArgType>(bufferSize));
+    Utils::HashBuffer computedHash;
     Utils::Hash::hash(dataAddr, dataSize, computedHash);
-    const FwSizeType dataHashOffset = this->getDataHashOffset();
-    U8* const dataHashAddr = &buffAddr[dataHashOffset];
-    FW_ASSERT(dataHashOffset + HASH_DIGEST_LENGTH <= bufferSize,
-              static_cast<FwAssertArgType>(dataHashOffset + HASH_DIGEST_LENGTH),
-              static_cast<FwAssertArgType>(bufferSize));
-    Utils::HashBuffer storedHash(dataHashAddr, HASH_DIGEST_LENGTH);
+    return computedHash;
+}
+
+Success::T DpContainer::checkDataHash(Utils::HashBuffer& storedHash, Utils::HashBuffer& computedHash) const {
+    storedHash = this->getDataHash();
+    computedHash = this->computeDataHash();
     return (computedHash == storedHash) ? Success::SUCCESS : Success::FAILURE;
 }
 

@@ -107,6 +107,8 @@ class DpContainer {
 
     //! Deserialize the header from the packet buffer
     //! Buffer must be valid and large enough to hold a DP container packet
+    //! Before calling this function, you should call checkHeaderHash() to
+    //! check the header hash
     //! \return The serialize status
     Fw::SerializeStatus deserializeHeader();
 
@@ -157,8 +159,17 @@ class DpContainer {
     //! Update the header hash
     void updateHeaderHash();
 
+    //! Get the stored header hash
+    //! \return The hash
+    Utils::HashBuffer getHeaderHash() const;
+
+    //! Compute the header hash from the header data
+    //! \return The hash
+    Utils::HashBuffer computeHeaderHash() const;
+
     //! Check the header hash
-    Success::T checkHeaderHash(Utils::HashBuffer& computedHash  //!< The computed hash buffer (output)
+    Success::T checkHeaderHash(Utils::HashBuffer& storedHash,   //!< The stored hash (output)
+                               Utils::HashBuffer& computedHash  //!< The computed hash (output)
     ) const;
 
     //! Get the data hash offset
@@ -170,8 +181,17 @@ class DpContainer {
     //! Update the data hash
     void updateDataHash();
 
+    //! Get the stored data hash
+    //! \return The hash
+    Utils::HashBuffer getDataHash() const;
+
+    //! Compute the data hash from the data
+    //! \return The hash
+    Utils::HashBuffer computeDataHash() const;
+
     //! Check the data hash
-    Success::T checkDataHash(Utils::HashBuffer& computedHash  //!< The computed hash buffer (output)
+    Success::T checkDataHash(Utils::HashBuffer& storedHash, //!< The stored hash (output)
+                             Utils::HashBuffer& computedHash  //!< The computed hash (output)
     ) const;
 
   public:

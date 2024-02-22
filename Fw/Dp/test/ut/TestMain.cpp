@@ -70,13 +70,14 @@ void checkHeader(FwDpIdType id, Fw::Buffer& buffer, DpContainer& container) {
     header.deserialize(__FILE__, __LINE__, buffer);
     header.check(__FILE__, __LINE__, buffer, id, priority, timeTag, procTypes, userData, dpState, DATA_SIZE);
     // Test the flight code that checks the hashes
+    Utils::HashBuffer storedHash;
     Utils::HashBuffer computedHash;
-    Fw::Success status = deserContainer.checkHeaderHash(computedHash);
-    // TODO: Check that computed hash equals stored hash
+    Fw::Success status = deserContainer.checkHeaderHash(storedHash, computedHash);
     ASSERT_EQ(status, Fw::Success::SUCCESS);
-    status = deserContainer.checkDataHash(computedHash);
-    // TODO: Check that computed hash equals stored hhash
+    ASSERT_EQ(storedHash, computedHash);
+    status = deserContainer.checkDataHash(storedHash, computedHash);
     ASSERT_EQ(status, Fw::Success::SUCCESS);
+    ASSERT_EQ(storedHash, computedHash);
 }
 
 void checkBuffers(DpContainer& container, FwSizeType bufferSize) {
