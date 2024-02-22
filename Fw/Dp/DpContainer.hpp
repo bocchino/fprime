@@ -156,9 +156,6 @@ class DpContainer {
     void setBuffer(const Buffer& buffer  //!< The packet buffer
     );
 
-    //! Update the header hash
-    void updateHeaderHash();
-
     //! Get the stored header hash
     //! \return The hash
     Utils::HashBuffer getHeaderHash() const;
@@ -166,6 +163,12 @@ class DpContainer {
     //! Compute the header hash from the header data
     //! \return The hash
     Utils::HashBuffer computeHeaderHash() const;
+
+    //! Set the header hash
+    void setHeaderHash(Utils::HashBuffer hash);
+
+    //! Compute and set the header hash
+    void updateHeaderHash();
 
     //! Check the header hash
     Success::T checkHeaderHash(Utils::HashBuffer& storedHash,   //!< The stored hash (output)

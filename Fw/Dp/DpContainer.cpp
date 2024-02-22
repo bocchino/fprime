@@ -138,19 +138,6 @@ void DpContainer::setBuffer(const Buffer& buffer) {
     this->m_dataBuffer.setExtBuffer(dataAddr, dataCapacity);
 }
 
-void DpContainer::updateHeaderHash() {
-    const FwSizeType bufferSize = this->m_buffer.getSize();
-    const FwSizeType minBufferSize = HEADER_HASH_OFFSET + HASH_DIGEST_LENGTH;
-    FW_ASSERT(bufferSize >= minBufferSize, static_cast<FwAssertArgType>(bufferSize),
-              static_cast<FwAssertArgType>(minBufferSize));
-    Utils::HashBuffer hashBuffer;
-    U8* const buffAddr = this->m_buffer.getData();
-    Utils::Hash::hash(buffAddr, Header::SIZE, hashBuffer);
-    ExternalSerializeBuffer serialBuffer(&buffAddr[HEADER_HASH_OFFSET], HASH_DIGEST_LENGTH);
-    const Fw::SerializeStatus status = hashBuffer.copyRaw(serialBuffer, HASH_DIGEST_LENGTH);
-    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(status));
-}
-
 Utils::HashBuffer DpContainer::getHeaderHash() const {
     const FwSizeType bufferSize = this->m_buffer.getSize();
     const FwSizeType minBufferSize = HEADER_HASH_OFFSET + HASH_DIGEST_LENGTH;
@@ -168,6 +155,22 @@ Utils::HashBuffer DpContainer::computeHeaderHash() const {
     Utils::HashBuffer computedHash;
     Utils::Hash::hash(buffAddr, Header::SIZE, computedHash);
     return computedHash;
+}
+
+void DpContainer::setHeaderHash(Utils::HashBuffer hash) {
+    const FwSizeType bufferSize = this->m_buffer.getSize();
+    const FwSizeType minBufferSize = HEADER_HASH_OFFSET + HASH_DIGEST_LENGTH;
+    FW_ASSERT(bufferSize >= minBufferSize, static_cast<FwAssertArgType>(bufferSize),
+              static_cast<FwAssertArgType>(minBufferSize));
+    U8* const buffAddr = this->m_buffer.getData();
+    ExternalSerializeBuffer serialBuffer(&buffAddr[HEADER_HASH_OFFSET], HASH_DIGEST_LENGTH);
+    hash.resetSer();
+    const Fw::SerializeStatus status = hash.copyRaw(serialBuffer, HASH_DIGEST_LENGTH);
+    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(status));
+}
+
+void DpContainer::updateHeaderHash() {
+    this->setHeaderHash(this->computeHeaderHash());
 }
 
 Success::T DpContainer::checkHeaderHash(Utils::HashBuffer& storedHash, Utils::HashBuffer& computedHash) const {
