@@ -127,7 +127,8 @@ void DpContainer::serializeHeader() {
 void DpContainer::setBuffer(const Buffer& buffer) {
     // Set the buffer
     this->m_buffer = buffer;
-    // Check that the buffer is large enough to hold a data product packet
+    // Check that the buffer is large enough to hold a data product packet with
+    // zero-size data
     FW_ASSERT(buffer.getSize() >= MIN_PACKET_SIZE, buffer.getSize(), MIN_PACKET_SIZE);
     // Initialize the data buffer
     U8* const buffAddr = buffer.getData();
@@ -179,25 +180,6 @@ Success::T DpContainer::checkHeaderHash(Utils::HashBuffer& storedHash, Utils::Ha
     return (storedHash == computedHash) ? Success::SUCCESS : Success::FAILURE;
 }
 
-void DpContainer::updateDataHash() {
-    Utils::HashBuffer hashBuffer;
-    U8* const buffAddr = this->m_buffer.getData();
-    const U8* const dataAddr = &buffAddr[DATA_OFFSET];
-    const FwSizeType dataSize = this->getDataSize();
-    const FwSizeType bufferSize = this->m_buffer.getSize();
-    FW_ASSERT(DATA_OFFSET + dataSize <= bufferSize, static_cast<FwAssertArgType>(DATA_OFFSET + dataSize),
-              static_cast<FwAssertArgType>(bufferSize));
-    Utils::Hash::hash(dataAddr, dataSize, hashBuffer);
-    const FwSizeType dataHashOffset = this->getDataHashOffset();
-    U8* const dataHashAddr = &buffAddr[dataHashOffset];
-    FW_ASSERT(dataHashOffset + HASH_DIGEST_LENGTH <= bufferSize,
-              static_cast<FwAssertArgType>(dataHashOffset + HASH_DIGEST_LENGTH),
-              static_cast<FwAssertArgType>(bufferSize));
-    ExternalSerializeBuffer serialBuffer(dataHashAddr, HASH_DIGEST_LENGTH);
-    const Fw::SerializeStatus status = hashBuffer.copyRaw(serialBuffer, HASH_DIGEST_LENGTH);
-    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(status));
-}
-
 Utils::HashBuffer DpContainer::getDataHash() const {
     const U8* const buffAddr = this->m_buffer.getData();
     const FwSizeType dataHashOffset = this->getDataHashOffset();
@@ -219,6 +201,25 @@ Utils::HashBuffer DpContainer::computeDataHash() const {
     Utils::HashBuffer computedHash;
     Utils::Hash::hash(dataAddr, dataSize, computedHash);
     return computedHash;
+}
+
+void DpContainer::setDataHash(Utils::HashBuffer hash) {
+    U8* const buffAddr = this->m_buffer.getData();
+    const FwSizeType bufferSize = this->m_buffer.getSize();
+    const FwSizeType dataHashOffset = this->getDataHashOffset();
+    U8* const dataHashAddr = &buffAddr[dataHashOffset];
+    FW_ASSERT(dataHashOffset + HASH_DIGEST_LENGTH <= bufferSize,
+              static_cast<FwAssertArgType>(dataHashOffset + HASH_DIGEST_LENGTH),
+              static_cast<FwAssertArgType>(bufferSize));
+    ExternalSerializeBuffer serialBuffer(dataHashAddr, HASH_DIGEST_LENGTH);
+    hash.resetSer();
+    const Fw::SerializeStatus status = hash.copyRaw(serialBuffer, HASH_DIGEST_LENGTH);
+    FW_ASSERT(status == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(status));
+
+}
+
+void DpContainer::updateDataHash() {
+    this->setDataHash(this->computeDataHash());
 }
 
 Success::T DpContainer::checkDataHash(Utils::HashBuffer& storedHash, Utils::HashBuffer& computedHash) const {

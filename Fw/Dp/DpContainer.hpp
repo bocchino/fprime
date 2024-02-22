@@ -165,7 +165,8 @@ class DpContainer {
     Utils::HashBuffer computeHeaderHash() const;
 
     //! Set the header hash
-    void setHeaderHash(Utils::HashBuffer hash);
+    void setHeaderHash(Utils::HashBuffer hash  //!< The hash
+    );
 
     //! Compute and set the header hash
     void updateHeaderHash();
@@ -181,9 +182,6 @@ class DpContainer {
         return Header::SIZE + HASH_DIGEST_LENGTH + this->m_dataSize;
     }
 
-    //! Update the data hash
-    void updateDataHash();
-
     //! Get the stored data hash
     //! \return The hash
     Utils::HashBuffer getDataHash() const;
@@ -192,8 +190,15 @@ class DpContainer {
     //! \return The hash
     Utils::HashBuffer computeDataHash() const;
 
+    //! Set the data hash
+    void setDataHash(Utils::HashBuffer hash  //!< The hash
+    );
+
+    //! Update the data hash
+    void updateDataHash();
+
     //! Check the data hash
-    Success::T checkDataHash(Utils::HashBuffer& storedHash, //!< The stored hash (output)
+    Success::T checkDataHash(Utils::HashBuffer& storedHash,   //!< The stored hash (output)
                              Utils::HashBuffer& computedHash  //!< The computed hash (output)
     ) const;
 
