@@ -10,7 +10,6 @@
 #include <atomic>
 
 #include "Svc/DpManager/DpManagerComponentAc.hpp"
-#include "Svc/DpManager/FppConstantsAc.hpp"
 #include "config/FppConstantsAc.hpp"
 
 namespace Svc {
