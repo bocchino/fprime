@@ -15,6 +15,8 @@ class TaskRegistry;  //!< forward declaration
 class Task {
   public:
     using ParamType = NATIVE_UINT_TYPE;
+    static const ParamType TASK_DEFAULT;
+    // TODO: Remove
     static const ParamType DEFAULT_PARAM;
     typedef enum {
         TASK_OK,                //!< message sent/received okay
@@ -41,10 +43,10 @@ class Task {
     TaskStatus start(const Fw::StringBase& name,
                      taskRoutine routine,
                      void* arg,
-                     ParamType priority = DEFAULT_PARAM,
-                     ParamType stackSize = DEFAULT_PARAM,
-                     ParamType cpuAffinity = DEFAULT_PARAM,
-                     ParamType identifier = DEFAULT_PARAM);  //!< start the task
+                     ParamType priority = TASK_DEFAULT,
+                     ParamType stackSize = TASK_DEFAULT,
+                     ParamType cpuAffinity = TASK_DEFAULT,
+                     ParamType identifier = TASK_DEFAULT);  //!< start the task
 
     I32 getIdentifier();              //!< get the identifier for the task
     static TaskId getOsIdentifier();  // Gets the Os Task ID. Useful for passive components.

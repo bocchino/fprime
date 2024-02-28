@@ -19,11 +19,11 @@
 namespace Fw {
 class ActiveComponentBase : public QueuedComponentBase {
   public:
-    void start(Os::Task::ParamType priority = Os::Task::DEFAULT_PARAM,
-               Os::Task::ParamType stackSize = Os::Task::DEFAULT_PARAM,
-               Os::Task::ParamType cpuAffinity = Os::Task::DEFAULT_PARAM,
+    void start(Os::Task::ParamType priority = Os::Task::TASK_DEFAULT,
+               Os::Task::ParamType stackSize = Os::Task::TASK_DEFAULT,
+               Os::Task::ParamType cpuAffinity = Os::Task::TASK_DEFAULT,
                Os::Task::ParamType identifier =
-                   Os::Task::DEFAULT_PARAM);      //!< called by instantiator when task is to be started
+                   Os::Task::TASK_DEFAULT);      //!< called by instantiator when task is to be started
     void exit();                                  //!< exit task in active component
     Os::Task::TaskStatus join(void** value_ptr);  //!< provide return value of thread if value_ptr is not NULL
 

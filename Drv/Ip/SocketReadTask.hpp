@@ -45,15 +45,15 @@ class SocketReadTask {
      *
      * \param name: name of the task
      * \param reconnect: automatically reconnect socket when closed. Default: true.
-     * \param priority: priority of the started task. See: Os::Task::start. Default: DEFAULT_PARAM, not prioritized
-     * \param stack: stack size provided to the task. See: Os::Task::start. Default: DEFAULT_PARAM, posix threads default
-     * \param cpuAffinity: cpu affinity provided to task. See: Os::Task::start. Default: DEFAULT_PARAM, don't care
+     * \param priority: priority of the started task. See: Os::Task::start. Default: TASK_DEFAULT, not prioritized
+     * \param stack: stack size provided to the task. See: Os::Task::start. Default: TASK_DEFAULT, posix threads default
+     * \param cpuAffinity: cpu affinity provided to task. See: Os::Task::start. Default: TASK_DEFAULT, don't care
      */
     void startSocketTask(const Fw::StringBase &name,
                          const bool reconnect = true,
-                         const Os::Task::ParamType priority = Os::Task::DEFAULT_PARAM,
-                         const Os::Task::ParamType stack = Os::Task::DEFAULT_PARAM,
-                         const Os::Task::ParamType cpuAffinity = Os::Task::DEFAULT_PARAM);
+                         const Os::Task::ParamType priority = Os::Task::TASK_DEFAULT,
+                         const Os::Task::ParamType stack = Os::Task::TASK_DEFAULT,
+                         const Os::Task::ParamType cpuAffinity = Os::Task::TASK_DEFAULT);
 
     /**
      * \brief startup the socket for communications

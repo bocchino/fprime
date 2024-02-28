@@ -77,9 +77,9 @@ class LinuxUartDriver : public LinuxUartDriverComponentBase {
     //! start the serial poll thread.
     //! buffSize is the max receive buffer size
     //!
-    void startReadThread(NATIVE_UINT_TYPE priority = Os::Task::DEFAULT_PARAM,
-                         NATIVE_UINT_TYPE stackSize = Os::Task::DEFAULT_PARAM,
-                         NATIVE_UINT_TYPE cpuAffinity = Os::Task::DEFAULT_PARAM);
+    void startReadThread(NATIVE_UINT_TYPE priority = Os::Task::TASK_DEFAULT,
+                         NATIVE_UINT_TYPE stackSize = Os::Task::TASK_DEFAULT,
+                         NATIVE_UINT_TYPE cpuAffinity = Os::Task::TASK_DEFAULT);
 
     //! Quit thread
     void quitReadThread();
