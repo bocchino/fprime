@@ -77,9 +77,10 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
     }
 }
 
-void DpWriter::schedIn_handler(const NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
-    // portNum is not used
+void DpWriter::schedIn_handler(const NATIVE_INT_TYPE portNum, U32 context) {
+    // portNum and context are not used
     (void)portNum;
+    (void) context;
     // Write telemetry
     this->tlmWrite_NumBuffersReceived(this->m_numBuffersReceived);
     this->tlmWrite_NumBytesWritten(this->m_numBytesWritten);

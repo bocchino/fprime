@@ -35,36 +35,36 @@ namespace Os {
         // Check to ensure that these calls worked.  -1 is an error
         if (min_priority < 0 or max_priority < 0) {
             Fw::Logger::logMsg("[WARNING] Unable to determine min/max priority with error %s. Discarding priority.\n", reinterpret_cast<POINTER_CAST>(strerror(errno)));
-            priority = Os::Task::TASK_DEFAULT;
+            priority = Os::Task::DEFAULT_PARAM;
         }
         // Check priority attributes
-        if (!expect_perm and priority != Task::TASK_DEFAULT) {
+        if (!expect_perm and priority != Task::DEFAULT_PARAM) {
             Fw::Logger::logMsg("[WARNING] Task priority set and permissions unavailable. Discarding priority.\n");
-            priority = Task::TASK_DEFAULT; //Action: use constant
+            priority = Task::DEFAULT_PARAM; //Action: use constant
         }
-        if (priority != Task::TASK_DEFAULT and priority < static_cast<NATIVE_UINT_TYPE>(min_priority)) {
+        if (priority != Task::DEFAULT_PARAM and priority < static_cast<Task::ParamType>(min_priority)) {
             Fw::Logger::logMsg("[WARNING] Low task priority of %d being clamped to %d\n", priority, min_priority);
             priority = min_priority;
         }
-        if (priority != Task::TASK_DEFAULT and priority > static_cast<NATIVE_UINT_TYPE>(max_priority)) {
+        if (priority != Task::DEFAULT_PARAM and priority > static_cast<Task::ParamType>(max_priority)) {
             Fw::Logger::logMsg("[WARNING] High task priority of %d being clamped to %d\n", priority, max_priority);
             priority = max_priority;
         }
         // Check the stack
-        if (stack != Task::TASK_DEFAULT and stack < PTHREAD_STACK_MIN) {
+        if (stack != Task::DEFAULT_PARAM and stack < PTHREAD_STACK_MIN) {
             Fw::Logger::logMsg("[WARNING] Stack size %d too small, setting to minimum of %d\n", stack, PTHREAD_STACK_MIN);
             stack = PTHREAD_STACK_MIN;
         }
         // Check CPU affinity
-        if (!expect_perm and affinity != Task::TASK_DEFAULT) {
+        if (!expect_perm and affinity != Task::DEFAULT_PARAM) {
             Fw::Logger::logMsg("[WARNING] Cpu affinity set and permissions unavailable. Discarding affinity.\n");
-            affinity = Task::TASK_DEFAULT;
+            affinity = Task::DEFAULT_PARAM;
         }
     }
 
     Task::TaskStatus set_stack_size(pthread_attr_t& att, NATIVE_UINT_TYPE stack) {
         // Set the stack size, if it has been supplied
-        if (stack != Task::TASK_DEFAULT) {
+        if (stack != Task::DEFAULT_PARAM) {
             I32 stat = pthread_attr_setstacksize(&att, stack);
             if (stat != 0) {
                 Fw::Logger::logMsg("pthread_attr_setstacksize: %s\n", reinterpret_cast<POINTER_CAST>(strerror(stat)));
@@ -75,7 +75,7 @@ namespace Os {
     }
 
     Task::TaskStatus set_priority_params(pthread_attr_t& att, NATIVE_UINT_TYPE priority) {
-        if (priority != Task::TASK_DEFAULT) {
+        if (priority != Task::DEFAULT_PARAM) {
             I32 stat = pthread_attr_setschedpolicy(&att, SCHED_POLICY);
             if (stat != 0) {
                 Fw::Logger::logMsg("pthread_attr_setschedpolicy: %s\n", reinterpret_cast<POINTER_CAST>(strerror(stat)));
@@ -102,7 +102,7 @@ namespace Os {
     }
 
     Task::TaskStatus set_cpu_affinity(pthread_attr_t& att, NATIVE_UINT_TYPE cpuAffinity) {
-        if (cpuAffinity != Task::TASK_DEFAULT) {
+        if (cpuAffinity != Task::DEFAULT_PARAM) {
 #if TGT_OS_TYPE_LINUX && __GLIBC__
             cpu_set_t cpuset;
             CPU_ZERO(&cpuset);
@@ -193,7 +193,7 @@ namespace Os {
     Task::Task() : m_handle(reinterpret_cast<POINTER_CAST>(nullptr)), m_identifier(0), m_affinity(-1), m_started(false), m_suspendedOnPurpose(false), m_routineWrapper() {
     }
 
-    Task::TaskStatus Task::start(const Fw::StringBase &name, taskRoutine routine, void* arg, NATIVE_UINT_TYPE priority, NATIVE_UINT_TYPE stackSize,  NATIVE_UINT_TYPE cpuAffinity, NATIVE_UINT_TYPE identifier) {
+    Task::TaskStatus Task::start(const Fw::StringBase &name, taskRoutine routine, void* arg, ParamType priority, ParamType stackSize,  ParamType cpuAffinity, ParamType identifier) {
         FW_ASSERT(routine);
 
         this->m_name = "TP_";
@@ -210,7 +210,7 @@ namespace Os {
         if (status == TASK_ERROR_PERMISSION) {
             Fw::Logger::logMsg("[WARNING] Insufficient Permissions:\n");
             Fw::Logger::logMsg("[WARNING] Insufficient permissions to set task priority or set task CPU affinity on task %s. Creating task without priority nor affinity.\n", reinterpret_cast<POINTER_CAST>(m_name.toChar()));
-            Fw::Logger::logMsg("[WARNING] Please use no-argument <component>.start() calls, set priority/affinity to TASK_DEFAULT or ensure user has correct permissions for operating system.\n");
+            Fw::Logger::logMsg("[WARNING] Please use no-argument <component>.start() calls, set priority/affinity to DEFAULT_PARAM or ensure user has correct permissions for operating system.\n");
             Fw::Logger::logMsg("[WARNING]      Note: future releases of fprime will fail when setting priority/affinity without sufficient permissions \n");
             Fw::Logger::logMsg("\n");
             status = create_pthread(priority, stackSize, cpuAffinity, tid, &this->m_routineWrapper, false); // Fallback with no permission
