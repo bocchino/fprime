@@ -13,7 +13,7 @@
 #define FPCONFIG_H_
 
 // ----------------------------------------------------------------------
-// Type aliases 
+// Type aliases
 // ----------------------------------------------------------------------
 
 // The type of port indices and smaller sizes
@@ -128,9 +128,9 @@ typedef FwIndexType FwInstanceIdType;
 typedef FwIndexType FwEventCounterType;
 #define PRI_FwEventCounterType PRI_FwIndexType
 
-// ---------------------------------------------------------------------- 
+// ----------------------------------------------------------------------
 // Configuration switches
-// ---------------------------------------------------------------------- 
+// ----------------------------------------------------------------------
 
 // Boolean values for serialization
 #ifndef FW_SERIALIZE_TRUE_VALUE
