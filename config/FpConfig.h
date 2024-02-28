@@ -33,6 +33,9 @@ typedef U16 FwBuffSizeType;
 typedef I32 FwEnumStoreType;
 #define PRI_FwEnumStoreType PRId32
 
+typedef FwIndexType FwMsgIdType;
+#define PRI_FwMsgIdType PRI_FwIndexType
+
 // Define enumeration for Time base types
 // Note: maintaining C-style
 typedef enum {
