@@ -16,8 +16,6 @@ class Task {
   public:
     using ParamType = NATIVE_UINT_TYPE;
     static const ParamType TASK_DEFAULT;
-    // TODO: Remove
-    static const ParamType DEFAULT_PARAM;
     typedef enum {
         TASK_OK,                //!< message sent/received okay
         TASK_INVALID_PARAMS,    //!< started task with invalid parameters

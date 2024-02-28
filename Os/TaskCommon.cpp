@@ -5,7 +5,6 @@
 
 namespace Os {
     const Task::ParamType Task::TASK_DEFAULT = std::numeric_limits<Task::ParamType>::max();
-    const Task::ParamType Task::DEFAULT_PARAM = Task::TASK_DEFAULT;
     
     TaskRegistry* Task::s_taskRegistry = nullptr;
     NATIVE_INT_TYPE Task::s_numTasks = 0;
