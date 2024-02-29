@@ -87,8 +87,6 @@ class TaskRegistry {
     virtual ~TaskRegistry();                  //!< destructor for task registry
     virtual void addTask(Task* task) = 0;     //!< Add a task to the registry
     virtual void removeTask(Task* task) = 0;  //!< remove a task from the registry
-
-  private:
 };
 }  // namespace Os
 
