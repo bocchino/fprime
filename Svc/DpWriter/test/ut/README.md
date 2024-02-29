@@ -261,8 +261,8 @@ TODO
 
 #### 2.4.6. FileWriteError
 
-**Precondition:** TODO
-`fileOpenStatus == Os::File::OP_OK`
+**Precondition:**
+`fileOpenStatus == Os::File::OP_OK` and
 `fileWriteStatus != Os::File::OP_OK`
 
 **Action:** TODO
