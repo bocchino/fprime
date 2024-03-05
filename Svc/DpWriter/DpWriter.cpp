@@ -163,8 +163,8 @@ Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container,
         // Set write size to packet size
         // On entry to the write call, this is the number of bytes to write
         // On return from the write call, this is the number of bytes written
-        NATIVE_INT_TYPE writeSize = packetSize;
-        const Os::File::Status fileStatus = file.write(fileName.toChar(), writeSize);
+        FwSignedSizeType writeSize = packetSize;
+        const Os::File::Status fileStatus = file.write(buffer.getData(), writeSize);
         // If a successful write occurred, then update the number of bytes written
         if (fileStatus == Os::File::OP_OK) {
             this->m_numBytesWritten += writeSize;

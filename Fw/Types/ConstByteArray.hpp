@@ -30,7 +30,7 @@ namespace Fw {
       //!
       ConstByteArray(
           const U8 *const bytes, //!< Pointer to the bytes
-          const FwSizeType size //!< The array size
+          const U32 size //!< The array size
       ) :
         bytes(bytes),
         size(size)
@@ -43,10 +43,10 @@ namespace Fw {
       // ----------------------------------------------------------------------
 
       //! The bytes
-      const U8 *bytes;
+      const U8 *const bytes;
 
       //! The size
-      FwSizeType size;
+      const U32 size;
 
   };
 
