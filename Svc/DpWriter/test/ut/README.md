@@ -249,10 +249,27 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 
 #### 2.4.5. FileOpenError
 
+**Precondition:**
+`fileOpenStatus != Os::File::OP_OK`
+
+**Action:** TODO
+
+**Test:** TODO
+
+**Requirements tested:**
 TODO
 
 #### 2.4.6. FileWriteError
 
+**Precondition:**
+`fileOpenStatus == Os::File::OP_OK` and
+`fileWriteStatus != Os::File::OP_OK`
+
+**Action:** TODO
+
+**Test:** TODO
+
+**Requirements tested:**
 TODO
 
 ### 2.5. CLEAR_EVENT_THROTTLE

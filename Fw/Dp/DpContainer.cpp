@@ -83,7 +83,7 @@ Fw::SerializeStatus DpContainer::deserializeHeader() {
     }
     // Deserialize the data size
     if (status == Fw::FW_SERIALIZE_OK) {
-        status = serializeRepr.deserialize(this->m_dataSize);
+        status = serializeRepr.deserializeSize(this->m_dataSize);
     }
     return status;
 }
@@ -117,7 +117,7 @@ void DpContainer::serializeHeader() {
     status = serializeRepr.serialize(this->m_dpState);
     FW_ASSERT(status == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(status));
     // Serialize the data size
-    status = serializeRepr.serialize(this->m_dataSize);
+    status = serializeRepr.serializeSize(this->m_dataSize);
     FW_ASSERT(status == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(status));
     // Update the header hash
     this->updateHeaderHash();
