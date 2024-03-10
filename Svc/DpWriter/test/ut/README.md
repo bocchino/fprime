@@ -10,7 +10,7 @@
 | `NumBytesWritten` | `OnChangeChannel<U64>` | The number of bytes written | 0 |
 | `NumFailedWrites` | `OnChangeChannel<U32>` | The number of failed writes | 0 |
 | `NumSuccessfulWrites` | `OnChangeChannel<U32>` | The number of successful writes | 0 |
-| `NumErrors | `OnChangeChannel<U32>` | The number of errors | 0 |
+| `NumErrors` | `OnChangeChannel<U32>` | The number of errors | 0 |
 | `invalidBufferEventCount` | `FwSizeType` | The number of buffer invalid events since the last throttle clear |0 |
 | `bufferTooSmallEventCount` | `FwSizeType` | The number of buffer too small events since the last throttle clear |0 |
 | `fileOpenErrorEventCount` | `FwSizeType` | The number of file open error events since the last throttle clear |0 |
