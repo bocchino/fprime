@@ -11,19 +11,19 @@
 
 namespace Svc {
 
-  TEST(FileOpenStatus, Invalid) {
+TEST(FileOpenStatus, Invalid) {
     COMMENT("Set the file open status to OP_OK.");
     FileOpenStatus::Tester tester;
     tester.OK();
-  }
+}
 
-  TEST(FileOpenStatus, Valid) {
+TEST(FileOpenStatus, Valid) {
     COMMENT("Set the file open status to an error value.");
     FileOpenStatus::Tester tester;
     tester.Error();
-  }
+}
 
-  TEST(Scenarios, Random) {
+TEST(Scenarios, Random) {
     COMMENT("Random scenario with all rules.");
     REQUIREMENT("SVC-DPMANAGER-001");
     REQUIREMENT("SVC-DPMANAGER-002");
@@ -34,9 +34,9 @@ namespace Svc {
     const FwSizeType numSteps = 10000;
     Scenarios::Random::Tester tester;
     tester.run(numSteps);
-  }
-
 }
+
+}  // namespace Svc
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
