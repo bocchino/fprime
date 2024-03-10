@@ -9,6 +9,7 @@
 
 #include "Svc/DpWriter/DpWriter.hpp"
 #include "Svc/DpWriter/DpWriterGTestBase.hpp"
+#include "Svc/DpWriter/test/ut/AbstractState.hpp"
 
 namespace Svc {
 
@@ -79,10 +80,13 @@ class DpWriterTester : public DpWriterGTestBase {
     //! Initialize components
     void initComponents();
 
-  private:
+  protected:
     // ----------------------------------------------------------------------
     // Member variables
     // ----------------------------------------------------------------------
+
+    //! The abstract state for testing
+    AbstractState abstractState;
 
     //! The component under test
     DpWriter component;

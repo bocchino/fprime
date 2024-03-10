@@ -6,9 +6,8 @@
 
 #include "Fw/Test/UnitTest.hpp"
 #include "STest/Random/Random.hpp"
+#include "Svc/DpWriter/test/ut/Rules/Testers.hpp"
 // TODO
-#include "Svc/DpWriter/test/ut/DpWriterTester.hpp"
-//#include "Svc/DpWriter/test/ut/Rules/Testers.hpp"
 //#include "Svc/DpWriter/test/ut/Scenarios/Random.hpp"
 
 TEST(Nominal, toDo) {

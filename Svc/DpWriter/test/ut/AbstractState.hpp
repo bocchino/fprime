@@ -16,6 +16,7 @@
 #include <cstring>
 
 #include "Fw/Types/Assert.hpp"
+#include "Os/File.hpp"
 #include "STest/Pick/Pick.hpp"
 #include "Svc/DpWriter/DpWriter.hpp"
 #include "TestUtils/OnChangeChannel.hpp"
@@ -41,7 +42,7 @@ class AbstractState {
     // ----------------------------------------------------------------------
 
     //! Construct an AbstractState object
-    AbstractState() {}
+    AbstractState() : NumBuffersReceived(0) {}
 
   public:
     // ----------------------------------------------------------------------
@@ -49,8 +50,10 @@ class AbstractState {
     // ----------------------------------------------------------------------
 
     //! The number of buffers received
-    TestUtils::OnChangeChannel<U32> NumBuffersReceived = 0;
+    TestUtils::OnChangeChannel<U32> NumBuffersReceived;
 
+    //! The status returned by Os::File::open in the test harness
+    Os::File::Status fileOpenStatus;
 };
 
 }  // namespace Svc
