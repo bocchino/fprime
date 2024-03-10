@@ -4,7 +4,7 @@
 // \brief  FileOpenStatus class implementation
 //
 // \copyright
-// Copyright (C) 2023 California Institute of Technology.
+// Copyright (C) 2024 California Institute of Technology.
 // ALL RIGHTS RESERVED.  United States Government Sponsorship
 // acknowledged. Any commercial use must be negotiated with the Office
 // of Technology Transfer at the California Institute of Technology.
@@ -44,12 +44,12 @@ namespace FileOpenStatus {
 // Tests
 // ----------------------------------------------------------------------
 
-void Tester ::OK() {
+void Tester::OK() {
     this->ruleError.apply(this->testState);
     this->ruleOK.apply(this->testState);
 }
 
-void Tester ::Error() {
+void Tester::Error() {
     this->ruleError.apply(this->testState);
 }
 
