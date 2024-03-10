@@ -4,7 +4,12 @@
 // \brief  cpp file for DpWriter component test main function
 // ======================================================================
 
+#include "Fw/Test/UnitTest.hpp"
+#include "STest/Random/Random.hpp"
+// TODO
 #include "Svc/DpWriter/test/ut/DpWriterTester.hpp"
+//#include "Svc/DpWriter/test/ut/Rules/Testers.hpp"
+//#include "Svc/DpWriter/test/ut/Scenarios/Random.hpp"
 
 TEST(Nominal, toDo) {
     Svc::DpWriterTester tester;
@@ -13,5 +18,6 @@ TEST(Nominal, toDo) {
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
+    STest::Random::seed();
     return RUN_ALL_TESTS();
 }
