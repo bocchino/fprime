@@ -7,12 +7,35 @@
 #include "Fw/Test/UnitTest.hpp"
 #include "STest/Random/Random.hpp"
 #include "Svc/DpWriter/test/ut/Rules/Testers.hpp"
-// TODO
-//#include "Svc/DpWriter/test/ut/Scenarios/Random.hpp"
+#include "Svc/DpWriter/test/ut/Scenarios/Random.hpp"
 
-TEST(Nominal, toDo) {
-    Svc::DpWriterTester tester;
-    tester.toDo();
+namespace Svc {
+
+  TEST(FileOpenStatus, Invalid) {
+    COMMENT("Set the file open status to OP_OK.");
+    FileOpenStatus::Tester tester;
+    tester.OK();
+  }
+
+  TEST(FileOpenStatus, Valid) {
+    COMMENT("Set the file open status to an error value.");
+    FileOpenStatus::Tester tester;
+    tester.Error();
+  }
+
+  TEST(Scenarios, Random) {
+    COMMENT("Random scenario with all rules.");
+    REQUIREMENT("SVC-DPMANAGER-001");
+    REQUIREMENT("SVC-DPMANAGER-002");
+    REQUIREMENT("SVC-DPMANAGER-003");
+    REQUIREMENT("SVC-DPMANAGER-004");
+    REQUIREMENT("SVC-DPMANAGER-005");
+    REQUIREMENT("SVC-DPMANAGER-006");
+    const FwSizeType numSteps = 10000;
+    Scenarios::Random::Tester tester;
+    tester.run(numSteps);
+  }
+
 }
 
 int main(int argc, char** argv) {

@@ -42,7 +42,7 @@ class AbstractState {
     // ----------------------------------------------------------------------
 
     //! Construct an AbstractState object
-    AbstractState() : NumBuffersReceived(0) {}
+    AbstractState() : NumBuffersReceived(0), fileOpenStatus(Os::File::OP_OK) {}
 
   public:
     // ----------------------------------------------------------------------
