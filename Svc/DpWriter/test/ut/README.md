@@ -281,9 +281,23 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 `fileOpenStatus == Os::File::OP_OK` and
 `fileWriteStatus != Os::File::OP_OK`
 
-**Action:** TODO
+**Action:**
+1. Clear history.
+1. Update `NumBuffersReceived`.
+1. Delete the data product file, if any.
+1. Construct a random buffer _B_ with valid packet data.
+1. Send _B_ to `bufferSendIn`.
+1. Assert that the event history contains one element.
+1. Assert that the event history for `FileWriteError` contains one element.
+1. Check the event arguments.
+1. Assert no DP written notification.
+1. Assert buffer sent for deallocation.
+1. Verify no data product file.
+1. Increment `NumErrors`.
 
-**Test:** TODO
+**Test:**
+1. Apply rule `FileWriteStatus::Error`.
+1. Apply rule `BufferSendIn::FileWriteError`.
 
 **Requirements tested:**
 `SVC-DPWRITER-004`
