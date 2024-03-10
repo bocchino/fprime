@@ -80,7 +80,7 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
 void DpWriter::schedIn_handler(const NATIVE_INT_TYPE portNum, U32 context) {
     // portNum and context are not used
     (void)portNum;
-    (void) context;
+    (void)context;
     // Write telemetry
     this->tlmWrite_NumBuffersReceived(this->m_numBuffersReceived);
     this->tlmWrite_NumBytesWritten(this->m_numBytesWritten);
@@ -170,8 +170,8 @@ Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container,
         if (fileStatus == Os::File::OP_OK) {
             this->m_numBytesWritten += writeSize;
         }
-        if ((fileStatus == Os::File::OP_OK) and (writeSize == static_cast<NATIVE_INT_TYPE>(packetSize))) {
-            // If the write status succeeds, and the number of bytes written
+        if ((fileStatus == Os::File::OP_OK) and (writeSize == static_cast<FwSignedSizeType>(packetSize))) {
+            // If the write status is success, and the number of bytes written
             // is the expected number, then record the success
             this->log_ACTIVITY_LO_FileWritten(fileName.toChar());
         } else {
