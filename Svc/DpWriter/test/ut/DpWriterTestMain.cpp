@@ -23,6 +23,18 @@ TEST(FileOpenStatus, Valid) {
     tester.Error();
 }
 
+TEST(FileWriteStatus, Invalid) {
+    COMMENT("Set the file write status to OP_OK.");
+    FileWriteStatus::Tester tester;
+    tester.OK();
+}
+
+TEST(FileWriteStatus, Valid) {
+    COMMENT("Set the file write status to an error value.");
+    FileWriteStatus::Tester tester;
+    tester.Error();
+}
+
 TEST(Scenarios, Random) {
     COMMENT("Random scenario with all rules.");
     REQUIREMENT("SVC-DPMANAGER-001");

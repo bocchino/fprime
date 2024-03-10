@@ -35,6 +35,8 @@ namespace Rules {
 
 RULES_DEF_RULE(FileOpenStatus, Error)
 RULES_DEF_RULE(FileOpenStatus, OK)
+RULES_DEF_RULE(FileWriteStatus, Error)
+RULES_DEF_RULE(FileWriteStatus, OK)
 
 }  // namespace Rules
 

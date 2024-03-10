@@ -14,12 +14,15 @@
 #define Svc_Testers_HPP
 
 #include "Svc/DpWriter/test/ut/Rules/FileOpenStatus.hpp"
+#include "Svc/DpWriter/test/ut/Rules/FileWriteStatus.hpp"
 
 namespace Svc {
 
   namespace Testers {
 
     extern FileOpenStatus::Tester fileOpenStatus;
+
+    extern FileWriteStatus::Tester fileWriteStatus;
 
   }
 

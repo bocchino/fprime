@@ -27,6 +27,8 @@ namespace Random {
 
 Rules::FileOpenStatus::Error fileOpenStatusError;
 Rules::FileOpenStatus::OK fileOpenStatusOK;
+Rules::FileWriteStatus::Error fileWriteStatusError;
+Rules::FileWriteStatus::OK fileWriteStatusOK;
 
 // ----------------------------------------------------------------------
 // Tests
@@ -36,6 +38,8 @@ void Tester ::run(FwSizeType maxNumSteps) {
     STest::Rule<TestState>* rules[] = {
         &fileOpenStatusError,
         &fileOpenStatusOK,
+        &fileWriteStatusError,
+        &fileWriteStatusOK,
     };
     STest::RandomScenario<TestState> scenario("RandomScenario", rules,
                                               sizeof(rules) / sizeof(STest::RandomScenario<TestState>*));

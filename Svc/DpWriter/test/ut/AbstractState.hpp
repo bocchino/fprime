@@ -42,7 +42,7 @@ class AbstractState {
     // ----------------------------------------------------------------------
 
     //! Construct an AbstractState object
-    AbstractState() : NumBuffersReceived(0), fileOpenStatus(Os::File::OP_OK) {}
+    AbstractState() : NumBuffersReceived(0), fileOpenStatus(Os::File::OP_OK), fileWriteStatus(Os::File::OP_OK) {}
 
   public:
     // ----------------------------------------------------------------------
@@ -54,6 +54,9 @@ class AbstractState {
 
     //! The status returned by Os::File::open in the test harness
     Os::File::Status fileOpenStatus;
+
+    //! The status returned by Os::File::write in the test harness
+    Os::File::Status fileWriteStatus;
 };
 
 }  // namespace Svc

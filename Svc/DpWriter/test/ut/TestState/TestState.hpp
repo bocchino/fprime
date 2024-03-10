@@ -4,7 +4,7 @@
 // \brief  Test state for testing DpWriter
 //
 // \copyright
-// Copyright (C) 2023 California Institute of Technology.
+// Copyright (C) 2024 California Institute of Technology.
 // ALL RIGHTS RESERVED.  United States Government Sponsorship
 // acknowledged. Any commercial use must be negotiated with the Office
 // of Technology Transfer at the California Institute of Technology.
@@ -29,6 +29,8 @@ class TestState : public DpWriterTester {
 
     TEST_STATE_DEF_RULE(FileOpenStatus, OK)
     TEST_STATE_DEF_RULE(FileOpenStatus, Error)
+    TEST_STATE_DEF_RULE(FileWriteStatus, OK)
+    TEST_STATE_DEF_RULE(FileWriteStatus, Error)
 };
 
 }  // namespace Svc

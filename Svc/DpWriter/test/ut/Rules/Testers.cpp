@@ -18,6 +18,8 @@ namespace Svc {
 
     FileOpenStatus::Tester fileOpenStatus;
 
+    FileWriteStatus::Tester fileWriteStatus;
+
   }
 
 }
