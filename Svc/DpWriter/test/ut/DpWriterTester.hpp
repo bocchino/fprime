@@ -69,9 +69,18 @@ class DpWriterTester : public DpWriterGTestBase {
                                         Fw::Buffer& fwBuffer      //!< The buffer
     );
 
+  protected:
+    // ----------------------------------------------------------------------
+    // Protected helper functions 
+    // ----------------------------------------------------------------------
+
+    //! Pick an Os status other than OP_OK
+    //! \return The status
+    static Os::File::Status pickOsFileError();
+
   private:
     // ----------------------------------------------------------------------
-    // Helper functions
+    // Private helper functions
     // ----------------------------------------------------------------------
 
     //! Connect ports

@@ -11,25 +11,25 @@
 
 namespace Svc {
 
-TEST(FileOpenStatus, Invalid) {
+TEST(FileOpenStatus, OK) {
     COMMENT("Set the file open status to OP_OK.");
     FileOpenStatus::Tester tester;
     tester.OK();
 }
 
-TEST(FileOpenStatus, Valid) {
+TEST(FileOpenStatus, Error) {
     COMMENT("Set the file open status to an error value.");
     FileOpenStatus::Tester tester;
     tester.Error();
 }
 
-TEST(FileWriteStatus, Invalid) {
+TEST(FileWriteStatus, OK) {
     COMMENT("Set the file write status to OP_OK.");
     FileWriteStatus::Tester tester;
     tester.OK();
 }
 
-TEST(FileWriteStatus, Valid) {
+TEST(FileWriteStatus, Error) {
     COMMENT("Set the file write status to an error value.");
     FileWriteStatus::Tester tester;
     tester.Error();

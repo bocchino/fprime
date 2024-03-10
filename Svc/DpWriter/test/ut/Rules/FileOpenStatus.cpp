@@ -34,12 +34,7 @@ bool TestState ::precondition__FileOpenStatus__Error() const {
 }
 
 void TestState ::action__FileOpenStatus__Error() {
-    // Pick a random status other than OP_OK
-    U32 u32Status = STest::Pick::lowerUpper(
-        Os::File::OP_OK + 1,
-        Os::File::MAX_STATUS - 1
-    );
-    this->abstractState.fileOpenStatus = static_cast<Os::File::Status>(u32Status);
+    this->abstractState.fileOpenStatus = DpWriterTester::pickOsFileError();
 }
 
 namespace FileOpenStatus {

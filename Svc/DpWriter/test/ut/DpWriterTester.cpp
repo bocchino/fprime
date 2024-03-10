@@ -47,4 +47,16 @@ void DpWriterTester ::from_procBufferSendOut_handler(NATIVE_INT_TYPE portNum, Fw
     // TODO
 }
 
+// ----------------------------------------------------------------------
+// Protected helper functions 
+// ----------------------------------------------------------------------
+
+Os::File::Status DpWriterTester::pickOsFileError() {
+    U32 u32Status = STest::Pick::lowerUpper(
+        Os::File::OP_OK + 1,
+        Os::File::MAX_STATUS - 1
+    );
+    return static_cast<Os::File::Status>(u32Status);
+}
+
 }  // namespace Svc
