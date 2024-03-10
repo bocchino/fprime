@@ -206,9 +206,10 @@ This rule invokes `bufferSendIn` with an invalid packet header.
    then
    1. Assert that the event history contains one element.
    1. Assert that the event history for `InvalidPacketHeader` contains one element.
+   1. Check the event arguments.
    1. Increment `invalidPacketHeaderEventCount`.
 1. Otherwise assert that the event history is empty.
-1. Assert no dp written notification.
+1. Assert no DP written notification.
 1. Assert buffer sent for deallocation.
 1. Verify no data product file.
 1. Increment `NumErrors`.
@@ -234,9 +235,10 @@ This rule invokes `bufferSendIn` with an invalid packet header.
    then
    1. Assert that the event history contains one element.
    1. Assert that the event history for `BufferTooSmall` contains one element.
+   1. Check the event arguments.
    1. Increment `bufferTooSmallEventCount`.
 1. Otherwise assert that the event history is empty.
-1. Assert no dp written notification.
+1. Assert no DP written notification.
 1. Assert buffer sent for deallocation.
 1. Verify no data product file.
 1. Increment `NumErrors`.
@@ -252,12 +254,26 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 **Precondition:**
 `fileOpenStatus != Os::File::OP_OK`
 
-**Action:** TODO
+**Action:**
+1. Clear history.
+1. Update `NumBuffersReceived`.
+1. Delete the data product file, if any.
+1. Construct a random buffer _B_ with valid packet data.
+1. Send _B_ to `bufferSendIn`.
+1. Assert that the event history contains one element.
+1. Assert that the event history for `FileOpenError` contains one element.
+1. Check the event arguments.
+1. Assert no DP written notification.
+1. Assert buffer sent for deallocation.
+1. Verify no data product file.
+1. Increment `NumErrors`.
 
-**Test:** TODO
+**Test:**
+1. Apply rule `FileOpenStatus::Error`.
+1. Apply rule `BufferSendIn::FileOpenError`.
 
 **Requirements tested:**
-TODO
+`SVC-DPWRITER-004`
 
 #### 2.4.6. FileWriteError
 
@@ -270,7 +286,7 @@ TODO
 **Test:** TODO
 
 **Requirements tested:**
-TODO
+`SVC-DPWRITER-004`
 
 ### 2.5. CLEAR_EVENT_THROTTLE
 
