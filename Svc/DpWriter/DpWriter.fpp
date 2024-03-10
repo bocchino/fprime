@@ -105,6 +105,13 @@ module Svc {
       format "Error {} while writing {} of {} bytes to {}" \
       throttle 10
 
+    @ File written
+    event FileWritten(
+                       file: string size FileNameStringSize @< The file name
+                     ) \
+      severity activity low \
+      format "Wrote file {}"
+
     # ----------------------------------------------------------------------
     # Telemetry
     # ----------------------------------------------------------------------

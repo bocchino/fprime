@@ -170,9 +170,12 @@ Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container,
         if (fileStatus == Os::File::OP_OK) {
             this->m_numBytesWritten += writeSize;
         }
-        // If the write status indicates failure, or if the number of bytes written
-        // is not the expected number, then record the failure
-        if ((fileStatus != Os::File::OP_OK) or (writeSize != static_cast<NATIVE_INT_TYPE>(packetSize))) {
+        if ((fileStatus == Os::File::OP_OK) and (writeSize == static_cast<NATIVE_INT_TYPE>(packetSize))) {
+            // If the write status succeeds, and the number of bytes written
+            // is the expected number, then record the success
+            this->log_ACTIVITY_LO_FileWritten(fileName.toChar());
+        } else {
+            // Otherwise record the failure
             this->log_WARNING_HI_FileWriteError(fileName.toChar(), static_cast<U32>(packetSize),
                                                 static_cast<U32>(writeSize), static_cast<U32>(fileStatus));
             status = Fw::Success::FAILURE;
