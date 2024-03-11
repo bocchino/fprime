@@ -26,14 +26,6 @@ DpWriterTester ::DpWriterTester()
 DpWriterTester ::~DpWriterTester() {}
 
 // ----------------------------------------------------------------------
-// Tests
-// ----------------------------------------------------------------------
-
-void DpWriterTester ::toDo() {
-    // TODO
-}
-
-// ----------------------------------------------------------------------
 // Handlers for typed from ports
 // ----------------------------------------------------------------------
 
@@ -71,6 +63,10 @@ Os::File::Status DpWriterTester::pickOsFileError() {
             ASSERT_TLM_##NAME##_SIZE(0);                                 \
         }                                                                \
     }
+
+void DpWriterTester::constructDpFileName(FwDpIdType id, const Fw::Time& timeTag, Fw::StringBase& fileName) {
+    fileName.format(DP_FILENAME_FORMAT, id, timeTag.getSeconds(), timeTag.getUSeconds());
+}
 
 void DpWriterTester::checkTelemetry() {
     TESTER_CHECK_CHANNEL(NumBuffersReceived);

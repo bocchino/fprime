@@ -39,14 +39,6 @@ class DpWriterTester : public DpWriterGTestBase {
     //! Destroy object DpWriterTester
     ~DpWriterTester();
 
-  public:
-    // ----------------------------------------------------------------------
-    // Tests
-    // ----------------------------------------------------------------------
-
-    //! To do
-    void toDo();
-
   private:
     // ----------------------------------------------------------------------
     // Handlers for typed from ports
@@ -77,6 +69,13 @@ class DpWriterTester : public DpWriterGTestBase {
     //! Pick an Os status other than OP_OK
     //! \return The status
     static Os::File::Status pickOsFileError();
+
+    //! Construct a DP file anme
+    static void constructDpFileName(
+        FwDpIdType id, //!< The container ID (input)
+        const Fw::Time& timeTag, //!< The time tag (input)
+        Fw::StringBase& fileName //!< The file name (output)
+    ); 
   
     //! Check telemetry
     void checkTelemetry();

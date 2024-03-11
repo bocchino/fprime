@@ -40,10 +40,18 @@ void TestState ::action__BufferSendIn__OK() {
     // Send the buffer
     this->invoke_to_bufferSendIn(0, buffer);
     this->component.doDispatch();
+    // Deserialize the container header
+    Fw::DpContainer container;
+    container.setBuffer(buffer);
+    const Fw::SerializeStatus status = container.deserializeHeader();
+    ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
     // Check events
     ASSERT_EVENTS_SIZE(1);
     this->printTextLogHistory(stdout);
-    // TODO
+    ASSERT_EVENTS_FileWritten_SIZE(1);
+    Fw::FileNameString fileName;
+    this->constructDpFileName(container.getId(), container.getTimeTag(), fileName);
+    ASSERT_EVENTS_FileWritten(0, buffer.getSize(), fileName.toChar());
     // Check output ports
     // TODO
     // Check file write

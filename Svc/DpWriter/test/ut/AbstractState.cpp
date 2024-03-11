@@ -31,19 +31,23 @@ Fw::Buffer AbstractState::getDpBuffer() {
     // Get the data size
     const FwSizeType dataSize = this->getDataSize();
     const FwSizeType bufferSize = Fw::DpContainer::getPacketSizeForDataSize(dataSize);
-    FW_ASSERT(bufferSize <= MAX_DATA_SIZE, static_cast<FwAssertArgType>(bufferSize),
-              static_cast<FwAssertArgType>(MAX_DATA_SIZE));
+    FW_ASSERT(bufferSize <= MAX_BUFFER_SIZE, static_cast<FwAssertArgType>(bufferSize),
+              static_cast<FwAssertArgType>(MAX_BUFFER_SIZE));
     // Create the buffer
     Fw::Buffer buffer(this->bufferData, bufferSize);
     // Create the container
     Fw::DpContainer container(id, buffer);
+    // Update the time tag
+    const U32 seconds = STest::Pick::any();
+    const U32 microseconds = STest::Pick::startLength(0, 1000000);
+    container.setTimeTag(Fw::Time(seconds, microseconds));
     // Update the processing types
     Fw::DpCfg::ProcType::SerialType procTypes = 0;
     for (FwIndexType i = 0; i < Fw::DpCfg::ProcType::NUM_CONSTANTS; i++) {
-      const bool selector = static_cast<bool>(STest::Pick::lowerUpper(0, 1));
-      if (selector) {
-        procTypes |= (1 << i);
-      }
+        const bool selector = static_cast<bool>(STest::Pick::lowerUpper(0, 1));
+        if (selector) {
+            procTypes |= (1 << i);
+        }
     }
     container.setProcTypes(procTypes);
     // Update the data size
@@ -51,11 +55,11 @@ Fw::Buffer AbstractState::getDpBuffer() {
     // Serialize the header and update the header hash
     container.serializeHeader();
     // Randomize the data
-    U8 *const dataPtr = &this->bufferData[Fw::DpContainer::DATA_OFFSET];
+    U8* const dataPtr = &this->bufferData[Fw::DpContainer::DATA_OFFSET];
     const FwSizeType dataUpperBound = Fw::DpContainer::DATA_OFFSET + dataSize;
     FW_ASSERT(dataUpperBound <= bufferSize, dataUpperBound, bufferSize);
     for (FwSizeType i = 0; i <= dataSize; i++) {
-      dataPtr[i] = static_cast<U8>(STest::Pick::any());
+        dataPtr[i] = static_cast<U8>(STest::Pick::any());
     }
     // Update the data hash
     container.updateDataHash();
