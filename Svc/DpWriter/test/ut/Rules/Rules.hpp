@@ -37,6 +37,7 @@ RULES_DEF_RULE(FileOpenStatus, Error)
 RULES_DEF_RULE(FileOpenStatus, OK)
 RULES_DEF_RULE(FileWriteStatus, Error)
 RULES_DEF_RULE(FileWriteStatus, OK)
+RULES_DEF_RULE(SchedIn, OK)
 
 }  // namespace Rules
 

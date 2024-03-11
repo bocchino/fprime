@@ -31,6 +31,7 @@ class TestState : public DpWriterTester {
     TEST_STATE_DEF_RULE(FileOpenStatus, Error)
     TEST_STATE_DEF_RULE(FileWriteStatus, OK)
     TEST_STATE_DEF_RULE(FileWriteStatus, Error)
+    TEST_STATE_DEF_RULE(SchedIn, OK)
 };
 
 }  // namespace Svc

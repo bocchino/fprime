@@ -20,6 +20,8 @@ namespace Svc {
 
     FileWriteStatus::Tester fileWriteStatus;
 
+    SchedIn::Tester schedIn;
+
   }
 
 }

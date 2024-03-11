@@ -1,6 +1,11 @@
 #!/bin/sh -e
 
 cd `dirname $0`
+build_cache=../../build-fprime-automatic-native-ut
 fprime-util build --ut "$@"
-cp ../../build-fprime-automatic-native-ut/bin/`uname`/Svc_DpWriter_ut_exe .
+cp $build_cache/bin/`uname`/Svc_DpWriter_ut_exe .
+for file in `find $build_cache -name '*.gcda'`
+do
+  rm $file
+done
 ./Svc_DpWriter_ut_exe

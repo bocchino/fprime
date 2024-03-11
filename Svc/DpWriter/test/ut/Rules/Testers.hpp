@@ -15,6 +15,7 @@
 
 #include "Svc/DpWriter/test/ut/Rules/FileOpenStatus.hpp"
 #include "Svc/DpWriter/test/ut/Rules/FileWriteStatus.hpp"
+#include "Svc/DpManager/test/ut/Rules/SchedIn.hpp"
 
 namespace Svc {
 
@@ -23,6 +24,8 @@ namespace Svc {
     extern FileOpenStatus::Tester fileOpenStatus;
 
     extern FileWriteStatus::Tester fileWriteStatus;
+
+    extern SchedIn::Tester schedIn;
 
   }
 
