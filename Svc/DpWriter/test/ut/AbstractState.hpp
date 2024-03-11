@@ -43,13 +43,7 @@ class AbstractState {
 
     //! Construct an AbstractState object
     AbstractState()
-        : NumBuffersReceived(0),
-          NumBytesWritten(0),
-          NumFailedWrites(0),
-          NumSuccessfulWrites(0),
-          NumErrors(0),
-          fileOpenStatus(Os::File::OP_OK),
-          fileWriteStatus(Os::File::OP_OK) {}
+        : NumBuffersReceived(0), NumBytesWritten(0), NumFailedWrites(0), NumSuccessfulWrites(0), NumErrors(0) {}
 
   public:
     // ----------------------------------------------------------------------
@@ -71,11 +65,26 @@ class AbstractState {
     //! The number of errors
     TestUtils::OnChangeChannel<U32> NumErrors;
 
+    //! The number of buffer invalid events since the last throttle clear
+    FwSizeType invalidBufferEventCount = 0;
+
+    //! The number of buffer too small events since the last throttle clear
+    FwSizeType bufferTooSmallEventCount = 0;
+
+    //! The number of file open error events since the last throttle clear
+    FwSizeType fileOpenErrorEventCount = 0;
+
     //! The status returned by Os::File::open in the test harness
-    Os::File::Status fileOpenStatus;
+    Os::File::Status fileOpenStatus = Os::File::OP_OK;
+
+    //! The number of file write error events since the last throttle clear
+    FwSizeType fileWriteErrorEventCount = 0;
 
     //! The status returned by Os::File::write in the test harness
-    Os::File::Status fileWriteStatus;
+    Os::File::Status fileWriteStatus = Os::File::OP_OK;
+
+    //! The number of invalid packet descriptor events since the last throttle clear
+    FwSizeType invalidPacketDescriptorEventCount = 0;
 };
 
 }  // namespace Svc
