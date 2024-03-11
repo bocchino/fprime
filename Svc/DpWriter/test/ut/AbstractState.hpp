@@ -30,6 +30,9 @@ class AbstractState {
     // Constants
     // ----------------------------------------------------------------------
 
+    //! The minimum data size
+    static constexpr FwSizeType MIN_DATA_SIZE = 0;
+
     //! The maximum data size
     static constexpr FwSizeType MAX_DATA_SIZE = 1024;
 
@@ -43,7 +46,37 @@ class AbstractState {
 
     //! Construct an AbstractState object
     AbstractState()
-        : NumBuffersReceived(0), NumBytesWritten(0), NumFailedWrites(0), NumSuccessfulWrites(0), NumErrors(0) {}
+        : dataSizeOpt(),
+          NumBuffersReceived(0),
+          NumBytesWritten(0),
+          NumFailedWrites(0),
+          NumSuccessfulWrites(0),
+          NumErrors(0) {}
+
+  public:
+    // ----------------------------------------------------------------------
+    // Public member functions
+    // ----------------------------------------------------------------------
+
+    //! Get the data size
+    FwSizeType getDataSize() const {
+        return this->dataSizeOpt.getOrElse(STest::Pick::lowerUpper(MIN_DATA_SIZE, MAX_DATA_SIZE));
+    }
+
+    //! Set the data size
+    void setDataSize(FwSizeType dataSize) { this->dataSizeOpt.set(dataSize); }
+
+    //! Get a data product buffer backed by bufferData
+    //! \return The buffer
+    Fw::Buffer getDpBuffer();
+
+  private:
+    // ----------------------------------------------------------------------
+    // Private state variables
+    // ----------------------------------------------------------------------
+
+    //! The current buffer size
+    TestUtils::Option<FwSizeType> dataSizeOpt;
 
   public:
     // ----------------------------------------------------------------------
@@ -82,6 +115,9 @@ class AbstractState {
 
     //! The number of invalid packet descriptor events since the last throttle clear
     FwSizeType invalidPacketDescriptorEventCount = 0;
+
+    //! Data for buffers
+    U8 bufferData[MAX_BUFFER_SIZE];
 };
 
 }  // namespace Svc

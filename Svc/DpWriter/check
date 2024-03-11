@@ -2,7 +2,7 @@
 
 cd `dirname $0`
 build_cache=../../build-fprime-automatic-native-ut
-fprime-util build --ut "$@"
+./build --ut "$@"
 cp $build_cache/bin/`uname`/Svc_DpWriter_ut_exe .
 for file in `find $build_cache -name '*.gcda'`
 do

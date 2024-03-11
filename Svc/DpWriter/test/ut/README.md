@@ -141,15 +141,16 @@ This rule invokes `bufferSendIn` with nominal input.
 **Action:**
 1. Clear history.
 1. Update `NumBuffersReceived`.
-1. Delete the data product file, if any.
 1. Construct a random buffer _B_ with valid packet data.
 1. In _B_, randomly set the processing bits.
 1. Send _B_ to `bufferSendIn`.
-1. Check there are no events.
+1. Assert that the event history contains one element.
+1. Assert that the event history for `FileWritten` contains one element.
+1. Check the event arguments.
 1. Check output on processing ports.
 1. Check output on notification port.
 1. Check output on deallocation port.
-1. Verify existence and contents of data product file.
+1. Verify that `Os::File::write` has been called with the expected arguments.
 1. Update `NumBytesWritten`.
 1. Update `NumSuccessfulWrites`.
 
