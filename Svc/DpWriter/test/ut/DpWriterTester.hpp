@@ -77,6 +77,9 @@ class DpWriterTester : public DpWriterGTestBase {
     //! Pick an Os status other than OP_OK
     //! \return The status
     static Os::File::Status pickOsFileError();
+  
+    //! Check telemetry
+    void checkTelemetry();
 
   private:
     // ----------------------------------------------------------------------

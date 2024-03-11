@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+cd `dirname $0`
+fprime-util build --ut "$@"
+cp ../../build-fprime-automatic-native-ut/bin/`uname`/Svc_DpWriter_ut_exe .
+./Svc_DpWriter_ut_exe

@@ -42,7 +42,14 @@ class AbstractState {
     // ----------------------------------------------------------------------
 
     //! Construct an AbstractState object
-    AbstractState() : NumBuffersReceived(0), fileOpenStatus(Os::File::OP_OK), fileWriteStatus(Os::File::OP_OK) {}
+    AbstractState()
+        : NumBuffersReceived(0),
+          NumBytesWritten(0),
+          NumFailedWrites(0),
+          NumSuccessfulWrites(0),
+          NumErrors(0),
+          fileOpenStatus(Os::File::OP_OK),
+          fileWriteStatus(Os::File::OP_OK) {}
 
   public:
     // ----------------------------------------------------------------------
@@ -51,6 +58,18 @@ class AbstractState {
 
     //! The number of buffers received
     TestUtils::OnChangeChannel<U32> NumBuffersReceived;
+
+    //! The number of bytes written
+    TestUtils::OnChangeChannel<U64> NumBytesWritten;
+
+    //! The number of failed writes
+    TestUtils::OnChangeChannel<U32> NumFailedWrites;
+
+    //! The number of successful writes
+    TestUtils::OnChangeChannel<U32> NumSuccessfulWrites;
+
+    //! The number of errors
+    TestUtils::OnChangeChannel<U32> NumErrors;
 
     //! The status returned by Os::File::open in the test harness
     Os::File::Status fileOpenStatus;

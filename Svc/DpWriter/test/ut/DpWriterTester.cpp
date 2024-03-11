@@ -59,4 +59,20 @@ Os::File::Status DpWriterTester::pickOsFileError() {
     return static_cast<Os::File::Status>(u32Status);
 }
 
+#define TESTER_CHECK_CHANNEL(NAME)                                       \
+    {                                                                    \
+        const auto changeStatus = this->abstractState.NAME.updatePrev(); \
+        if (changeStatus == TestUtils::OnChangeStatus::CHANGED) {        \
+            ASSERT_TLM_##NAME##_SIZE(1);                                 \
+            ASSERT_TLM_##NAME(0, this->abstractState.NAME.value);        \
+        } else {                                                         \
+            ASSERT_TLM_##NAME##_SIZE(0);                                 \
+        }                                                                \
+    }
+
+void DpWriterTester::checkTelemetry() {
+    TESTER_CHECK_CHANNEL(NumBuffersReceived);
+    // TODO
+}
+
 }  // namespace Svc
