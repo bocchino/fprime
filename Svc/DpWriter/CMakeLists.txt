@@ -25,4 +25,5 @@ set(UT_MOD_DEPS
 )
 
 set(UT_AUTO_HELPERS ON)
+choose_fprime_implementation(Os/File Os_File_Test_Stub)
 register_fprime_ut()
