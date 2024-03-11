@@ -5,6 +5,7 @@
 // ======================================================================
 
 #include "DpWriterTester.hpp"
+#include "Os/Stub/test/File.hpp"
 
 namespace Svc {
 
@@ -16,6 +17,7 @@ DpWriterTester ::DpWriterTester()
     : DpWriterGTestBase("DpWriterTester", DpWriterTester::MAX_HISTORY_SIZE), component("DpWriter") {
     this->initComponents();
     this->connectPorts();
+    Os::Stub::File::Test::StaticData::data.setNextStatus(Os::File::OP_OK);
 }
 
 DpWriterTester ::~DpWriterTester() {}

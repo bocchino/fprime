@@ -74,9 +74,6 @@ class AbstractState {
     //! The number of file open error events since the last throttle clear
     FwSizeType fileOpenErrorEventCount = 0;
 
-    //! The status returned by Os::File::open in the test harness
-    Os::File::Status fileOpenStatus = Os::File::OP_OK;
-
     //! The number of file write error events since the last throttle clear
     FwSizeType fileWriteErrorEventCount = 0;
 

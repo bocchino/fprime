@@ -14,9 +14,7 @@
 | `invalidBufferEventCount` | `FwSizeType` | The number of buffer invalid events since the last throttle clear |0 |
 | `bufferTooSmallEventCount` | `FwSizeType` | The number of buffer too small events since the last throttle clear |0 |
 | `fileOpenErrorEventCount` | `FwSizeType` | The number of file open error events since the last throttle clear |0 |
-| `fileOpenStatus` | `Os::File::Status` | The status returned by `Os::File::open` in the test harness | `Os::File::OP_OK` |
 | `fileWriteErrorEventCount` | `FwSizeType` | The number of file write error events since the last throttle clear |0 |
-| `fileWriteStatus` | `Os::File::Status` | The status returned by `Os::File::write` in the test harness | `Os::File::OP_OK` |
 | `invalidPacketDescriptorEventCount` | `FwSizeType` | The number of invalid packet descriptor events since the last throttle clear |0 |
 
 ## 2. Rule Groups
@@ -31,10 +29,10 @@ This rule sets the file open status to `Os::File::OP_OK`, simulating a system st
 in which a file open call succeeds.
 
 **Precondition:**
-`fileOpenStatus != Os::File::OP_OK`.
+`Os::Stub::File::Test::StaticData::data.openStatus != Os::File::OP_OK`.
 
 **Action:**
-`fileOpenStatus = Os::File::OP_OK`.
+`Os::Stub::File::Test::StaticData::data.openStatus = Os::File::OP_OK`.
 
 **Test:**
 
@@ -50,10 +48,11 @@ This rule sets the file open status to an error value, simulating a system state
 in which a file open call fails.
 
 **Precondition:**
-`fileOpenStatus == Os::File::OP_OK`.
+`Os::Stub::File::Test::StaticData::data.openStatus == Os::File::OP_OK`.
 
 **Action:**
-Set `fileOpenStatus` to a random value other than `Os::File::OP_OK`.
+Set `Os::Stub::File::Test::StaticData::data.openStatus` to a random
+value other than `Os::File::OP_OK`.
 
 **Test:**
 
@@ -72,10 +71,10 @@ This rule sets the file open status to `Os::File::OP_OK`, simulating a system st
 in which a file write call succeeds.
 
 **Precondition:**
-`fileWriteStatus != Os::File::OP_OK`.
+`Os::Stub::File::Test::StaticData::data.writeStatus != Os::File::OP_OK`.
 
 **Action:**
-`fileWriteStatus = Os::File::OP_OK`.
+`Os::Stub::File::Test::StaticData::data.writeStatus = Os::File::OP_OK`.
 
 **Test:**
 
@@ -91,10 +90,11 @@ This rule sets the file write status to an error value, simulating a system stat
 in which a file write call fails.
 
 **Precondition:**
-`fileWriteStatus == Os::File::OP_OK`.
+`Os::Stub::File::Test::StaticData::data.writeStatus == Os::File::OP_OK`.
 
 **Action:**
-Set `fileWriteStatus` to a random value other than `Os::File::OP_OK`.
+Set `Os::Stub::File::Test::StaticData::data.writeStatus` to a random value
+other than `Os::File::OP_OK`.
 
 **Test:**
 

@@ -10,6 +10,7 @@
 // of Technology Transfer at the California Institute of Technology.
 // ======================================================================
 
+#include "Os/Stub/test/File.hpp"
 #include "Svc/DpWriter/test/ut/Rules/FileWriteStatus.hpp"
 #include "Svc/DpWriter/test/ut/Rules/Testers.hpp"
 
@@ -20,21 +21,21 @@ namespace Svc {
 // ----------------------------------------------------------------------
 
 bool TestState ::precondition__FileWriteStatus__OK() const {
-    bool result = (this->abstractState.fileWriteStatus != Os::File::Status::OP_OK);
+    bool result = (Os::Stub::File::Test::StaticData::data.writeStatus != Os::File::Status::OP_OK);
     return result;
 }
 
 void TestState ::action__FileWriteStatus__OK() {
-    this->abstractState.fileWriteStatus = Os::File::Status::OP_OK;
+    Os::Stub::File::Test::StaticData::data.writeStatus = Os::File::Status::OP_OK;
 }
 
 bool TestState ::precondition__FileWriteStatus__Error() const {
-    bool result = (this->abstractState.fileWriteStatus == Os::File::Status::OP_OK);
+    bool result = (Os::Stub::File::Test::StaticData::data.writeStatus == Os::File::Status::OP_OK);
     return result;
 }
 
 void TestState ::action__FileWriteStatus__Error() {
-    this->abstractState.fileWriteStatus = DpWriterTester::pickOsFileError();
+    Os::Stub::File::Test::StaticData::data.writeStatus = DpWriterTester::pickOsFileError();
 }
 
 namespace FileWriteStatus {
