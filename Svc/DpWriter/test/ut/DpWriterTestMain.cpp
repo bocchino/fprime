@@ -35,6 +35,13 @@ TEST(FileWriteStatus, Error) {
     tester.Error();
 }
 
+TEST(SchedIn, OK) {
+  COMMENT("Invoke schedIn with nominal input.");
+  REQUIREMENT("SVC-DPMANAGER-006");
+  SchedIn::Tester tester;
+  tester.OK();
+}
+
 TEST(Scenarios, Random) {
     COMMENT("Random scenario with all rules.");
     REQUIREMENT("SVC-DPMANAGER-001");

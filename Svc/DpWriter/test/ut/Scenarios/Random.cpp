@@ -29,6 +29,7 @@ Rules::FileOpenStatus::Error fileOpenStatusError;
 Rules::FileOpenStatus::OK fileOpenStatusOK;
 Rules::FileWriteStatus::Error fileWriteStatusError;
 Rules::FileWriteStatus::OK fileWriteStatusOK;
+Rules::SchedIn::OK schedInOK;
 
 // ----------------------------------------------------------------------
 // Tests
@@ -40,6 +41,7 @@ void Tester ::run(FwSizeType maxNumSteps) {
         &fileOpenStatusOK,
         &fileWriteStatusError,
         &fileWriteStatusOK,
+        &schedInOK
     };
     STest::RandomScenario<TestState> scenario("RandomScenario", rules,
                                               sizeof(rules) / sizeof(STest::RandomScenario<TestState>*));
