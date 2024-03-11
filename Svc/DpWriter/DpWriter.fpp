@@ -107,10 +107,11 @@ module Svc {
 
     @ File written
     event FileWritten(
+                       bytes: U32 @< The number of bytes written
                        file: string size FileNameStringSize @< The file name
                      ) \
       severity activity low \
-      format "Wrote file {}"
+      format "Wrote {} bytes to file {}"
 
     # ----------------------------------------------------------------------
     # Telemetry

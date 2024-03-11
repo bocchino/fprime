@@ -46,6 +46,8 @@ Fw::Buffer AbstractState::getDpBuffer() {
       }
     }
     container.setProcTypes(procTypes);
+    // Update the data size
+    container.setDataSize(dataSize);
     // Serialize the header and update the header hash
     container.serializeHeader();
     // Randomize the data

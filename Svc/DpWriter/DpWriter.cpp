@@ -173,7 +173,7 @@ Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container,
         if ((fileStatus == Os::File::OP_OK) and (writeSize == static_cast<FwSignedSizeType>(packetSize))) {
             // If the write status is success, and the number of bytes written
             // is the expected number, then record the success
-            this->log_ACTIVITY_LO_FileWritten(fileName.toChar());
+            this->log_ACTIVITY_LO_FileWritten(writeSize, fileName.toChar());
         } else {
             // Otherwise record the failure
             this->log_WARNING_HI_FileWriteError(static_cast<U32>(fileStatus), static_cast<U32>(writeSize),
