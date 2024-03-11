@@ -13,13 +13,16 @@
 #ifndef Svc_Testers_HPP
 #define Svc_Testers_HPP
 
+#include "Svc/DpWriter/test/ut/Rules/BufferSendIn.hpp"
 #include "Svc/DpWriter/test/ut/Rules/FileOpenStatus.hpp"
 #include "Svc/DpWriter/test/ut/Rules/FileWriteStatus.hpp"
-#include "Svc/DpManager/test/ut/Rules/SchedIn.hpp"
+#include "Svc/DpWriter/test/ut/Rules/SchedIn.hpp"
 
 namespace Svc {
 
   namespace Testers {
+
+    extern BufferSendIn::Tester bufferSendIn;
 
     extern FileOpenStatus::Tester fileOpenStatus;
 

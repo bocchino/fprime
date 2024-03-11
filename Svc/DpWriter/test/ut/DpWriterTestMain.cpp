@@ -11,6 +11,17 @@
 
 namespace Svc {
 
+TEST(BufferSendIn, OK) {
+    COMMENT("Invoke bufferSendIn with nominal input.");
+    REQUIREMENT("SVC-DPMANAGER-001");
+    REQUIREMENT("SVC-DPMANAGER-002");
+    REQUIREMENT("SVC-DPMANAGER-003");
+    REQUIREMENT("SVC-DPMANAGER-004");
+    REQUIREMENT("SVC-DPMANAGER-005");
+    FileOpenStatus::Tester tester;
+    tester.OK();
+}
+
 TEST(FileOpenStatus, OK) {
     COMMENT("Set the file open status to OP_OK.");
     FileOpenStatus::Tester tester;

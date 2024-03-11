@@ -16,6 +16,8 @@ namespace Svc {
 
   namespace Testers {
 
+    BufferSendIn::Tester bufferSendIn;
+
     FileOpenStatus::Tester fileOpenStatus;
 
     FileWriteStatus::Tester fileWriteStatus;

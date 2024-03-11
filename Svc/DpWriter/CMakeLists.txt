@@ -13,6 +13,7 @@ set(UT_SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/DpWriter.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/test/ut/DpWriterTestMain.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/test/ut/DpWriterTester.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/test/ut/Rules/BufferSendIn.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/test/ut/Rules/FileOpenStatus.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/test/ut/Rules/FileWriteStatus.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/test/ut/Rules/SchedIn.cpp"

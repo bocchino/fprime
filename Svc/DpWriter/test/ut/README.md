@@ -175,7 +175,7 @@ This rule invokes `bufferSendIn` with an invalid buffer.
 1. Update `NumBuffersReceived`.
 1. Delete the data product file, if any.
 1. Construct an invalid buffer _B_.
-1. If `invalidBufferEventCount` < `DpManagerComponentBase::EVENTID_INVALIDBUFFER_THROTTLE`,
+1. If `invalidBufferEventCount` < `DpWriterComponentBase::EVENTID_INVALIDBUFFER_THROTTLE`,
    then
    1. Assert that the event history contains one element.
    1. Assert that the event history for `InvalidBuffer` contains one element.
@@ -202,7 +202,7 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 1. Increment `NumBuffersReceived`.
 1. Delete the data product file, if any.
 1. Construct a valid buffer _B_ with an invalid packet header.
-1. If `invalidPacketHeaderEventCount` < `DpManagerComponentBase::EVENTID_INVALIDPACKETHEADER_THROTTLE`,
+1. If `invalidPacketHeaderEventCount` < `DpWriterComponentBase::EVENTID_INVALIDPACKETHEADER_THROTTLE`,
    then
    1. Assert that the event history contains one element.
    1. Assert that the event history for `InvalidPacketHeader` contains one element.
@@ -231,7 +231,7 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 1. Delete the data product file, if any.
 1. Construct a valid buffer _B_ with a valid packet header, but
    a data size that will not fit in _B_.
-1. If `bufferTooSmallEventCount` < `DpManagerComponentBase::EVENTID_BUFFERTOOSMALL_THROTTLE`,
+1. If `bufferTooSmallEventCount` < `DpWriterComponentBase::EVENTID_BUFFERTOOSMALL_THROTTLE`,
    then
    1. Assert that the event history contains one element.
    1. Assert that the event history for `BufferTooSmall` contains one element.
@@ -317,7 +317,7 @@ This rule sends the `CLEAR_EVENT_THROTTLE` command.
 1. Clear the history.
 1. Send command `CLEAR_EVENT_THROTTLE`.
 1. Check the command response.
-1. Assert `DpManagerComponentBase::m_InvalidBufferThrottle` == 0.
+1. Assert `DpWriterComponentBase::m_InvalidBufferThrottle` == 0.
 1. Set `invalidBufferEventCount` = 0.
 1. Set `bufferTooSmallEventCount` = 0.
 1. Set `invalidPacketDescriptorEventCount` = 0.
@@ -327,11 +327,11 @@ This rule sends the `CLEAR_EVENT_THROTTLE` command.
 **Test:**
 
 1. Apply rule `BufferGetStatus::Invalid`.
-1. Apply rule `ProductRequestIn::InvalidBuffer` `DpManagerComponentBase::EVENTID_INVALIDBUFFER_THROTTLE` + 1 times.
+1. Apply rule `ProductRequestIn::InvalidBuffer` `DpWriterComponentBase::EVENTID_INVALIDBUFFER_THROTTLE` + 1 times.
 1. Apply rule `CLEAR_EVENT_THROTTLE::OK`.
 1. Apply rule `ProductRequestIn::InvalidBuffer`
 
 ## 3. Implementation
 
-See [the DpManager test README](../../../DpManager/test/ut/README.md)
+See [the DpWriter test README](../../../DpWriter/test/ut/README.md)
 for a description of the pattern used to implement the tests.

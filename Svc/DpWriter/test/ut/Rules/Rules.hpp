@@ -33,6 +33,7 @@ namespace Svc {
 
 namespace Rules {
 
+RULES_DEF_RULE(BufferSendIn, OK)
 RULES_DEF_RULE(FileOpenStatus, Error)
 RULES_DEF_RULE(FileOpenStatus, OK)
 RULES_DEF_RULE(FileWriteStatus, Error)
