@@ -18,6 +18,9 @@ DpWriterTester ::DpWriterTester()
     this->initComponents();
     this->connectPorts();
     Os::Stub::File::Test::StaticData::data.setNextStatus(Os::File::OP_OK);
+    Os::Stub::File::Test::StaticData::data.writeResult = this->abstractState.writeResultData;
+    Os::Stub::File::Test::StaticData::data.writeResultSize = sizeof(this->abstractState.writeResultData);
+    Os::Stub::File::Test::StaticData::data.pointer = 0;
 }
 
 DpWriterTester ::~DpWriterTester() {}
@@ -50,14 +53,11 @@ void DpWriterTester ::from_procBufferSendOut_handler(NATIVE_INT_TYPE portNum, Fw
 }
 
 // ----------------------------------------------------------------------
-// Protected helper functions 
+// Protected helper functions
 // ----------------------------------------------------------------------
 
 Os::File::Status DpWriterTester::pickOsFileError() {
-    U32 u32Status = STest::Pick::lowerUpper(
-        Os::File::OP_OK + 1,
-        Os::File::MAX_STATUS - 1
-    );
+    U32 u32Status = STest::Pick::lowerUpper(Os::File::OP_OK + 1, Os::File::MAX_STATUS - 1);
     return static_cast<Os::File::Status>(u32Status);
 }
 

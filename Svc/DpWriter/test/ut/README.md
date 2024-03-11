@@ -141,8 +141,7 @@ This rule invokes `bufferSendIn` with nominal input.
 **Action:**
 1. Clear history.
 1. Update `NumBuffersReceived`.
-1. Construct a random buffer _B_ with valid packet data.
-1. In _B_, randomly set the processing bits.
+1. Construct a random buffer _B_ with valid packet data and random processing bits.
 1. Send _B_ to `bufferSendIn`.
 1. Assert that the event history contains one element.
 1. Assert that the event history for `FileWritten` contains one element.

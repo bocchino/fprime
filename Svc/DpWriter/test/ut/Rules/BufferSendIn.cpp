@@ -31,7 +31,27 @@ bool TestState ::precondition__BufferSendIn__OK() const {
 void TestState ::action__BufferSendIn__OK() {
     // Clear history
     this->clearHistory();
+    // Reset the file pointer
+    Os::Stub::File::Test::StaticData::data.pointer = 0;
+    // Update NumBuffersReceived
+    this->abstractState.NumBuffersReceived.value++;
+    // Construct a random buffer
+    Fw::Buffer buffer = this->abstractState.getDpBuffer();
+    // Send the buffer
+    this->invoke_to_bufferSendIn(0, buffer);
+    this->component.doDispatch();
+    // Check events
+    ASSERT_EVENTS_SIZE(1);
+    this->printTextLogHistory(stdout);
     // TODO
+    // Check output ports
+    // TODO
+    // Check file write
+    // TODO
+    // Update NumBytesWritten
+    this->abstractState.NumBytesWritten.value += buffer.getSize();
+    // Update NumSuccessfulWrites
+    this->abstractState.NumSuccessfulWrites.value++;
 }
 
 namespace BufferSendIn {

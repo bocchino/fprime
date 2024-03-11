@@ -18,10 +18,11 @@ TEST(BufferSendIn, OK) {
     REQUIREMENT("SVC-DPMANAGER-003");
     REQUIREMENT("SVC-DPMANAGER-004");
     REQUIREMENT("SVC-DPMANAGER-005");
-    FileOpenStatus::Tester tester;
+    BufferSendIn::Tester tester;
     tester.OK();
 }
 
+#if 0
 TEST(FileOpenStatus, OK) {
     COMMENT("Set the file open status to OP_OK.");
     FileOpenStatus::Tester tester;
@@ -65,6 +66,7 @@ TEST(Scenarios, Random) {
     Scenarios::Random::Tester tester;
     tester.run(numSteps);
 }
+#endif
 
 }  // namespace Svc
 

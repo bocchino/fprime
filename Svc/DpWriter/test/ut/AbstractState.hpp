@@ -118,6 +118,9 @@ class AbstractState {
 
     //! Data for buffers
     U8 bufferData[MAX_BUFFER_SIZE];
+
+    //! Data for write results
+    U8 writeResultData[MAX_BUFFER_SIZE];
 };
 
 }  // namespace Svc
