@@ -198,6 +198,15 @@ void TestState ::action__BufferSendIn__InvalidHeaderHash() {
     this->abstractState.m_NumErrors.value++;
 }
 
+bool TestState ::precondition__BufferSendIn__InvalidHeader() const {
+    bool result = true;
+    return result;
+}
+
+void TestState ::action__BufferSendIn__InvalidHeader() {
+    // TODO
+}
+
 namespace BufferSendIn {
 
 // ----------------------------------------------------------------------
@@ -211,6 +220,11 @@ void Tester::BufferTooSmallForPacket() {
 
 void Tester::InvalidBuffer() {
     this->ruleInvalidBuffer.apply(this->testState);
+    this->testState.printEvents();
+}
+
+void Tester::InvalidHeader() {
+    this->ruleInvalidHeader.apply(this->testState);
     this->testState.printEvents();
 }
 

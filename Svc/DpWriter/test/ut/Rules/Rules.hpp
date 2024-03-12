@@ -35,6 +35,7 @@ namespace Rules {
 
 RULES_DEF_RULE(BufferSendIn, BufferTooSmallForPacket)
 RULES_DEF_RULE(BufferSendIn, InvalidBuffer)
+RULES_DEF_RULE(BufferSendIn, InvalidHeader)
 RULES_DEF_RULE(BufferSendIn, InvalidHeaderHash)
 RULES_DEF_RULE(BufferSendIn, OK)
 RULES_DEF_RULE(CLEAR_EVENT_THROTTLE, OK)

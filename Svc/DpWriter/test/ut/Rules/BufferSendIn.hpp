@@ -58,6 +58,9 @@ class Tester {
     //! Rule BufferSendIn::InvalidHeaderHash
     Rules::BufferSendIn::InvalidHeaderHash ruleInvalidHeaderHash;
 
+    //! Rule BufferSendIn::InvalidHeader
+    Rules::BufferSendIn::InvalidHeader ruleInvalidHeader;
+
   public:
     // ----------------------------------------------------------------------
     // Public member variables
