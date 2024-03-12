@@ -232,12 +232,12 @@ header hash.
 1. Increment `m_NumBuffersReceived`.
 1. Construct a valid buffer _B_ that is large enough to hold a data product
    packet and that has an invalid header hash.
-1. If `invalidHeaderHashEventCount` < `DpWriterComponentBase::EVENTID_INVALIDHEADERHASH_THROTTLE`,
+1. If `m_invalidHeaderHashEventCount` < `DpWriterComponentBase::EVENTID_INVALIDHEADERHASH_THROTTLE`,
    then
    1. Assert that the event history contains one element.
    1. Assert that the event history for `InvalidHeaderHash` contains one element.
    1. Check the event arguments.
-   1. Increment `invalidHeaderHashEventCount`.
+   1. Increment `m_invalidHeaderHashEventCount`.
 1. Otherwise assert that the event history is empty.
 1. Assert no DP written notification.
 1. Assert buffer sent for deallocation.
@@ -261,12 +261,12 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 1. Clear history.
 1. Increment `m_NumBuffersReceived`.
 1. Construct a valid buffer _B_ with an invalid packet header.
-1. If `invalidPacketHeaderEventCount` < `DpWriterComponentBase::EVENTID_INVALIDHEADER_THROTTLE`,
+1. If `m_invalidPacketHeaderEventCount` < `DpWriterComponentBase::EVENTID_INVALIDHEADER_THROTTLE`,
    then
    1. Assert that the event history contains one element.
    1. Assert that the event history for `InvalidHeader` contains one element.
    1. Check the event arguments.
-   1. Increment `invalidPacketHeaderEventCount`.
+   1. Increment `m_invalidPacketHeaderEventCount`.
 1. Otherwise assert that the event history is empty.
 1. Assert no DP written notification.
 1. Assert buffer sent for deallocation.
