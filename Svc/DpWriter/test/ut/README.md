@@ -312,6 +312,8 @@ hold the data size specified in the header.
 
 #### 2.4.7. FileOpenError
 
+This rule invokes `bufferSendIn` with a file open error.
+
 **Precondition:**
 `fileOpenStatus != Os::File::OP_OK`
 
@@ -336,6 +338,8 @@ hold the data size specified in the header.
 `SVC-DPWRITER-004`
 
 #### 2.4.8. FileWriteError
+
+This rule invokes `bufferSendIn` with a file write error.
 
 **Precondition:**
 `fileOpenStatus == Os::File::OP_OK` and

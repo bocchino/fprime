@@ -216,6 +216,24 @@ void TestState ::action__BufferSendIn__BufferTooSmallForData() {
     // TODO
 }
 
+bool TestState ::precondition__BufferSendIn__FileOpenError() const {
+    bool result = true;
+    return result;
+}
+
+void TestState ::action__BufferSendIn__FileOpenError() {
+    // TODO
+}
+
+bool TestState ::precondition__BufferSendIn__FileWriteError() const {
+    bool result = true;
+    return result;
+}
+
+void TestState ::action__BufferSendIn__FileWriteError() {
+    // TODO
+}
+
 namespace BufferSendIn {
 
 // ----------------------------------------------------------------------
@@ -229,6 +247,16 @@ void Tester::BufferTooSmallForData() {
 
 void Tester::BufferTooSmallForPacket() {
     this->ruleBufferTooSmallForPacket.apply(this->testState);
+    this->testState.printEvents();
+}
+
+void Tester::FileOpenError() {
+    this->ruleFileOpenError.apply(this->testState);
+    this->testState.printEvents();
+}
+
+void Tester::FileWriteError() {
+    this->ruleFileWriteError.apply(this->testState);
     this->testState.printEvents();
 }
 

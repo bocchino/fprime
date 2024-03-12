@@ -29,6 +29,8 @@ class TestState : public DpWriterTester {
 
     TEST_STATE_DEF_RULE(BufferSendIn, BufferTooSmallForData)
     TEST_STATE_DEF_RULE(BufferSendIn, BufferTooSmallForPacket)
+    TEST_STATE_DEF_RULE(BufferSendIn, FileOpenError)
+    TEST_STATE_DEF_RULE(BufferSendIn, FileWriteError)
     TEST_STATE_DEF_RULE(BufferSendIn, InvalidBuffer)
     TEST_STATE_DEF_RULE(BufferSendIn, InvalidHeader)
     TEST_STATE_DEF_RULE(BufferSendIn, InvalidHeaderHash)

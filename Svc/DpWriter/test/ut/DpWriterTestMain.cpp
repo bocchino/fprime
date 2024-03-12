@@ -25,6 +25,20 @@ TEST(BufferSendIn, BufferTooSmallForPacket) {
     tester.BufferTooSmallForPacket();
 }
 
+TEST(BufferSendIn, FileOpenError) {
+    COMMENT("Invoke bufferSendIn with a file open error.");
+    REQUIREMENT("SVC-DPMANAGER-001");
+    BufferSendIn::Tester tester;
+    tester.FileOpenError();
+}
+
+TEST(BufferSendIn, FileWriteError) {
+    COMMENT("Invoke bufferSendIn with a file write error.");
+    REQUIREMENT("SVC-DPMANAGER-001");
+    BufferSendIn::Tester tester;
+    tester.FileWriteError();
+}
+
 TEST(BufferSendIn, InvalidBuffer) {
     COMMENT("Invoke bufferSendIn with an invalid buffer.");
     REQUIREMENT("SVC-DPMANAGER-001");

@@ -44,6 +44,12 @@ class Tester {
     //! Buffer too small for data
     void BufferTooSmallForData();
 
+    //! File open error
+    void FileOpenError();
+
+    //! File write error
+    void FileWriteError();
+
   public:
     // ----------------------------------------------------------------------
     // Rules
@@ -66,6 +72,12 @@ class Tester {
 
     //! Rule BufferSendIn::BufferTooSmallForData
     Rules::BufferSendIn::BufferTooSmallForData ruleBufferTooSmallForData;
+
+    //! Rule BufferSendIn::FileOpenError
+    Rules::BufferSendIn::FileOpenError ruleFileOpenError;
+
+    //! Rule BufferSendIn::FileWriteError
+    Rules::BufferSendIn::FileWriteError ruleFileWriteError;
 
   public:
     // ----------------------------------------------------------------------
