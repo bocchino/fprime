@@ -130,8 +130,8 @@ void TestState ::action__BufferSendIn__BufferTooSmallForPacket() {
     this->abstractState.m_NumBuffersReceived.value++;
     // Construct a buffer that is too small to hold a data packet
     const FwSizeType minPacketSize = Fw::DpContainer::MIN_PACKET_SIZE;
-    ASSERT_GT(minPacketSize, 0);
-    const FwSizeType bufferSize = STest::Pick::lowerUpper(0, minPacketSize - 1);
+    ASSERT_GT(minPacketSize, 1);
+    const FwSizeType bufferSize = STest::Pick::lowerUpper(1, minPacketSize - 1);
     Fw::Buffer buffer(this->abstractState.m_bufferData, bufferSize);
     // Send the buffer
     this->invoke_to_bufferSendIn(0, buffer);
