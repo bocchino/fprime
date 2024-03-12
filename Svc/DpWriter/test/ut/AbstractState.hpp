@@ -117,8 +117,8 @@ class AbstractState {
     //! The number of invalid header hash events since the last throttle clear
     FwSizeType m_invalidHeaderHashEventCount = 0;
 
-    //! The number of invalid packet header events since the last throttle clear
-    FwSizeType m_invalidPacketHeaderEventCount = 0;
+    //! The number of invalid header events since the last throttle clear
+    FwSizeType m_invalidHeaderEventCount = 0;
 
     //! Data for buffers
     U8 m_bufferData[MAX_BUFFER_SIZE];

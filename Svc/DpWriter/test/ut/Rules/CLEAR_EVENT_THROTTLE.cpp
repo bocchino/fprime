@@ -49,8 +49,8 @@ void TestState ::action__CLEAR_EVENT_THROTTLE__OK() {
     this->abstractState.m_fileOpenErrorEventCount = 0;
     this->abstractState.m_fileWriteErrorEventCount = 0;
     this->abstractState.m_invalidBufferEventCount = 0;
+    this->abstractState.m_invalidHeaderEventCount = 0;
     this->abstractState.m_invalidHeaderHashEventCount = 0;
-    this->abstractState.m_invalidPacketHeaderEventCount = 0;
 }
 
 namespace CLEAR_EVENT_THROTTLE {

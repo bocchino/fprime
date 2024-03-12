@@ -132,7 +132,7 @@ Fw::Success::T DpWriter::deserializePacketHeader(Fw::Buffer& buffer, Fw::DpConta
     container.setBuffer(buffer);
     const Fw::SerializeStatus serialStatus = container.deserializeHeader();
     if (serialStatus != Fw::FW_SERIALIZE_OK) {
-        this->log_WARNING_HI_InvalidHeader(static_cast<U32>(serialStatus));
+        this->log_WARNING_HI_InvalidHeader(static_cast<U32>(buffer.getSize()), static_cast<U32>(serialStatus));
         status = Fw::Success::FAILURE;
     }
     return status;

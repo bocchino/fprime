@@ -10,6 +10,7 @@
 // of Technology Transfer at the California Institute of Technology.
 // ======================================================================
 
+#include <limits>
 #include <string>
 
 #include "Os/Stub/test/File.hpp"
@@ -181,8 +182,7 @@ void TestState ::action__BufferSendIn__InvalidHeaderHash() {
     this->invoke_to_bufferSendIn(0, buffer);
     this->component.doDispatch();
     // Check events
-    if (this->abstractState.m_invalidHeaderHashEventCount <
-        DpWriterComponentBase::EVENTID_INVALIDHEADERHASH_THROTTLE) {
+    if (this->abstractState.m_invalidHeaderHashEventCount < DpWriterComponentBase::EVENTID_INVALIDHEADERHASH_THROTTLE) {
         ASSERT_EVENTS_SIZE(1);
         ASSERT_EVENTS_InvalidHeaderHash(0, buffer.getSize(), storedHash, computedHash);
         this->abstractState.m_invalidHeaderHashEventCount++;
@@ -204,7 +204,40 @@ bool TestState ::precondition__BufferSendIn__InvalidHeader() const {
 }
 
 void TestState ::action__BufferSendIn__InvalidHeader() {
-    // TODO
+    // Clear the history
+    this->clearHistory();
+    // Reset the file pointer in the stub file implementation
+    Os::Stub::File::Test::StaticData::data.pointer = 0;
+    // Update m_NumBuffersReceived
+    this->abstractState.m_NumBuffersReceived.value++;
+    // Construct a valid buffer
+    Fw::Buffer buffer = this->abstractState.getDpBuffer();
+    // Invalidate the packet descriptor
+    U8* const buffAddr = buffer.getData();
+    ASSERT_GT(static_cast<FwSizeType>(buffer.getSize()), static_cast<FwSizeType>(1));
+    buffAddr[0]++;
+    // Update the header hash
+    Fw::DpContainer container;
+    container.setBuffer(buffer);
+    container.updateHeaderHash();
+    // Send the buffer
+    this->invoke_to_bufferSendIn(0, buffer);
+    this->component.doDispatch();
+    // Check events
+    if (this->abstractState.m_invalidHeaderEventCount < DpWriterComponentBase::EVENTID_INVALIDHEADER_THROTTLE) {
+        ASSERT_EVENTS_SIZE(1);
+        ASSERT_EVENTS_InvalidHeader(0, buffer.getSize(), static_cast<U32>(Fw::FW_SERIALIZE_FORMAT_ERROR));
+        this->abstractState.m_invalidHeaderEventCount++;
+    } else {
+        ASSERT_EVENTS_SIZE(0);
+    }
+    // Verify no file output
+    ASSERT_EQ(Os::Stub::File::Test::StaticData::data.pointer, 0);
+    // Verify port output
+    ASSERT_FROM_PORT_HISTORY_SIZE(1);
+    ASSERT_from_deallocBufferSendOut(0, buffer);
+    // Increment m_NumErrors
+    this->abstractState.m_NumErrors.value++;
 }
 
 bool TestState ::precondition__BufferSendIn__BufferTooSmallForData() const {
@@ -213,7 +246,46 @@ bool TestState ::precondition__BufferSendIn__BufferTooSmallForData() const {
 }
 
 void TestState ::action__BufferSendIn__BufferTooSmallForData() {
-    // TODO
+#if 0
+    // Clear the history
+    this->clearHistory();
+    // Reset the file pointer in the stub file implementation
+    Os::Stub::File::Test::StaticData::data.pointer = 0;
+    // Update m_NumBuffersReceived
+    this->abstractState.m_NumBuffersReceived.value++;
+    // Construct a valid buffer
+    Fw::Buffer buffer = this->abstractState.getDpBuffer();
+    // Set up the container
+    Fw::DpContainer container;
+    container.setBuffer(buffer);
+    // Invalidate the data size
+    Fw::SerializeStatus serialStatus = container.deserializeHeader();
+    ASSERT_EQ(serialStatus, Fw::FW_SERIALIZE_OK);
+    const FwSizeType dataSize =
+        STest::Pick::lowerUpper(AbstractState::MAX_DATA_SIZE + 1, std::numeric_limits<FwSizeStoreType>::max());
+    container.setDataSize(dataSize);
+    container.updateHeaderHash();
+    container.serializeHeader();
+    // Send the buffer
+    this->invoke_to_bufferSendIn(0, buffer);
+    this->component.doDispatch();
+    // Check events
+    if (this->abstractState.m_invalidHeaderEventCount <
+        DpWriterComponentBase::EVENTID_INVALIDHEADER_THROTTLE) {
+        ASSERT_EVENTS_SIZE(1);
+        //ASSERT_EVENTS_InvalidHeader(0, buffer.getSize(), storedHash, computedHash);
+        this->abstractState.m_invalidHeaderEventCount++;
+    } else {
+        ASSERT_EVENTS_SIZE(0);
+    }
+    // Verify no file output
+    ASSERT_EQ(Os::Stub::File::Test::StaticData::data.pointer, 0);
+    // Verify port output
+    ASSERT_FROM_PORT_HISTORY_SIZE(1);
+    ASSERT_from_deallocBufferSendOut(0, buffer);
+    // Increment m_NumErrors
+    this->abstractState.m_NumErrors.value++;
+#endif
 }
 
 bool TestState ::precondition__BufferSendIn__FileOpenError() const {
