@@ -88,9 +88,11 @@ module Svc {
     @ The received buffer has an invalid header hash
     event InvalidHeaderHash(
                              bufferSize: U32 @< The incoming buffer size
+                             storedHash: U32 @< The stored hash value
+                             computedHash: U32 @< The computed hash value
                            ) \
       severity warning high \
-      format "Received a buffer of size {} with an invalid header hash" \
+      format "Received a buffer of size {} with an invalid header hash (stored {x}, computed {x})" \
       throttle 10
 
     @ Received buffer is too small to hold the data specified in the header

@@ -53,7 +53,8 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
         Utils::HashBuffer computedHash;
         status = container.checkHeaderHash(storedHash, computedHash);
         if (status != Fw::Success::SUCCESS) {
-            this->log_WARNING_HI_InvalidHeaderHash(bufferSize);
+            this->log_WARNING_HI_InvalidHeaderHash(bufferSize, storedHash.asBigEndianU32(),
+                                                   computedHash.asBigEndianU32());
         }
     }
     // Deserialize the packet header
