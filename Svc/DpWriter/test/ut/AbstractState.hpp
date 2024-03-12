@@ -46,13 +46,13 @@ class AbstractState {
 
     //! Construct an AbstractState object
     AbstractState()
-        : dataSizeOpt(),
-          NumBuffersReceived(0),
-          NumBytesWritten(0),
-          NumFailedWrites(0),
-          NumSuccessfulWrites(0),
-          NumErrors(0),
-          procTypes(0) {}
+        : m_dataSizeOpt(),
+          m_NumBuffersReceived(0),
+          m_NumBytesWritten(0),
+          m_NumFailedWrites(0),
+          m_NumSuccessfulWrites(0),
+          m_NumErrors(0),
+          m_procTypes(0) {}
 
   public:
     // ----------------------------------------------------------------------
@@ -61,11 +61,11 @@ class AbstractState {
 
     //! Get the data size
     FwSizeType getDataSize() const {
-        return this->dataSizeOpt.getOrElse(STest::Pick::lowerUpper(MIN_DATA_SIZE, MAX_DATA_SIZE));
+        return this->m_dataSizeOpt.getOrElse(STest::Pick::lowerUpper(MIN_DATA_SIZE, MAX_DATA_SIZE));
     }
 
     //! Set the data size
-    void setDataSize(FwSizeType dataSize) { this->dataSizeOpt.set(dataSize); }
+    void setDataSize(FwSizeType dataSize) { this->m_dataSizeOpt.set(dataSize); }
 
     //! Get a data product buffer backed by bufferData
     //! \return The buffer
@@ -77,7 +77,7 @@ class AbstractState {
     // ----------------------------------------------------------------------
 
     //! The current buffer size
-    TestUtils::Option<FwSizeType> dataSizeOpt;
+    TestUtils::Option<FwSizeType> m_dataSizeOpt;
 
   public:
     // ----------------------------------------------------------------------
@@ -85,46 +85,46 @@ class AbstractState {
     // ----------------------------------------------------------------------
 
     //! The number of buffers received
-    TestUtils::OnChangeChannel<U32> NumBuffersReceived;
+    TestUtils::OnChangeChannel<U32> m_NumBuffersReceived;
 
     //! The number of bytes written
-    TestUtils::OnChangeChannel<U64> NumBytesWritten;
+    TestUtils::OnChangeChannel<U64> m_NumBytesWritten;
 
     //! The number of failed writes
-    TestUtils::OnChangeChannel<U32> NumFailedWrites;
+    TestUtils::OnChangeChannel<U32> m_NumFailedWrites;
 
     //! The number of successful writes
-    TestUtils::OnChangeChannel<U32> NumSuccessfulWrites;
+    TestUtils::OnChangeChannel<U32> m_NumSuccessfulWrites;
 
     //! The number of errors
-    TestUtils::OnChangeChannel<U32> NumErrors;
+    TestUtils::OnChangeChannel<U32> m_NumErrors;
 
     //! The number of buffer invalid events since the last throttle clear
-    FwSizeType invalidBufferEventCount = 0;
+    FwSizeType m_invalidBufferEventCount = 0;
 
-    //! The number of buffer too small events since the last throttle clear
-    FwSizeType bufferTooSmallEventCount = 0;
+    //! The number of BufferTooSmallForPacket events since the last throttle clear
+    FwSizeType m_bufferTooSmallForPacketEventCount = 0;
+
+    //! The number of BufferTooSmallForData events since the last throttle clear
+    FwSizeType m_bufferTooSmallForPacketEventData = 0;
 
     //! The number of file open error events since the last throttle clear
-    FwSizeType fileOpenErrorEventCount = 0;
+    FwSizeType m_fileOpenErrorEventCount = 0;
 
     //! The number of file write error events since the last throttle clear
-    FwSizeType fileWriteErrorEventCount = 0;
-
-    //! The status returned by Os::File::write in the test harness
-    Os::File::Status fileWriteStatus = Os::File::OP_OK;
+    FwSizeType m_fileWriteErrorEventCount = 0;
 
     //! The number of invalid packet descriptor events since the last throttle clear
-    FwSizeType invalidPacketDescriptorEventCount = 0;
+    FwSizeType m_invalidPacketDescriptorEventCount = 0;
 
     //! Data for buffers
-    U8 bufferData[MAX_BUFFER_SIZE];
+    U8 m_bufferData[MAX_BUFFER_SIZE];
 
     //! Data for write results
-    U8 writeResultData[MAX_BUFFER_SIZE];
+    U8 m_writeResultData[MAX_BUFFER_SIZE];
 
     //! Bit mask for processing out port calls
-    Fw::DpCfg::ProcType::SerialType procTypes;
+    Fw::DpCfg::ProcType::SerialType m_procTypes;
 };
 
 }  // namespace Svc

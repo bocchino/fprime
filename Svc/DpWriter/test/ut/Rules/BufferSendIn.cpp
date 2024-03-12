@@ -35,11 +35,11 @@ void TestState ::action__BufferSendIn__OK() {
     this->clearHistory();
     // Reset the saved proc types
     // These are updated in the from_procBufferSendOut handler
-    this->abstractState.procTypes = 0;
+    this->abstractState.m_procTypes = 0;
     // Reset the file pointer in the stub file implementation
     Os::Stub::File::Test::StaticData::data.pointer = 0;
-    // Update NumBuffersReceived
-    this->abstractState.NumBuffersReceived.value++;
+    // Update m_NumBuffersReceived
+    this->abstractState.m_NumBuffersReceived.value++;
     // Construct a random buffer
     Fw::Buffer buffer = this->abstractState.getDpBuffer();
     // Send the buffer
@@ -66,7 +66,7 @@ void TestState ::action__BufferSendIn__OK() {
         }
     }
     ASSERT_from_procBufferSendOut_SIZE(expectedNumProcTypes);
-    ASSERT_EQ(container.getProcTypes(), this->abstractState.procTypes);
+    ASSERT_EQ(container.getProcTypes(), this->abstractState.m_procTypes);
     // Check DP notification
     ASSERT_from_dpWrittenOut_SIZE(1);
     ASSERT_from_dpWrittenOut(0, fileName, container.getPriority(), buffer.getSize());
@@ -76,10 +76,10 @@ void TestState ::action__BufferSendIn__OK() {
     // Check file write
     ASSERT_EQ(buffer.getSize(), Os::Stub::File::Test::StaticData::data.pointer);
     ASSERT_EQ(0, ::memcmp(buffer.getData(), Os::Stub::File::Test::StaticData::data.writeResult, buffer.getSize()));
-    // Update NumBytesWritten
-    this->abstractState.NumBytesWritten.value += buffer.getSize();
-    // Update NumSuccessfulWrites
-    this->abstractState.NumSuccessfulWrites.value++;
+    // Update m_NumBytesWritten
+    this->abstractState.m_NumBytesWritten.value += buffer.getSize();
+    // Update m_NumSuccessfulWrites
+    this->abstractState.m_NumSuccessfulWrites.value++;
 }
 
 bool TestState ::precondition__BufferSendIn__InvalidBuffer() const {
@@ -92,25 +92,25 @@ void TestState ::action__BufferSendIn__InvalidBuffer() {
     this->clearHistory();
     // Reset the file pointer in the stub file implementation
     Os::Stub::File::Test::StaticData::data.pointer = 0;
-    // Update NumBuffersReceived
-    this->abstractState.NumBuffersReceived.value++;
+    // Update m_NumBuffersReceived
+    this->abstractState.m_NumBuffersReceived.value++;
     // Construct an invalid buffer
     Fw::Buffer buffer;
     // Send the buffer
     this->invoke_to_bufferSendIn(0, buffer);
     this->component.doDispatch();
     // Check events
-    if (this->abstractState.invalidBufferEventCount < DpWriterComponentBase::EVENTID_INVALIDBUFFER_THROTTLE) {
+    if (this->abstractState.m_invalidBufferEventCount < DpWriterComponentBase::EVENTID_INVALIDBUFFER_THROTTLE) {
         ASSERT_EVENTS_SIZE(1);
         ASSERT_EVENTS_InvalidBuffer_SIZE(1);
-        this->abstractState.invalidBufferEventCount++;
+        this->abstractState.m_invalidBufferEventCount++;
     } else {
         ASSERT_EVENTS_SIZE(0);
     }
     // Verify no file output
     ASSERT_EQ(Os::Stub::File::Test::StaticData::data.pointer, 0);
-    // Increment NumErrors
-    this->abstractState.NumErrors.value++;
+    // Increment m_NumErrors
+    this->abstractState.m_NumErrors.value++;
 }
 
 namespace BufferSendIn {

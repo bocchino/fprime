@@ -6,18 +6,18 @@
 
 | Variable | Type | Description | Initial Value |
 |----------|------|-------------|---------------|
-| `NumBuffersReceived` | `OnChangeChannel<U32>` | The number of buffers received | 0 |
-| `NumBytesWritten` | `OnChangeChannel<U64>` | The number of bytes written | 0 |
-| `NumErrors` | `OnChangeChannel<U32>` | The number of errors | 0 |
-| `NumFailedWrites` | `OnChangeChannel<U32>` | The number of failed writes | 0 |
-| `NumSuccessfulWrites` | `OnChangeChannel<U32>` | The number of successful writes | 0 |
-| `bufferTooSmallForDataEventCount` | `FwSizeType` | The number of `BufferTooSmallForData` events since the last throttle clear |0 |
-| `bufferTooSmallForPacketEventCount` | `FwSizeType` | The number of `BufferTooSmallForPacket` events since the last throttle clear |0 |
-| `fileOpenErrorEventCount` | `FwSizeType` | The number of file open error events since the last throttle clear |0 |
-| `fileWriteErrorEventCount` | `FwSizeType` | The number of file write error events since the last throttle clear |0 |
-| `invalidBufferEventCount` | `FwSizeType` | The number of buffer invalid events since the last throttle clear |0 |
-| `invalidHeaderHashEventCount` | `FwSizeType` | The number of invalid header hash events since the last throttle clear |0 |
-| `invalidPacketDescriptorEventCount` | `FwSizeType` | The number of invalid packet descriptor events since the last throttle clear |0 |
+| `m_NumBuffersReceived` | `OnChangeChannel<U32>` | The number of buffers received | 0 |
+| `m_NumBytesWritten` | `OnChangeChannel<U64>` | The number of bytes written | 0 |
+| `m_NumErrors` | `OnChangeChannel<U32>` | The number of errors | 0 |
+| `m_NumFailedWrites` | `OnChangeChannel<U32>` | The number of failed writes | 0 |
+| `m_NumSuccessfulWrites` | `OnChangeChannel<U32>` | The number of successful writes | 0 |
+| `m_bufferTooSmallForDataEventCount` | `FwSizeType` | The number of `BufferTooSmallForData` events since the last throttle clear |0 |
+| `m_bufferTooSmallForPacketEventCount` | `FwSizeType` | The number of `BufferTooSmallForPacket` events since the last throttle clear |0 |
+| `m_fileOpenErrorEventCount` | `FwSizeType` | The number of file open error events since the last throttle clear |0 |
+| `m_fileWriteErrorEventCount` | `FwSizeType` | The number of file write error events since the last throttle clear |0 |
+| `m_invalidBufferEventCount` | `FwSizeType` | The number of buffer invalid events since the last throttle clear |0 |
+| `m_invalidHeaderHashEventCount` | `FwSizeType` | The number of invalid header hash events since the last throttle clear |0 |
+| `m_invalidPacketDescriptorEventCount` | `FwSizeType` | The number of invalid packet descriptor events since the last throttle clear |0 |
 
 ## 2. Rule Groups
 
@@ -142,7 +142,7 @@ This rule invokes `bufferSendIn` with nominal input.
 
 **Action:**
 1. Clear history.
-1. Update `NumBuffersReceived`.
+1. Update `m_NumBuffersReceived`.
 1. Construct a random buffer _B_ with valid packet data and random processing bits.
 1. Send _B_ to `bufferSendIn`.
 1. Assert that the event history contains one element.
@@ -152,8 +152,8 @@ This rule invokes `bufferSendIn` with nominal input.
 1. Check output on notification port.
 1. Check output on deallocation port.
 1. Verify that `Os::File::write` has been called with the expected arguments.
-1. Update `NumBytesWritten`.
-1. Update `NumSuccessfulWrites`.
+1. Update `m_NumBytesWritten`.
+1. Update `m_NumSuccessfulWrites`.
 
 **Test:**
 1. Apply rule `BufferSendIn::OK`.
@@ -174,16 +174,16 @@ This rule invokes `bufferSendIn` with an invalid buffer.
 
 **Action:**
 1. Clear history.
-1. Update `NumBuffersReceived`.
+1. Update `m_NumBuffersReceived`.
 1. Construct an invalid buffer _B_.
-1. If `invalidBufferEventCount` < `DpWriterComponentBase::EVENTID_INVALIDBUFFER_THROTTLE`,
+1. If `m_invalidBufferEventCount` < `DpWriterComponentBase::EVENTID_INVALIDBUFFER_THROTTLE`,
    then
    1. Assert that the event history contains one element.
    1. Assert that the event history for `InvalidBuffer` contains one element.
-   1. Increment `invalidBufferEventCount`.
+   1. Increment `m_invalidBufferEventCount`.
 1. Otherwise assert that the event history is empty.
 1. Verify no data product file.
-1. Increment `NumErrors`.
+1. Increment `m_NumErrors`.
 
 **Test:**
 1. Apply rule `BufferSendIn::InvalidBuffer`.
@@ -201,7 +201,7 @@ hold a data product packet.
 
 **Action:**
 1. Clear history.
-1. Increment `NumBuffersReceived`.
+1. Increment `m_NumBuffersReceived`.
 1. Construct a valid buffer _B_ that is not large enough hold a data product packet.
 1. If `bufferTooSmallEventCount` < `DpWriterComponentBase::EVENTID_BUFFERTOOSMALLFORPACKET_THROTTLE`,
    then
@@ -213,7 +213,7 @@ hold a data product packet.
 1. Assert no DP written notification.
 1. Assert buffer sent for deallocation.
 1. Verify no data product file.
-1. Increment `NumErrors`.
+1. Increment `m_NumErrors`.
 
 #### 2.4.4. InvalidHeaderHash
 
@@ -225,7 +225,7 @@ header hash.
 
 **Action:**
 1. Clear history.
-1. Increment `NumBuffersReceived`.
+1. Increment `m_NumBuffersReceived`.
 1. Construct a valid buffer _B_ that is large enough to hold a data product
    packet and that has an invalid header hash.
 1. If `invalidHeaderHashEventCount` < `DpWriterComponentBase::EVENTID_INVALIDHEADERHASH_THROTTLE`,
@@ -238,7 +238,7 @@ header hash.
 1. Assert no DP written notification.
 1. Assert buffer sent for deallocation.
 1. Verify no data product file.
-1. Increment `NumErrors`.
+1. Increment `m_NumErrors`.
 
 **Test:**
 1. Apply rule `BufferSendIn::BufferTooSmallForPacket`.
@@ -255,7 +255,7 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 
 **Action:**
 1. Clear history.
-1. Increment `NumBuffersReceived`.
+1. Increment `m_NumBuffersReceived`.
 1. Construct a valid buffer _B_ with an invalid packet header.
 1. If `invalidPacketHeaderEventCount` < `DpWriterComponentBase::EVENTID_INVALIDPACKETHEADER_THROTTLE`,
    then
@@ -267,7 +267,7 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 1. Assert no DP written notification.
 1. Assert buffer sent for deallocation.
 1. Verify no data product file.
-1. Increment `NumErrors`.
+1. Increment `m_NumErrors`.
 
 **Test:**
 1. Apply rule `BufferSendIn::InvalidPacketHeader`.
@@ -285,7 +285,7 @@ hold the data size specified in the header.
 
 **Action:**
 1. Clear history.
-1. Increment `NumBuffersReceived`.
+1. Increment `m_NumBuffersReceived`.
 1. Construct a valid buffer _B_ with a valid packet header, but
    a data size that will not fit in _B_.
 1. If `bufferTooSmallEventCount` < `DpWriterComponentBase::EVENTID_BUFFERTOOSMALLFORDATA_THROTTLE`,
@@ -298,7 +298,7 @@ hold the data size specified in the header.
 1. Assert no DP written notification.
 1. Assert buffer sent for deallocation.
 1. Verify no data product file.
-1. Increment `NumErrors`.
+1. Increment `m_NumErrors`.
 
 **Test:**
 1. Apply rule `BufferSendIn::BufferTooSmallForData`.
@@ -313,7 +313,7 @@ hold the data size specified in the header.
 
 **Action:**
 1. Clear history.
-1. Update `NumBuffersReceived`.
+1. Update `m_NumBuffersReceived`.
 1. Construct a random buffer _B_ with valid packet data.
 1. Send _B_ to `bufferSendIn`.
 1. Assert that the event history contains one element.
@@ -322,7 +322,7 @@ hold the data size specified in the header.
 1. Assert no DP written notification.
 1. Assert buffer sent for deallocation.
 1. Verify no data product file.
-1. Increment `NumErrors`.
+1. Increment `m_NumErrors`.
 
 **Test:**
 1. Apply rule `FileOpenStatus::Error`.
@@ -339,7 +339,7 @@ hold the data size specified in the header.
 
 **Action:**
 1. Clear history.
-1. Update `NumBuffersReceived`.
+1. Update `m_NumBuffersReceived`.
 1. Construct a random buffer _B_ with valid packet data.
 1. Send _B_ to `bufferSendIn`.
 1. Assert that the event history contains one element.
@@ -348,7 +348,7 @@ hold the data size specified in the header.
 1. Assert no DP written notification.
 1. Assert buffer sent for deallocation.
 1. Verify no data product file.
-1. Increment `NumErrors`.
+1. Increment `m_NumErrors`.
 
 **Test:**
 1. Apply rule `FileWriteStatus::Error`.
@@ -373,11 +373,13 @@ This rule sends the `CLEAR_EVENT_THROTTLE` command.
 1. Send command `CLEAR_EVENT_THROTTLE`.
 1. Check the command response.
 1. Assert `DpWriterComponentBase::m_InvalidBufferThrottle` == 0.
-1. Set `invalidBufferEventCount` = 0.
-1. Set `bufferTooSmallEventCount` = 0.
-1. Set `invalidPacketDescriptorEventCount` = 0.
+1. Set `bufferTooSmallForDataEventCount` = 0.
+1. Set `bufferTooSmallForPacketEventCount` = 0.
 1. Set `fileOpenErrorEventCount` = 0.
 1. Set `fileWriteErrorEventCount` = 0.
+1. Set `m_invalidBufferEventCount` = 0.
+1. Set `invalidHeaderHashEventCount` = 0.
+1. Set `invalidPacketDescriptorEventCount` = 0.
 
 **Test:**
 

@@ -22,7 +22,7 @@ namespace Svc {
 // Public member functions
 // ----------------------------------------------------------------------
 
-//! Get a data product buffer backed by bufferData
+//! Get a data product buffer backed by m_bufferData
 //! \return The buffer
 Fw::Buffer AbstractState::getDpBuffer() {
     // Generate the ID
@@ -34,7 +34,7 @@ Fw::Buffer AbstractState::getDpBuffer() {
     FW_ASSERT(bufferSize <= MAX_BUFFER_SIZE, static_cast<FwAssertArgType>(bufferSize),
               static_cast<FwAssertArgType>(MAX_BUFFER_SIZE));
     // Create the buffer
-    Fw::Buffer buffer(this->bufferData, bufferSize);
+    Fw::Buffer buffer(this->m_bufferData, bufferSize);
     // Create the container
     Fw::DpContainer container(id, buffer);
     // Update the priority
@@ -59,7 +59,7 @@ Fw::Buffer AbstractState::getDpBuffer() {
     // Serialize the header and update the header hash
     container.serializeHeader();
     // Randomize the data
-    U8* const dataPtr = &this->bufferData[Fw::DpContainer::DATA_OFFSET];
+    U8* const dataPtr = &this->m_bufferData[Fw::DpContainer::DATA_OFFSET];
     const FwSizeType dataUpperBound = Fw::DpContainer::DATA_OFFSET + dataSize;
     FW_ASSERT(dataUpperBound <= bufferSize, dataUpperBound, bufferSize);
     for (FwSizeType i = 0; i <= dataSize; i++) {
