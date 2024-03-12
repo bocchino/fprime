@@ -21,21 +21,23 @@ namespace Svc {
 // ----------------------------------------------------------------------
 
 bool TestState ::precondition__FileWriteStatus__OK() const {
-    bool result = (Os::Stub::File::Test::StaticData::data.writeStatus != Os::File::Status::OP_OK);
-    return result;
+    const auto& fileData = Os::Stub::File::Test::StaticData::data;
+    return (fileData.writeStatus != Os::File::Status::OP_OK);
 }
 
 void TestState ::action__FileWriteStatus__OK() {
-    Os::Stub::File::Test::StaticData::data.writeStatus = Os::File::Status::OP_OK;
+    auto& fileData = Os::Stub::File::Test::StaticData::data;
+    fileData.writeStatus = Os::File::Status::OP_OK;
 }
 
 bool TestState ::precondition__FileWriteStatus__Error() const {
-    bool result = (Os::Stub::File::Test::StaticData::data.writeStatus == Os::File::Status::OP_OK);
-    return result;
+    const auto& fileData = Os::Stub::File::Test::StaticData::data;
+    return (fileData.writeStatus == Os::File::Status::OP_OK);
 }
 
 void TestState ::action__FileWriteStatus__Error() {
-    Os::Stub::File::Test::StaticData::data.writeStatus = DpWriterTester::pickOsFileError();
+    auto& fileData = Os::Stub::File::Test::StaticData::data;
+    fileData.writeStatus = DpWriterTester::pickOsFileError();
 }
 
 namespace FileWriteStatus {
