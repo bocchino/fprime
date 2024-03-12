@@ -109,6 +109,8 @@ void TestState ::action__BufferSendIn__InvalidBuffer() {
     }
     // Verify no file output
     ASSERT_EQ(Os::Stub::File::Test::StaticData::data.pointer, 0);
+    // Verify no port output
+    ASSERT_FROM_PORT_HISTORY_SIZE(0);
     // Increment m_NumErrors
     this->abstractState.m_NumErrors.value++;
 }

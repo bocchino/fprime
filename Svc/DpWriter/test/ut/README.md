@@ -183,6 +183,7 @@ This rule invokes `bufferSendIn` with an invalid buffer.
    1. Increment `m_invalidBufferEventCount`.
 1. Otherwise assert that the event history is empty.
 1. Verify no data product file.
+1. Verify no port output.
 1. Increment `m_NumErrors`.
 
 **Test:**
@@ -202,13 +203,13 @@ hold a data product packet.
 **Action:**
 1. Clear history.
 1. Increment `m_NumBuffersReceived`.
-1. Construct a valid buffer _B_ that is not large enough hold a data product packet.
-1. If `bufferTooSmallEventCount` < `DpWriterComponentBase::EVENTID_BUFFERTOOSMALLFORPACKET_THROTTLE`,
+1. Construct a valid buffer _B_ that is too small to hold a data product packet.
+1. If `m_bufferTooSmallEventCount` < `DpWriterComponentBase::EVENTID_BUFFERTOOSMALLFORPACKET_THROTTLE`,
    then
    1. Assert that the event history contains one element.
    1. Assert that the event history for `BufferTooSmallForPacket` contains one element.
    1. Check the event arguments.
-   1. Increment `bufferTooSmallEventCount`.
+   1. Increment `m_bufferTooSmallEventCount`.
 1. Otherwise assert that the event history is empty.
 1. Assert no DP written notification.
 1. Assert buffer sent for deallocation.
@@ -288,12 +289,12 @@ hold the data size specified in the header.
 1. Increment `m_NumBuffersReceived`.
 1. Construct a valid buffer _B_ with a valid packet header, but
    a data size that will not fit in _B_.
-1. If `bufferTooSmallEventCount` < `DpWriterComponentBase::EVENTID_BUFFERTOOSMALLFORDATA_THROTTLE`,
+1. If `m_bufferTooSmallForDataEventCount` < `DpWriterComponentBase::EVENTID_BUFFERTOOSMALLFORDATA_THROTTLE`,
    then
    1. Assert that the event history contains one element.
    1. Assert that the event history for `BufferTooSmallForData` contains one element.
    1. Check the event arguments.
-   1. Increment `bufferTooSmallEventCount`.
+   1. Increment `m_bufferTooSmallForDataEventCount`.
 1. Otherwise assert that the event history is empty.
 1. Assert no DP written notification.
 1. Assert buffer sent for deallocation.
@@ -373,13 +374,13 @@ This rule sends the `CLEAR_EVENT_THROTTLE` command.
 1. Send command `CLEAR_EVENT_THROTTLE`.
 1. Check the command response.
 1. Assert `DpWriterComponentBase::m_InvalidBufferThrottle` == 0.
-1. Set `bufferTooSmallForDataEventCount` = 0.
-1. Set `bufferTooSmallForPacketEventCount` = 0.
-1. Set `fileOpenErrorEventCount` = 0.
-1. Set `fileWriteErrorEventCount` = 0.
+1. Set `m_bufferTooSmallForDataEventCount` = 0.
+1. Set `m_bufferTooSmallForPacketEventCount` = 0.
+1. Set `m_fileOpenErrorEventCount` = 0.
+1. Set `m_fileWriteErrorEventCount` = 0.
 1. Set `m_invalidBufferEventCount` = 0.
-1. Set `invalidHeaderHashEventCount` = 0.
-1. Set `invalidPacketDescriptorEventCount` = 0.
+1. Set `m_invalidHeaderHashEventCount` = 0.
+1. Set `m_invalidPacketDescriptorEventCount` = 0.
 
 **Test:**
 
