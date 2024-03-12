@@ -16,8 +16,8 @@
 | `m_fileOpenErrorEventCount` | `FwSizeType` | The number of file open error events since the last throttle clear |0 |
 | `m_fileWriteErrorEventCount` | `FwSizeType` | The number of file write error events since the last throttle clear |0 |
 | `m_invalidBufferEventCount` | `FwSizeType` | The number of buffer invalid events since the last throttle clear |0 |
+| `m_invalidHeaderEventCount` | `FwSizeType` | The number of invalid packet descriptor events since the last throttle clear |0 |
 | `m_invalidHeaderHashEventCount` | `FwSizeType` | The number of invalid header hash events since the last throttle clear |0 |
-| `m_invalidPacketDescriptorEventCount` | `FwSizeType` | The number of invalid packet descriptor events since the last throttle clear |0 |
 
 ## 2. Rule Groups
 
@@ -382,8 +382,8 @@ This rule sends the `CLEAR_EVENT_THROTTLE` command.
 1. Set `m_fileOpenErrorEventCount` = 0.
 1. Set `m_fileWriteErrorEventCount` = 0.
 1. Set `m_invalidBufferEventCount` = 0.
+1. Set `m_invalidHeaderEventCount` = 0.
 1. Set `m_invalidHeaderHashEventCount` = 0.
-1. Set `m_invalidPacketDescriptorEventCount` = 0.
 
 **Test:**
 
