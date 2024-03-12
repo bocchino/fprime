@@ -11,18 +11,18 @@
 
 namespace Svc {
 
-TEST(BufferSendIn, InvalidBuffer) {
-    COMMENT("Invoke bufferSendIn with an invalid buffer.");
-    REQUIREMENT("SVC-DPMANAGER-001");
-    BufferSendIn::Tester tester;
-    tester.InvalidBuffer();
-}
-
 TEST(BufferSendIn, BufferTooSmallForPacket) {
     COMMENT("Invoke bufferSendIn with a buffer that is too small to hold a data product packet.");
     REQUIREMENT("SVC-DPMANAGER-001");
     BufferSendIn::Tester tester;
     tester.BufferTooSmallForPacket();
+}
+
+TEST(BufferSendIn, InvalidBuffer) {
+    COMMENT("Invoke bufferSendIn with an invalid buffer.");
+    REQUIREMENT("SVC-DPMANAGER-001");
+    BufferSendIn::Tester tester;
+    tester.InvalidBuffer();
 }
 
 TEST(BufferSendIn, OK) {
@@ -36,9 +36,10 @@ TEST(BufferSendIn, OK) {
     tester.OK();
 }
 
-TEST(FileOpenStatus, OK) {
-    COMMENT("Set the file open status to OP_OK.");
-    FileOpenStatus::Tester tester;
+TEST(CLEAR_EVENT_THROTTLE, OK) {
+    COMMENT("Test the CLEAR_EVENT_THROTTLE command.");
+    REQUIREMENT("SVC-DPMANAGER-006");
+    CLEAR_EVENT_THROTTLE::Tester tester;
     tester.OK();
 }
 
@@ -48,9 +49,9 @@ TEST(FileOpenStatus, Error) {
     tester.Error();
 }
 
-TEST(FileWriteStatus, OK) {
-    COMMENT("Set the file write status to OP_OK.");
-    FileWriteStatus::Tester tester;
+TEST(FileOpenStatus, OK) {
+    COMMENT("Set the file open status to OP_OK.");
+    FileOpenStatus::Tester tester;
     tester.OK();
 }
 
@@ -60,11 +61,10 @@ TEST(FileWriteStatus, Error) {
     tester.Error();
 }
 
-TEST(SchedIn, OK) {
-  COMMENT("Invoke schedIn with nominal input.");
-  REQUIREMENT("SVC-DPMANAGER-006");
-  SchedIn::Tester tester;
-  tester.OK();
+TEST(FileWriteStatus, OK) {
+    COMMENT("Set the file write status to OP_OK.");
+    FileWriteStatus::Tester tester;
+    tester.OK();
 }
 
 TEST(Scenarios, Random) {
@@ -78,6 +78,13 @@ TEST(Scenarios, Random) {
     const FwSizeType numSteps = 10000;
     Scenarios::Random::Tester tester;
     tester.run(numSteps);
+}
+
+TEST(SchedIn, OK) {
+  COMMENT("Invoke schedIn with nominal input.");
+  REQUIREMENT("SVC-DPMANAGER-006");
+  SchedIn::Tester tester;
+  tester.OK();
 }
 
 }  // namespace Svc

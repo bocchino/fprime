@@ -60,9 +60,11 @@ namespace CLEAR_EVENT_THROTTLE {
 // ----------------------------------------------------------------------
 
 void Tester ::OK() {
-#if 0
+    for (FwSizeType i = 0; i <= DpWriterComponentBase::EVENTID_INVALIDBUFFER_THROTTLE; i++) {
+        Testers::bufferSendIn.ruleInvalidBuffer.apply(this->testState);
+    }
     this->ruleOK.apply(this->testState);
-#endif
+    Testers::bufferSendIn.ruleInvalidBuffer.apply(this->testState);
 }
 
 }  // namespace CLEAR_EVENT_THROTTLE

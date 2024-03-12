@@ -28,6 +28,7 @@ namespace Random {
 Rules::BufferSendIn::BufferTooSmallForPacket bufferSendInBufferTooSmallForPacket;
 Rules::BufferSendIn::InvalidBuffer bufferSendInInvalidBuffer;
 Rules::BufferSendIn::OK bufferSendInOK;
+Rules::CLEAR_EVENT_THROTTLE::OK clearEventThrottleOK;
 Rules::FileOpenStatus::Error fileOpenStatusError;
 Rules::FileOpenStatus::OK fileOpenStatusOK;
 Rules::FileWriteStatus::Error fileWriteStatusError;
@@ -42,6 +43,7 @@ void Tester ::run(FwSizeType maxNumSteps) {
     STest::Rule<TestState>* rules[] = {&bufferSendInBufferTooSmallForPacket,
                                        &bufferSendInInvalidBuffer,
                                        &bufferSendInOK,
+                                       &clearEventThrottleOK,
                                        &fileOpenStatusError,
                                        &fileOpenStatusOK,
                                        &fileWriteStatusError,
