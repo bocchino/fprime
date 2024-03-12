@@ -1,6 +1,8 @@
 #include <Utils/Hash/HashBuffer.hpp>
 #include <cstring>
 
+#include <algorithm>
+
 #include "Fw/Types/Serializable.hpp"
 
 namespace Utils {
@@ -55,11 +57,11 @@ NATIVE_UINT_TYPE HashBuffer::getBuffCapacity() const {
 
 U32 HashBuffer::asBigEndianU32() const {
     U32 result = 0;
-    const FwSignedSizeType bufferSize = sizeof this->m_bufferData;
-    const FwSignedSizeType numBytes = (bufferSize < sizeof(U32)) ? bufferSize : sizeof(U32);
-    for (FwSignedSizeType i = numBytes - 1; i >= 0; i--) {
+    const FwSizeType bufferSize = sizeof this->m_bufferData;
+    const FwSizeType numBytes = std::min(bufferSize, static_cast<FwSizeType>(sizeof(U32)));
+    for (FwSizeType i = 0; i < numBytes; i++) {
         result <<= 8;
-        FW_ASSERT((i >= 0) && (i < bufferSize), static_cast<FwAssertArgType>(i),
+        FW_ASSERT(i < bufferSize, static_cast<FwAssertArgType>(i),
                   static_cast<FwAssertArgType>(bufferSize));
         result += this->m_bufferData[i];
     }

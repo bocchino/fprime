@@ -155,22 +155,76 @@ void TestState ::action__BufferSendIn__BufferTooSmallForPacket() {
     this->abstractState.m_NumErrors.value++;
 }
 
+bool TestState ::precondition__BufferSendIn__InvalidHeaderHash() const {
+    bool result = true;
+    return result;
+}
+
+void TestState ::action__BufferSendIn__InvalidHeaderHash() {
+    // Clear the history
+    this->clearHistory();
+    // Reset the file pointer in the stub file implementation
+    Os::Stub::File::Test::StaticData::data.pointer = 0;
+    // Update m_NumBuffersReceived
+    this->abstractState.m_NumBuffersReceived.value++;
+    // Construct a valid buffer
+    Fw::Buffer buffer = this->abstractState.getDpBuffer();
+    // Set up the container
+    Fw::DpContainer container;
+    container.setBuffer(buffer);
+    // Get the header hash
+    const U32 computedHash = container.getHeaderHash().asBigEndianU32();
+    // Perturb the header hash
+    const U32 storedHash = computedHash + 1;
+    U8 *const baseAddress = buffer.getData();
+    const FwSizeType bufferSize = buffer.getSize();
+    const FwSizeType minBufferSize = Fw::DpContainer::HEADER_HASH_OFFSET + (sizeof storedHash);
+    ASSERT_GE(bufferSize, minBufferSize);
+    Fw::ExternalSerializeBuffer serialBuffer(&baseAddress[Fw::DpContainer::HEADER_HASH_OFFSET], sizeof storedHash);
+    const Fw::SerializeStatus serialStatus = serialBuffer.serialize(storedHash);
+    ASSERT_EQ(serialStatus, Fw::FW_SERIALIZE_OK);
+    // Send the buffer
+    this->invoke_to_bufferSendIn(0, buffer);
+    this->component.doDispatch();
+    // Check events
+    if (this->abstractState.m_invalidHeaderHashEventCount <
+        DpWriterComponentBase::EVENTID_INVALIDHEADERHASH_THROTTLE) {
+        ASSERT_EVENTS_SIZE(1);
+        ASSERT_EVENTS_InvalidHeaderHash(0, bufferSize, storedHash, computedHash);
+        this->abstractState.m_invalidHeaderHashEventCount++;
+        this->printTextLogHistory(stdout);
+    } else {
+        ASSERT_EVENTS_SIZE(0);
+    }
+    // Verify no file output
+    ASSERT_EQ(Os::Stub::File::Test::StaticData::data.pointer, 0);
+    // Verify port output
+    ASSERT_FROM_PORT_HISTORY_SIZE(1);
+    ASSERT_from_deallocBufferSendOut(0, buffer);
+    // Increment m_NumErrors
+    this->abstractState.m_NumErrors.value++;
+}
+
 namespace BufferSendIn {
 
 // ----------------------------------------------------------------------
 // Tests
 // ----------------------------------------------------------------------
 
-void Tester::OK() {
-    this->ruleOK.apply(this->testState);
+void Tester::BufferTooSmallForPacket() {
+    this->ruleBufferTooSmallForPacket.apply(this->testState);
 }
 
 void Tester::InvalidBuffer() {
     this->ruleInvalidBuffer.apply(this->testState);
 }
 
-void Tester::BufferTooSmallForPacket() {
-    this->ruleBufferTooSmallForPacket.apply(this->testState);
+void Tester::InvalidHeaderHash() {
+    this->ruleInvalidHeaderHash.apply(this->testState);
+}
+
+void Tester::OK() {
+    this->ruleOK.apply(this->testState);
 }
 
 }  // namespace BufferSendIn

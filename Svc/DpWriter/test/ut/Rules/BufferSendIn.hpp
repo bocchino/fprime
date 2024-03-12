@@ -35,6 +35,9 @@ class Tester {
     //! Buffer too small for packet
     void BufferTooSmallForPacket();
 
+    //! Invalid header hash
+    void InvalidHeaderHash();
+
   public:
     // ----------------------------------------------------------------------
     // Rules
@@ -48,6 +51,9 @@ class Tester {
 
     //! Rule BufferSendIn::BufferTooSmallForPacket
     Rules::BufferSendIn::BufferTooSmallForPacket ruleBufferTooSmallForPacket;
+
+    //! Rule BufferSendIn::InvalidHeaderHash
+    Rules::BufferSendIn::InvalidHeaderHash ruleInvalidHeaderHash;
 
   public:
     // ----------------------------------------------------------------------

@@ -11,6 +11,13 @@
 
 namespace Svc {
 
+TEST(BufferSendIn, InvalidHeaderHash) {
+    COMMENT("Invoke bufferSendIn with a buffer that has an invalid header hash.");
+    REQUIREMENT("SVC-DPMANAGER-001");
+    BufferSendIn::Tester tester;
+    tester.InvalidHeaderHash();
+}
+
 TEST(BufferSendIn, BufferTooSmallForPacket) {
     COMMENT("Invoke bufferSendIn with a buffer that is too small to hold a data product packet.");
     REQUIREMENT("SVC-DPMANAGER-001");

@@ -27,10 +27,11 @@ class TestState : public DpWriterTester {
     // Rule definitions
     // ----------------------------------------------------------------------
 
-    TEST_STATE_DEF_RULE(CLEAR_EVENT_THROTTLE, OK)
     TEST_STATE_DEF_RULE(BufferSendIn, BufferTooSmallForPacket)
     TEST_STATE_DEF_RULE(BufferSendIn, InvalidBuffer)
+    TEST_STATE_DEF_RULE(BufferSendIn, InvalidHeaderHash)
     TEST_STATE_DEF_RULE(BufferSendIn, OK)
+    TEST_STATE_DEF_RULE(CLEAR_EVENT_THROTTLE, OK)
     TEST_STATE_DEF_RULE(FileOpenStatus, Error)
     TEST_STATE_DEF_RULE(FileOpenStatus, OK)
     TEST_STATE_DEF_RULE(FileWriteStatus, Error)
