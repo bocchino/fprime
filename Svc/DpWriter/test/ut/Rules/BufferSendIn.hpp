@@ -41,6 +41,9 @@ class Tester {
     //! Invalid header
     void InvalidHeader();
 
+    //! Buffer too small for data
+    void BufferTooSmallForData();
+
   public:
     // ----------------------------------------------------------------------
     // Rules
@@ -60,6 +63,9 @@ class Tester {
 
     //! Rule BufferSendIn::InvalidHeader
     Rules::BufferSendIn::InvalidHeader ruleInvalidHeader;
+
+    //! Rule BufferSendIn::BufferTooSmallForData
+    Rules::BufferSendIn::BufferTooSmallForData ruleBufferTooSmallForData;
 
   public:
     // ----------------------------------------------------------------------

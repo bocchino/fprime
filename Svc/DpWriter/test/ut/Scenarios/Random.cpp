@@ -25,6 +25,7 @@ namespace Random {
 // Rule definitions
 // ----------------------------------------------------------------------
 
+Rules::BufferSendIn::BufferTooSmallForData bufferSendInBufferTooSmallForData;
 Rules::BufferSendIn::BufferTooSmallForPacket bufferSendInBufferTooSmallForPacket;
 Rules::BufferSendIn::InvalidBuffer bufferSendInInvalidBuffer;
 Rules::BufferSendIn::InvalidHeader bufferSendInInvalidHeader;
@@ -42,7 +43,8 @@ Rules::SchedIn::OK schedInOK;
 // ----------------------------------------------------------------------
 
 void Tester ::run(FwSizeType maxNumSteps) {
-    STest::Rule<TestState>* rules[] = {&bufferSendInBufferTooSmallForPacket,
+    STest::Rule<TestState>* rules[] = {&bufferSendInBufferTooSmallForData,
+                                       &bufferSendInBufferTooSmallForPacket,
                                        &bufferSendInInvalidBuffer,
                                        &bufferSendInInvalidHeader,
                                        &bufferSendInInvalidHeaderHash,

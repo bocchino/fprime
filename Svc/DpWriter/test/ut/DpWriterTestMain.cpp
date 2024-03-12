@@ -11,6 +11,13 @@
 
 namespace Svc {
 
+TEST(BufferSendIn, BufferTooSmallForData) {
+    COMMENT("Invoke bufferSendIn with a buffer that is too small to hold the data size specified in the header.");
+    REQUIREMENT("SVC-DPMANAGER-001");
+    BufferSendIn::Tester tester;
+    tester.BufferTooSmallForData();
+}
+
 TEST(BufferSendIn, BufferTooSmallForPacket) {
     COMMENT("Invoke bufferSendIn with a buffer that is too small to hold a data product packet.");
     REQUIREMENT("SVC-DPMANAGER-001");
@@ -95,10 +102,10 @@ TEST(Scenarios, Random) {
 }
 
 TEST(SchedIn, OK) {
-  COMMENT("Invoke schedIn with nominal input.");
-  REQUIREMENT("SVC-DPMANAGER-006");
-  SchedIn::Tester tester;
-  tester.OK();
+    COMMENT("Invoke schedIn with nominal input.");
+    REQUIREMENT("SVC-DPMANAGER-006");
+    SchedIn::Tester tester;
+    tester.OK();
 }
 
 }  // namespace Svc

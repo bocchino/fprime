@@ -207,11 +207,25 @@ void TestState ::action__BufferSendIn__InvalidHeader() {
     // TODO
 }
 
+bool TestState ::precondition__BufferSendIn__BufferTooSmallForData() const {
+    bool result = true;
+    return result;
+}
+
+void TestState ::action__BufferSendIn__BufferTooSmallForData() {
+    // TODO
+}
+
 namespace BufferSendIn {
 
 // ----------------------------------------------------------------------
 // Tests
 // ----------------------------------------------------------------------
+
+void Tester::BufferTooSmallForData() {
+    this->ruleBufferTooSmallForData.apply(this->testState);
+    this->testState.printEvents();
+}
 
 void Tester::BufferTooSmallForPacket() {
     this->ruleBufferTooSmallForPacket.apply(this->testState);
