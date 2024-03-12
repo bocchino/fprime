@@ -51,7 +51,8 @@ class AbstractState {
           NumBytesWritten(0),
           NumFailedWrites(0),
           NumSuccessfulWrites(0),
-          NumErrors(0) {}
+          NumErrors(0),
+          procTypes(0) {}
 
   public:
     // ----------------------------------------------------------------------
@@ -121,6 +122,9 @@ class AbstractState {
 
     //! Data for write results
     U8 writeResultData[MAX_BUFFER_SIZE];
+
+    //! Bit mask for processing out port calls
+    Fw::DpCfg::ProcType::SerialType procTypes;
 };
 
 }  // namespace Svc

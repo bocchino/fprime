@@ -29,9 +29,12 @@ bool TestState ::precondition__BufferSendIn__OK() const {
 }
 
 void TestState ::action__BufferSendIn__OK() {
-    // Clear history
+    // Clear the history
     this->clearHistory();
-    // Reset the file pointer
+    // Reset the saved proc types
+    // These are updated in the from_procBufferSendOut handler
+    this->abstractState.procTypes = 0;
+    // Reset the file pointer in the stub file implementation
     Os::Stub::File::Test::StaticData::data.pointer = 0;
     // Update NumBuffersReceived
     this->abstractState.NumBuffersReceived.value++;
@@ -52,8 +55,22 @@ void TestState ::action__BufferSendIn__OK() {
     Fw::FileNameString fileName;
     this->constructDpFileName(container.getId(), container.getTimeTag(), fileName);
     ASSERT_EVENTS_FileWritten(0, buffer.getSize(), fileName.toChar());
-    // Check output ports
-    // TODO
+    // Check processing types
+    FwIndexType expectedNumProcTypes = 0;
+    const Fw::DpCfg::ProcType::SerialType procTypes = container.getProcTypes();
+    for (FwIndexType i = 0; i < Fw::DpCfg::ProcType::NUM_CONSTANTS; i++) {
+      if (procTypes & (1 << i)) {
+        ++expectedNumProcTypes;
+      }
+    }
+    ASSERT_from_procBufferSendOut_SIZE(expectedNumProcTypes);
+    ASSERT_EQ(container.getProcTypes(), this->abstractState.procTypes);
+    // Check DP notification
+    ASSERT_from_dpWrittenOut_SIZE(1);
+    ASSERT_from_dpWrittenOut(0, fileName, container.getPriority(), buffer.getSize());
+    // Check deallocation
+    ASSERT_from_deallocBufferSendOut_SIZE(1);
+    ASSERT_from_deallocBufferSendOut(0, buffer);
     // Check file write
     // TODO
     // Update NumBytesWritten
