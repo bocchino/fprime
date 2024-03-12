@@ -281,8 +281,7 @@ void TestState ::action__BufferSendIn__BufferTooSmallForData() {
 }
 
 bool TestState ::precondition__BufferSendIn__FileOpenError() const {
-    bool result = true;
-    return result;
+    return (Os::Stub::File::Test::StaticData::data.openStatus != Os::File::Status::OP_OK);
 }
 
 void TestState ::action__BufferSendIn__FileOpenError() {
@@ -291,6 +290,8 @@ void TestState ::action__BufferSendIn__FileOpenError() {
 
 bool TestState ::precondition__BufferSendIn__FileWriteError() const {
     bool result = true;
+    result &= (Os::Stub::File::Test::StaticData::data.openStatus == Os::File::Status::OP_OK);
+    result &= (Os::Stub::File::Test::StaticData::data.writeStatus != Os::File::Status::OP_OK);
     return result;
 }
 
@@ -315,11 +316,13 @@ void Tester::BufferTooSmallForPacket() {
 }
 
 void Tester::FileOpenError() {
+    Testers::fileOpenStatus.ruleError.apply(this->testState);
     this->ruleFileOpenError.apply(this->testState);
     this->testState.printEvents();
 }
 
 void Tester::FileWriteError() {
+    Testers::fileWriteStatus.ruleError.apply(this->testState);
     this->ruleFileWriteError.apply(this->testState);
     this->testState.printEvents();
 }

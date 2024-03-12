@@ -21,8 +21,7 @@ namespace Svc {
 // ----------------------------------------------------------------------
 
 bool TestState ::precondition__FileOpenStatus__OK() const {
-    bool result = (Os::Stub::File::Test::StaticData::data.openStatus != Os::File::Status::OP_OK);
-    return result;
+    return (Os::Stub::File::Test::StaticData::data.openStatus != Os::File::Status::OP_OK);
 }
 
 void TestState ::action__FileOpenStatus__OK() {
@@ -30,8 +29,7 @@ void TestState ::action__FileOpenStatus__OK() {
 }
 
 bool TestState ::precondition__FileOpenStatus__Error() const {
-    bool result = (Os::Stub::File::Test::StaticData::data.openStatus == Os::File::Status::OP_OK);
-    return result;
+    return (Os::Stub::File::Test::StaticData::data.openStatus == Os::File::Status::OP_OK);
 }
 
 void TestState ::action__FileOpenStatus__Error() {
