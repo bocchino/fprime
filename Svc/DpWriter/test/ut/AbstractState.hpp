@@ -99,14 +99,14 @@ class AbstractState {
     //! The number of errors
     TestUtils::OnChangeChannel<U32> m_NumErrors;
 
-    //! The number of buffer invalid events since the last throttle clear
-    FwSizeType m_invalidBufferEventCount = 0;
+    //! The number of BufferTooSmallForData events since the last throttle clear
+    FwSizeType m_bufferTooSmallForDataEventCount = 0;
 
     //! The number of BufferTooSmallForPacket events since the last throttle clear
     FwSizeType m_bufferTooSmallForPacketEventCount = 0;
 
-    //! The number of BufferTooSmallForData events since the last throttle clear
-    FwSizeType m_bufferTooSmallForPacketEventData = 0;
+    //! The number of buffer invalid events since the last throttle clear
+    FwSizeType m_invalidBufferEventCount = 0;
 
     //! The number of file open error events since the last throttle clear
     FwSizeType m_fileOpenErrorEventCount = 0;
@@ -114,8 +114,11 @@ class AbstractState {
     //! The number of file write error events since the last throttle clear
     FwSizeType m_fileWriteErrorEventCount = 0;
 
-    //! The number of invalid packet descriptor events since the last throttle clear
-    FwSizeType m_invalidPacketDescriptorEventCount = 0;
+    //! The number of invalid header hash events since the last throttle clear
+    FwSizeType m_invalidHeaderHashEventCount = 0;
+
+    //! The number of invalid packet header events since the last throttle clear
+    FwSizeType m_invalidPacketHeaderEventCount = 0;
 
     //! Data for buffers
     U8 m_bufferData[MAX_BUFFER_SIZE];

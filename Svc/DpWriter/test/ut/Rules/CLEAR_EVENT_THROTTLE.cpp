@@ -25,16 +25,32 @@ bool TestState ::precondition__CLEAR_EVENT_THROTTLE__OK() const {
 }
 
 void TestState ::action__CLEAR_EVENT_THROTTLE__OK() {
-#if 0
     // Clear history
     this->clearHistory();
-    // Invoke schedIn port
-    const U32 context = STest::Pick::any();
-    this->invoke_to_schedIn(0, context);
+    // Send the command
+    const FwEnumStoreType instance = static_cast<FwEnumStoreType>(STest::Pick::any());
+    const U32 cmdSeq = STest::Pick::any();
+    this->sendCmd_CLEAR_EVENT_THROTTLE(instance, cmdSeq);
     this->component.doDispatch();
-    // Check telemetry
-    this->checkTelemetry();
-#endif
+    // Check the command response
+    ASSERT_CMD_RESPONSE_SIZE(1);
+    ASSERT_CMD_RESPONSE(0, DpWriterComponentBase::OPCODE_CLEAR_EVENT_THROTTLE, cmdSeq, Fw::CmdResponse::OK);
+    // Check the concrete state
+    ASSERT_EQ(this->component.DpWriterComponentBase::m_BufferTooSmallForDataThrottle, 0);
+    ASSERT_EQ(this->component.DpWriterComponentBase::m_BufferTooSmallForPacketThrottle, 0);
+    ASSERT_EQ(this->component.DpWriterComponentBase::m_FileOpenErrorThrottle, 0);
+    ASSERT_EQ(this->component.DpWriterComponentBase::m_FileWriteErrorThrottle, 0);
+    ASSERT_EQ(this->component.DpWriterComponentBase::m_InvalidBufferThrottle, 0);
+    ASSERT_EQ(this->component.DpWriterComponentBase::m_InvalidHeaderHashThrottle, 0);
+    ASSERT_EQ(this->component.DpWriterComponentBase::m_InvalidPacketHeaderThrottle, 0);
+    // Update the abstract state
+    this->abstractState.m_bufferTooSmallForDataEventCount = 0;
+    this->abstractState.m_bufferTooSmallForPacketEventCount = 0;
+    this->abstractState.m_fileOpenErrorEventCount = 0;
+    this->abstractState.m_fileWriteErrorEventCount = 0;
+    this->abstractState.m_invalidBufferEventCount = 0;
+    this->abstractState.m_invalidHeaderHashEventCount = 0;
+    this->abstractState.m_invalidPacketHeaderEventCount = 0;
 }
 
 namespace CLEAR_EVENT_THROTTLE {
