@@ -140,7 +140,6 @@ This rule invokes `bufferSendIn` with nominal input.
 
 **Action:**
 1. Clear history.
-1. Set `Os::Stub::File::Test::StaticData::data.pointer = 0`.
 1. Update `NumBuffersReceived`.
 1. Construct a random buffer _B_ with valid packet data and random processing bits.
 1. Send _B_ to `bufferSendIn`.
