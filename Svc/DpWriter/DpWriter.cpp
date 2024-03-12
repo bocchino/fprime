@@ -99,6 +99,7 @@ void DpWriter::schedIn_handler(const NATIVE_INT_TYPE portNum, U32 context) {
     this->tlmWrite_NumBytesWritten(this->m_numBytesWritten);
     this->tlmWrite_NumSuccessfulWrites(this->m_numSuccessfulWrites);
     this->tlmWrite_NumFailedWrites(this->m_numFailedWrites);
+    this->tlmWrite_NumErrors(this->m_numErrors);
 }
 
 // ----------------------------------------------------------------------

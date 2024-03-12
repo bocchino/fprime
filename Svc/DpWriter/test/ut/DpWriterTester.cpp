@@ -71,7 +71,10 @@ void DpWriterTester::constructDpFileName(FwDpIdType id, const Fw::Time& timeTag,
 
 void DpWriterTester::checkTelemetry() {
     TESTER_CHECK_CHANNEL(NumBuffersReceived);
-    // TODO
+    TESTER_CHECK_CHANNEL(NumBytesWritten);
+    TESTER_CHECK_CHANNEL(NumSuccessfulWrites);
+    TESTER_CHECK_CHANNEL(NumFailedWrites);
+    TESTER_CHECK_CHANNEL(NumErrors);
 }
 
 }  // namespace Svc
