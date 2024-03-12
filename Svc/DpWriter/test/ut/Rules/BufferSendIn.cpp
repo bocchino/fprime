@@ -285,7 +285,47 @@ bool TestState ::precondition__BufferSendIn__FileOpenError() const {
 }
 
 void TestState ::action__BufferSendIn__FileOpenError() {
-    // TODO
+    // Clear the history
+    this->clearHistory();
+    // Reset the saved proc types
+    // These are updated in the from_procBufferSendOut handler
+    this->abstractState.m_procTypes = 0;
+    // Reset the file pointer in the stub file implementation
+    Os::Stub::File::Test::StaticData::data.pointer = 0;
+    // Update m_NumBuffersReceived
+    this->abstractState.m_NumBuffersReceived.value++;
+    // Construct a valid buffer
+    Fw::Buffer buffer = this->abstractState.getDpBuffer();
+    // Set up the container
+    Fw::DpContainer container;
+    container.setBuffer(buffer);
+    container.deserializeHeader();
+    // Send the buffer
+    this->invoke_to_bufferSendIn(0, buffer);
+    this->component.doDispatch();
+    // Check events
+    if (this->abstractState.m_fileOpenErrorEventCount <
+        DpWriterComponentBase::EVENTID_FILEOPENERROR_THROTTLE) {
+        ASSERT_EVENTS_SIZE(1);
+        Fw::FileNameString fileName;
+        this->constructDpFileName(container.getId(), container.getTimeTag(), fileName);
+        const Os::File::Status openStatus = Os::Stub::File::Test::StaticData::data.openStatus;
+        ASSERT_EVENTS_FileOpenError(0, static_cast<U32>(openStatus), fileName.toChar());
+        this->abstractState.m_fileOpenErrorEventCount++;
+    } else {
+        ASSERT_EVENTS_SIZE(0);
+    }
+    // Verify no file output
+    ASSERT_EQ(Os::Stub::File::Test::StaticData::data.pointer, 0);
+    // Verify port output
+    this->checkProcTypes(container);
+    ASSERT_from_dpWrittenOut_SIZE(0);
+    ASSERT_from_deallocBufferSendOut_SIZE(1);
+    ASSERT_from_deallocBufferSendOut(0, buffer);
+    // Increment m_NumFailedWrites
+    this->abstractState.m_NumFailedWrites.value++;
+    // Increment m_NumErrors
+    this->abstractState.m_NumErrors.value++;
 }
 
 bool TestState ::precondition__BufferSendIn__FileWriteError() const {
