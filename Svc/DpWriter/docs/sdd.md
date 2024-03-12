@@ -106,6 +106,10 @@ It does the following:
    [`FW_PACKET_DP`](../../../Fw/Com/ComPacket.hpp).
    If not, emit a warning event.
 
+1. If the previous steps succeeded, then check that the header
+   hash of `B` is valid.
+   If not, emit a warning event.
+
 1. If the previous steps succeeded, then
 
    1. Read the `ProcType` field out of the container header stored in the

@@ -8,6 +8,7 @@
 #include "Fw/Types/Serializable.hpp"
 #include "Os/File.hpp"
 #include "Svc/DpWriter/DpWriter.hpp"
+#include "Utils/Hash/Hash.hpp"
 #include "config/DpCfg.hpp"
 #include "config/FpConfig.hpp"
 
@@ -36,14 +37,26 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
         this->log_WARNING_HI_InvalidBuffer();
         status = Fw::Success::FAILURE;
     }
-    // Set up the serial packet buffer
+    // Check that the buffer is large enough to hold a data product packet
+    const FwSizeType bufferSize = buffer.getSize();
     if (status == Fw::Success::SUCCESS) {
-        Fw::SerializeBufferBase& serialBuffer = buffer.getSerializeRepr();
-        const Fw::SerializeStatus serialStatus = serialBuffer.setBuffLen(buffer.getSize());
-        FW_ASSERT(serialStatus == Fw::FW_SERIALIZE_OK, static_cast<FwAssertArgType>(serialStatus));
+        if (bufferSize < Fw::DpContainer::MIN_PACKET_SIZE) {
+            this->log_WARNING_HI_BufferTooSmall(bufferSize, Fw::DpContainer::MIN_PACKET_SIZE);
+            status = Fw::Success::FAILURE;
+        }
+    }
+    // Set up the container and check that the header hash is valid
+    Fw::DpContainer container;
+    if (status == Fw::Success::SUCCESS) {
+        container.setBuffer(buffer);
+        Utils::HashBuffer storedHash;
+        Utils::HashBuffer computedHash;
+        status = container.checkHeaderHash(storedHash, computedHash);
+        if (status != Fw::Success::SUCCESS) {
+            this->log_WARNING_HI_InvalidHeaderHash(bufferSize);
+        }
     }
     // Deserialize the packet header
-    Fw::DpContainer container;
     if (status == Fw::Success::SUCCESS) {
         status = this->deserializePacketHeader(buffer, container);
     }
@@ -98,6 +111,7 @@ void DpWriter::CLEAR_EVENT_THROTTLE_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) 
     (void)cmdSeq;
     // Clear throttling
     this->log_WARNING_HI_InvalidBuffer_ThrottleClear();
+    this->log_WARNING_HI_InvalidHeaderHash_ThrottleClear();
     this->log_WARNING_HI_BufferTooSmall_ThrottleClear();
     this->log_WARNING_HI_InvalidPacketHeader_ThrottleClear();
     this->log_WARNING_HI_FileOpenError_ThrottleClear();
