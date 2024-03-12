@@ -25,6 +25,7 @@ namespace Random {
 // Rule definitions
 // ----------------------------------------------------------------------
 
+Rules::BufferSendIn::BufferTooSmallForPacket bufferSendInBufferTooSmallForPacket;
 Rules::BufferSendIn::InvalidBuffer bufferSendInInvalidBuffer;
 Rules::BufferSendIn::OK bufferSendInOK;
 Rules::FileOpenStatus::Error fileOpenStatusError;
@@ -38,15 +39,14 @@ Rules::SchedIn::OK schedInOK;
 // ----------------------------------------------------------------------
 
 void Tester ::run(FwSizeType maxNumSteps) {
-    STest::Rule<TestState>* rules[] = {
-        &bufferSendInInvalidBuffer,
-        &bufferSendInOK,
-        &fileOpenStatusError,
-        &fileOpenStatusOK,
-        &fileWriteStatusError,
-        &fileWriteStatusOK,
-        &schedInOK
-    };
+    STest::Rule<TestState>* rules[] = {&bufferSendInBufferTooSmallForPacket,
+                                       &bufferSendInInvalidBuffer,
+                                       &bufferSendInOK,
+                                       &fileOpenStatusError,
+                                       &fileOpenStatusOK,
+                                       &fileWriteStatusError,
+                                       &fileWriteStatusOK,
+                                       &schedInOK};
     STest::RandomScenario<TestState> scenario("RandomScenario", rules,
                                               sizeof(rules) / sizeof(STest::RandomScenario<TestState>*));
     STest::BoundedScenario<TestState> boundedScenario("BoundedRandomScenario", scenario, maxNumSteps);

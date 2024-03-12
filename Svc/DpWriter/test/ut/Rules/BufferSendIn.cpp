@@ -52,11 +52,11 @@ void TestState ::action__BufferSendIn__OK() {
     ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
     // Check events
     ASSERT_EVENTS_SIZE(1);
-    this->printTextLogHistory(stdout);
     ASSERT_EVENTS_FileWritten_SIZE(1);
     Fw::FileNameString fileName;
     this->constructDpFileName(container.getId(), container.getTimeTag(), fileName);
     ASSERT_EVENTS_FileWritten(0, buffer.getSize(), fileName.toChar());
+    this->printTextLogHistory(stdout);
     // Check processing types
     FwIndexType expectedNumProcTypes = 0;
     const Fw::DpCfg::ProcType::SerialType procTypes = container.getProcTypes();
@@ -104,6 +104,7 @@ void TestState ::action__BufferSendIn__InvalidBuffer() {
         ASSERT_EVENTS_SIZE(1);
         ASSERT_EVENTS_InvalidBuffer_SIZE(1);
         this->abstractState.m_invalidBufferEventCount++;
+        this->printTextLogHistory(stdout);
     } else {
         ASSERT_EVENTS_SIZE(0);
     }
@@ -128,9 +129,9 @@ void TestState ::action__BufferSendIn__BufferTooSmallForPacket() {
     // Update m_NumBuffersReceived
     this->abstractState.m_NumBuffersReceived.value++;
     // Construct a buffer that is too small to hold a data packet
-    const FwSizeType bufferSize = 1;
     const FwSizeType minPacketSize = Fw::DpContainer::MIN_PACKET_SIZE;
-    ASSERT_LT(bufferSize, minPacketSize);
+    ASSERT_GT(minPacketSize, 0);
+    const FwSizeType bufferSize = STest::Pick::lowerUpper(0, minPacketSize - 1);
     Fw::Buffer buffer(this->abstractState.m_bufferData, bufferSize);
     // Send the buffer
     this->invoke_to_bufferSendIn(0, buffer);
@@ -139,8 +140,9 @@ void TestState ::action__BufferSendIn__BufferTooSmallForPacket() {
     if (this->abstractState.m_bufferTooSmallForPacketEventCount <
         DpWriterComponentBase::EVENTID_BUFFERTOOSMALLFORPACKET_THROTTLE) {
         ASSERT_EVENTS_SIZE(1);
-        ASSERT_EVENTS_BufferTooSmallForPacket_SIZE(bufferSize);
+        ASSERT_EVENTS_BufferTooSmallForPacket(0, bufferSize, minPacketSize);
         this->abstractState.m_bufferTooSmallForPacketEventCount++;
+        this->printTextLogHistory(stdout);
     } else {
         ASSERT_EVENTS_SIZE(0);
     }
