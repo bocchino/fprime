@@ -56,7 +56,6 @@ void TestState ::action__BufferSendIn__OK() {
     Fw::FileNameString fileName;
     this->constructDpFileName(container.getId(), container.getTimeTag(), fileName);
     ASSERT_EVENTS_FileWritten(0, buffer.getSize(), fileName.toChar());
-    this->printTextLogHistory(stdout);
     // Check processing types
     FwIndexType expectedNumProcTypes = 0;
     const Fw::DpCfg::ProcType::SerialType procTypes = container.getProcTypes();
@@ -104,7 +103,6 @@ void TestState ::action__BufferSendIn__InvalidBuffer() {
         ASSERT_EVENTS_SIZE(1);
         ASSERT_EVENTS_InvalidBuffer_SIZE(1);
         this->abstractState.m_invalidBufferEventCount++;
-        this->printTextLogHistory(stdout);
     } else {
         ASSERT_EVENTS_SIZE(0);
     }
@@ -142,7 +140,6 @@ void TestState ::action__BufferSendIn__BufferTooSmallForPacket() {
         ASSERT_EVENTS_SIZE(1);
         ASSERT_EVENTS_BufferTooSmallForPacket(0, bufferSize, minPacketSize);
         this->abstractState.m_bufferTooSmallForPacketEventCount++;
-        this->printTextLogHistory(stdout);
     } else {
         ASSERT_EVENTS_SIZE(0);
     }
@@ -176,13 +173,10 @@ void TestState ::action__BufferSendIn__InvalidHeaderHash() {
     const U32 computedHash = container.getHeaderHash().asBigEndianU32();
     // Perturb the header hash
     const U32 storedHash = computedHash + 1;
-    U8 *const baseAddress = buffer.getData();
-    const FwSizeType bufferSize = buffer.getSize();
-    const FwSizeType minBufferSize = Fw::DpContainer::HEADER_HASH_OFFSET + (sizeof storedHash);
-    ASSERT_GE(bufferSize, minBufferSize);
-    Fw::ExternalSerializeBuffer serialBuffer(&baseAddress[Fw::DpContainer::HEADER_HASH_OFFSET], sizeof storedHash);
-    const Fw::SerializeStatus serialStatus = serialBuffer.serialize(storedHash);
+    Utils::HashBuffer storedHashBuffer;
+    const Fw::SerializeStatus serialStatus = storedHashBuffer.serialize(storedHash);
     ASSERT_EQ(serialStatus, Fw::FW_SERIALIZE_OK);
+    container.setHeaderHash(storedHashBuffer);
     // Send the buffer
     this->invoke_to_bufferSendIn(0, buffer);
     this->component.doDispatch();
@@ -190,9 +184,8 @@ void TestState ::action__BufferSendIn__InvalidHeaderHash() {
     if (this->abstractState.m_invalidHeaderHashEventCount <
         DpWriterComponentBase::EVENTID_INVALIDHEADERHASH_THROTTLE) {
         ASSERT_EVENTS_SIZE(1);
-        ASSERT_EVENTS_InvalidHeaderHash(0, bufferSize, storedHash, computedHash);
+        ASSERT_EVENTS_InvalidHeaderHash(0, buffer.getSize(), storedHash, computedHash);
         this->abstractState.m_invalidHeaderHashEventCount++;
-        this->printTextLogHistory(stdout);
     } else {
         ASSERT_EVENTS_SIZE(0);
     }
@@ -213,18 +206,22 @@ namespace BufferSendIn {
 
 void Tester::BufferTooSmallForPacket() {
     this->ruleBufferTooSmallForPacket.apply(this->testState);
+    this->testState.printEvents();
 }
 
 void Tester::InvalidBuffer() {
     this->ruleInvalidBuffer.apply(this->testState);
+    this->testState.printEvents();
 }
 
 void Tester::InvalidHeaderHash() {
     this->ruleInvalidHeaderHash.apply(this->testState);
+    this->testState.printEvents();
 }
 
 void Tester::OK() {
     this->ruleOK.apply(this->testState);
+    this->testState.printEvents();
 }
 
 }  // namespace BufferSendIn

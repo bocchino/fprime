@@ -61,6 +61,14 @@ class DpWriterTester : public DpWriterGTestBase {
                                         Fw::Buffer& fwBuffer      //!< The buffer
     );
 
+  public:
+    // ----------------------------------------------------------------------
+    // Public member functions
+    // ----------------------------------------------------------------------
+
+    //! Print events
+    void printEvents();
+
   protected:
     // ----------------------------------------------------------------------
     // Protected helper functions 

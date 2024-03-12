@@ -46,6 +46,14 @@ void DpWriterTester::from_procBufferSendOut_handler(NATIVE_INT_TYPE portNum, Fw:
 }
 
 // ----------------------------------------------------------------------
+// Public member functions
+// ----------------------------------------------------------------------
+
+void DpWriterTester::printEvents() {
+    this->printTextLogHistory(stdout);
+}
+
+// ----------------------------------------------------------------------
 // Protected helper functions
 // ----------------------------------------------------------------------
 
