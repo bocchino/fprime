@@ -14,6 +14,7 @@
 #define Svc_Testers_HPP
 
 #include "Svc/DpWriter/test/ut/Rules/BufferSendIn.hpp"
+#include "Svc/DpWriter/test/ut/Rules/CLEAR_EVENT_THROTTLE.hpp"
 #include "Svc/DpWriter/test/ut/Rules/FileOpenStatus.hpp"
 #include "Svc/DpWriter/test/ut/Rules/FileWriteStatus.hpp"
 #include "Svc/DpWriter/test/ut/Rules/SchedIn.hpp"
@@ -23,6 +24,8 @@ namespace Svc {
   namespace Testers {
 
     extern BufferSendIn::Tester bufferSendIn;
+
+    extern CLEAR_EVENT_THROTTLE::Tester clearEventThrottle;
 
     extern FileOpenStatus::Tester fileOpenStatus;
 

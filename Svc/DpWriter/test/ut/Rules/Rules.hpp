@@ -36,6 +36,7 @@ namespace Rules {
 RULES_DEF_RULE(BufferSendIn, BufferTooSmallForPacket)
 RULES_DEF_RULE(BufferSendIn, InvalidBuffer)
 RULES_DEF_RULE(BufferSendIn, OK)
+RULES_DEF_RULE(CLEAR_EVENT_THROTTLE, OK)
 RULES_DEF_RULE(FileOpenStatus, Error)
 RULES_DEF_RULE(FileOpenStatus, OK)
 RULES_DEF_RULE(FileWriteStatus, Error)

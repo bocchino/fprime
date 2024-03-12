@@ -388,9 +388,9 @@ This rule sends the `CLEAR_EVENT_THROTTLE` command.
 **Test:**
 
 1. Apply rule `BufferGetStatus::Invalid`.
-1. Apply rule `ProductRequestIn::InvalidBuffer` `DpWriterComponentBase::EVENTID_INVALIDBUFFER_THROTTLE` + 1 times.
+1. Apply rule `BufferSendIn::InvalidBuffer` `DpWriterComponentBase::EVENTID_INVALIDBUFFER_THROTTLE` + 1 times.
 1. Apply rule `CLEAR_EVENT_THROTTLE::OK`.
-1. Apply rule `ProductRequestIn::InvalidBuffer`
+1. Apply rule `BufferSendIn::InvalidBuffer`
 
 ## 3. Implementation
 
