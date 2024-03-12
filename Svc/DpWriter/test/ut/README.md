@@ -357,6 +357,7 @@ This rule invokes `bufferSendIn` with a file write error.
 1. Assert no DP written notification.
 1. Assert buffer sent for deallocation.
 1. Verify no data product file.
+1. Increment `m_NumFailedWrites`.
 1. Increment `m_NumErrors`.
 
 **Test:**

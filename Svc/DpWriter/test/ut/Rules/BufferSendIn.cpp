@@ -261,8 +261,7 @@ void TestState ::action__BufferSendIn__BufferTooSmallForData() {
     this->invoke_to_bufferSendIn(0, buffer);
     this->component.doDispatch();
     // Check events
-    if (this->abstractState.m_bufferTooSmallForDataEventCount <
-        DpWriterComponentBase::EVENTID_INVALIDHEADER_THROTTLE) {
+    if (this->abstractState.m_bufferTooSmallForDataEventCount < DpWriterComponentBase::EVENTID_INVALIDHEADER_THROTTLE) {
         ASSERT_EVENTS_SIZE(1);
         ASSERT_EVENTS_BufferTooSmallForData(0, buffer.getSize(), container.getPacketSize());
         this->abstractState.m_bufferTooSmallForDataEventCount++;
@@ -304,8 +303,7 @@ void TestState ::action__BufferSendIn__FileOpenError() {
     this->invoke_to_bufferSendIn(0, buffer);
     this->component.doDispatch();
     // Check events
-    if (this->abstractState.m_fileOpenErrorEventCount <
-        DpWriterComponentBase::EVENTID_FILEOPENERROR_THROTTLE) {
+    if (this->abstractState.m_fileOpenErrorEventCount < DpWriterComponentBase::EVENTID_FILEOPENERROR_THROTTLE) {
         ASSERT_EVENTS_SIZE(1);
         Fw::FileNameString fileName;
         this->constructDpFileName(container.getId(), container.getTimeTag(), fileName);
@@ -336,7 +334,46 @@ bool TestState ::precondition__BufferSendIn__FileWriteError() const {
 }
 
 void TestState ::action__BufferSendIn__FileWriteError() {
-    // TODO
+    // Clear the history
+    this->clearHistory();
+    // Reset the saved proc types
+    // These are updated in the from_procBufferSendOut handler
+    this->abstractState.m_procTypes = 0;
+    // Reset the file pointer in the stub file implementation
+    Os::Stub::File::Test::StaticData::data.pointer = 0;
+    // Update m_NumBuffersReceived
+    this->abstractState.m_NumBuffersReceived.value++;
+    // Construct a valid buffer
+    Fw::Buffer buffer = this->abstractState.getDpBuffer();
+    // Set up the container
+    Fw::DpContainer container;
+    container.setBuffer(buffer);
+    container.deserializeHeader();
+    // Send the buffer
+    this->invoke_to_bufferSendIn(0, buffer);
+    this->component.doDispatch();
+    // Check events
+    if (this->abstractState.m_fileWriteErrorEventCount < DpWriterComponentBase::EVENTID_FILEWRITEERROR_THROTTLE) {
+        ASSERT_EVENTS_SIZE(1);
+        Fw::FileNameString fileName;
+        this->constructDpFileName(container.getId(), container.getTimeTag(), fileName);
+        const Os::File::Status writeStatus = Os::Stub::File::Test::StaticData::data.writeStatus;
+        const FwSizeType fileSize = container.getPacketSize();
+        ASSERT_EVENTS_FileWriteError(0, static_cast<U32>(writeStatus), static_cast<U32>(fileSize),
+                                     static_cast<U32>(fileSize), fileName.toChar());
+        this->abstractState.m_fileWriteErrorEventCount++;
+    } else {
+        ASSERT_EVENTS_SIZE(0);
+    }
+    // Verify port output
+    this->checkProcTypes(container);
+    ASSERT_from_dpWrittenOut_SIZE(0);
+    ASSERT_from_deallocBufferSendOut_SIZE(1);
+    ASSERT_from_deallocBufferSendOut(0, buffer);
+    // Increment m_NumFailedWrites
+    this->abstractState.m_NumFailedWrites.value++;
+    // Increment m_NumErrors
+    this->abstractState.m_NumErrors.value++;
 }
 
 namespace BufferSendIn {
