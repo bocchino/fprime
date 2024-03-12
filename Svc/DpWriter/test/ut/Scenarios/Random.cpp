@@ -25,6 +25,7 @@ namespace Random {
 // Rule definitions
 // ----------------------------------------------------------------------
 
+Rules::BufferSendIn::OK bufferSendInOK;
 Rules::FileOpenStatus::Error fileOpenStatusError;
 Rules::FileOpenStatus::OK fileOpenStatusOK;
 Rules::FileWriteStatus::Error fileWriteStatusError;
@@ -37,6 +38,7 @@ Rules::SchedIn::OK schedInOK;
 
 void Tester ::run(FwSizeType maxNumSteps) {
     STest::Rule<TestState>* rules[] = {
+        &bufferSendInOK,
         &fileOpenStatusError,
         &fileOpenStatusOK,
         &fileWriteStatusError,

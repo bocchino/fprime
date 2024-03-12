@@ -22,7 +22,6 @@ TEST(BufferSendIn, OK) {
     tester.OK();
 }
 
-#if 0
 TEST(FileOpenStatus, OK) {
     COMMENT("Set the file open status to OP_OK.");
     FileOpenStatus::Tester tester;
@@ -66,7 +65,6 @@ TEST(Scenarios, Random) {
     Scenarios::Random::Tester tester;
     tester.run(numSteps);
 }
-#endif
 
 }  // namespace Svc
 
