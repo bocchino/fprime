@@ -173,7 +173,6 @@ This rule invokes `bufferSendIn` with an invalid buffer.
 **Action:**
 1. Clear history.
 1. Update `NumBuffersReceived`.
-1. Delete the data product file, if any.
 1. Construct an invalid buffer _B_.
 1. If `invalidBufferEventCount` < `DpWriterComponentBase::EVENTID_INVALIDBUFFER_THROTTLE`,
    then
@@ -200,7 +199,6 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 **Action:**
 1. Clear history.
 1. Increment `NumBuffersReceived`.
-1. Delete the data product file, if any.
 1. Construct a valid buffer _B_ with an invalid packet header.
 1. If `invalidPacketHeaderEventCount` < `DpWriterComponentBase::EVENTID_INVALIDPACKETHEADER_THROTTLE`,
    then
@@ -228,7 +226,6 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 **Action:**
 1. Clear history.
 1. Increment `NumBuffersReceived`.
-1. Delete the data product file, if any.
 1. Construct a valid buffer _B_ with a valid packet header, but
    a data size that will not fit in _B_.
 1. If `bufferTooSmallEventCount` < `DpWriterComponentBase::EVENTID_BUFFERTOOSMALL_THROTTLE`,
@@ -257,7 +254,6 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 **Action:**
 1. Clear history.
 1. Update `NumBuffersReceived`.
-1. Delete the data product file, if any.
 1. Construct a random buffer _B_ with valid packet data.
 1. Send _B_ to `bufferSendIn`.
 1. Assert that the event history contains one element.
@@ -284,7 +280,6 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 **Action:**
 1. Clear history.
 1. Update `NumBuffersReceived`.
-1. Delete the data product file, if any.
 1. Construct a random buffer _B_ with valid packet data.
 1. Send _B_ to `bufferSendIn`.
 1. Assert that the event history contains one element.
