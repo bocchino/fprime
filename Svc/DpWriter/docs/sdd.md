@@ -100,14 +100,16 @@ It does the following:
 1. If the previous step succeeded, then check that the size of `B` is large enough to
    hold a data product container packet. If not, emit a warning event.
 
-1. If the previous steps succeeded, then check that the first
-   `sizeof(FwPacketDescriptorType)`
-   bytes of the memory referred to by `B` hold the serialized value
-   [`FW_PACKET_DP`](../../../Fw/Com/ComPacket.hpp).
+1. If the previous steps succeeded, then check that the packet
+   header of `B` can be successfully deserialized.
    If not, emit a warning event.
 
 1. If the previous steps succeeded, then check that the header
    hash of `B` is valid.
+   If not, emit a warning event.
+
+1. If the previous steps succeeded, then check that the data
+   size recorded in the packet header fits within the buffer.
    If not, emit a warning event.
 
 1. If the previous steps succeeded, then

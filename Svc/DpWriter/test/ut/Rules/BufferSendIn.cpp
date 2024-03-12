@@ -272,6 +272,7 @@ void TestState ::action__BufferSendIn__BufferTooSmallForData() {
     // Verify no file output
     ASSERT_EQ(Os::Stub::File::Test::StaticData::data.pointer, 0);
     // Verify port output
+    ASSERT_from_procBufferSendOut_SIZE(0);
     ASSERT_from_dpWrittenOut_SIZE(0);
     ASSERT_from_deallocBufferSendOut_SIZE(1);
     ASSERT_from_deallocBufferSendOut(0, buffer);

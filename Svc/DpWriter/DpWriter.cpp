@@ -61,6 +61,15 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
     if (status == Fw::Success::SUCCESS) {
         status = this->deserializePacketHeader(buffer, container);
     }
+    // Check that the packet size fits in the buffer
+    if (status == Fw::Success::SUCCESS) {
+        const FwSizeType packetSize = container.getPacketSize();
+        const FwSizeType bufferSize = buffer.getSize();
+        if (bufferSize < packetSize) {
+            this->log_WARNING_HI_BufferTooSmallForData(bufferSize, packetSize);
+            status = Fw::Success::FAILURE;
+        }
+    }
     // Perform the requested processing
     if (status == Fw::Success::SUCCESS) {
         this->performProcessing(container);
@@ -154,26 +163,18 @@ void DpWriter::performProcessing(const Fw::DpContainer& container) {
 Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container,
                                    const Fw::FileNameString& fileName,
                                    FwSizeType& packetSize) {
+    Fw::Success::T status = Fw::Success::SUCCESS;
     // Get the buffer
     Fw::Buffer buffer = container.getBuffer();
-    Fw::Success::T status = Fw::Success::SUCCESS;
-    // Compute the packet size
+    // Get the packet size
     packetSize = container.getPacketSize();
-    // Check that the packet size fits in the buffer
-    const FwSizeType bufferSize = buffer.getSize();
-    if (bufferSize < packetSize) {
-        this->log_WARNING_HI_BufferTooSmallForData(bufferSize, packetSize);
-        status = Fw::Success::FAILURE;
-    }
     // Open the file
     Os::File file;
-    if (status == Fw::Success::SUCCESS) {
-        const Os::File::Status fileStatus = file.open(fileName.toChar(), Os::File::OPEN_CREATE);
-        if (fileStatus != Os::File::OP_OK) {
-            this->log_WARNING_HI_FileOpenError(static_cast<U32>(fileStatus), fileName.toChar());
-            this->m_numFailedWrites++;
-            status = Fw::Success::FAILURE;
-        }
+    const Os::File::Status fileStatus = file.open(fileName.toChar(), Os::File::OPEN_CREATE);
+    if (fileStatus != Os::File::OP_OK) {
+        this->log_WARNING_HI_FileOpenError(static_cast<U32>(fileStatus), fileName.toChar());
+        this->m_numFailedWrites++;
+        status = Fw::Success::FAILURE;
     }
     // Write the file
     if (status == Fw::Success::SUCCESS) {
