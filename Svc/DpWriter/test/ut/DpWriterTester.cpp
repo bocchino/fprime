@@ -77,6 +77,18 @@ void DpWriterTester::constructDpFileName(FwDpIdType id, const Fw::Time& timeTag,
     fileName.format(DP_FILENAME_FORMAT, id, timeTag.getSeconds(), timeTag.getUSeconds());
 }
 
+void DpWriterTester::checkProcTypes(const Fw::DpContainer& container) {
+    FwIndexType expectedNumProcTypes = 0;
+    const Fw::DpCfg::ProcType::SerialType procTypes = container.getProcTypes();
+    for (FwIndexType i = 0; i < Fw::DpCfg::ProcType::NUM_CONSTANTS; i++) {
+        if (procTypes & (1 << i)) {
+            ++expectedNumProcTypes;
+        }
+    }
+    ASSERT_from_procBufferSendOut_SIZE(expectedNumProcTypes);
+    ASSERT_EQ(container.getProcTypes(), this->abstractState.m_procTypes);
+}
+
 void DpWriterTester::checkTelemetry() {
     TESTER_CHECK_CHANNEL(NumBuffersReceived);
     TESTER_CHECK_CHANNEL(NumBytesWritten);

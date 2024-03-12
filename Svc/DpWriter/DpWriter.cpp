@@ -157,10 +157,8 @@ Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container,
     // Get the buffer
     Fw::Buffer buffer = container.getBuffer();
     Fw::Success::T status = Fw::Success::SUCCESS;
-    // Get the data size
-    const FwSizeType dataSize = container.getDataSize();
     // Compute the packet size
-    packetSize = Fw::DpContainer::getPacketSizeForDataSize(dataSize);
+    packetSize = container.getPacketSize();
     // Check that the packet size fits in the buffer
     const FwSizeType bufferSize = buffer.getSize();
     if (bufferSize < packetSize) {
@@ -173,6 +171,7 @@ Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container,
         const Os::File::Status fileStatus = file.open(fileName.toChar(), Os::File::OPEN_CREATE);
         if (fileStatus != Os::File::OP_OK) {
             this->log_WARNING_HI_FileOpenError(static_cast<U32>(fileStatus), fileName.toChar());
+            this->m_numFailedWrites++;
             status = Fw::Success::FAILURE;
         }
     }
@@ -197,12 +196,12 @@ Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container,
                                                 static_cast<U32>(packetSize), fileName.toChar());
             status = Fw::Success::FAILURE;
         }
-    }
-    // Update the count of successful or failed writes
-    if (status == Fw::Success::SUCCESS) {
-        this->m_numSuccessfulWrites++;
-    } else {
-        this->m_numFailedWrites++;
+        // Update the count of successful or failed writes
+        if (status == Fw::Success::SUCCESS) {
+            this->m_numSuccessfulWrites++;
+        } else {
+            this->m_numFailedWrites++;
+        }
     }
     // Return the status
     return status;

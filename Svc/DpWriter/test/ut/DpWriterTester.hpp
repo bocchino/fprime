@@ -71,7 +71,7 @@ class DpWriterTester : public DpWriterGTestBase {
 
   protected:
     // ----------------------------------------------------------------------
-    // Protected helper functions 
+    // Protected helper functions
     // ----------------------------------------------------------------------
 
     //! Pick an Os status other than OP_OK
@@ -79,12 +79,15 @@ class DpWriterTester : public DpWriterGTestBase {
     static Os::File::Status pickOsFileError();
 
     //! Construct a DP file anme
-    static void constructDpFileName(
-        FwDpIdType id, //!< The container ID (input)
-        const Fw::Time& timeTag, //!< The time tag (input)
-        Fw::StringBase& fileName //!< The file name (output)
-    ); 
-  
+    static void constructDpFileName(FwDpIdType id,            //!< The container ID (input)
+                                    const Fw::Time& timeTag,  //!< The time tag (input)
+                                    Fw::StringBase& fileName  //!< The file name (output)
+    );
+
+    //! Check processing types
+    void checkProcTypes(const Fw::DpContainer& container  //!< The container
+    );
+
     //! Check telemetry
     void checkTelemetry();
 

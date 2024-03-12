@@ -58,15 +58,7 @@ void TestState ::action__BufferSendIn__OK() {
     this->constructDpFileName(container.getId(), container.getTimeTag(), fileName);
     ASSERT_EVENTS_FileWritten(0, buffer.getSize(), fileName.toChar());
     // Check processing types
-    FwIndexType expectedNumProcTypes = 0;
-    const Fw::DpCfg::ProcType::SerialType procTypes = container.getProcTypes();
-    for (FwIndexType i = 0; i < Fw::DpCfg::ProcType::NUM_CONSTANTS; i++) {
-        if (procTypes & (1 << i)) {
-            ++expectedNumProcTypes;
-        }
-    }
-    ASSERT_from_procBufferSendOut_SIZE(expectedNumProcTypes);
-    ASSERT_EQ(container.getProcTypes(), this->abstractState.m_procTypes);
+    this->checkProcTypes(container);
     // Check DP notification
     ASSERT_from_dpWrittenOut_SIZE(1);
     ASSERT_from_dpWrittenOut(0, fileName, container.getPriority(), buffer.getSize());
@@ -246,7 +238,6 @@ bool TestState ::precondition__BufferSendIn__BufferTooSmallForData() const {
 }
 
 void TestState ::action__BufferSendIn__BufferTooSmallForData() {
-#if 0
     // Clear the history
     this->clearHistory();
     // Reset the file pointer in the stub file implementation
@@ -270,22 +261,22 @@ void TestState ::action__BufferSendIn__BufferTooSmallForData() {
     this->invoke_to_bufferSendIn(0, buffer);
     this->component.doDispatch();
     // Check events
-    if (this->abstractState.m_invalidHeaderEventCount <
+    if (this->abstractState.m_bufferTooSmallForDataEventCount <
         DpWriterComponentBase::EVENTID_INVALIDHEADER_THROTTLE) {
         ASSERT_EVENTS_SIZE(1);
-        //ASSERT_EVENTS_InvalidHeader(0, buffer.getSize(), storedHash, computedHash);
-        this->abstractState.m_invalidHeaderEventCount++;
+        ASSERT_EVENTS_BufferTooSmallForData(0, buffer.getSize(), container.getPacketSize());
+        this->abstractState.m_bufferTooSmallForDataEventCount++;
     } else {
         ASSERT_EVENTS_SIZE(0);
     }
     // Verify no file output
     ASSERT_EQ(Os::Stub::File::Test::StaticData::data.pointer, 0);
     // Verify port output
-    ASSERT_FROM_PORT_HISTORY_SIZE(1);
+    ASSERT_from_dpWrittenOut_SIZE(0);
+    ASSERT_from_deallocBufferSendOut_SIZE(1);
     ASSERT_from_deallocBufferSendOut(0, buffer);
     // Increment m_NumErrors
     this->abstractState.m_NumErrors.value++;
-#endif
 }
 
 bool TestState ::precondition__BufferSendIn__FileOpenError() const {
