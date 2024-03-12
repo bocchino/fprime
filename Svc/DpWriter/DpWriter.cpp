@@ -162,47 +162,46 @@ void DpWriter::performProcessing(const Fw::DpContainer& container) {
 
 Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container,
                                    const Fw::FileNameString& fileName,
-                                   FwSizeType& packetSize) {
+                                   FwSizeType& fileSize) {
     Fw::Success::T status = Fw::Success::SUCCESS;
     // Get the buffer
     Fw::Buffer buffer = container.getBuffer();
-    // Get the packet size
-    packetSize = container.getPacketSize();
+    // Get the file size
+    fileSize = container.getPacketSize();
     // Open the file
     Os::File file;
     const Os::File::Status fileStatus = file.open(fileName.toChar(), Os::File::OPEN_CREATE);
     if (fileStatus != Os::File::OP_OK) {
         this->log_WARNING_HI_FileOpenError(static_cast<U32>(fileStatus), fileName.toChar());
-        this->m_numFailedWrites++;
         status = Fw::Success::FAILURE;
     }
     // Write the file
     if (status == Fw::Success::SUCCESS) {
-        // Set write size to packet size
+        // Set write size to file size
         // On entry to the write call, this is the number of bytes to write
         // On return from the write call, this is the number of bytes written
-        FwSignedSizeType writeSize = packetSize;
+        FwSignedSizeType writeSize = fileSize;
         const Os::File::Status fileStatus = file.write(buffer.getData(), writeSize);
         // If a successful write occurred, then update the number of bytes written
         if (fileStatus == Os::File::OP_OK) {
             this->m_numBytesWritten += writeSize;
         }
-        if ((fileStatus == Os::File::OP_OK) and (writeSize == static_cast<FwSignedSizeType>(packetSize))) {
+        if ((fileStatus == Os::File::OP_OK) and (writeSize == static_cast<FwSignedSizeType>(fileSize))) {
             // If the write status is success, and the number of bytes written
             // is the expected number, then record the success
             this->log_ACTIVITY_LO_FileWritten(writeSize, fileName.toChar());
         } else {
             // Otherwise record the failure
             this->log_WARNING_HI_FileWriteError(static_cast<U32>(fileStatus), static_cast<U32>(writeSize),
-                                                static_cast<U32>(packetSize), fileName.toChar());
+                                                static_cast<U32>(fileSize), fileName.toChar());
             status = Fw::Success::FAILURE;
         }
-        // Update the count of successful or failed writes
-        if (status == Fw::Success::SUCCESS) {
-            this->m_numSuccessfulWrites++;
-        } else {
-            this->m_numFailedWrites++;
-        }
+    }
+    // Update the count of successful or failed writes
+    if (status == Fw::Success::SUCCESS) {
+        this->m_numSuccessfulWrites++;
+    } else {
+        this->m_numFailedWrites++;
     }
     // Return the status
     return status;
