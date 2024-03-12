@@ -42,7 +42,7 @@ void TestState ::action__CLEAR_EVENT_THROTTLE__OK() {
     ASSERT_EQ(this->component.DpWriterComponentBase::m_FileWriteErrorThrottle, 0);
     ASSERT_EQ(this->component.DpWriterComponentBase::m_InvalidBufferThrottle, 0);
     ASSERT_EQ(this->component.DpWriterComponentBase::m_InvalidHeaderHashThrottle, 0);
-    ASSERT_EQ(this->component.DpWriterComponentBase::m_InvalidPacketHeaderThrottle, 0);
+    ASSERT_EQ(this->component.DpWriterComponentBase::m_InvalidHeaderThrottle, 0);
     // Update the abstract state
     this->abstractState.m_bufferTooSmallForDataEventCount = 0;
     this->abstractState.m_bufferTooSmallForPacketEventCount = 0;

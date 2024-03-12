@@ -38,6 +38,9 @@ class Tester {
     //! Invalid header hash
     void InvalidHeaderHash();
 
+    //! Invalid header
+    void InvalidHeader();
+
   public:
     // ----------------------------------------------------------------------
     // Rules

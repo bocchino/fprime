@@ -250,7 +250,7 @@ header hash.
 **Requirements tested:**
 `SVC-DPWRITER-001`
 
-#### 2.4.5. InvalidPacketHeader
+#### 2.4.5. InvalidHeader
 
 This rule invokes `bufferSendIn` with an invalid packet header.
 
@@ -261,10 +261,10 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 1. Clear history.
 1. Increment `m_NumBuffersReceived`.
 1. Construct a valid buffer _B_ with an invalid packet header.
-1. If `invalidPacketHeaderEventCount` < `DpWriterComponentBase::EVENTID_INVALIDPACKETHEADER_THROTTLE`,
+1. If `invalidPacketHeaderEventCount` < `DpWriterComponentBase::EVENTID_INVALIDHEADER_THROTTLE`,
    then
    1. Assert that the event history contains one element.
-   1. Assert that the event history for `InvalidPacketHeader` contains one element.
+   1. Assert that the event history for `InvalidHeader` contains one element.
    1. Check the event arguments.
    1. Increment `invalidPacketHeaderEventCount`.
 1. Otherwise assert that the event history is empty.
@@ -274,7 +274,7 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 1. Increment `m_NumErrors`.
 
 **Test:**
-1. Apply rule `BufferSendIn::InvalidPacketHeader`.
+1. Apply rule `BufferSendIn::InvalidHeader`.
 
 **Requirements tested:**
 `SVC-DPWRITER-001`

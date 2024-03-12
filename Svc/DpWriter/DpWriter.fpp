@@ -77,14 +77,6 @@ module Svc {
       format "Received buffer has size {}; minimum required size is {}" \
       throttle 10
 
-    @ Error occurred when deserializing the packet header
-    event InvalidPacketHeader(
-                               errorCode: U32 @< The error code
-                             ) \
-      severity warning high \
-      format "Deserialization of packet header failed with error code {}" \
-      throttle 10
-
     @ The received buffer has an invalid header hash
     event InvalidHeaderHash(
                              bufferSize: U32 @< The incoming buffer size
@@ -93,6 +85,14 @@ module Svc {
                            ) \
       severity warning high \
       format "Received a buffer of size {} with an invalid header hash (stored {x}, computed {x})" \
+      throttle 10
+
+    @ Error occurred when deserializing the packet header
+    event InvalidHeader(
+                               errorCode: U32 @< The error code
+                             ) \
+      severity warning high \
+      format "Deserialization of packet header failed with error code {}" \
       throttle 10
 
     @ Received buffer is too small to hold the data specified in the header

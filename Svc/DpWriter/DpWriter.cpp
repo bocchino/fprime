@@ -118,7 +118,7 @@ void DpWriter::CLEAR_EVENT_THROTTLE_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) 
     this->log_WARNING_HI_FileWriteError_ThrottleClear();
     this->log_WARNING_HI_InvalidBuffer_ThrottleClear();
     this->log_WARNING_HI_InvalidHeaderHash_ThrottleClear();
-    this->log_WARNING_HI_InvalidPacketHeader_ThrottleClear();
+    this->log_WARNING_HI_InvalidHeader_ThrottleClear();
     // Return command response
     this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
 }
@@ -132,7 +132,7 @@ Fw::Success::T DpWriter::deserializePacketHeader(Fw::Buffer& buffer, Fw::DpConta
     container.setBuffer(buffer);
     const Fw::SerializeStatus serialStatus = container.deserializeHeader();
     if (serialStatus != Fw::FW_SERIALIZE_OK) {
-        this->log_WARNING_HI_InvalidPacketHeader(static_cast<U32>(serialStatus));
+        this->log_WARNING_HI_InvalidHeader(static_cast<U32>(serialStatus));
         status = Fw::Success::FAILURE;
     }
     return status;
