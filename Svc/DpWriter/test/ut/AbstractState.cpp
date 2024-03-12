@@ -37,6 +37,10 @@ Fw::Buffer AbstractState::getDpBuffer() {
     Fw::Buffer buffer(this->bufferData, bufferSize);
     // Create the container
     Fw::DpContainer container(id, buffer);
+    // Update the priority
+    const FwDpPriorityType priority = STest::Pick::lowerUpper(std::numeric_limits<FwDpPriorityType>::min(),
+                                                              std::numeric_limits<FwDpPriorityType>::max());
+    container.setPriority(priority);
     // Update the time tag
     const U32 seconds = STest::Pick::any();
     const U32 microseconds = STest::Pick::startLength(0, 1000000);

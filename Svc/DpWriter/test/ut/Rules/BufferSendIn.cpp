@@ -10,6 +10,8 @@
 // of Technology Transfer at the California Institute of Technology.
 // ======================================================================
 
+#include <string>
+
 #include "Os/Stub/test/File.hpp"
 #include "STest/Pick/Pick.hpp"
 #include "Svc/DpWriter/test/ut/Rules/BufferSendIn.hpp"
@@ -59,9 +61,9 @@ void TestState ::action__BufferSendIn__OK() {
     FwIndexType expectedNumProcTypes = 0;
     const Fw::DpCfg::ProcType::SerialType procTypes = container.getProcTypes();
     for (FwIndexType i = 0; i < Fw::DpCfg::ProcType::NUM_CONSTANTS; i++) {
-      if (procTypes & (1 << i)) {
-        ++expectedNumProcTypes;
-      }
+        if (procTypes & (1 << i)) {
+            ++expectedNumProcTypes;
+        }
     }
     ASSERT_from_procBufferSendOut_SIZE(expectedNumProcTypes);
     ASSERT_EQ(container.getProcTypes(), this->abstractState.procTypes);
@@ -72,7 +74,8 @@ void TestState ::action__BufferSendIn__OK() {
     ASSERT_from_deallocBufferSendOut_SIZE(1);
     ASSERT_from_deallocBufferSendOut(0, buffer);
     // Check file write
-    // TODO
+    ASSERT_EQ(buffer.getSize(), Os::Stub::File::Test::StaticData::data.pointer);
+    ASSERT_EQ(0, ::memcmp(buffer.getData(), Os::Stub::File::Test::StaticData::data.writeResult, buffer.getSize()));
     // Update NumBytesWritten
     this->abstractState.NumBytesWritten.value += buffer.getSize();
     // Update NumSuccessfulWrites
