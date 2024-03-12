@@ -115,6 +115,44 @@ void TestState ::action__BufferSendIn__InvalidBuffer() {
     this->abstractState.m_NumErrors.value++;
 }
 
+bool TestState ::precondition__BufferSendIn__BufferTooSmallForPacket() const {
+    bool result = true;
+    return result;
+}
+
+void TestState ::action__BufferSendIn__BufferTooSmallForPacket() {
+    // Clear the history
+    this->clearHistory();
+    // Reset the file pointer in the stub file implementation
+    Os::Stub::File::Test::StaticData::data.pointer = 0;
+    // Update m_NumBuffersReceived
+    this->abstractState.m_NumBuffersReceived.value++;
+    // Construct a buffer that is too small to hold a data packet
+    const FwSizeType bufferSize = 1;
+    const FwSizeType minPacketSize = Fw::DpContainer::MIN_PACKET_SIZE;
+    ASSERT_LT(bufferSize, minPacketSize);
+    Fw::Buffer buffer(this->abstractState.m_bufferData, bufferSize);
+    // Send the buffer
+    this->invoke_to_bufferSendIn(0, buffer);
+    this->component.doDispatch();
+    // Check events
+    if (this->abstractState.m_bufferTooSmallForPacketEventCount <
+        DpWriterComponentBase::EVENTID_BUFFERTOOSMALLFORPACKET_THROTTLE) {
+        ASSERT_EVENTS_SIZE(1);
+        ASSERT_EVENTS_BufferTooSmallForPacket_SIZE(bufferSize);
+        this->abstractState.m_bufferTooSmallForPacketEventCount++;
+    } else {
+        ASSERT_EVENTS_SIZE(0);
+    }
+    // Verify no file output
+    ASSERT_EQ(Os::Stub::File::Test::StaticData::data.pointer, 0);
+    // Verify port output
+    ASSERT_FROM_PORT_HISTORY_SIZE(1);
+    ASSERT_from_deallocBufferSendOut(0, buffer);
+    // Increment m_NumErrors
+    this->abstractState.m_NumErrors.value++;
+}
+
 namespace BufferSendIn {
 
 // ----------------------------------------------------------------------
@@ -127,6 +165,10 @@ void Tester::OK() {
 
 void Tester::InvalidBuffer() {
     this->ruleInvalidBuffer.apply(this->testState);
+}
+
+void Tester::BufferTooSmallForPacket() {
+    this->ruleBufferTooSmallForPacket.apply(this->testState);
 }
 
 }  // namespace BufferSendIn

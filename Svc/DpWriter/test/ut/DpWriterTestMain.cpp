@@ -18,6 +18,13 @@ TEST(BufferSendIn, InvalidBuffer) {
     tester.InvalidBuffer();
 }
 
+TEST(BufferSendIn, BufferTooSmallForPacket) {
+    COMMENT("Invoke bufferSendIn with a buffer that is too small to hold a data product packet.");
+    REQUIREMENT("SVC-DPMANAGER-001");
+    BufferSendIn::Tester tester;
+    tester.BufferTooSmallForPacket();
+}
+
 TEST(BufferSendIn, OK) {
     COMMENT("Invoke bufferSendIn with nominal input.");
     REQUIREMENT("SVC-DPMANAGER-001");

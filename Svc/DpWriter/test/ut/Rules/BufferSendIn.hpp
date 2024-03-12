@@ -18,47 +18,48 @@
 
 namespace Svc {
 
-  namespace BufferSendIn {
+namespace BufferSendIn {
 
-    class Tester {
+class Tester {
+  public:
+    // ----------------------------------------------------------------------
+    // Tests
+    // ----------------------------------------------------------------------
 
-      public:
+    //! OK
+    void OK();
 
-        // ----------------------------------------------------------------------
-        // Tests
-        // ----------------------------------------------------------------------
+    //! Invalid buffer
+    void InvalidBuffer();
 
-        //! OK
-        void OK();
+    //! Buffer too small for packet
+    void BufferTooSmallForPacket();
 
-        //! Invalid buffer
-        void InvalidBuffer();
+  public:
+    // ----------------------------------------------------------------------
+    // Rules
+    // ----------------------------------------------------------------------
 
-      public:
+    //! Rule BufferSendIn::OK
+    Rules::BufferSendIn::OK ruleOK;
 
-        // ----------------------------------------------------------------------
-        // Rules
-        // ----------------------------------------------------------------------
+    //! Rule BufferSendIn::InvalidBuffer
+    Rules::BufferSendIn::InvalidBuffer ruleInvalidBuffer;
 
-        //! Rule BufferSendIn::OK
-        Rules::BufferSendIn::OK ruleOK;
-        
-        //! Rule BufferSendIn::InvalidBuffer
-        Rules::BufferSendIn::InvalidBuffer ruleInvalidBuffer;
+    //! Rule BufferSendIn::BufferTooSmallForPacket
+    Rules::BufferSendIn::BufferTooSmallForPacket ruleBufferTooSmallForPacket;
 
-      public:
+  public:
+    // ----------------------------------------------------------------------
+    // Public member variables
+    // ----------------------------------------------------------------------
 
-        // ----------------------------------------------------------------------
-        // Public member variables
-        // ----------------------------------------------------------------------
+    //! Test state
+    TestState testState;
+};
 
-        //! Test state
-        TestState testState;
+}  // namespace BufferSendIn
 
-    };
-
-  }
-
-}
+}  // namespace Svc
 
 #endif

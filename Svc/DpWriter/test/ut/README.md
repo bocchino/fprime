@@ -216,6 +216,9 @@ hold a data product packet.
 1. Verify no data product file.
 1. Increment `m_NumErrors`.
 
+**Requirements tested:**
+`SVC-DPWRITER-001`
+
 #### 2.4.4. InvalidHeaderHash
 
 This rule invokes `bufferSendIn` with a buffer that has an invalid

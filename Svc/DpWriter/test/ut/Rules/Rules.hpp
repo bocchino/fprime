@@ -33,6 +33,7 @@ namespace Svc {
 
 namespace Rules {
 
+RULES_DEF_RULE(BufferSendIn, BufferTooSmallForPacket)
 RULES_DEF_RULE(BufferSendIn, InvalidBuffer)
 RULES_DEF_RULE(BufferSendIn, OK)
 RULES_DEF_RULE(FileOpenStatus, Error)
