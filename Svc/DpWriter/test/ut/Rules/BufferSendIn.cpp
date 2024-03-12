@@ -82,14 +82,49 @@ void TestState ::action__BufferSendIn__OK() {
     this->abstractState.NumSuccessfulWrites.value++;
 }
 
+bool TestState ::precondition__BufferSendIn__InvalidBuffer() const {
+    bool result = true;
+    return result;
+}
+
+void TestState ::action__BufferSendIn__InvalidBuffer() {
+    // Clear the history
+    this->clearHistory();
+    // Reset the file pointer in the stub file implementation
+    Os::Stub::File::Test::StaticData::data.pointer = 0;
+    // Update NumBuffersReceived
+    this->abstractState.NumBuffersReceived.value++;
+    // Construct an invalid buffer
+    Fw::Buffer buffer;
+    // Send the buffer
+    this->invoke_to_bufferSendIn(0, buffer);
+    this->component.doDispatch();
+    // Check events
+    if (this->abstractState.invalidBufferEventCount < DpWriterComponentBase::EVENTID_INVALIDBUFFER_THROTTLE) {
+        ASSERT_EVENTS_SIZE(1);
+        ASSERT_EVENTS_InvalidBuffer_SIZE(1);
+        this->abstractState.invalidBufferEventCount++;
+    } else {
+        ASSERT_EVENTS_SIZE(0);
+    }
+    // Verify no file output
+    ASSERT_EQ(Os::Stub::File::Test::StaticData::data.pointer, 0);
+    // Increment NumErrors
+    this->abstractState.NumErrors.value++;
+}
+
 namespace BufferSendIn {
 
 // ----------------------------------------------------------------------
 // Tests
 // ----------------------------------------------------------------------
 
-void Tester ::OK() {
+void Tester::OK() {
     this->ruleOK.apply(this->testState);
+}
+
+void Tester::InvalidBuffer() {
+    this->ruleInvalidBuffer.apply(this->testState);
 }
 
 }  // namespace BufferSendIn

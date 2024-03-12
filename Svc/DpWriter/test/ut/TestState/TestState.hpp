@@ -27,6 +27,7 @@ class TestState : public DpWriterTester {
     // Rule definitions
     // ----------------------------------------------------------------------
 
+    TEST_STATE_DEF_RULE(BufferSendIn, InvalidBuffer)
     TEST_STATE_DEF_RULE(BufferSendIn, OK)
     TEST_STATE_DEF_RULE(FileOpenStatus, Error)
     TEST_STATE_DEF_RULE(FileOpenStatus, OK)

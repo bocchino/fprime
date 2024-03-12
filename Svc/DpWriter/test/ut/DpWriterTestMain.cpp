@@ -11,6 +11,13 @@
 
 namespace Svc {
 
+TEST(BufferSendIn, InvalidBuffer) {
+    COMMENT("Invoke bufferSendIn with an invalid buffer.");
+    REQUIREMENT("SVC-DPMANAGER-001");
+    BufferSendIn::Tester tester;
+    tester.InvalidBuffer();
+}
+
 TEST(BufferSendIn, OK) {
     COMMENT("Invoke bufferSendIn with nominal input.");
     REQUIREMENT("SVC-DPMANAGER-001");

@@ -31,6 +31,9 @@ namespace Svc {
         //! OK
         void OK();
 
+        //! Invalid buffer
+        void InvalidBuffer();
+
       public:
 
         // ----------------------------------------------------------------------
@@ -39,6 +42,9 @@ namespace Svc {
 
         //! Rule BufferSendIn::OK
         Rules::BufferSendIn::OK ruleOK;
+        
+        //! Rule BufferSendIn::InvalidBuffer
+        Rules::BufferSendIn::InvalidBuffer ruleInvalidBuffer;
 
       public:
 
