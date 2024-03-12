@@ -191,36 +191,7 @@ This rule invokes `bufferSendIn` with an invalid buffer.
 **Requirements tested:**
 `SVC-DPWRITER-001`
 
-#### 2.4.3. InvalidPacketHeader
-
-This rule invokes `bufferSendIn` with an invalid packet header.
-
-**Precondition:**
-`true`
-
-**Action:**
-1. Clear history.
-1. Increment `NumBuffersReceived`.
-1. Construct a valid buffer _B_ with an invalid packet header.
-1. If `invalidPacketHeaderEventCount` < `DpWriterComponentBase::EVENTID_INVALIDPACKETHEADER_THROTTLE`,
-   then
-   1. Assert that the event history contains one element.
-   1. Assert that the event history for `InvalidPacketHeader` contains one element.
-   1. Check the event arguments.
-   1. Increment `invalidPacketHeaderEventCount`.
-1. Otherwise assert that the event history is empty.
-1. Assert no DP written notification.
-1. Assert buffer sent for deallocation.
-1. Verify no data product file.
-1. Increment `NumErrors`.
-
-**Test:**
-1. Apply rule `BufferSendIn::InvalidPacketHeader`.
-
-**Requirements tested:**
-`SVC-DPWRITER-001`
-
-#### 2.4.4. BufferTooSmallForPacket
+#### 2.4.3. BufferTooSmallForPacket
 
 This rule invokes `bufferSendIn` with a buffer that is too small to
 hold a data product packet.
@@ -244,7 +215,7 @@ hold a data product packet.
 1. Verify no data product file.
 1. Increment `NumErrors`.
 
-#### 2.4.5. InvalidHeaderHash
+#### 2.4.4. InvalidHeaderHash
 
 This rule invokes `bufferSendIn` with a buffer that has an invalid
 header hash.
@@ -271,6 +242,35 @@ header hash.
 
 **Test:**
 1. Apply rule `BufferSendIn::BufferTooSmallForPacket`.
+
+**Requirements tested:**
+`SVC-DPWRITER-001`
+
+#### 2.4.5. InvalidPacketHeader
+
+This rule invokes `bufferSendIn` with an invalid packet header.
+
+**Precondition:**
+`true`
+
+**Action:**
+1. Clear history.
+1. Increment `NumBuffersReceived`.
+1. Construct a valid buffer _B_ with an invalid packet header.
+1. If `invalidPacketHeaderEventCount` < `DpWriterComponentBase::EVENTID_INVALIDPACKETHEADER_THROTTLE`,
+   then
+   1. Assert that the event history contains one element.
+   1. Assert that the event history for `InvalidPacketHeader` contains one element.
+   1. Check the event arguments.
+   1. Increment `invalidPacketHeaderEventCount`.
+1. Otherwise assert that the event history is empty.
+1. Assert no DP written notification.
+1. Assert buffer sent for deallocation.
+1. Verify no data product file.
+1. Increment `NumErrors`.
+
+**Test:**
+1. Apply rule `BufferSendIn::InvalidPacketHeader`.
 
 **Requirements tested:**
 `SVC-DPWRITER-001`
