@@ -8,13 +8,15 @@
 |----------|------|-------------|---------------|
 | `NumBuffersReceived` | `OnChangeChannel<U32>` | The number of buffers received | 0 |
 | `NumBytesWritten` | `OnChangeChannel<U64>` | The number of bytes written | 0 |
+| `NumErrors` | `OnChangeChannel<U32>` | The number of errors | 0 |
 | `NumFailedWrites` | `OnChangeChannel<U32>` | The number of failed writes | 0 |
 | `NumSuccessfulWrites` | `OnChangeChannel<U32>` | The number of successful writes | 0 |
-| `NumErrors` | `OnChangeChannel<U32>` | The number of errors | 0 |
-| `invalidBufferEventCount` | `FwSizeType` | The number of buffer invalid events since the last throttle clear |0 |
-| `bufferTooSmallEventCount` | `FwSizeType` | The number of buffer too small events since the last throttle clear |0 |
+| `bufferTooSmallForDataEventCount` | `FwSizeType` | The number of `BufferTooSmallForData` events since the last throttle clear |0 |
+| `bufferTooSmallForPacketEventCount` | `FwSizeType` | The number of `BufferTooSmallForPacket` events since the last throttle clear |0 |
 | `fileOpenErrorEventCount` | `FwSizeType` | The number of file open error events since the last throttle clear |0 |
 | `fileWriteErrorEventCount` | `FwSizeType` | The number of file write error events since the last throttle clear |0 |
+| `invalidBufferEventCount` | `FwSizeType` | The number of buffer invalid events since the last throttle clear |0 |
+| `invalidHeaderHashEventCount` | `FwSizeType` | The number of invalid header hash events since the last throttle clear |0 |
 | `invalidPacketDescriptorEventCount` | `FwSizeType` | The number of invalid packet descriptor events since the last throttle clear |0 |
 
 ## 2. Rule Groups
@@ -218,7 +220,65 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 **Requirements tested:**
 `SVC-DPWRITER-001`
 
-#### 2.4.4. BufferTooSmall
+#### 2.4.4. BufferTooSmallForPacket
+
+This rule invokes `bufferSendIn` with a buffer that is too small to
+hold a data product packet.
+
+**Precondition:**
+`true`
+
+**Action:**
+1. Clear history.
+1. Increment `NumBuffersReceived`.
+1. Construct a valid buffer _B_ that is not large enough hold a data product packet.
+1. If `bufferTooSmallEventCount` < `DpWriterComponentBase::EVENTID_BUFFERTOOSMALLFORPACKET_THROTTLE`,
+   then
+   1. Assert that the event history contains one element.
+   1. Assert that the event history for `BufferTooSmallForPacket` contains one element.
+   1. Check the event arguments.
+   1. Increment `bufferTooSmallEventCount`.
+1. Otherwise assert that the event history is empty.
+1. Assert no DP written notification.
+1. Assert buffer sent for deallocation.
+1. Verify no data product file.
+1. Increment `NumErrors`.
+
+#### 2.4.5. InvalidHeaderHash
+
+This rule invokes `bufferSendIn` with a buffer that has an invalid
+header hash.
+
+**Precondition:**
+`true`
+
+**Action:**
+1. Clear history.
+1. Increment `NumBuffersReceived`.
+1. Construct a valid buffer _B_ that is large enough to hold a data product
+   packet and that has an invalid header hash.
+1. If `invalidHeaderHashEventCount` < `DpWriterComponentBase::EVENTID_INVALIDHEADERHASH_THROTTLE`,
+   then
+   1. Assert that the event history contains one element.
+   1. Assert that the event history for `InvalidHeaderHash` contains one element.
+   1. Check the event arguments.
+   1. Increment `invalidHeaderHashEventCount`.
+1. Otherwise assert that the event history is empty.
+1. Assert no DP written notification.
+1. Assert buffer sent for deallocation.
+1. Verify no data product file.
+1. Increment `NumErrors`.
+
+**Test:**
+1. Apply rule `BufferSendIn::BufferTooSmallForPacket`.
+
+**Requirements tested:**
+`SVC-DPWRITER-001`
+
+#### 2.4.6. BufferTooSmallForData
+
+This rule invokes `bufferSendIn` with a buffer that is too small to
+hold the data size specified in the header.
 
 **Precondition:**
 `true`
@@ -228,10 +288,10 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 1. Increment `NumBuffersReceived`.
 1. Construct a valid buffer _B_ with a valid packet header, but
    a data size that will not fit in _B_.
-1. If `bufferTooSmallEventCount` < `DpWriterComponentBase::EVENTID_BUFFERTOOSMALL_THROTTLE`,
+1. If `bufferTooSmallEventCount` < `DpWriterComponentBase::EVENTID_BUFFERTOOSMALLFORDATA_THROTTLE`,
    then
    1. Assert that the event history contains one element.
-   1. Assert that the event history for `BufferTooSmall` contains one element.
+   1. Assert that the event history for `BufferTooSmallForData` contains one element.
    1. Check the event arguments.
    1. Increment `bufferTooSmallEventCount`.
 1. Otherwise assert that the event history is empty.
@@ -241,12 +301,12 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 1. Increment `NumErrors`.
 
 **Test:**
-1. Apply rule `BufferSendIn::BufferTooSmall`.
+1. Apply rule `BufferSendIn::BufferTooSmallForData`.
 
 **Requirements tested:**
 `SVC-DPWRITER-001`
 
-#### 2.4.5. FileOpenError
+#### 2.4.7. FileOpenError
 
 **Precondition:**
 `fileOpenStatus != Os::File::OP_OK`
@@ -271,7 +331,7 @@ This rule invokes `bufferSendIn` with an invalid packet header.
 **Requirements tested:**
 `SVC-DPWRITER-004`
 
-#### 2.4.6. FileWriteError
+#### 2.4.8. FileWriteError
 
 **Precondition:**
 `fileOpenStatus == Os::File::OP_OK` and

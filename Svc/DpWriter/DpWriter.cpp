@@ -41,7 +41,7 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
     const FwSizeType bufferSize = buffer.getSize();
     if (status == Fw::Success::SUCCESS) {
         if (bufferSize < Fw::DpContainer::MIN_PACKET_SIZE) {
-            this->log_WARNING_HI_BufferTooSmall(bufferSize, Fw::DpContainer::MIN_PACKET_SIZE);
+            this->log_WARNING_HI_BufferTooSmallForPacket(bufferSize, Fw::DpContainer::MIN_PACKET_SIZE);
             status = Fw::Success::FAILURE;
         }
     }
@@ -110,12 +110,13 @@ void DpWriter::CLEAR_EVENT_THROTTLE_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) 
     (void)opCode;
     (void)cmdSeq;
     // Clear throttling
-    this->log_WARNING_HI_InvalidBuffer_ThrottleClear();
-    this->log_WARNING_HI_InvalidHeaderHash_ThrottleClear();
-    this->log_WARNING_HI_BufferTooSmall_ThrottleClear();
-    this->log_WARNING_HI_InvalidPacketHeader_ThrottleClear();
+    this->log_WARNING_HI_BufferTooSmallForData_ThrottleClear();
+    this->log_WARNING_HI_BufferTooSmallForPacket_ThrottleClear();
     this->log_WARNING_HI_FileOpenError_ThrottleClear();
     this->log_WARNING_HI_FileWriteError_ThrottleClear();
+    this->log_WARNING_HI_InvalidBuffer_ThrottleClear();
+    this->log_WARNING_HI_InvalidHeaderHash_ThrottleClear();
+    this->log_WARNING_HI_InvalidPacketHeader_ThrottleClear();
     // Return command response
     this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
 }
@@ -161,7 +162,7 @@ Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container,
     // Check that the packet size fits in the buffer
     const FwSizeType bufferSize = buffer.getSize();
     if (bufferSize < packetSize) {
-        this->log_WARNING_HI_BufferTooSmall(bufferSize, packetSize);
+        this->log_WARNING_HI_BufferTooSmallForData(bufferSize, packetSize);
         status = Fw::Success::FAILURE;
     }
     // Open the file

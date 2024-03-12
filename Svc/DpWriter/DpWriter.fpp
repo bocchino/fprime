@@ -69,7 +69,7 @@ module Svc {
       throttle 10
 
     @ Received buffer is too small to hold a data product packet
-    event BufferTooSmall(
+    event BufferTooSmallForPacket(
                           bufferSize: U32 @< The incoming buffer size
                           minSize: U32 @< The minimum required size
                         ) \
@@ -91,6 +91,15 @@ module Svc {
                            ) \
       severity warning high \
       format "Received a buffer of size {} with an invalid header hash" \
+      throttle 10
+
+    @ Received buffer is too small to hold the data specified in the header
+    event BufferTooSmallForData(
+                          bufferSize: U32 @< The incoming buffer size
+                          minSize: U32 @< The minimum required size
+                        ) \
+      severity warning high \
+      format "Received buffer has size {}; minimum required size is {}" \
       throttle 10
 
     @ An error occurred when opening a file
