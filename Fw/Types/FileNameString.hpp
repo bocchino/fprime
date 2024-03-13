@@ -12,8 +12,8 @@ namespace Fw {
         public:
 
             enum {
-                SERIALIZED_TYPE_ID = FW_TYPEID_FIXED_LENGTH_STRING, //!< typeid for string type
-                STRING_SIZE = FW_FIXED_LENGTH_STRING_SIZE, //!< Storage for string
+                SERIALIZED_TYPE_ID = FW_TYPEID_FILE_NAME_STRING, //!< typeid for string type
+                STRING_SIZE = FileNameStringSize, //!< Storage for string
                 SERIALIZED_SIZE = STRING_SIZE + sizeof(FwBuffSizeType) //!< Serialized size is size of buffer + size field
             };
 
@@ -31,7 +31,7 @@ namespace Fw {
 
         private:
 
-            char m_buf[FileNameStringSize]; //!< storage for string data
+            char m_buf[STRING_SIZE]; //!< storage for string data
     };
 }
 
