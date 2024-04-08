@@ -7,12 +7,13 @@
 #ifndef Svc_DpWriter_HPP
 #define Svc_DpWriter_HPP
 
+#include <DpCfg.hpp>
+
 #include "Fw/Dp/DpContainer.hpp"
 #include "Fw/Types/FileNameString.hpp"
 #include "Fw/Types/String.hpp"
 #include "Fw/Types/SuccessEnumAc.hpp"
 #include "Svc/DpWriter/DpWriterComponentAc.hpp"
-#include "config/DpCfg.hpp"
 
 namespace Svc {
 
@@ -67,7 +68,7 @@ class DpWriter : public DpWriterComponentBase {
 
     //! Deserialize the packet header
     //! \return Success or failure
-    Fw::Success::T deserializePacketHeader(Fw::Buffer& buffer,     //!< The packet buffer
+    Fw::Success::T deserializePacketHeader(Fw::Buffer& buffer,         //!< The packet buffer
                                            Fw::DpContainer& container  //!< The container
     );
 
@@ -77,7 +78,7 @@ class DpWriter : public DpWriterComponentBase {
 
     //! Write the file
     //! \return Success or failure
-    Fw::Success::T writeFile(const Fw::DpContainer& container,    //! The container (input)
+    Fw::Success::T writeFile(const Fw::DpContainer& container,    //!< The container (input)
                              const Fw::FileNameString& fileName,  //!< The file name
                              FwSizeType& fileSize                 //!< The file size (output)
     );

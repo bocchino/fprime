@@ -1,9 +1,10 @@
 #ifndef FW_FILENAMESTRING_HPP
 #define FW_FILENAMESTRING_HPP
 
+#include <FpConfig.hpp>
+
 #include "Fw/Cfg/SerIds.hpp"
 #include "Fw/Types/StringType.hpp"
-#include "config/FpConfig.hpp"
 #include "config/FppConstantsAc.hpp"
 
 namespace Fw {
@@ -29,7 +30,7 @@ class FileNameString : public Fw::StringBase {
     NATIVE_UINT_TYPE getCapacity() const;  //!< return buffer size
 
   private:
-    char m_buf[STRING_SIZE];  //!< storage for string data
+    char m_buf[FileNameString::STRING_SIZE];  //!< storage for string data
 };
 }  // namespace Fw
 
