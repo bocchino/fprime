@@ -5,6 +5,7 @@
 // ======================================================================
 
 #include "Fw/Com/ComPacket.hpp"
+#include "Fw/Types/FileNameString.hpp"
 #include "Fw/Types/Serializable.hpp"
 #include "Os/File.hpp"
 #include "Svc/DpWriter/DpWriter.hpp"
@@ -18,9 +19,13 @@ namespace Svc {
 // Construction, initialization, and destruction
 // ----------------------------------------------------------------------
 
-DpWriter::DpWriter(const char* const compName) : DpWriterComponentBase(compName) {}
+DpWriter::DpWriter(const char* const compName) : DpWriterComponentBase(compName), m_dpFileNamePrefix() {}
 
 DpWriter::~DpWriter() {}
+
+void DpWriter::configure(const Fw::StringBase& dpFileNamePrefix) {
+    this->m_dpFileNamePrefix = dpFileNamePrefix;
+}
 
 // ----------------------------------------------------------------------
 // Handler implementations for user-defined typed input ports
@@ -41,7 +46,10 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
     const FwSizeType bufferSize = buffer.getSize();
     if (status == Fw::Success::SUCCESS) {
         if (bufferSize < Fw::DpContainer::MIN_PACKET_SIZE) {
-            this->log_WARNING_HI_BufferTooSmallForPacket(bufferSize, Fw::DpContainer::MIN_PACKET_SIZE);
+            this->log_WARNING_HI_BufferTooSmallForPacket(
+                static_cast<U32>(bufferSize),
+                Fw::DpContainer::MIN_PACKET_SIZE);
+
             status = Fw::Success::FAILURE;
         }
     }
@@ -53,8 +61,10 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
         Utils::HashBuffer computedHash;
         status = container.checkHeaderHash(storedHash, computedHash);
         if (status != Fw::Success::SUCCESS) {
-            this->log_WARNING_HI_InvalidHeaderHash(bufferSize, storedHash.asBigEndianU32(),
-                                                   computedHash.asBigEndianU32());
+            this->log_WARNING_HI_InvalidHeaderHash(
+                static_cast<U32>(bufferSize),
+                storedHash.asBigEndianU32(),
+                computedHash.asBigEndianU32());
         }
     }
     // Deserialize the packet header
@@ -65,7 +75,9 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
     if (status == Fw::Success::SUCCESS) {
         const FwSizeType packetSize = container.getPacketSize();
         if (bufferSize < packetSize) {
-            this->log_WARNING_HI_BufferTooSmallForData(bufferSize, packetSize);
+            this->log_WARNING_HI_BufferTooSmallForData(
+                static_cast<U32>(bufferSize),
+                static_cast<U32>(packetSize));
             status = Fw::Success::FAILURE;
         }
     }
@@ -78,7 +90,8 @@ void DpWriter::bufferSendIn_handler(const NATIVE_INT_TYPE portNum, Fw::Buffer& b
     if (status == Fw::Success::SUCCESS) {
         const FwDpIdType containerId = container.getId();
         const Fw::Time timeTag = container.getTimeTag();
-        fileName.format(DP_FILENAME_FORMAT, containerId, timeTag.getSeconds(), timeTag.getUSeconds());
+        fileName.format(DP_FILENAME_FORMAT, this->m_dpFileNamePrefix.toChar(), containerId, timeTag.getSeconds(),
+                        timeTag.getUSeconds());
     }
     FwSizeType fileSize = 0;
     // Write the file
@@ -171,7 +184,7 @@ Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container,
     Os::File file;
     Os::File::Status fileStatus = file.open(fileName.toChar(), Os::File::OPEN_CREATE);
     if (fileStatus != Os::File::OP_OK) {
-        this->log_WARNING_HI_FileOpenError(static_cast<U32>(fileStatus), fileName.toChar());
+        this->log_WARNING_HI_FileOpenError(static_cast<U32>(fileStatus), fileName);
         status = Fw::Success::FAILURE;
     }
     // Write the file
@@ -179,20 +192,22 @@ Fw::Success::T DpWriter::writeFile(const Fw::DpContainer& container,
         // Set write size to file size
         // On entry to the write call, this is the number of bytes to write
         // On return from the write call, this is the number of bytes written
-        FwSignedSizeType writeSize = fileSize;
+        FwSignedSizeType writeSize = static_cast<FwSignedSizeType>(fileSize);
         fileStatus = file.write(buffer.getData(), writeSize);
         // If a successful write occurred, then update the number of bytes written
         if (fileStatus == Os::File::OP_OK) {
-            this->m_numBytesWritten += writeSize;
+            this->m_numBytesWritten += static_cast<U64>(writeSize);
         }
         if ((fileStatus == Os::File::OP_OK) and (writeSize == static_cast<FwSignedSizeType>(fileSize))) {
             // If the write status is success, and the number of bytes written
             // is the expected number, then record the success
-            this->log_ACTIVITY_LO_FileWritten(writeSize, fileName.toChar());
+            this->log_ACTIVITY_LO_FileWritten(
+                static_cast<U32>(writeSize),
+                fileName);
         } else {
             // Otherwise record the failure
             this->log_WARNING_HI_FileWriteError(static_cast<U32>(fileStatus), static_cast<U32>(writeSize),
-                                                static_cast<U32>(fileSize), fileName.toChar());
+                                                static_cast<U32>(fileSize), fileName);
             status = Fw::Success::FAILURE;
         }
     }
@@ -210,11 +225,9 @@ void DpWriter::sendNotification(const Fw::DpContainer& container,
                                 const Fw::FileNameString& fileName,
                                 FwSizeType fileSize) {
     if (isConnected_dpWrittenOut_OutputPort(0)) {
-        // Construct the file name
-        fileNameString portFileName(fileName.toChar());
         // Get the priority
         const FwDpPriorityType priority = container.getPriority();
-        this->dpWrittenOut_out(0, portFileName, priority, fileSize);
+        this->dpWrittenOut_out(0, fileName, priority, fileSize);
     }
 }
 
