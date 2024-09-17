@@ -8,7 +8,7 @@
 #define FppTest_SmTest_Tester_HPP
 
 #include "SmTestGTestBase.hpp"
-#include "FppTest/state_machine/SmTest.hpp"
+#include "FppTest/state_machine/external/SmTest.hpp"
 #include "STest/Pick/Pick.hpp"
 
 namespace FppTest {

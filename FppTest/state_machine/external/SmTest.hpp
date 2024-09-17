@@ -9,7 +9,7 @@
 
 #include <array>
 
-#include "FppTest/state_machine/SmTestComponentAc.hpp"
+#include "FppTest/state_machine/external/SmTestComponentAc.hpp"
 #include "Fw/Types/String.hpp"
 
 namespace FppTest {

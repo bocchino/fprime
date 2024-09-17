@@ -2,7 +2,7 @@
 // TestMain.cpp
 // ----------------------------------------------------------------------
 
-#include "FppTest/state_machine/test/ut/Tester.hpp"
+#include "FppTest/state_machine/external/test/ut/Tester.hpp"
 #include "Fw/Test/UnitTest.hpp"
 #include "STest/Random/Random.hpp"
 
