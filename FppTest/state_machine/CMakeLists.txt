@@ -1,1 +1,1 @@
-add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/external/")
+add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/external_instance/")

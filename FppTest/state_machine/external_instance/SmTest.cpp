@@ -6,7 +6,7 @@
 
 #include <cstdio>
 
-#include "FppTest/state_machine/external/SmTest.hpp"
+#include "FppTest/state_machine/external_instance/SmTest.hpp"
 #include "Fw/Types/Assert.hpp"
 
 namespace FppTest {

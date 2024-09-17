@@ -6,7 +6,7 @@
 
 #include <cstring>
 
-#include "FppTest/state_machine/external/test/ut/Tester.hpp"
+#include "FppTest/state_machine/external_instance/test/ut/Tester.hpp"
 #include "Fw/Types/ExternalString.hpp"
 #include "STest/Pick/Pick.hpp"
 
