@@ -11,8 +11,8 @@
 //
 // ======================================================================
 
-#ifndef FppTest_SmGuards_HPP
-#define FppTest_SmGuards_HPP
+#ifndef FppTest_History_HPP
+#define FppTest_History_HPP
 
 #include <array>
 
