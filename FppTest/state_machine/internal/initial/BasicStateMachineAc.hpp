@@ -35,7 +35,7 @@ class BasicStateMachineBase {
     //! Destructor
     virtual ~BasicStateMachineBase();
 
-  PROTECTED:
+  public:
     // ----------------------------------------------------------------------
     // Initialization
     // ----------------------------------------------------------------------
@@ -58,7 +58,7 @@ class BasicStateMachineBase {
     // ----------------------------------------------------------------------
 
     //! Enter state S
-    void stateEntry_S();
+    void enter_S();
 
   PROTECTED:
     // ----------------------------------------------------------------------

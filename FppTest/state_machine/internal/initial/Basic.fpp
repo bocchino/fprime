@@ -6,7 +6,7 @@ module FppTest {
     @ Action a
     action a
 
-    initial do { a } enter S
+    initial do { a, a } enter S
 
     @ State S
     state S {
