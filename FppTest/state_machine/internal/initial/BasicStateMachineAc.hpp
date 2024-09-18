@@ -20,6 +20,8 @@ class BasicStateMachineBase {
 
     //! The state type
     enum class State : FwEnumStoreType {
+        //! Uninitialized state
+        __FPRIME_AC_UNINITIALIZED,
         //! State S
         S
     };
@@ -69,7 +71,7 @@ class BasicStateMachineBase {
     FwEnumStoreType m_id = 0;
 
     //! The state
-    State m_state = State::S;
+    State m_state = State::__FPRIME_AC_UNINITIALIZED;
 };
 
 };  // namespace FppTest
