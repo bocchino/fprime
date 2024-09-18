@@ -27,12 +27,8 @@ void Basic::action_a() {
 
 void Basic::test() {
     this->m_action_a_history.clear();
-    const U32 upper = FW_MIN(
-        std::numeric_limits<FwEnumStoreType>::max(),
-        std::numeric_limits<U32>::max()
-    );
-    const U32 id = STest::Pick::lowerUpper(0, upper);
-    this->init(static_cast<FwEnumStoreType>(id));
+    const FwEnumStoreType id = InternalSmUtil::pickStateMachineId();
+    this->init(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S);
     ASSERT_EQ(this->m_action_a_history.getSize(), 3);

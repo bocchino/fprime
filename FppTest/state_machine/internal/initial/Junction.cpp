@@ -32,9 +32,8 @@ bool Junction::guard_g() {
 void Junction::testFalse() {
     this->m_action_a_history.clear();
     this->m_guard_g.reset();
-    const U32 upper = FW_MIN(std::numeric_limits<FwEnumStoreType>::max(), std::numeric_limits<U32>::max());
-    const U32 id = STest::Pick::lowerUpper(0, upper);
-    this->init(static_cast<FwEnumStoreType>(id));
+    const FwEnumStoreType id = InternalSmUtil::pickStateMachineId();
+    this->init(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::T);
     ASSERT_EQ(this->m_action_a_history.getSize(), 5);
@@ -44,10 +43,9 @@ void Junction::testFalse() {
 void Junction::testTrue() {
     this->m_action_a_history.clear();
     this->m_guard_g.reset();
-    const U32 upper = FW_MIN(std::numeric_limits<FwEnumStoreType>::max(), std::numeric_limits<U32>::max());
-    const U32 id = STest::Pick::lowerUpper(0, upper);
     this->m_guard_g.setReturnValue(true);
-    this->init(static_cast<FwEnumStoreType>(id));
+    const FwEnumStoreType id = InternalSmUtil::pickStateMachineId();
+    this->init(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S);
     ASSERT_EQ(this->m_action_a_history.getSize(), 3);
