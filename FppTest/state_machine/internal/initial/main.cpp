@@ -6,6 +6,7 @@
 
 #include "FppTest/state_machine/internal/initial/Basic.hpp"
 #include "FppTest/state_machine/internal/initial/Junction.hpp"
+#include "FppTest/state_machine/internal/initial/Nested.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
@@ -21,6 +22,11 @@ TEST(Junction, False) {
 TEST(Junction, True) {
   FppTest::Junction junction;
   junction.testTrue();
+}
+
+TEST(Nested, Test) {
+  FppTest::Nested nested;
+  nested.test();
 }
 
 // ----------------------------------------------------------------------
