@@ -54,12 +54,12 @@ class History {
         return result;
     }
 
-    //! Push a value on the history
-    void pushValue(Signal signal, //!< The signal
-                   const T& value  //!< The value
+    //! Push an item on the history
+    void push(Signal signal, //!< The signal
+              const T& value  //!< The value
     ) {
         FW_ASSERT(this->m_size < size, static_cast<FwAssertArgType>(this->m_size));
-        this->m_signals.pushElement(signal);
+        this->m_signals.push(signal);
         this->m_values[this->m_size] = value;
         this->m_size++;
     }

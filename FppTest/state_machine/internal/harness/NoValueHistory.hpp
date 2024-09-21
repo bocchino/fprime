@@ -46,8 +46,8 @@ class NoValueHistory {
         return result;
     }
 
-    //! Push an element on the history
-    void pushElement(Signal signal  //!< The signal
+    //! Push an item on the history
+    void push(Signal signal  //!< The signal
     ) {
         FW_ASSERT(m_size < size);
         this->m_signals[m_size] = signal;

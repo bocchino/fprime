@@ -42,7 +42,7 @@ class SmGuard {
     bool call(Signal signal,  //!< The signal
               T arg           //!< The argument
     ) {
-        this->m_callHistory.pushValue(signal, arg);
+        this->m_callHistory.push(signal, arg);
         return this->m_returnValue;
     }
 

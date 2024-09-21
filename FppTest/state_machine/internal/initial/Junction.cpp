@@ -22,7 +22,7 @@ namespace FppTest {
 Junction::Junction() : JunctionStateMachineBase(), m_action_a_history(), m_guard_g() {}
 
 void Junction::action_a(Signal signal) {
-    this->m_action_a_history.pushElement(signal);
+    this->m_action_a_history.push(signal);
 }
 
 bool Junction::guard_g(Signal signal) {

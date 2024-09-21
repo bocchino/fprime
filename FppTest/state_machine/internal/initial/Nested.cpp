@@ -22,7 +22,7 @@ namespace FppTest {
 Nested::Nested() : NestedStateMachineBase(), m_action_a_history() {}
 
 void Nested::action_a(Signal signal) {
-    this->m_action_a_history.pushElement(signal);
+    this->m_action_a_history.push(signal);
 }
 
 void Nested::test() {

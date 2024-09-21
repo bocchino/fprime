@@ -41,7 +41,7 @@ class NoArgSmGuard {
     //! Call the guard
     bool call(Signal signal  //!< The signal
     ) {
-        this->m_callHistory.pushElement(signal);
+        this->m_callHistory.push(signal);
         return this->m_returnValue;
     }
 

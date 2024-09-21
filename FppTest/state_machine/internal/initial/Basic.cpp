@@ -21,7 +21,7 @@ namespace FppTest {
 Basic::Basic() : BasicStateMachineBase(), m_action_a_history() {}
 
 void Basic::action_a(Signal signal) {
-    this->m_action_a_history.pushElement(signal);
+    this->m_action_a_history.push(signal);
 }
 
 void Basic::test() {
