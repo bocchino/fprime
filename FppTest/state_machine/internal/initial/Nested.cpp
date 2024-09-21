@@ -21,8 +21,8 @@ namespace FppTest {
 
 Nested::Nested() : NestedStateMachineBase(), m_action_a_history() {}
 
-void Nested::action_a() {
-    this->m_action_a_history.pushElement();
+void Nested::action_a(Signal signal) {
+    this->m_action_a_history.pushElement(signal);
 }
 
 void Nested::test() {
@@ -31,7 +31,11 @@ void Nested::test() {
     this->init(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S_T);
-    ASSERT_EQ(this->m_action_a_history.getSize(), 6);
+    const FwSizeType expectedActionSize = 6;
+    ASSERT_EQ(this->m_action_a_history.getSize(), expectedActionSize);
+    for (FwSizeType i = 0; i < expectedActionSize; i++) {
+        ASSERT_EQ(this->m_action_a_history.getSignalAt(i), Signal::__FPRIME_AC_INITIAL_TRANSITION);
+    }
 }
 
 }  // end namespace FppTest

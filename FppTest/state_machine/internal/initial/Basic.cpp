@@ -12,7 +12,6 @@
 // ======================================================================
 
 #include <gtest/gtest.h>
-#include <limits>
 
 #include "FppTest/state_machine/internal/initial/Basic.hpp"
 #include "STest/STest/Pick/Pick.hpp"
@@ -21,8 +20,8 @@ namespace FppTest {
 
 Basic::Basic() : BasicStateMachineBase(), m_action_a_history() {}
 
-void Basic::action_a() {
-    this->m_action_a_history.pushElement();
+void Basic::action_a(Signal signal) {
+    this->m_action_a_history.pushElement(signal);
 }
 
 void Basic::test() {
@@ -31,7 +30,11 @@ void Basic::test() {
     this->init(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S);
-    ASSERT_EQ(this->m_action_a_history.getSize(), 3);
+    const FwSizeType expectedSize = 3;
+    ASSERT_EQ(this->m_action_a_history.getSize(), expectedSize);
+    for (FwSizeType i = 0; i < expectedSize; i++) {
+        ASSERT_EQ(this->m_action_a_history.getSignalAt(i), Signal::__FPRIME_AC_INITIAL_TRANSITION);
+    }
 }
 
 }  // end namespace FppTest

@@ -14,23 +14,28 @@
 #ifndef FppTest_Junction_HPP
 #define FppTest_Junction_HPP
 
-#include "FppTest/state_machine/internal/initial/JunctionStateMachineAc.hpp"
 #include "FppTest/state_machine/internal/harness/InternalSmHarness.hpp"
+#include "FppTest/state_machine/internal/initial/JunctionStateMachineAc.hpp"
 
 namespace FppTest {
 
 //! Junction state machine
 class Junction final : public JunctionStateMachineBase {
   public:
+
+    static constexpr FwSizeType historySize = 10;
+  public:
     //! Constructor
     Junction();
 
   private:
     //! Implementation of action a
-    void action_a() final;
+    void action_a(Signal signal  //!< The signal
+                  ) final;
 
     //! Implementation of guard g
-    bool guard_g();
+    bool guard_g(Signal signal  //!< The signal
+    );
 
   public:
     //! Test with true guard
@@ -40,12 +45,18 @@ class Junction final : public JunctionStateMachineBase {
     void testFalse();
 
   private:
+    //! Helper function for checking actions and guards
+    void checkActionsAndGuards(
+        FwSizeType expectedActionSize, //!< The expected action size
+        FwSizeType expectedGuardSize //!< The expected guard size
+    );
+
+  private:
     //! The history associated with action a
-    NoValueHistory m_action_a_history;
+    NoValueHistory<Signal, historySize> m_action_a_history;
 
     //! The guard g
-    NoArgSmGuard m_guard_g;
-
+    NoArgSmGuard<Signal, historySize> m_guard_g;
 };
 
 }  // end namespace FppTest

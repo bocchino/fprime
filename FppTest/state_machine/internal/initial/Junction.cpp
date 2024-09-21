@@ -21,12 +21,12 @@ namespace FppTest {
 
 Junction::Junction() : JunctionStateMachineBase(), m_action_a_history(), m_guard_g() {}
 
-void Junction::action_a() {
-    this->m_action_a_history.pushElement();
+void Junction::action_a(Signal signal) {
+    this->m_action_a_history.pushElement(signal);
 }
 
-bool Junction::guard_g() {
-    return m_guard_g.call();
+bool Junction::guard_g(Signal signal) {
+    return m_guard_g.call(signal);
 }
 
 void Junction::testFalse() {
@@ -36,8 +36,9 @@ void Junction::testFalse() {
     this->init(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::T);
-    ASSERT_EQ(this->m_action_a_history.getSize(), 5);
-    ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 1);
+    const FwSizeType expectedActionSize = 5;
+    const FwSizeType expectedGuardSize = 1;
+    this->checkActionsAndGuards(expectedActionSize, expectedGuardSize);
 }
 
 void Junction::testTrue() {
@@ -48,8 +49,20 @@ void Junction::testTrue() {
     this->init(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S);
-    ASSERT_EQ(this->m_action_a_history.getSize(), 3);
-    ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 1);
+    const FwSizeType expectedActionSize = 3;
+    const FwSizeType expectedGuardSize = 1;
+    this->checkActionsAndGuards(expectedActionSize, expectedGuardSize);
+}
+
+void Junction::checkActionsAndGuards(FwSizeType expectedActionSize, FwSizeType expectedGuardSize) {
+    for (FwSizeType i = 0; i < expectedActionSize; i++) {
+        ASSERT_EQ(this->m_action_a_history.getSignalAt(i), Signal::__FPRIME_AC_INITIAL_TRANSITION);
+    }
+    ASSERT_EQ(this->m_action_a_history.getSize(), expectedActionSize);
+    for (FwSizeType i = 0; i < expectedGuardSize; i++) {
+        ASSERT_EQ(this->m_guard_g.getCallHistory().getSignalAt(i), Signal::__FPRIME_AC_INITIAL_TRANSITION);
+    }
+    ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), expectedGuardSize);
 }
 
 }  // end namespace FppTest

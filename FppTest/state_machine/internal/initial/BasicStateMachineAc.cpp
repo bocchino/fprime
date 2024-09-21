@@ -23,17 +23,17 @@ BasicStateMachineBase::~BasicStateMachineBase() {}
 
 void BasicStateMachineBase::init(const FwEnumStoreType id) {
     this->m_id = id;
-    this->action_a();
-    this->enter_S();
+    this->action_a(Signal::__FPRIME_AC_INITIAL_TRANSITION);
+    this->enter_S(Signal::__FPRIME_AC_INITIAL_TRANSITION);
 }
 
 // ----------------------------------------------------------------------
 // State and junction entry
 // ----------------------------------------------------------------------
 
-void BasicStateMachineBase::enter_S() {
-    this->action_a();
-    this->action_a();
+void BasicStateMachineBase::enter_S(Signal signal) {
+    this->action_a(signal);
+    this->action_a(signal);
     this->m_state = State::S;
 }
 

@@ -20,8 +20,12 @@
 namespace FppTest {
 
 //! Test implementation of a state machine guard with no argument value
+template <typename Signal, FwSizeType size>
 class NoArgSmGuard {
   public:
+    //! Call history type
+    using CallHistory = NoValueHistory<Signal, size>;
+
     //! Constructor
     NoArgSmGuard() : m_callHistory() {}
 
@@ -35,8 +39,9 @@ class NoArgSmGuard {
     void clearCallHistory() { this->m_callHistory.clear(); }
 
     //! Call the guard
-    bool call() {
-        this->m_callHistory.pushElement();
+    bool call(Signal signal  //!< The signal
+    ) {
+        this->m_callHistory.pushElement(signal);
         return this->m_returnValue;
     }
 
@@ -47,14 +52,14 @@ class NoArgSmGuard {
     }
 
     //! Get the call history
-    const NoValueHistory& getCallHistory() const { return this->m_callHistory; }
+    const CallHistory& getCallHistory() const { return this->m_callHistory; }
 
   private:
     //! The return value
     bool m_returnValue = false;
 
     //! The call history
-    NoValueHistory m_callHistory;
+    CallHistory m_callHistory;
 };
 
 }  // end namespace FppTest

@@ -23,7 +23,13 @@ class BasicStateMachineBase {
         //! Uninitialized state
         __FPRIME_AC_UNINITIALIZED,
         //! State S
-        S
+        S,
+    };
+
+    //! The signal type
+    enum class Signal : FwEnumStoreType {
+        //! The initial transition
+        __FPRIME_AC_INITIAL_TRANSITION,
     };
 
   PROTECTED:
@@ -48,19 +54,21 @@ class BasicStateMachineBase {
 
   PROTECTED:
     // ----------------------------------------------------------------------
-    // Actions 
+    // Actions
     // ----------------------------------------------------------------------
 
     //! Action a
-    virtual void action_a() = 0;
+    virtual void action_a(Signal signal  //!< The signal
+                          ) = 0;
 
   PRIVATE:
     // ----------------------------------------------------------------------
-    // State and junction entry 
+    // State and junction entry
     // ----------------------------------------------------------------------
 
     //! Enter state S
-    void enter_S();
+    void enter_S(Signal signal  //!< The signal
+    );
 
   PROTECTED:
     // ----------------------------------------------------------------------

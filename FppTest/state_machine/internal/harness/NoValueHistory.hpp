@@ -15,30 +15,61 @@
 #define FppTest_NoValueHistory_HPP
 
 #include <FpConfig.hpp>
+#include <array>
+
+#include "Fw/Types/Assert.hpp"
 
 namespace FppTest {
 
 //! A history of calls with no values
+template <typename Signal, FwSizeType size>
 class NoValueHistory {
   public:
+    //! Constructor
+    NoValueHistory() {}
+
     //! Clear the history
     void clear() { this->m_size = 0; }
 
     //! Check two histories for equality
     bool operator==(NoValueHistory& history  //!< The other history
     ) const {
-        return (this->m_size == history.m_size);
+        bool result = (this->m_size == history.m_size);
+        if (result) {
+            for (FwSizeType i = 0; i < this->m_size; i++) {
+                if (this->m_signals[i] != history.m_signals[i]) {
+                    result = false;
+                    break;
+                }
+            }
+        }
+        return result;
     }
 
     //! Push an element on the history
-    void pushElement() { this->m_size++; }
+    void pushElement(Signal signal  //!< The signal
+    ) {
+        FW_ASSERT(m_size < size);
+        this->m_signals[m_size] = signal;
+        this->m_size++;
+    }
 
     //! Get the history size
     FwSizeType getSize() const { return this->m_size; }
 
+    //! Get the signal at an index
+    Signal getSignalAt(FwIndexType index  //!< The index
+    ) const {
+        FW_ASSERT(index < this->m_size);
+        return this->m_signals[index];
+    }
+
   private:
     //! The history size
     FwSizeType m_size = 0;
+
+    //! The signals in the history
+    std::array<Signal, size> m_signals = {};
 };
 
 }  // end namespace FppTest

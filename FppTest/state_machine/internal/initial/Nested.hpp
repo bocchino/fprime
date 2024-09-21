@@ -14,20 +14,25 @@
 #ifndef FppTest_Nested_HPP
 #define FppTest_Nested_HPP
 
-#include "FppTest/state_machine/internal/initial/NestedStateMachineAc.hpp"
 #include "FppTest/state_machine/internal/harness/InternalSmHarness.hpp"
+#include "FppTest/state_machine/internal/initial/NestedStateMachineAc.hpp"
 
 namespace FppTest {
 
 //! Nested state machine
 class Nested final : public NestedStateMachineBase {
   public:
+    //! The history size
+    static constexpr FwSizeType historySize = 10;
+
+  public:
     //! Constructor
     Nested();
 
   private:
     //! Implementation of action a
-    void action_a() final;
+    void action_a(Signal signal  //!< The signal
+                  ) final;
 
   public:
     //! Run the test
@@ -35,8 +40,7 @@ class Nested final : public NestedStateMachineBase {
 
   private:
     //! The history associated with action a
-    NoValueHistory m_action_a_history;
-
+    NoValueHistory<Signal, historySize> m_action_a_history;
 };
 
 }  // end namespace FppTest

@@ -15,30 +15,35 @@
 #define FppTest_History_HPP
 
 #include <array>
-
 #include <FpConfig.hpp>
-#include <Fw/Types/Assert.hpp>
+
+#include "FppTest/state_machine/internal/harness/NoValueHistory.hpp"
+#include "Fw/Types/Assert.hpp"
 
 namespace FppTest {
 
 //! A history with values
-template <typename T, FwSizeType size>
+template <typename Signal, typename T, FwSizeType size>
 class History {
   public:
+    //! The signal history type
+    using SignalHistory = NoValueHistory<Signal, size>;
+
     //! Constructor
-    History(T initialValue  //!< The initial value
-            )
-        : m_values{initialValue} {}
+    History() : m_signals(), m_values() {}
 
     //! Clear the history
-    void clear() { this->m_size = 0; }
+    void clear() { 
+      this->m_size = 0; 
+      this->m_signals.clear();
+    }
 
     //! Check two histories for equality
     bool operator==(History& history  //!< The other history
     ) const {
         bool result = (this->m_size == history.m_size);
         if (result) {
-            FW_ASSERT(this->m_size < size, static_cast<FwAssertArgType>(this->m_size));
+            FW_ASSERT(this->m_size < size);
             for (FwSizeType i = 0; i < this->m_size; ++i) {
                 if (this->m_values[i] != history.m_values[i]) {
                     result = false;
@@ -50,15 +55,22 @@ class History {
     }
 
     //! Push a value on the history
-    void pushValue(const T& value  //!< The value
+    void pushValue(Signal signal, //!< The signal
+                   const T& value  //!< The value
     ) {
         FW_ASSERT(this->m_size < size, static_cast<FwAssertArgType>(this->m_size));
+        this->m_signals.pushElement(signal);
         this->m_values[this->m_size] = value;
         this->m_size++;
     }
 
     //! Get the history size
     FwSizeType getSize() const { return this->m_size; }
+
+    //! Get the signal history
+    const SignalHistory& getSignals() const {
+        return this->m_signals;
+    }
 
     //! Get the value at an index
     const T& getValueAt(FwIndexType index  //!< The index
@@ -71,8 +83,11 @@ class History {
     //! The size of the history
     FwSizeType m_size = 0;
 
+    //! The signal history
+    SignalHistory m_signals;
+
     //! The values in the history
-    std::array<T, size> m_values;
+    std::array<T, size> m_values = {};
 };
 
 }  // end namespace FppTest

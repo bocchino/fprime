@@ -28,6 +28,12 @@ class JunctionStateMachineBase {
         T
     };
 
+    //! The signal type
+    enum class Signal : FwEnumStoreType {
+        //! The initial transition
+        __FPRIME_AC_INITIAL_TRANSITION,
+    };
+
   PROTECTED:
     // ----------------------------------------------------------------------
     // Constructors and destructors
@@ -50,33 +56,38 @@ class JunctionStateMachineBase {
 
   PROTECTED:
     // ----------------------------------------------------------------------
-    // Actions 
+    // Actions
     // ----------------------------------------------------------------------
 
     //! Action a
-    virtual void action_a() = 0;
+    virtual void action_a(Signal signal  //!< The signal
+                          ) = 0;
 
   PROTECTED:
     // ----------------------------------------------------------------------
-    // Guards 
+    // Guards
     // ----------------------------------------------------------------------
 
     //! Guard g
-    virtual bool guard_g() = 0;
+    virtual bool guard_g(Signal signal  //!< The signal
+                         ) = 0;
 
   PRIVATE:
     // ----------------------------------------------------------------------
-    // State and junction entry 
+    // State and junction entry
     // ----------------------------------------------------------------------
 
     //! Enter junction J
-    void enter_J();
+    void enter_J(Signal signal  //!< The signal
+    );
 
     //! Enter state S
-    void enter_S();
+    void enter_S(Signal signal  //!< The signal
+    );
 
     //! Enter state T
-    void enter_T();
+    void enter_T(Signal signal  //!< The signal
+    );
 
   PROTECTED:
     // ----------------------------------------------------------------------

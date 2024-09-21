@@ -14,20 +14,25 @@
 #ifndef FppTest_Basic_HPP
 #define FppTest_Basic_HPP
 
-#include "FppTest/state_machine/internal/initial/BasicStateMachineAc.hpp"
 #include "FppTest/state_machine/internal/harness/InternalSmHarness.hpp"
+#include "FppTest/state_machine/internal/initial/BasicStateMachineAc.hpp"
 
 namespace FppTest {
 
 //! Basic state machine
 class Basic final : public BasicStateMachineBase {
   public:
+    //! The history size
+    static constexpr FwSizeType historySize = 10;
+
+  public:
     //! Constructor
     Basic();
 
   private:
     //! Implementation of action a
-    void action_a() final;
+    void action_a(Signal signal  //!< The signal
+                  ) final;
 
   public:
     //! Run the test
@@ -35,8 +40,7 @@ class Basic final : public BasicStateMachineBase {
 
   private:
     //! The history associated with action a
-    NoValueHistory m_action_a_history;
-
+    NoValueHistory<Signal, historySize> m_action_a_history;
 };
 
 }  // end namespace FppTest
