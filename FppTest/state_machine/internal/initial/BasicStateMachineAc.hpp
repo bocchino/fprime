@@ -7,80 +7,96 @@
 #ifndef FppTest_BasicStateMachineAc_HPP
 #define FppTest_BasicStateMachineAc_HPP
 
-#include "FpConfig.hpp"
+#include <FpConfig.hpp>
+
+#include "Fw/Types/ExternalString.hpp"
+#include "Fw/Types/Serializable.hpp"
+#include "Fw/Types/String.hpp"
 
 namespace FppTest {
 
-//! A basic state machine
-class BasicStateMachineBase {
-  PROTECTED:
-    // ----------------------------------------------------------------------
-    // Types
-    // ----------------------------------------------------------------------
+  //! A basic state machine
+  class BasicStateMachineBase {
 
-    //! The state type
-    enum class State : FwEnumStoreType {
-        //! Uninitialized state
+    PROTECTED:
+
+      // ----------------------------------------------------------------------
+      // Types
+      // ----------------------------------------------------------------------
+
+      //! The state type
+      enum class State : FwEnumStoreType {
+        //! The uninitialized state
         __FPRIME_AC_UNINITIALIZED,
         //! State S
         S,
-    };
+      };
 
-    //! The signal type
-    enum class Signal : FwEnumStoreType {
+      //! The signal type
+      enum class Signal : FwEnumStoreType {
         //! The initial transition
         __FPRIME_AC_INITIAL_TRANSITION,
-    };
+      };
 
-  PROTECTED:
-    // ----------------------------------------------------------------------
-    // Constructors and destructors
-    // ----------------------------------------------------------------------
+    PROTECTED:
 
-    //! Constructor
-    BasicStateMachineBase();
+      // ----------------------------------------------------------------------
+      // Constructors and Destructors
+      // ----------------------------------------------------------------------
 
-    //! Destructor
-    virtual ~BasicStateMachineBase();
+      //! Constructor
+      BasicStateMachineBase();
 
-  public:
-    // ----------------------------------------------------------------------
-    // Initialization
-    // ----------------------------------------------------------------------
+      //! Destructor
+      virtual ~BasicStateMachineBase();
 
-    //! Initialize the state machine
-    void init(const FwEnumStoreType id  //!< The state machine ID
-    );
+    public:
 
-  PROTECTED:
-    // ----------------------------------------------------------------------
-    // Actions
-    // ----------------------------------------------------------------------
+      // ----------------------------------------------------------------------
+      // Initialization
+      // ----------------------------------------------------------------------
 
-    //! Action a
-    virtual void action_a(Signal signal  //!< The signal
-                          ) = 0;
+      //! Initialize the state machine
+      void init(
+          const FwEnumStoreType id //!< The state machine ID
+      );
 
-  PRIVATE:
-    // ----------------------------------------------------------------------
-    // State and junction entry
-    // ----------------------------------------------------------------------
+    PROTECTED:
 
-    //! Enter state S
-    void enter_S(Signal signal  //!< The signal
-    );
+      // ----------------------------------------------------------------------
+      // Actions
+      // ----------------------------------------------------------------------
 
-  PROTECTED:
-    // ----------------------------------------------------------------------
-    // Member variables
-    // ----------------------------------------------------------------------
+      //! Action a
+      virtual void action_a(
+          Signal signal //!< The signal
+      ) = 0;
 
-    //! The state machine ID
-    FwEnumStoreType m_id = 0;
+    PRIVATE:
 
-    //! The state
-    State m_state = State::__FPRIME_AC_UNINITIALIZED;
-};
+      // ----------------------------------------------------------------------
+      // State and junction entry
+      // ----------------------------------------------------------------------
 
-};  // namespace FppTest
+      //! Enter state S
+      void enter_S(
+          Signal signal //!< The signal
+      );
+
+    PROTECTED:
+
+      // ----------------------------------------------------------------------
+      // Member variables
+      // ----------------------------------------------------------------------
+
+      //! The state machine ID
+      FwEnumStoreType m_id = 0;
+
+      //! The state
+      State m_state = State::__FPRIME_AC_UNINITIALIZED;
+
+  };
+
+}
+
 #endif

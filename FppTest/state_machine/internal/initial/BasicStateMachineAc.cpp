@@ -9,32 +9,44 @@
 
 namespace FppTest {
 
-// ----------------------------------------------------------------------
-// Constructors and destructors
-// ----------------------------------------------------------------------
+  // ----------------------------------------------------------------------
+  // Constructors and Destructors
+  // ----------------------------------------------------------------------
 
-BasicStateMachineBase::BasicStateMachineBase() {}
+  BasicStateMachineBase ::
+    BasicStateMachineBase()
+  {
 
-BasicStateMachineBase::~BasicStateMachineBase() {}
+  }
 
-// ----------------------------------------------------------------------
-// Initialization
-// ----------------------------------------------------------------------
+  BasicStateMachineBase ::
+    ~BasicStateMachineBase()
+  {
 
-void BasicStateMachineBase::init(const FwEnumStoreType id) {
+  }
+
+  // ----------------------------------------------------------------------
+  // Initialization
+  // ----------------------------------------------------------------------
+
+  void BasicStateMachineBase ::
+    init(const FwEnumStoreType id)
+  {
     this->m_id = id;
     this->action_a(Signal::__FPRIME_AC_INITIAL_TRANSITION);
     this->enter_S(Signal::__FPRIME_AC_INITIAL_TRANSITION);
-}
+  }
 
-// ----------------------------------------------------------------------
-// State and junction entry
-// ----------------------------------------------------------------------
+  // ----------------------------------------------------------------------
+  // State and junction entry
+  // ----------------------------------------------------------------------
 
-void BasicStateMachineBase::enter_S(Signal signal) {
+  void BasicStateMachineBase ::
+    enter_S(Signal signal)
+  {
     this->action_a(signal);
     this->action_a(signal);
     this->m_state = State::S;
-}
+  }
 
-}  // namespace FppTest
+}
