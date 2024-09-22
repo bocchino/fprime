@@ -1,6 +1,6 @@
 set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/Basic.fpp"
-  "${CMAKE_CURRENT_LIST_DIR}/JunctionStateMachineAc.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/Junction.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/NestedStateMachineAc.cpp"
 )
 register_fprime_module()
