@@ -25,7 +25,7 @@ void Junction::action_a(Signal signal) {
     this->m_action_a_history.push(signal);
 }
 
-bool Junction::guard_g(Signal signal) {
+bool Junction::guard_g(Signal signal) const {
     return m_guard_g.call(signal);
 }
 

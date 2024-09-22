@@ -1,7 +1,7 @@
 module FppTest {
 
   @ A state machine with an initial junction
-  state machine Basic {
+  state machine Junction {
 
     @ Action a
     action a

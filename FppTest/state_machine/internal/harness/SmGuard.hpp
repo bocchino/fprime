@@ -41,8 +41,9 @@ class SmGuard {
     //! Call the guard
     bool call(Signal signal,  //!< The signal
               T arg           //!< The argument
-    ) {
-        this->m_callHistory.push(signal, arg);
+    ) const {
+        // Use const cast to update the history
+        const_cast<SmGuard<Signal, T, size>*>(this)->m_callHistory.push(signal, arg);
         return this->m_returnValue;
     }
 

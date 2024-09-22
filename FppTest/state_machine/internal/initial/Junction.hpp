@@ -22,8 +22,8 @@ namespace FppTest {
 //! Junction state machine
 class Junction final : public JunctionStateMachineBase {
   public:
-
     static constexpr FwSizeType historySize = 10;
+
   public:
     //! Constructor
     Junction();
@@ -35,7 +35,7 @@ class Junction final : public JunctionStateMachineBase {
 
     //! Implementation of guard g
     bool guard_g(Signal signal  //!< The signal
-    );
+    ) const;
 
   public:
     //! Test with true guard
@@ -46,9 +46,8 @@ class Junction final : public JunctionStateMachineBase {
 
   private:
     //! Helper function for checking actions and guards
-    void checkActionsAndGuards(
-        FwSizeType expectedActionSize, //!< The expected action size
-        FwSizeType expectedGuardSize //!< The expected guard size
+    void checkActionsAndGuards(FwSizeType expectedActionSize,  //!< The expected action size
+                               FwSizeType expectedGuardSize    //!< The expected guard size
     );
 
   private:

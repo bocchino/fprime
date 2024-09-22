@@ -40,8 +40,9 @@ class NoArgSmGuard {
 
     //! Call the guard
     bool call(Signal signal  //!< The signal
-    ) {
-        this->m_callHistory.push(signal);
+    ) const {
+        // Use const cast to update the history
+        const_cast<NoArgSmGuard<Signal,size>*>(this)->m_callHistory.push(signal);
         return this->m_returnValue;
     }
 

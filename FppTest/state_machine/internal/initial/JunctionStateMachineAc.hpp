@@ -70,7 +70,7 @@ class JunctionStateMachineBase {
 
     //! Guard g
     virtual bool guard_g(Signal signal  //!< The signal
-                         ) = 0;
+    ) const = 0;
 
   PRIVATE:
     // ----------------------------------------------------------------------
