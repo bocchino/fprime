@@ -18,7 +18,7 @@
 
 namespace FppTest {
 
-namespace State {
+namespace SmState {
 
 Basic::Basic() : BasicStateMachineBase(), m_action_a_history() {}
 
@@ -35,6 +35,6 @@ void Basic::test() {
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
 }
 
-}  // namespace State
+}  // namespace SmState
 
 }  // end namespace FppTest

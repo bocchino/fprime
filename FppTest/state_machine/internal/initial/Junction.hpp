@@ -19,6 +19,8 @@
 
 namespace FppTest {
 
+namespace SmInitial {
+
 //! Junction state machine
 class Junction final : public JunctionStateMachineBase {
   public:
@@ -57,6 +59,8 @@ class Junction final : public JunctionStateMachineBase {
     //! The guard g
     NoArgSmGuard<Signal, historySize> m_guard_g;
 };
+
+}  // namespace SmInitial
 
 }  // end namespace FppTest
 

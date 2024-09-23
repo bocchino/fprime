@@ -19,6 +19,8 @@
 
 namespace FppTest {
 
+namespace SmInitial {
+
 Junction::Junction() : JunctionStateMachineBase(), m_action_a_history(), m_guard_g() {}
 
 void Junction::action_a(Signal signal) {
@@ -64,5 +66,7 @@ void Junction::checkActionsAndGuards(FwSizeType expectedActionSize, FwSizeType e
     }
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), expectedGuardSize);
 }
+
+}  // namespace SmInitial
 
 }  // end namespace FppTest

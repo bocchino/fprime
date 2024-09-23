@@ -8,7 +8,7 @@
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
-  FppTest::State::Basic basic;
+  FppTest::SmState::Basic basic;
   basic.test();
 }
 

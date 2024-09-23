@@ -19,6 +19,8 @@
 
 namespace FppTest {
 
+namespace SmInitial {
+
 //! Basic state machine
 class Basic final : public BasicStateMachineBase {
   public:
@@ -42,6 +44,8 @@ class Basic final : public BasicStateMachineBase {
     //! The history associated with action a
     NoValueHistory<Signal, historySize> m_action_a_history;
 };
+
+}  // namespace SmInitial
 
 }  // end namespace FppTest
 

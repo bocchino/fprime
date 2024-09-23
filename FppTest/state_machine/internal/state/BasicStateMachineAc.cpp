@@ -9,51 +9,37 @@
 
 namespace FppTest {
 
-  namespace State {
+namespace SmState {
 
-    // ----------------------------------------------------------------------
-    // Constructors and Destructors
-    // ----------------------------------------------------------------------
+// ----------------------------------------------------------------------
+// Constructors and Destructors
+// ----------------------------------------------------------------------
 
-    BasicStateMachineBase ::
-      BasicStateMachineBase()
-    {
+BasicStateMachineBase ::BasicStateMachineBase() {}
 
-    }
+BasicStateMachineBase ::~BasicStateMachineBase() {}
 
-    BasicStateMachineBase ::
-      ~BasicStateMachineBase()
-    {
+// ----------------------------------------------------------------------
+// Initialization
+// ----------------------------------------------------------------------
 
-    }
-
-    // ----------------------------------------------------------------------
-    // Initialization
-    // ----------------------------------------------------------------------
-
-    void BasicStateMachineBase ::
-      init(const FwEnumStoreType id)
-    {
-      this->m_id = id;
-      this->enter_S(Signal::__FPRIME_AC_INITIAL_TRANSITION);
-    }
-
-    // ----------------------------------------------------------------------
-    // State and junction entry
-    // ----------------------------------------------------------------------
-
-    void BasicStateMachineBase ::
-      enter_T(Signal signal)
-    {
-      this->m_state = State::T;
-    }
-
-    void BasicStateMachineBase ::
-      enter_S(Signal signal)
-    {
-      this->m_state = State::S;
-    }
-
-  }
-
+void BasicStateMachineBase ::init(const FwEnumStoreType id) {
+    this->m_id = id;
+    this->enter_S(Signal::__FPRIME_AC_INITIAL_TRANSITION);
 }
+
+// ----------------------------------------------------------------------
+// State and junction entry
+// ----------------------------------------------------------------------
+
+void BasicStateMachineBase ::enter_T(Signal signal) {
+    this->m_state = State::T;
+}
+
+void BasicStateMachineBase ::enter_S(Signal signal) {
+    this->m_state = State::S;
+}
+
+}  // namespace SmState
+
+}  // namespace FppTest

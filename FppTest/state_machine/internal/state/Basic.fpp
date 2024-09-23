@@ -1,9 +1,9 @@
 module FppTest {
 
-  module State {
+  module SmState {
 
     @ A basic state machine
-    state machine StateBasic {
+    state machine Basic {
 
       @ Action a
       action a

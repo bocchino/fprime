@@ -19,7 +19,7 @@
 
 namespace FppTest {
 
-namespace State {
+namespace SmState {
 
 //! Basic state machine
 class Basic final : public BasicStateMachineBase {
@@ -45,7 +45,7 @@ class Basic final : public BasicStateMachineBase {
     NoValueHistory<Signal, historySize> m_action_a_history;
 };
 
-}  // namespace State
+}  // namespace SmState
 
 }  // end namespace FppTest
 

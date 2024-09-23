@@ -18,6 +18,8 @@
 
 namespace FppTest {
 
+namespace SmInitial {
+
 Basic::Basic() : BasicStateMachineBase(), m_action_a_history() {}
 
 void Basic::action_a(Signal signal) {
@@ -36,5 +38,7 @@ void Basic::test() {
         ASSERT_EQ(this->m_action_a_history.getSignalAt(i), Signal::__FPRIME_AC_INITIAL_TRANSITION);
     }
 }
+
+}  // namespace SmInitial
 
 }  // end namespace FppTest

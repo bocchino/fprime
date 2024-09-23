@@ -10,22 +10,22 @@
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
-  FppTest::Basic basic;
+  FppTest::SmInitial::Basic basic;
   basic.test();
 }
 
 TEST(Junction, False) {
-  FppTest::Junction junction;
+  FppTest::SmInitial::Junction junction;
   junction.testFalse();
 }
 
 TEST(Junction, True) {
-  FppTest::Junction junction;
+  FppTest::SmInitial::Junction junction;
   junction.testTrue();
 }
 
 TEST(Nested, Test) {
-  FppTest::Nested nested;
+  FppTest::SmInitial::Nested nested;
   nested.test();
 }
 

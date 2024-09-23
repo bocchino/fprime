@@ -19,6 +19,8 @@
 
 namespace FppTest {
 
+namespace SmInitial {
+
 //! Nested state machine
 class Nested final : public NestedStateMachineBase {
   public:
@@ -42,6 +44,8 @@ class Nested final : public NestedStateMachineBase {
     //! The history associated with action a
     NoValueHistory<Signal, historySize> m_action_a_history;
 };
+
+}  // namespace SmInitial
 
 }  // end namespace FppTest
 

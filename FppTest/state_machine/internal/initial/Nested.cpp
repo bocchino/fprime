@@ -19,6 +19,8 @@
 
 namespace FppTest {
 
+namespace SmInitial {
+
 Nested::Nested() : NestedStateMachineBase(), m_action_a_history() {}
 
 void Nested::action_a(Signal signal) {
@@ -37,5 +39,7 @@ void Nested::test() {
         ASSERT_EQ(this->m_action_a_history.getSignalAt(i), Signal::__FPRIME_AC_INITIAL_TRANSITION);
     }
 }
+
+}  // namespace SmInitial
 
 }  // end namespace FppTest
