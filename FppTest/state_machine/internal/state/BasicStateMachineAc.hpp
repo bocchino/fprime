@@ -62,6 +62,14 @@ class BasicStateMachineBase {
     void init(const FwEnumStoreType id  //!< The state machine ID
     );
 
+  public:
+    // ----------------------------------------------------------------------
+    // Send signal functions
+    // ----------------------------------------------------------------------
+
+    //! Send signal s
+    void sendSignal_s();
+
   PROTECTED:
     // ----------------------------------------------------------------------
     // Actions

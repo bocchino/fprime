@@ -33,6 +33,10 @@ void Basic::test() {
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
+    this->sendSignal_s();
+    ASSERT_EQ(this->m_state, State::T);
+    ASSERT_EQ(this->m_action_a_history.getSize(), 1);
+    ASSERT_EQ(this->m_action_a_history.getSignalAt(0), Signal::s);
 }
 
 }  // namespace SmState
