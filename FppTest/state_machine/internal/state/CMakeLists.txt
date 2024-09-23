@@ -1,5 +1,5 @@
 set(SOURCE_FILES
-  "${CMAKE_CURRENT_LIST_DIR}/BasicStateMachineAc.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/Basic.fpp"
 )
 register_fprime_module()
 

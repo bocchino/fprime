@@ -37,6 +37,9 @@ void Basic::test() {
     ASSERT_EQ(this->m_state, State::T);
     ASSERT_EQ(this->m_action_a_history.getSize(), 1);
     ASSERT_EQ(this->m_action_a_history.getSignalAt(0), Signal::s);
+    this->sendSignal_s();
+    ASSERT_EQ(this->m_state, State::T);
+    ASSERT_EQ(this->m_action_a_history.getSize(), 1);
 }
 
 }  // namespace SmState
