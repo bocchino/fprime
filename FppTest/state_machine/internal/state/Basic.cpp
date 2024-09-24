@@ -35,11 +35,11 @@ void Basic::test() {
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
     this->sendSignal_s();
     ASSERT_EQ(this->m_state, State::T);
-    ASSERT_EQ(this->m_action_a_history.getSize(), 1);
-    ASSERT_EQ(this->m_action_a_history.getSignalAt(0), Signal::s);
-    this->sendSignal_s();
-    ASSERT_EQ(this->m_state, State::T);
-    ASSERT_EQ(this->m_action_a_history.getSize(), 1);
+    const FwSizeType expectedSize = 6;
+    ASSERT_EQ(this->m_action_a_history.getSize(), expectedSize);
+    for (FwSizeType i = 0; i < expectedSize; i++) {
+        ASSERT_EQ(this->m_action_a_history.getSignalAt(i), Signal::s);
+    }
 }
 
 }  // namespace SmState
