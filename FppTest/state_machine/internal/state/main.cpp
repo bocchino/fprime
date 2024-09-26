@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 
 #include "FppTest/state_machine/internal/state/Basic.hpp"
+#include "FppTest/state_machine/internal/state/BasicGuard.hpp"
 #include "FppTest/state_machine/internal/state/BasicSelf.hpp"
 #include "STest/STest/Random/Random.hpp"
 
@@ -16,6 +17,16 @@ TEST(Basic, Test) {
 TEST(BasicSelf, Test) {
   FppTest::SmState::BasicSelf basicSelf;
   basicSelf.test();
+}
+
+TEST(BasicGuard, False) {
+  FppTest::SmState::BasicGuard basicGuard;
+  basicGuard.testFalse();
+}
+
+TEST(BasicGuard, True) {
+  FppTest::SmState::BasicGuard basicGuard;
+  basicGuard.testTrue();
 }
 
 // ----------------------------------------------------------------------

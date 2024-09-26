@@ -1,6 +1,6 @@
 // ======================================================================
 //
-// \title  BasicSelf.hpp
+// \title  BasicGuard.hpp
 // \author R. Bocchino
 // \brief  Test class for basic state machine (header)
 //
@@ -11,38 +11,54 @@
 //
 // ======================================================================
 
-#ifndef FppTest_State_BasicSelf_HPP
-#define FppTest_State_BasicSelf_HPP
+#ifndef FppTest_State_BasicGuard_HPP
+#define FppTest_State_BasicGuard_HPP
 
 #include "FppTest/state_machine/internal/harness/InternalSmHarness.hpp"
-#include "FppTest/state_machine/internal/state/BasicSelfStateMachineAc.hpp"
+#include "FppTest/state_machine/internal/state/BasicGuardStateMachineAc.hpp"
 
 namespace FppTest {
 
 namespace SmState {
 
-//! A basic state machine with a self transition
-class BasicSelf final : public BasicSelfStateMachineBase {
+//! A basic state machine with a guard
+class BasicGuard final : public BasicGuardStateMachineBase {
   public:
     //! The history size
     static constexpr FwSizeType historySize = 10;
 
   public:
     //! Constructor
-    BasicSelf();
+    BasicGuard();
 
   private:
     //! Implementation of action a
     void action_a(Signal signal  //!< The signal
                   ) final;
 
+    //! Implementation of guard g
+    bool guard_g(Signal signal  //!< The signal
+    ) const;
+
   public:
-    //! Run the test
-    void test();
+    //! Test with true guard
+    void testTrue();
+
+    //! Test with false guard
+    void testFalse();
+
+  private:
+    //! Helper function for checking actions and guards
+    void checkActionsAndGuards(FwSizeType expectedActionSize,  //!< The expected action size
+                               FwSizeType expectedGuardSize    //!< The expected guard size
+    );
 
   private:
     //! The history associated with action a
     NoValueHistory<Signal, historySize> m_action_a_history;
+
+    //! The guard g
+    NoArgSmGuard<Signal, historySize> m_guard_g;
 };
 
 }  // namespace SmState

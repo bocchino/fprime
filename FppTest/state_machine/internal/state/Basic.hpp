@@ -21,7 +21,7 @@ namespace FppTest {
 
 namespace SmState {
 
-//! Basic state machine
+//! A basic state machine
 class Basic final : public BasicStateMachineBase {
   public:
     //! The history size
