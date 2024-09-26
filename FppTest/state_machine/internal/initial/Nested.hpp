@@ -14,7 +14,7 @@
 #ifndef FppTest_Nested_HPP
 #define FppTest_Nested_HPP
 
-#include "FppTest/state_machine/internal/harness/InternalSmHarness.hpp"
+#include "FppTest/state_machine/internal/harness/Harness.hpp"
 #include "FppTest/state_machine/internal/initial/NestedStateMachineAc.hpp"
 
 namespace FppTest {

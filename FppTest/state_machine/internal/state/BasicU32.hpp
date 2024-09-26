@@ -14,7 +14,7 @@
 #ifndef FppTest_State_BasicU32_HPP
 #define FppTest_State_BasicU32_HPP
 
-#include "FppTest/state_machine/internal/harness/InternalSmHarness.hpp"
+#include "FppTest/state_machine/internal/harness/Harness.hpp"
 #include "FppTest/state_machine/internal/state/BasicU32StateMachineAc.hpp"
 
 namespace FppTest {

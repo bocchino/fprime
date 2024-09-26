@@ -1,6 +1,6 @@
 // ======================================================================
 //
-// \title  InternalSmHarness.hpp
+// \title  Harness.hpp
 // \author R. Bocchino
 // \brief  Header file for internal state machine test harness
 //
@@ -11,13 +11,14 @@
 //
 // ======================================================================
 
-#ifndef FppTest_InternalSmHarness_HPP
-#define FppTest_InternalSmHarness_HPP
+#ifndef FppTest_InternalSm_Harness_HPP
+#define FppTest_InternalSm_Harness_HPP
 
 #include "FppTest/state_machine/internal/harness/History.hpp"
 #include "FppTest/state_machine/internal/harness/InternalSmUtil.hpp"
 #include "FppTest/state_machine/internal/harness/NoArgSmGuard.hpp"
 #include "FppTest/state_machine/internal/harness/NoValueHistory.hpp"
 #include "FppTest/state_machine/internal/harness/SmGuard.hpp"
+#include "FppTest/state_machine/internal/harness/TestAbsType.hpp"
 
 #endif

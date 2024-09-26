@@ -14,7 +14,7 @@
 #ifndef FppTest_State_BasicGuard_HPP
 #define FppTest_State_BasicGuard_HPP
 
-#include "FppTest/state_machine/internal/harness/InternalSmHarness.hpp"
+#include "FppTest/state_machine/internal/harness/Harness.hpp"
 #include "FppTest/state_machine/internal/state/BasicGuardStateMachineAc.hpp"
 
 namespace FppTest {
