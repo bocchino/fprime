@@ -1,8 +1,8 @@
 // ======================================================================
 //
-// \title  BasicSelf.hpp
+// \title  BasicU32.hpp
 // \author R. Bocchino
-// \brief  Test class for basic state machine with self transition (header)
+// \brief  Test class for basic state machine with U32 actions (header)
 //
 // \copyright
 // Copyright 2024, by the California Institute of Technology.
@@ -11,29 +11,34 @@
 //
 // ======================================================================
 
-#ifndef FppTest_State_BasicSelf_HPP
-#define FppTest_State_BasicSelf_HPP
+#ifndef FppTest_State_BasicU32_HPP
+#define FppTest_State_BasicU32_HPP
 
 #include "FppTest/state_machine/internal/harness/InternalSmHarness.hpp"
-#include "FppTest/state_machine/internal/state/BasicSelfStateMachineAc.hpp"
+#include "FppTest/state_machine/internal/state/BasicU32StateMachineAc.hpp"
 
 namespace FppTest {
 
 namespace SmState {
 
-//! A basic state machine with a self transition
-class BasicSelf final : public BasicSelfStateMachineBase {
+//! A basic state machine with U32 actions
+class BasicU32 final : public BasicU32StateMachineBase {
   public:
     //! The history size
     static constexpr FwSizeType historySize = 10;
 
   public:
     //! Constructor
-    BasicSelf();
+    BasicU32();
 
   private:
     //! Implementation of action a
     void action_a(Signal signal  //!< The signal
+                  ) final;
+
+    //! Implementation of action b
+    void action_b(Signal signal,  //!< The signal
+                  U32 value //!< The value
                   ) final;
 
   public:
@@ -43,6 +48,9 @@ class BasicSelf final : public BasicSelfStateMachineBase {
   private:
     //! The history associated with action a
     NoValueHistory<Signal, historySize> m_action_a_history;
+
+    //! The history associated with action b
+    History<Signal, U32, historySize> m_action_b_history;
 };
 
 }  // namespace SmState

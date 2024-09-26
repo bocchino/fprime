@@ -2,7 +2,7 @@
 //
 // \title  BasicGuard.hpp
 // \author R. Bocchino
-// \brief  Test class for basic state machine (header)
+// \brief  Test class for basic state machine with guard (header)
 //
 // \copyright
 // Copyright 2024, by the California Institute of Technology.

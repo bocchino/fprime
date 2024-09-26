@@ -7,6 +7,7 @@
 #include "FppTest/state_machine/internal/state/Basic.hpp"
 #include "FppTest/state_machine/internal/state/BasicGuard.hpp"
 #include "FppTest/state_machine/internal/state/BasicSelf.hpp"
+#include "FppTest/state_machine/internal/state/BasicU32.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
@@ -27,6 +28,11 @@ TEST(BasicGuard, False) {
 TEST(BasicGuard, True) {
   FppTest::SmState::BasicGuard basicGuard;
   basicGuard.testTrue();
+}
+
+TEST(BasicU32, Test) {
+  FppTest::SmState::BasicU32 basicU32;
+  basicU32.test();
 }
 
 // ----------------------------------------------------------------------
