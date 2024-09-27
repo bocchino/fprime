@@ -2,7 +2,7 @@ set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/Basic.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicGuard.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicSelf.fpp"
-  "${CMAKE_CURRENT_LIST_DIR}/BasicTestAbsTypeStateMachineAc.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/BasicTestAbsType.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicU32.fpp"
 )
 set(MOD_DEPS FppTest/state_machine/internal/harness)
