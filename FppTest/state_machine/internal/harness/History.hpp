@@ -49,10 +49,10 @@ class History {
     }
 
     //! Push an item on the history
-    void push(T signal  //!< The signal
+    void push(const T& item  //!< The item
     ) {
         FW_ASSERT(m_size < size);
-        this->m_items[m_size] = signal;
+        this->m_items[m_size] = T(item);
         this->m_size++;
     }
 
@@ -60,7 +60,7 @@ class History {
     FwSizeType getSize() const { return this->m_size; }
 
     //! Get the history item at an index
-    T getItemAt(FwIndexType index  //!< The index
+    const T& getItemAt(FwIndexType index  //!< The index
     ) const {
         FW_ASSERT(index < this->m_size);
         return this->m_items[index];

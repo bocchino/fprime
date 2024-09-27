@@ -7,6 +7,7 @@
 #include "FppTest/state_machine/internal/state/Basic.hpp"
 #include "FppTest/state_machine/internal/state/BasicGuard.hpp"
 #include "FppTest/state_machine/internal/state/BasicSelf.hpp"
+#include "FppTest/state_machine/internal/state/BasicString.hpp"
 #include "FppTest/state_machine/internal/state/BasicTestAbsType.hpp"
 #include "FppTest/state_machine/internal/state/BasicTestArray.hpp"
 #include "FppTest/state_machine/internal/state/BasicTestEnum.hpp"
@@ -32,6 +33,11 @@ TEST(BasicGuard, True) {
 TEST(BasicSelf, Test) {
   FppTest::SmState::BasicSelf basicSelf;
   basicSelf.test();
+}
+
+TEST(BasicString, Test) {
+  FppTest::SmState::BasicString basicString;
+  basicString.test();
 }
 
 TEST(BasicTestAbsType, Test) {
