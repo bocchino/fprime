@@ -21,6 +21,7 @@
 #include "FppTest/state_machine/internal/harness/TestArrayArrayAc.hpp"
 #include "FppTest/state_machine/internal/harness/TestEnumEnumAc.hpp"
 #include "FppTest/state_machine/internal/harness/TestStructSerializableAc.hpp"
+#include "Fw/Types/String.hpp"
 #include "STest/STest/Pick/Pick.hpp"
 
 namespace FppTest {
@@ -62,6 +63,20 @@ static inline TestArray testArray() {
 static inline TestStruct testStruct() {
     const U32 x = STest::Pick::any();
     return TestStruct(x);
+}
+
+//! Pick a string value
+static inline void string(Fw::String& s  //!< The string value (output)
+) {
+    const U32 upper = FW_MIN(Fw::String::STRING_SIZE, std::numeric_limits<U32>::max());
+    const U32 size = STest::Pick::lowerUpper(0, upper);
+    s = "";
+    for (U32 i = 0; i < size; i++) {
+        char c = static_cast<char>(STest::Pick::lowerUpper(32, 126));
+        Fw::String cString;
+        cString.format("%c", c);
+        s += cString;
+    }
 }
 
 }  // namespace Pick
