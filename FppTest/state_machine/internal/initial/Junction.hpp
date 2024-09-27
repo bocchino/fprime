@@ -54,7 +54,7 @@ class Junction final : public JunctionStateMachineBase {
 
   private:
     //! The history associated with action a
-    SmHarness::SignalHistory<Signal, historySize> m_action_a_history;
+    SmHarness::History<Signal, historySize> m_action_a_history;
 
     //! The guard g
     SmHarness::NoArgGuard<Signal, historySize> m_guard_g;

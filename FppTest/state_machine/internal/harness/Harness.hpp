@@ -15,6 +15,7 @@
 #define FppTest_SmHarness_HPP
 
 #include "FppTest/state_machine/internal/harness/Guard.hpp"
+#include "FppTest/state_machine/internal/harness/History.hpp"
 #include "FppTest/state_machine/internal/harness/NoArgGuard.hpp"
 #include "FppTest/state_machine/internal/harness/SignalHistory.hpp"
 #include "FppTest/state_machine/internal/harness/SignalValueHistory.hpp"

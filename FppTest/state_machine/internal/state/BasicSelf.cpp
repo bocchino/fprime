@@ -33,14 +33,14 @@ void BasicSelf::test() {
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S);
     ASSERT_EQ(this->m_action_a_history.getSize(), 1);
-    ASSERT_EQ(this->m_action_a_history.getSignalAt(0), Signal::__FPRIME_AC_INITIAL_TRANSITION);
+    ASSERT_EQ(this->m_action_a_history.getItemAt(0), Signal::__FPRIME_AC_INITIAL_TRANSITION);
     this->m_action_a_history.clear();
     this->sendSignal_s();
     ASSERT_EQ(this->m_state, State::S);
     const FwSizeType expectedSize = 6;
     ASSERT_EQ(this->m_action_a_history.getSize(), expectedSize);
     for (FwSizeType i = 0; i < expectedSize; i++) {
-        ASSERT_EQ(this->m_action_a_history.getSignalAt(i), Signal::s);
+        ASSERT_EQ(this->m_action_a_history.getItemAt(i), Signal::s);
     }
 }
 

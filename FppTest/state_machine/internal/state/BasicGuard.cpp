@@ -59,7 +59,7 @@ void BasicGuard::testTrue() {
 
 void BasicGuard::checkActionsAndGuards(FwSizeType expectedActionSize, FwSizeType expectedGuardSize) {
     for (FwSizeType i = 0; i < expectedActionSize; i++) {
-        ASSERT_EQ(this->m_action_a_history.getSignalAt(i), Signal::s);
+        ASSERT_EQ(this->m_action_a_history.getItemAt(i), Signal::s);
     }
     ASSERT_EQ(this->m_action_a_history.getSize(), expectedActionSize);
     for (FwSizeType i = 0; i < expectedGuardSize; i++) {

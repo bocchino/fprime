@@ -42,7 +42,7 @@ class Basic final : public BasicStateMachineBase {
 
   private:
     //! The history associated with action a
-    SmHarness::SignalHistory<Signal, historySize> m_action_a_history;
+    SmHarness::History<Signal, historySize> m_action_a_history;
 };
 
 }  // namespace SmInitial

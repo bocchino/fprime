@@ -38,7 +38,7 @@ void Basic::test() {
     const FwSizeType expectedSize = 6;
     ASSERT_EQ(this->m_action_a_history.getSize(), expectedSize);
     for (FwSizeType i = 0; i < expectedSize; i++) {
-        ASSERT_EQ(this->m_action_a_history.getSignalAt(i), Signal::s);
+        ASSERT_EQ(this->m_action_a_history.getItemAt(i), Signal::s);
     }
 }
 

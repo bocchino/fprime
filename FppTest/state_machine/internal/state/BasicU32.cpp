@@ -43,7 +43,7 @@ void BasicU32::test() {
     const FwSizeType expectedASize = 5;
     ASSERT_EQ(this->m_action_a_history.getSize(), expectedASize);
     for (FwSizeType i = 0; i < expectedASize; i++) {
-        ASSERT_EQ(this->m_action_a_history.getSignalAt(i), Signal::s);
+        ASSERT_EQ(this->m_action_a_history.getItemAt(i), Signal::s);
     }
     ASSERT_EQ(this->m_action_b_history.getSize(), 1);
     ASSERT_EQ(this->m_action_b_history.getSignals().getSignalAt(0), Signal::s);

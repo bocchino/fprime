@@ -58,7 +58,7 @@ void Junction::testTrue() {
 
 void Junction::checkActionsAndGuards(FwSizeType expectedActionSize, FwSizeType expectedGuardSize) {
     for (FwSizeType i = 0; i < expectedActionSize; i++) {
-        ASSERT_EQ(this->m_action_a_history.getSignalAt(i), Signal::__FPRIME_AC_INITIAL_TRANSITION);
+        ASSERT_EQ(this->m_action_a_history.getItemAt(i), Signal::__FPRIME_AC_INITIAL_TRANSITION);
     }
     ASSERT_EQ(this->m_action_a_history.getSize(), expectedActionSize);
     for (FwSizeType i = 0; i < expectedGuardSize; i++) {
