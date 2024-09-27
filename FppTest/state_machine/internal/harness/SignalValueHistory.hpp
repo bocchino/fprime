@@ -31,6 +31,9 @@ class SignalValueHistory {
     //! The signal history type
     using SignalHistory = History<Signal, size>;
 
+    //! The value history type
+    using ValueHistory = History<T, size>;
+
     //! Constructor
     SignalValueHistory() : m_signals(), m_values() {}
 
@@ -38,22 +41,15 @@ class SignalValueHistory {
     void clear() {
         this->m_size = 0;
         this->m_signals.clear();
+        this->m_values.clear();
     }
 
     //! Check two histories for equality
     bool operator==(SignalValueHistory& history  //!< The other history
     ) const {
-        bool result = (this->m_size == history.m_size);
-        if (result) {
-            FW_ASSERT(this->m_size < size);
-            for (FwSizeType i = 0; i < this->m_size; ++i) {
-                if (this->m_values[i] != history.m_values[i]) {
-                    result = false;
-                    break;
-                }
-            }
-        }
-        return result;
+        return (this->m_size == history.m_size) &&
+          (this->m_signals = history.m_signals) &&
+          (this->m_values = history.m_values);
     }
 
     //! Push an item on the history
@@ -62,7 +58,7 @@ class SignalValueHistory {
     ) {
         FW_ASSERT(this->m_size < size, static_cast<FwAssertArgType>(this->m_size));
         this->m_signals.push(signal);
-        this->m_values[this->m_size] = value;
+        this->m_values.push(value);
         this->m_size++;
     }
 
@@ -72,22 +68,18 @@ class SignalValueHistory {
     //! Get the signal history
     const SignalHistory& getSignals() const { return this->m_signals; }
 
-    //! Get the value at an index
-    const T& getValueAt(FwIndexType index  //!< The index
-    ) const {
-        FW_ASSERT(index < this->m_size);
-        return this->m_values[index];
-    }
+    //! Get the value history
+    const ValueHistory& getValues() const { return this->m_values; }
 
   private:
     //! The size of the history
     FwSizeType m_size = 0;
 
     //! The signal history
-    SignalHistory m_signals;
+    SignalHistory m_signals = {};
 
     //! The values in the history
-    std::array<T, size> m_values = {};
+    ValueHistory m_values = {};
 };
 
 }  // namespace SmHarness
