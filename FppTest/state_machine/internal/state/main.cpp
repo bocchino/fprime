@@ -10,6 +10,7 @@
 #include "FppTest/state_machine/internal/state/BasicTestAbsType.hpp"
 #include "FppTest/state_machine/internal/state/BasicTestArray.hpp"
 #include "FppTest/state_machine/internal/state/BasicTestEnum.hpp"
+#include "FppTest/state_machine/internal/state/BasicTestStruct.hpp"
 #include "FppTest/state_machine/internal/state/BasicU32.hpp"
 #include "STest/STest/Random/Random.hpp"
 
@@ -46,6 +47,11 @@ TEST(BasicTestArray, Test) {
 TEST(BasicTestEnum, Test) {
   FppTest::SmState::BasicTestEnum basicTestEnum;
   basicTestEnum.test();
+}
+
+TEST(BasicTestStruct, Test) {
+  FppTest::SmState::BasicTestStruct basicTestStruct;
+  basicTestStruct.test();
 }
 
 TEST(BasicU32, Test) {

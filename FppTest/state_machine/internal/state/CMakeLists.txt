@@ -5,6 +5,7 @@ set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/BasicTestAbsType.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicTestArray.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicTestEnum.fpp"
+  "${CMAKE_CURRENT_LIST_DIR}/BasicTestStruct.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicU32.fpp"
 )
 set(MOD_DEPS FppTest/state_machine/internal/harness)
@@ -17,6 +18,7 @@ set(UT_SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/BasicTestAbsType.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicTestArray.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicTestEnum.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/BasicTestStruct.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicU32.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
 )
