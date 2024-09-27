@@ -47,10 +47,10 @@ class BasicU32 final : public BasicU32StateMachineBase {
 
   private:
     //! The history associated with action a
-    SmHarness::NoValueHistory<Signal, historySize> m_action_a_history;
+    SmHarness::SignalHistory<Signal, historySize> m_action_a_history;
 
     //! The history associated with action b
-    SmHarness::History<Signal, U32, historySize> m_action_b_history;
+    SmHarness::SignalValueHistory<Signal, U32, historySize> m_action_b_history;
 };
 
 }  // namespace SmState

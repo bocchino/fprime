@@ -1,6 +1,6 @@
 // ======================================================================
 //
-// \title  NoValueHistory.hpp
+// \title  SignalHistory.hpp
 // \author R. Bocchino
 // \brief  Header for a history of signals
 //
@@ -11,8 +11,8 @@
 //
 // ======================================================================
 
-#ifndef FppTest_SmHarness_NoValueHistory_HPP
-#define FppTest_SmHarness_NoValueHistory_HPP
+#ifndef FppTest_SmHarness_SignalHistory_HPP
+#define FppTest_SmHarness_SignalHistory_HPP
 
 #include <FpConfig.hpp>
 #include <array>
@@ -25,16 +25,16 @@ namespace SmHarness {
 
 //! A history of calls with no values
 template <typename Signal, FwSizeType size>
-class NoValueHistory {
+class SignalHistory {
   public:
     //! Constructor
-    NoValueHistory() {}
+    SignalHistory() {}
 
     //! Clear the history
     void clear() { this->m_size = 0; }
 
     //! Check two histories for equality
-    bool operator==(NoValueHistory& history  //!< The other history
+    bool operator==(SignalHistory& history  //!< The other history
     ) const {
         bool result = (this->m_size == history.m_size);
         if (result) {

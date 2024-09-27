@@ -15,7 +15,7 @@
 #define FppTest_SmHarness_Guard_HPP
 
 #include <FpConfig.hpp>
-#include "FppTest/state_machine/internal/harness/History.hpp"
+#include "FppTest/state_machine/internal/harness/SignalValueHistory.hpp"
 
 namespace FppTest {
 
@@ -26,7 +26,7 @@ template <typename Signal, typename T, FwSizeType size>
 class Guard {
   public:
     //! The call history type
-    using CallHistory = History<Signal, T, size>;
+    using CallHistory = SignalValueHistory<Signal, T, size>;
 
     //! Constructor
     Guard() {}

@@ -1,6 +1,6 @@
 // ======================================================================
 //
-// \title  History.hpp
+// \title  SignalValueHistory.hpp
 // \author R. Bocchino
 // \brief  Template for a history of calls with signals and values
 //
@@ -11,13 +11,13 @@
 //
 // ======================================================================
 
-#ifndef FppTest_SmHarness_History_HPP
-#define FppTest_SmHarness_History_HPP
+#ifndef FppTest_SmHarness_SignalValueHistory_HPP
+#define FppTest_SmHarness_SignalValueHistory_HPP
 
 #include <FpConfig.hpp>
 #include <array>
 
-#include "FppTest/state_machine/internal/harness/NoValueHistory.hpp"
+#include "FppTest/state_machine/internal/harness/SignalHistory.hpp"
 #include "Fw/Types/Assert.hpp"
 
 namespace FppTest {
@@ -26,13 +26,13 @@ namespace SmHarness {
 
 //! A history with signals and values
 template <typename Signal, typename T, FwSizeType size>
-class History {
+class SignalValueHistory {
   public:
     //! The signal history type
-    using SignalHistory = NoValueHistory<Signal, size>;
+    using SignalHistory = SmHarness::SignalHistory<Signal, size>;
 
     //! Constructor
-    History() : m_signals(), m_values() {}
+    SignalValueHistory() : m_signals(), m_values() {}
 
     //! Clear the history
     void clear() {
@@ -41,7 +41,7 @@ class History {
     }
 
     //! Check two histories for equality
-    bool operator==(History& history  //!< The other history
+    bool operator==(SignalValueHistory& history  //!< The other history
     ) const {
         bool result = (this->m_size == history.m_size);
         if (result) {

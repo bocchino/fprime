@@ -55,7 +55,7 @@ class BasicGuard final : public BasicGuardStateMachineBase {
 
   private:
     //! The history associated with action a
-    SmHarness::NoValueHistory<Signal, historySize> m_action_a_history;
+    SmHarness::SignalHistory<Signal, historySize> m_action_a_history;
 
     //! The guard g
     SmHarness::NoArgGuard<Signal, historySize> m_guard_g;
