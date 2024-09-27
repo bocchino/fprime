@@ -15,7 +15,7 @@
 #ifndef FppTest_SmHarness_NoArgGuard_HPP
 #define FppTest_SmHarness_NoArgGuard_HPP
 
-#include "FppTest/state_machine/internal/harness/SignalHistory.hpp"
+#include "FppTest/state_machine/internal/harness/History.hpp"
 
 namespace FppTest {
 
@@ -26,7 +26,7 @@ template <typename Signal, FwSizeType size>
 class NoArgGuard {
   public:
     //! Call history type
-    using CallHistory = SignalHistory<Signal, size>;
+    using CallHistory = History<Signal, size>;
 
     //! Constructor
     NoArgGuard() : m_callHistory() {}

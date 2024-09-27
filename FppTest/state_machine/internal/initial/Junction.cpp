@@ -62,7 +62,7 @@ void Junction::checkActionsAndGuards(FwSizeType expectedActionSize, FwSizeType e
     }
     ASSERT_EQ(this->m_action_a_history.getSize(), expectedActionSize);
     for (FwSizeType i = 0; i < expectedGuardSize; i++) {
-        ASSERT_EQ(this->m_guard_g.getCallHistory().getSignalAt(i), Signal::__FPRIME_AC_INITIAL_TRANSITION);
+        ASSERT_EQ(this->m_guard_g.getCallHistory().getItemAt(i), Signal::__FPRIME_AC_INITIAL_TRANSITION);
     }
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), expectedGuardSize);
 }

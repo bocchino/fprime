@@ -17,7 +17,7 @@
 #include <FpConfig.hpp>
 #include <array>
 
-#include "FppTest/state_machine/internal/harness/SignalHistory.hpp"
+#include "FppTest/state_machine/internal/harness/History.hpp"
 #include "Fw/Types/Assert.hpp"
 
 namespace FppTest {
@@ -29,7 +29,7 @@ template <typename Signal, typename T, FwSizeType size>
 class SignalValueHistory {
   public:
     //! The signal history type
-    using SignalHistory = SmHarness::SignalHistory<Signal, size>;
+    using SignalHistory = History<Signal, size>;
 
     //! Constructor
     SignalValueHistory() : m_signals(), m_values() {}

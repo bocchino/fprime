@@ -46,7 +46,7 @@ void BasicU32::test() {
         ASSERT_EQ(this->m_action_a_history.getItemAt(i), Signal::s);
     }
     ASSERT_EQ(this->m_action_b_history.getSize(), 1);
-    ASSERT_EQ(this->m_action_b_history.getSignals().getSignalAt(0), Signal::s);
+    ASSERT_EQ(this->m_action_b_history.getSignals().getItemAt(0), Signal::s);
     ASSERT_EQ(this->m_action_b_history.getValueAt(0), value);
 }
 

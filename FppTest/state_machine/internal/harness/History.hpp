@@ -1,8 +1,8 @@
 // ======================================================================
 //
-// \title  SignalHistory.hpp
+// \title  History.hpp
 // \author R. Bocchino
-// \brief  Header for a history of signals
+// \brief  Header for a history of value items
 //
 // \copyright
 // Copyright 2024, by the California Institute of Technology.
@@ -11,8 +11,8 @@
 //
 // ======================================================================
 
-#ifndef FppTest_SmHarness_SignalHistory_HPP
-#define FppTest_SmHarness_SignalHistory_HPP
+#ifndef FppTest_SmHarness_History_HPP
+#define FppTest_SmHarness_History_HPP
 
 #include <FpConfig.hpp>
 #include <array>
@@ -23,23 +23,23 @@ namespace FppTest {
 
 namespace SmHarness {
 
-//! A history of calls with no values
-template <typename Signal, FwSizeType size>
-class SignalHistory {
+//! A history of value items
+template <typename T, FwSizeType size>
+class History {
   public:
     //! Constructor
-    SignalHistory() {}
+    History() {}
 
     //! Clear the history
     void clear() { this->m_size = 0; }
 
     //! Check two histories for equality
-    bool operator==(SignalHistory& history  //!< The other history
+    bool operator==(History& history  //!< The other history
     ) const {
         bool result = (this->m_size == history.m_size);
         if (result) {
             for (FwSizeType i = 0; i < this->m_size; i++) {
-                if (this->m_signals[i] != history.m_signals[i]) {
+                if (this->m_items[i] != history.m_items[i]) {
                     result = false;
                     break;
                 }
@@ -49,29 +49,29 @@ class SignalHistory {
     }
 
     //! Push an item on the history
-    void push(Signal signal  //!< The signal
+    void push(T signal  //!< The signal
     ) {
         FW_ASSERT(m_size < size);
-        this->m_signals[m_size] = signal;
+        this->m_items[m_size] = signal;
         this->m_size++;
     }
 
     //! Get the history size
     FwSizeType getSize() const { return this->m_size; }
 
-    //! Get the signal at an index
-    Signal getSignalAt(FwIndexType index  //!< The index
+    //! Get the history item at an index
+    T getItemAt(FwIndexType index  //!< The index
     ) const {
         FW_ASSERT(index < this->m_size);
-        return this->m_signals[index];
+        return this->m_items[index];
     }
 
   private:
     //! The history size
     FwSizeType m_size = 0;
 
-    //! The signals in the history
-    std::array<Signal, size> m_signals = {};
+    //! The items in the history
+    std::array<T, size> m_items = {};
 };
 
 }  // namespace SmHarness

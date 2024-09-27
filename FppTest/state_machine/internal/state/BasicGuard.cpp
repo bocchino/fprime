@@ -63,7 +63,7 @@ void BasicGuard::checkActionsAndGuards(FwSizeType expectedActionSize, FwSizeType
     }
     ASSERT_EQ(this->m_action_a_history.getSize(), expectedActionSize);
     for (FwSizeType i = 0; i < expectedGuardSize; i++) {
-        ASSERT_EQ(this->m_guard_g.getCallHistory().getSignalAt(i), Signal::s);
+        ASSERT_EQ(this->m_guard_g.getCallHistory().getItemAt(i), Signal::s);
     }
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), expectedGuardSize);
 }
