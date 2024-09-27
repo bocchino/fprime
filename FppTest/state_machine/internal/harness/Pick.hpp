@@ -43,13 +43,6 @@ static inline TestAbsType testAbsType() {
     return TestAbsType(data);
 }
 
-//! Pick a TestEnum value
-static inline TestEnum testEnum() {
-    const U32 u32Value = STest::Pick::startLength(0, TestEnum::NUM_CONSTANTS);
-    const TestEnum::T enumValue = static_cast<TestEnum::T>(u32Value);
-    return TestEnum(enumValue);
-}
-
 //! Pick a TestArray value
 static inline TestArray testArray() {
     TestArray result;
@@ -57,6 +50,13 @@ static inline TestArray testArray() {
         result[i] = STest::Pick::any();
     }
     return result;
+}
+
+//! Pick a TestEnum value
+static inline TestEnum testEnum() {
+    const U32 u32Value = STest::Pick::startLength(0, TestEnum::NUM_CONSTANTS);
+    const TestEnum::T enumValue = static_cast<TestEnum::T>(u32Value);
+    return TestEnum(enumValue);
 }
 
 //! Pick a TestStruct value
