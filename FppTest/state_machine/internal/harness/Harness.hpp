@@ -17,8 +17,8 @@
 #include "FppTest/state_machine/internal/harness/Guard.hpp"
 #include "FppTest/state_machine/internal/harness/History.hpp"
 #include "FppTest/state_machine/internal/harness/NoArgGuard.hpp"
+#include "FppTest/state_machine/internal/harness/Pick.hpp"
 #include "FppTest/state_machine/internal/harness/SignalValueHistory.hpp"
 #include "FppTest/state_machine/internal/harness/TestAbsType.hpp"
-#include "FppTest/state_machine/internal/harness/Util.hpp"
 
 #endif
