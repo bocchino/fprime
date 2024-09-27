@@ -14,7 +14,10 @@
 #ifndef FppTest_SmHarness_TestAbsType_HPP
 #define FppTest_SmHarness_TestAbsType_HPP
 
+#include <ostream>
+
 #include "Fw/Types/Serializable.hpp"
+#include "Fw/Types/String.hpp"
 
 namespace FppTest {
 
@@ -36,6 +39,14 @@ struct TestAbsType final : public Fw::Serializable {
     //! Comparison operator
     bool operator==(const TestAbsType& obj) const { return this->m_data == obj.m_data; }
 
+#ifdef BUILD_UT
+    //! Ostream operator
+    friend std::ostream& operator<<(
+        std::ostream& os, //!< The ostream
+        const TestAbsType& obj //!< The object
+    );
+#endif
+    
     //! Serialize function
     //! \return Status
     Fw::SerializeStatus serialize(Fw::SerializeBufferBase& sbb  //!< The serialize buffer base
@@ -50,6 +61,13 @@ struct TestAbsType final : public Fw::Serializable {
         return sbb.deserialize(this->m_data);
     }
 
+#if FW_SERIALIZABLE_TO_STRING
+    //! Convert TestAbsType to string
+    void toString(
+        Fw::StringBase& sb //!< The StringBase object to hold the result
+    ) const;
+#endif
+        
     //! The data
     U32 m_data;
 };
