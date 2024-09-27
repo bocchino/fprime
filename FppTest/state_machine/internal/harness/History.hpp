@@ -2,7 +2,7 @@
 //
 // \title  History.hpp
 // \author R. Bocchino
-// \brief  Template for a history of calls with values
+// \brief  Template for a history of calls with signals and values
 //
 // \copyright
 // Copyright 2024, by the California Institute of Technology.
@@ -24,7 +24,7 @@ namespace FppTest {
 
 namespace SmHarness {
 
-//! A history with values
+//! A history with signals and values
 template <typename Signal, typename T, FwSizeType size>
 class History {
   public:

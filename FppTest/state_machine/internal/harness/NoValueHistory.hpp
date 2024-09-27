@@ -1,8 +1,8 @@
 // ======================================================================
 //
-// \title  ValueHistory.hpp
+// \title  NoValueHistory.hpp
 // \author R. Bocchino
-// \brief  Header for a history of calls with no values
+// \brief  Header for a history of signals
 //
 // \copyright
 // Copyright 2024, by the California Institute of Technology.
