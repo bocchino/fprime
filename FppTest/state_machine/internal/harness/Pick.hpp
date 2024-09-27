@@ -20,6 +20,7 @@
 #include "FppTest/state_machine/internal/harness/TestAbsType.hpp"
 #include "FppTest/state_machine/internal/harness/TestArrayArrayAc.hpp"
 #include "FppTest/state_machine/internal/harness/TestEnumEnumAc.hpp"
+#include "FppTest/state_machine/internal/harness/TestStructSerializableAc.hpp"
 #include "STest/STest/Pick/Pick.hpp"
 
 namespace FppTest {
@@ -55,6 +56,12 @@ static inline TestArray testArray() {
         result[i] = STest::Pick::any();
     }
     return result;
+}
+
+//! Pick a TestStruct value
+static inline TestStruct testStruct() {
+    const U32 x = STest::Pick::any();
+    return TestStruct(x);
 }
 
 }  // namespace Pick
