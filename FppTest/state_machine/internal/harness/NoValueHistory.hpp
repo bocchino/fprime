@@ -11,8 +11,8 @@
 //
 // ======================================================================
 
-#ifndef FppTest_NoValueHistory_HPP
-#define FppTest_NoValueHistory_HPP
+#ifndef FppTest_SmHarness_NoValueHistory_HPP
+#define FppTest_SmHarness_NoValueHistory_HPP
 
 #include <FpConfig.hpp>
 #include <array>
@@ -20,6 +20,8 @@
 #include "Fw/Types/Assert.hpp"
 
 namespace FppTest {
+
+namespace SmHarness {
 
 //! A history of calls with no values
 template <typename Signal, FwSizeType size>
@@ -71,6 +73,8 @@ class NoValueHistory {
     //! The signals in the history
     std::array<Signal, size> m_signals = {};
 };
+
+}  // namespace SmHarness
 
 }  // end namespace FppTest
 

@@ -1,6 +1,6 @@
 // ======================================================================
 //
-// \title  NoArgSmGuard.hpp
+// \title  NoArgGuard.hpp
 // \author R. Bocchino
 // \brief  Class for test implementation of a state machine guard
 //         with no argument value
@@ -12,22 +12,24 @@
 //
 // ======================================================================
 
-#ifndef FppTest_NoArgSmGuard_HPP
-#define FppTest_NoArgSmGuard_HPP
+#ifndef FppTest_SmHarness_NoArgGuard_HPP
+#define FppTest_SmHarness_NoArgGuard_HPP
 
 #include "FppTest/state_machine/internal/harness/NoValueHistory.hpp"
 
 namespace FppTest {
 
+namespace SmHarness {
+
 //! Test implementation of a state machine guard with no argument value
 template <typename Signal, FwSizeType size>
-class NoArgSmGuard {
+class NoArgGuard {
   public:
     //! Call history type
     using CallHistory = NoValueHistory<Signal, size>;
 
     //! Constructor
-    NoArgSmGuard() : m_callHistory() {}
+    NoArgGuard() : m_callHistory() {}
 
     //! Reset the guard to the initial state
     void reset() {
@@ -42,7 +44,7 @@ class NoArgSmGuard {
     bool call(Signal signal  //!< The signal
     ) const {
         // Use const cast to update the history
-        const_cast<NoArgSmGuard<Signal,size>*>(this)->m_callHistory.push(signal);
+        const_cast<NoArgGuard<Signal, size>*>(this)->m_callHistory.push(signal);
         return this->m_returnValue;
     }
 
@@ -62,6 +64,8 @@ class NoArgSmGuard {
     //! The call history
     CallHistory m_callHistory;
 };
+
+}  // namespace SmHarness
 
 }  // end namespace FppTest
 

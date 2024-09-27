@@ -11,8 +11,8 @@
 //
 // ======================================================================
 
-#ifndef FppTest_History_HPP
-#define FppTest_History_HPP
+#ifndef FppTest_SmHarness_TestAbsType_HPP
+#define FppTest_SmHarness_TestAbsType_HPP
 
 #include "Fw/Types/Serializable.hpp"
 

@@ -11,14 +11,14 @@
 //
 // ======================================================================
 
-#ifndef FppTest_InternalSm_Harness_HPP
-#define FppTest_InternalSm_Harness_HPP
+#ifndef FppTest_SmHarness_HPP
+#define FppTest_SmHarness_HPP
 
+#include "FppTest/state_machine/internal/harness/Guard.hpp"
 #include "FppTest/state_machine/internal/harness/History.hpp"
-#include "FppTest/state_machine/internal/harness/InternalSmUtil.hpp"
-#include "FppTest/state_machine/internal/harness/NoArgSmGuard.hpp"
+#include "FppTest/state_machine/internal/harness/NoArgGuard.hpp"
 #include "FppTest/state_machine/internal/harness/NoValueHistory.hpp"
-#include "FppTest/state_machine/internal/harness/SmGuard.hpp"
 #include "FppTest/state_machine/internal/harness/TestAbsType.hpp"
+#include "FppTest/state_machine/internal/harness/Util.hpp"
 
 #endif

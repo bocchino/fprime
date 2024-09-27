@@ -28,7 +28,7 @@ void BasicSelf::action_a(Signal signal) {
 
 void BasicSelf::test() {
     this->m_action_a_history.clear();
-    const FwEnumStoreType id = InternalSmUtil::pickStateMachineId();
+    const FwEnumStoreType id = SmHarness::pickStateMachineId();
     this->init(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S);

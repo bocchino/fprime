@@ -1,6 +1,6 @@
 // ======================================================================
 //
-// \title  SmGuard.hpp
+// \title  Guard.hpp
 // \author R. Bocchino
 // \brief  Template for test implementation of a state machine guard
 //
@@ -11,23 +11,25 @@
 //
 // ======================================================================
 
-#ifndef FppTest_SmGuard_HPP
-#define FppTest_SmGuard_HPP
+#ifndef FppTest_SmHarness_Guard_HPP
+#define FppTest_SmHarness_Guard_HPP
 
 #include <FpConfig.hpp>
 #include "FppTest/state_machine/internal/harness/History.hpp"
 
 namespace FppTest {
 
+namespace SmHarness {
+
 //! Test implementation of a state machine guard with a value argument
 template <typename Signal, typename T, FwSizeType size>
-class SmGuard {
+class Guard {
   public:
     //! The call history type
     using CallHistory = History<Signal, T, size>;
 
     //! Constructor
-    SmGuard() {}
+    Guard() {}
 
     //! Reset the guard to the initial state
     void reset() {
@@ -43,7 +45,7 @@ class SmGuard {
               T arg           //!< The argument
     ) const {
         // Use const cast to update the history
-        const_cast<SmGuard<Signal, T, size>*>(this)->m_callHistory.push(signal, arg);
+        const_cast<Guard<Signal, T, size>*>(this)->m_callHistory.push(signal, arg);
         return this->m_returnValue;
     }
 
@@ -63,6 +65,8 @@ class SmGuard {
     //! The call history
     CallHistory m_callHistory = {};
 };
+
+}  // namespace SmHarness
 
 }  // end namespace FppTest
 

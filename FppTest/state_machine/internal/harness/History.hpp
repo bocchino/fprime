@@ -11,16 +11,18 @@
 //
 // ======================================================================
 
-#ifndef FppTest_History_HPP
-#define FppTest_History_HPP
+#ifndef FppTest_SmHarness_History_HPP
+#define FppTest_SmHarness_History_HPP
 
-#include <array>
 #include <FpConfig.hpp>
+#include <array>
 
 #include "FppTest/state_machine/internal/harness/NoValueHistory.hpp"
 #include "Fw/Types/Assert.hpp"
 
 namespace FppTest {
+
+namespace SmHarness {
 
 //! A history with values
 template <typename Signal, typename T, FwSizeType size>
@@ -33,9 +35,9 @@ class History {
     History() : m_signals(), m_values() {}
 
     //! Clear the history
-    void clear() { 
-      this->m_size = 0; 
-      this->m_signals.clear();
+    void clear() {
+        this->m_size = 0;
+        this->m_signals.clear();
     }
 
     //! Check two histories for equality
@@ -55,7 +57,7 @@ class History {
     }
 
     //! Push an item on the history
-    void push(Signal signal, //!< The signal
+    void push(Signal signal,  //!< The signal
               const T& value  //!< The value
     ) {
         FW_ASSERT(this->m_size < size, static_cast<FwAssertArgType>(this->m_size));
@@ -68,9 +70,7 @@ class History {
     FwSizeType getSize() const { return this->m_size; }
 
     //! Get the signal history
-    const SignalHistory& getSignals() const {
-        return this->m_signals;
-    }
+    const SignalHistory& getSignals() const { return this->m_signals; }
 
     //! Get the value at an index
     const T& getValueAt(FwIndexType index  //!< The index
@@ -89,6 +89,8 @@ class History {
     //! The values in the history
     std::array<T, size> m_values = {};
 };
+
+}  // namespace SmHarness
 
 }  // end namespace FppTest
 

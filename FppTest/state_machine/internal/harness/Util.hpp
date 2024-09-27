@@ -11,16 +11,17 @@
 //
 // ======================================================================
 
-#ifndef FppTest_InternalSmUtil_HPP
-#define FppTest_InternalSmUtil_HPP
+#ifndef FppTest_SmHarness_Util_HPP
+#define FppTest_SmHarness_Util_HPP
 
 #include <FpConfig.hpp>
 
+#include "FppTest/state_machine/internal/harness/TestAbsType.hpp"
 #include "STest/STest/Pick/Pick.hpp"
 
 namespace FppTest {
 
-namespace InternalSmUtil {
+namespace SmHarness {
 
 //! Pick a state machine ID
 static inline FwEnumStoreType pickStateMachineId() {
@@ -29,7 +30,13 @@ static inline FwEnumStoreType pickStateMachineId() {
     return static_cast<FwEnumStoreType>(id);
 }
 
-}  // namespace InternalSmUtil
+//! Pick a TestAbsType value
+static inline TestAbsType pickTestAbsType() {
+    const U32 data = STest::Pick::any();
+    return TestAbsType(data);
+}
+
+}  // namespace SmHarness
 
 }  // namespace FppTest
 
