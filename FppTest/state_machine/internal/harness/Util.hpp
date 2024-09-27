@@ -1,8 +1,8 @@
 // ======================================================================
 //
-// \title  InternalSmUtil.hpp
+// \title  Util.hpp
 // \author R. Bocchino
-// \brief  Header file for internal state machine test utilities
+// \brief  Header file for state machine test utilities
 //
 // \copyright
 // Copyright 2024, by the California Institute of Technology.

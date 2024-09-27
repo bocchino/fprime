@@ -38,7 +38,7 @@ class BasicU32 final : public BasicU32StateMachineBase {
 
     //! Implementation of action b
     void action_b(Signal signal,  //!< The signal
-                  U32 value //!< The value
+                  U32 value       //!< The value
                   ) final;
 
   public:

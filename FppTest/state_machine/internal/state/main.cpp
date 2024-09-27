@@ -7,17 +7,13 @@
 #include "FppTest/state_machine/internal/state/Basic.hpp"
 #include "FppTest/state_machine/internal/state/BasicGuard.hpp"
 #include "FppTest/state_machine/internal/state/BasicSelf.hpp"
+#include "FppTest/state_machine/internal/state/BasicTestAbsType.hpp"
 #include "FppTest/state_machine/internal/state/BasicU32.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
   FppTest::SmState::Basic basic;
   basic.test();
-}
-
-TEST(BasicSelf, Test) {
-  FppTest::SmState::BasicSelf basicSelf;
-  basicSelf.test();
 }
 
 TEST(BasicGuard, False) {
@@ -28,6 +24,16 @@ TEST(BasicGuard, False) {
 TEST(BasicGuard, True) {
   FppTest::SmState::BasicGuard basicGuard;
   basicGuard.testTrue();
+}
+
+TEST(BasicSelf, Test) {
+  FppTest::SmState::BasicSelf basicSelf;
+  basicSelf.test();
+}
+
+TEST(BasicTestAbsType, Test) {
+  FppTest::SmState::BasicTestAbsType basicTestAbsType;
+  basicTestAbsType.test();
 }
 
 TEST(BasicU32, Test) {
