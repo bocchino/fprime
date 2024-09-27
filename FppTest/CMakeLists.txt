@@ -28,6 +28,8 @@ set(MOD_DEPS
     ${PROJECT_NAME}/component/active
     ${PROJECT_NAME}/component/queued
     ${PROJECT_NAME}/component/passive
+    ${PROJECT_NAME}/state_machine/internal/initial
+    ${PROJECT_NAME}/state_machine/internal/state
 )
 
 register_fprime_deployment()
