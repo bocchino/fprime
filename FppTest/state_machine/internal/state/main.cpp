@@ -13,6 +13,7 @@
 #include "FppTest/state_machine/internal/state/BasicTestEnum.hpp"
 #include "FppTest/state_machine/internal/state/BasicTestStruct.hpp"
 #include "FppTest/state_machine/internal/state/BasicU32.hpp"
+#include "FppTest/state_machine/internal/state/StateToState.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
@@ -63,6 +64,11 @@ TEST(BasicTestStruct, Test) {
 TEST(BasicU32, Test) {
   FppTest::SmState::BasicU32 basicU32;
   basicU32.test();
+}
+
+TEST(StateToState, Test) {
+  FppTest::SmState::StateToState stateToState;
+  stateToState.test();
 }
 
 // ----------------------------------------------------------------------
