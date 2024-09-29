@@ -16,6 +16,7 @@
 #include "FppTest/state_machine/internal/state/BasicU32.hpp"
 #include "FppTest/state_machine/internal/state/Internal.hpp"
 #include "FppTest/state_machine/internal/state/Polymorphism.hpp"
+#include "FppTest/state_machine/internal/state/StateToChild.hpp"
 #include "FppTest/state_machine/internal/state/StateToJunction.hpp"
 #include "FppTest/state_machine/internal/state/StateToSelf.hpp"
 #include "FppTest/state_machine/internal/state/StateToState.hpp"
@@ -114,6 +115,26 @@ TEST(Polymorphism, S2_to_S3) {
 TEST(Polymorphism, S3_poly) {
   FppTest::SmState::Polymorphism polymorphism;
   polymorphism.testS3_poly();
+}
+
+TEST(StateToChild, Init) {
+  FppTest::SmState::StateToChild stateToChild;
+  stateToChild.testInit();
+}
+
+TEST(StateToChild, S2_to_S2) {
+  FppTest::SmState::StateToChild stateToChild;
+  stateToChild.testS2_to_S2();
+}
+
+TEST(StateToChild, S2_to_S3) {
+  FppTest::SmState::StateToChild stateToChild;
+  stateToChild.testS2_to_S3();
+}
+
+TEST(StateToChild, S3_to_S2) {
+  FppTest::SmState::StateToChild stateToChild;
+  stateToChild.testS3_to_S2();
 }
 
 TEST(StateToJunction, Init) {
