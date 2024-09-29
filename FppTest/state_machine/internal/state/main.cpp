@@ -14,6 +14,7 @@
 #include "FppTest/state_machine/internal/state/BasicTestEnum.hpp"
 #include "FppTest/state_machine/internal/state/BasicTestStruct.hpp"
 #include "FppTest/state_machine/internal/state/BasicU32.hpp"
+#include "FppTest/state_machine/internal/state/StateToJunction.hpp"
 #include "FppTest/state_machine/internal/state/StateToSelf.hpp"
 #include "FppTest/state_machine/internal/state/StateToState.hpp"
 #include "STest/STest/Random/Random.hpp"
@@ -73,6 +74,36 @@ TEST(BasicU32, Test) {
   basicU32.test();
 }
 
+TEST(StateToJunction, Init) {
+  FppTest::SmState::StateToJunction stateToJunction;
+  stateToJunction.testInit();
+}
+
+TEST(StateToJunction, S2_to_J) {
+  FppTest::SmState::StateToJunction stateToJunction;
+  stateToJunction.testS2_to_J();
+}
+
+TEST(StateToJunction, S2_to_S4) {
+  FppTest::SmState::StateToJunction stateToJunction;
+  stateToJunction.testS2_to_S4();
+}
+
+TEST(StateToJunction, S2_to_S3) {
+  FppTest::SmState::StateToJunction stateToJunction;
+  stateToJunction.testS2_to_S3();
+}
+
+TEST(StateToJunction, S3_to_J) {
+  FppTest::SmState::StateToJunction stateToJunction;
+  stateToJunction.testS3_to_J();
+}
+
+TEST(StateToJunction, S3_to_S4) {
+  FppTest::SmState::StateToJunction stateToJunction;
+  stateToJunction.testS3_to_S4();
+}
+
 TEST(StateToSelf, Init) {
   FppTest::SmState::StateToSelf stateToSelf;
   stateToSelf.testInit();
@@ -98,6 +129,11 @@ TEST(StateToState, Init) {
   stateToState.testInit();
 }
 
+TEST(StateToState, S2_to_S3) {
+  FppTest::SmState::StateToState stateToState;
+  stateToState.testS2_to_S3();
+}
+
 TEST(StateToState, S2_to_S4) {
   FppTest::SmState::StateToState stateToState;
   stateToState.testS2_to_S4();
@@ -106,11 +142,6 @@ TEST(StateToState, S2_to_S4) {
 TEST(StateToState, S2_to_S5) {
   FppTest::SmState::StateToState stateToState;
   stateToState.testS2_to_S5();
-}
-
-TEST(StateToState, S2_to_S3) {
-  FppTest::SmState::StateToState stateToState;
-  stateToState.testS2_to_S3();
 }
 
 TEST(StateToState, S3_to_S4) {

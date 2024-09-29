@@ -27,7 +27,7 @@ void BasicGuard::action_a(Signal signal) {
 }
 
 bool BasicGuard::guard_g(Signal signal) const {
-    return m_guard_g.call(signal);
+    return this->m_guard_g.call(signal);
 }
 
 void BasicGuard::testFalse() {

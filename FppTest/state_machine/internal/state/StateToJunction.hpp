@@ -1,8 +1,8 @@
 // ======================================================================
 //
-// \title  StateToSelf.hpp
+// \title  StateToJunction.hpp
 // \author R. Bocchino
-// \brief  Test class for state-to-self state machine (header)
+// \brief  Test class for state-to-junction state machine (header)
 //
 // \copyright
 // Copyright 2024, by the California Institute of Technology.
@@ -11,37 +11,29 @@
 //
 // ======================================================================
 
-#ifndef FppTest_State_StateToSelf_HPP
-#define FppTest_State_StateToSelf_HPP
+#ifndef FppTest_State_StateToJunction_HPP
+#define FppTest_State_StateToJunction_HPP
 
 #include "FppTest/state_machine/internal/harness/Harness.hpp"
-#include "FppTest/state_machine/internal/state/StateToSelfStateMachineAc.hpp"
+#include "FppTest/state_machine/internal/state/StateToJunctionStateMachineAc.hpp"
 
 namespace FppTest {
 
 namespace SmState {
 
-//! A state machine for testing state-to-self transitions with hierarchy
-class StateToSelf final : public StateToSelfStateMachineBase {
+//! A state machine for testing state-to-junction transitions with hierarchy
+class StateToJunction final : public StateToJunctionStateMachineBase {
   public:
     //! The history size
     static constexpr FwSizeType historySize = 10;
 
   public:
     //! Action IDs
-    enum class ActionId {
-        EXIT_S1,
-        EXIT_S2,
-        EXIT_S3,
-        A,
-        ENTER_S1,
-        ENTER_S2,
-        ENTER_S3
-    };
+    enum class ActionId { EXIT_S1, EXIT_S2, EXIT_S3, A, ENTER_S1, ENTER_S2, ENTER_S3, ENTER_S4 };
 
   public:
     //! Constructor
-    StateToSelf();
+    StateToJunction();
 
   private:
     //! Exit S1
@@ -72,22 +64,39 @@ class StateToSelf final : public StateToSelfStateMachineBase {
     void action_enterS3(Signal signal  //!< The signal
                         ) final;
 
+    //! Enter S4
+    void action_enterS4(Signal signal  //!< The signal
+                        ) final;
+
+    //! Guard g
+    bool guard_g(Signal signal  //!< The signal
+                 ) const final;
+
   public:
     //! Test initial transition
     void testInit();
 
-    //! Test transition S2 to S1
-    void testS2_to_S1();
+    //! Test transition S2 to J
+    void testS2_to_J();
 
     //! Test transition S2 to S3
     void testS2_to_S3();
 
-    //! Test transition S3 to S1
-    void testS3_to_S1();
+    //! Test transition S2 to S4
+    void testS2_to_S4();
+
+    //! Test transition S3 to J
+    void testS3_to_J();
+
+    //! Test transition S3 to S4
+    void testS3_to_S4();
 
   private:
     //! The action history
     SmHarness::SignalValueHistory<Signal, ActionId, historySize> m_actionHistory;
+
+    //! The guard g
+    SmHarness::NoArgGuard<Signal, historySize> m_guard_g;
 };
 
 }  // namespace SmState
