@@ -71,9 +71,14 @@ TEST(StateToState, Init) {
   stateToState.testInit();
 }
 
-TEST(StateToState, S1_to_S4) {
+TEST(StateToState, S2_to_S4) {
   FppTest::SmState::StateToState stateToState;
   stateToState.testS2_to_S4();
+}
+
+TEST(StateToState, S2_to_S3) {
+  FppTest::SmState::StateToState stateToState;
+  stateToState.testS2_to_S3();
 }
 
 // ----------------------------------------------------------------------
