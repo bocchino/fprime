@@ -51,6 +51,7 @@ module FppTest {
         @ Initial transition
         initial enter S2
 
+        @ Enter S1
         entry do { enterS1 }
 
         @ Exit S1
