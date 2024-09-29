@@ -8,7 +8,7 @@ set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/BasicTestEnum.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicTestStruct.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicU32.fpp"
-  "${CMAKE_CURRENT_LIST_DIR}/StateToStateStateMachineAc.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/StateToState.fpp"
 )
 set(MOD_DEPS FppTest/state_machine/internal/harness)
 register_fprime_module()
