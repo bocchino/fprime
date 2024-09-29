@@ -89,11 +89,17 @@ class StateToState final : public StateToStateStateMachineBase {
     //! Test transition S2 to S4
     void testS2_to_S4();
 
+    //! Test transition S2 to S5
+    void testS2_to_S5();
+
     //! Test transition S2 to S3
     void testS2_to_S3();
 
     //! Test transition S3 to S4
     void testS3_to_S4();
+
+    //! Test transition S3 to S5
+    void testS3_to_S5();
 
   private:
     SmHarness::SignalValueHistory<Signal, ActionId, historySize> m_actionHistory;

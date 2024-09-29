@@ -76,6 +76,11 @@ TEST(StateToState, S2_to_S4) {
   stateToState.testS2_to_S4();
 }
 
+TEST(StateToState, S2_to_S5) {
+  FppTest::SmState::StateToState stateToState;
+  stateToState.testS2_to_S5();
+}
+
 TEST(StateToState, S2_to_S3) {
   FppTest::SmState::StateToState stateToState;
   stateToState.testS2_to_S3();
@@ -84,6 +89,11 @@ TEST(StateToState, S2_to_S3) {
 TEST(StateToState, S3_to_S4) {
   FppTest::SmState::StateToState stateToState;
   stateToState.testS3_to_S4();
+}
+
+TEST(StateToState, S3_to_S5) {
+  FppTest::SmState::StateToState stateToState;
+  stateToState.testS3_to_S5();
 }
 
 // ----------------------------------------------------------------------

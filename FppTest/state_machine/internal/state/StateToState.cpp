@@ -114,6 +114,27 @@ void StateToState::testS2_to_S4() {
     ASSERT_EQ(actions.getItemAt(4), ActionId::ENTER_S5);
 }
 
+void StateToState::testS2_to_S5() {
+    this->m_actionHistory.clear();
+    const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
+    this->init(id);
+    this->m_actionHistory.clear();
+    this->sendSignal_S1_to_S5();
+    ASSERT_EQ(this->m_state, State::S4_S5);
+    const FwSizeType expectedSize = 5;
+    ASSERT_EQ(this->m_actionHistory.getSize(), expectedSize);
+    const auto& signals = this->m_actionHistory.getSignals();
+    const auto& actions = this->m_actionHistory.getValues();
+    for (FwSizeType i = 0; i < expectedSize; i++) {
+      ASSERT_EQ(signals.getItemAt(i), Signal::S1_to_S5);
+    }
+    ASSERT_EQ(actions.getItemAt(0), ActionId::EXIT_S2);
+    ASSERT_EQ(actions.getItemAt(1), ActionId::EXIT_S1);
+    ASSERT_EQ(actions.getItemAt(2), ActionId::A);
+    ASSERT_EQ(actions.getItemAt(3), ActionId::ENTER_S4);
+    ASSERT_EQ(actions.getItemAt(4), ActionId::ENTER_S5);
+}
+
 void StateToState::testS3_to_S4() {
     this->m_actionHistory.clear();
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
@@ -128,6 +149,28 @@ void StateToState::testS3_to_S4() {
     const auto& actions = this->m_actionHistory.getValues();
     for (FwSizeType i = 0; i < expectedSize; i++) {
       ASSERT_EQ(signals.getItemAt(i), Signal::S1_to_S4);
+    }
+    ASSERT_EQ(actions.getItemAt(0), ActionId::EXIT_S3);
+    ASSERT_EQ(actions.getItemAt(1), ActionId::EXIT_S1);
+    ASSERT_EQ(actions.getItemAt(2), ActionId::A);
+    ASSERT_EQ(actions.getItemAt(3), ActionId::ENTER_S4);
+    ASSERT_EQ(actions.getItemAt(4), ActionId::ENTER_S5);
+}
+
+void StateToState::testS3_to_S5() {
+    this->m_actionHistory.clear();
+    const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
+    this->init(id);
+    this->sendSignal_S2_to_S3();
+    this->m_actionHistory.clear();
+    this->sendSignal_S1_to_S5();
+    ASSERT_EQ(this->m_state, State::S4_S5);
+    const FwSizeType expectedSize = 5;
+    ASSERT_EQ(this->m_actionHistory.getSize(), expectedSize);
+    const auto& signals = this->m_actionHistory.getSignals();
+    const auto& actions = this->m_actionHistory.getValues();
+    for (FwSizeType i = 0; i < expectedSize; i++) {
+      ASSERT_EQ(signals.getItemAt(i), Signal::S1_to_S5);
     }
     ASSERT_EQ(actions.getItemAt(0), ActionId::EXIT_S3);
     ASSERT_EQ(actions.getItemAt(1), ActionId::EXIT_S1);
