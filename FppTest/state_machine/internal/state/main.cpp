@@ -14,6 +14,7 @@
 #include "FppTest/state_machine/internal/state/BasicTestEnum.hpp"
 #include "FppTest/state_machine/internal/state/BasicTestStruct.hpp"
 #include "FppTest/state_machine/internal/state/BasicU32.hpp"
+#include "FppTest/state_machine/internal/state/StateToSelf.hpp"
 #include "FppTest/state_machine/internal/state/StateToState.hpp"
 #include "STest/STest/Random/Random.hpp"
 
@@ -70,6 +71,26 @@ TEST(BasicTestStruct, Test) {
 TEST(BasicU32, Test) {
   FppTest::SmState::BasicU32 basicU32;
   basicU32.test();
+}
+
+TEST(StateToSelf, Init) {
+  FppTest::SmState::StateToSelf stateToSelf;
+  stateToSelf.testInit();
+}
+
+TEST(StateToSelf, S2_to_S1) {
+  FppTest::SmState::StateToSelf stateToSelf;
+  stateToSelf.testS2_to_S1();
+}
+
+TEST(StateToSelf, S2_to_S3) {
+  FppTest::SmState::StateToSelf stateToSelf;
+  stateToSelf.testS2_to_S3();
+}
+
+TEST(StateToSelf, S3_to_S1) {
+  FppTest::SmState::StateToSelf stateToSelf;
+  stateToSelf.testS3_to_S1();
 }
 
 TEST(StateToState, Init) {
