@@ -81,6 +81,11 @@ TEST(StateToState, S2_to_S3) {
   stateToState.testS2_to_S3();
 }
 
+TEST(StateToState, S3_to_S4) {
+  FppTest::SmState::StateToState stateToState;
+  stateToState.testS3_to_S4();
+}
+
 // ----------------------------------------------------------------------
 // Main function
 // ----------------------------------------------------------------------
