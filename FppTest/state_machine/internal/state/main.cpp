@@ -66,9 +66,14 @@ TEST(BasicU32, Test) {
   basicU32.test();
 }
 
-TEST(StateToState, Test) {
+TEST(StateToState, Init) {
   FppTest::SmState::StateToState stateToState;
-  stateToState.test();
+  stateToState.testInit();
+}
+
+TEST(StateToState, S1_to_S4) {
+  FppTest::SmState::StateToState stateToState;
+  stateToState.testS2_to_S4();
 }
 
 // ----------------------------------------------------------------------

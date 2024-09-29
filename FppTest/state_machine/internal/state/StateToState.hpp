@@ -28,6 +28,20 @@ class StateToState final : public StateToStateStateMachineBase {
     static constexpr FwSizeType historySize = 10;
 
   public:
+    //! Action IDs
+    enum class ActionId {
+      EXIT_S1,
+      EXIT_S2,
+      EXIT_S3,
+      A,
+      ENTER_S1,
+      ENTER_S2,
+      ENTER_S3,
+      ENTER_S4,
+      ENTER_S5
+    };
+
+  public:
     //! Constructor
     StateToState();
 
@@ -69,11 +83,14 @@ class StateToState final : public StateToStateStateMachineBase {
                         ) final;
 
   public:
-    //! Run the test
-    void test();
+    //! Test initial transition
+    void testInit();
+
+    //! Test transition S2 to S4
+    void testS2_to_S4();
 
   private:
-    // TODO
+    SmHarness::SignalValueHistory<Signal, ActionId, historySize> m_actionHistory;
 };
 
 }  // namespace SmState
