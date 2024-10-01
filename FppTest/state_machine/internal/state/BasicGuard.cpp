@@ -58,14 +58,14 @@ void BasicGuard::testTrue() {
 }
 
 void BasicGuard::checkActionsAndGuards(FwSizeType expectedActionSize, FwSizeType expectedGuardSize) {
+    ASSERT_EQ(this->m_action_a_history.getSize(), expectedActionSize);
     for (FwSizeType i = 0; i < expectedActionSize; i++) {
         ASSERT_EQ(this->m_action_a_history.getItemAt(i), Signal::s);
     }
-    ASSERT_EQ(this->m_action_a_history.getSize(), expectedActionSize);
+    ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), expectedGuardSize);
     for (FwSizeType i = 0; i < expectedGuardSize; i++) {
         ASSERT_EQ(this->m_guard_g.getCallHistory().getItemAt(i), Signal::s);
     }
-    ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), expectedGuardSize);
 }
 
 }  // namespace SmState
