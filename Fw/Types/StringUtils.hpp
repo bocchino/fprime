@@ -4,7 +4,6 @@
 
 namespace Fw {
 namespace StringUtils {
-
 /**
  * \brief copy string with null-termination guaranteed
  *
