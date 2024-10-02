@@ -43,6 +43,7 @@ void Basic::testTrue() {
     this->init(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S1);
+    ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 0);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
     ASSERT_EQ(this->m_action_b_history.getSize(), 0);
     this->sendSignal_s();
@@ -62,6 +63,7 @@ void Basic::testFalse() {
     this->init(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S1);
+    ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 0);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
     ASSERT_EQ(this->m_action_b_history.getSize(), 0);
     this->sendSignal_s();
