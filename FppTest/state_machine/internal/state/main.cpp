@@ -9,6 +9,7 @@
 #include "FppTest/state_machine/internal/state/BasicGuardString.hpp"
 #include "FppTest/state_machine/internal/state/BasicGuardTestAbsType.hpp"
 #include "FppTest/state_machine/internal/state/BasicGuardTestArray.hpp"
+#include "FppTest/state_machine/internal/state/BasicGuardTestEnum.hpp"
 #include "FppTest/state_machine/internal/state/BasicGuardU32.hpp"
 #include "FppTest/state_machine/internal/state/BasicInternal.hpp"
 #include "FppTest/state_machine/internal/state/BasicSelf.hpp"
@@ -69,6 +70,16 @@ TEST(BasicGuardTestArray, False) {
 TEST(BasicGuardTestArray, True) {
   FppTest::SmState::BasicGuardTestArray basicGuardTestArray;
   basicGuardTestArray.testTrue();
+}
+
+TEST(BasicGuardTestEnum, False) {
+  FppTest::SmState::BasicGuardTestEnum basicGuardTestEnum;
+  basicGuardTestEnum.testFalse();
+}
+
+TEST(BasicGuardTestEnum, True) {
+  FppTest::SmState::BasicGuardTestEnum basicGuardTestEnum;
+  basicGuardTestEnum.testTrue();
 }
 
 TEST(BasicGuardU32, False) {
