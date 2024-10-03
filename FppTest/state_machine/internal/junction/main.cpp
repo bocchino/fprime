@@ -7,6 +7,7 @@
 #include "FppTest/state_machine/internal/junction/Basic.hpp"
 #include "FppTest/state_machine/internal/junction/BasicU32.hpp"
 #include "FppTest/state_machine/internal/junction/Sequence.hpp"
+#include "FppTest/state_machine/internal/junction/SequenceU32.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, True) {
@@ -42,6 +43,21 @@ TEST(Sequence, G1FalseG2True) {
 TEST(Sequence, G1FalseG2False) {
   FppTest::SmJunction::Sequence sequence;
   sequence.testG1FalseG2False();
+}
+
+TEST(SequenceU32, G1True) {
+  FppTest::SmJunction::SequenceU32 sequenceU32;
+  sequenceU32.testG1True();
+}
+
+TEST(SequenceU32, G1FalseG2True) {
+  FppTest::SmJunction::SequenceU32 sequenceU32;
+  sequenceU32.testG1FalseG2True();
+}
+
+TEST(SequenceU32, G1FalseG2False) {
+  FppTest::SmJunction::SequenceU32 sequenceU32;
+  sequenceU32.testG1FalseG2False();
 }
 
 // ----------------------------------------------------------------------

@@ -2,7 +2,7 @@
 //
 // \title  Basic.hpp
 // \author R. Bocchino
-// \brief  Test class for basic state machine with junction (header)
+// \brief  Test class for basic state machine with a junction (header)
 //
 // \copyright
 // Copyright 2024, by the California Institute of Technology.

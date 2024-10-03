@@ -2,7 +2,7 @@
 //
 // \title  Sequence.hpp
 // \author R. Bocchino
-// \brief  Test class for basic state machine with junction (header)
+// \brief  Test class for basic state machine with a junction sequence (header)
 //
 // \copyright
 // Copyright 2024, by the California Institute of Technology.
@@ -21,7 +21,7 @@ namespace FppTest {
 
 namespace SmJunction {
 
-//! A basic state machine with a junction
+//! A basic state machine with a junction sequence
 class Sequence final : public SequenceStateMachineBase {
   public:
     //! The history size

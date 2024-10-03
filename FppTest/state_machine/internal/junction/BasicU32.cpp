@@ -2,7 +2,7 @@
 //
 // \title  BasicU32.hpp
 // \author R. Bocchino
-// \brief  Test class for basic state machine with junction (implementation)
+// \brief  Test class for basic state machine with a U32 junction (implementation)
 //
 // \copyright
 // Copyright 2024, by the California Institute of Technology.

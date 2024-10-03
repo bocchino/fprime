@@ -1,8 +1,8 @@
 // ======================================================================
 //
-// \title  BasicU32.hpp
+// \title  SequenceU32.hpp
 // \author R. Bocchino
-// \brief  Test class for basic state machine with a U32 junction (header)
+// \brief  Test class for basic state machine with a U32 junction sequence (header)
 //
 // \copyright
 // Copyright 2024, by the California Institute of Technology.
@@ -11,25 +11,25 @@
 //
 // ======================================================================
 
-#ifndef FppTest_State_BasicU32_HPP
-#define FppTest_State_BasicU32_HPP
+#ifndef FppTest_State_SequenceU32_HPP
+#define FppTest_State_SequenceU32_HPP
 
 #include "FppTest/state_machine/internal/harness/Harness.hpp"
-#include "FppTest/state_machine/internal/junction/BasicU32StateMachineAc.hpp"
+#include "FppTest/state_machine/internal/junction/SequenceU32StateMachineAc.hpp"
 
 namespace FppTest {
 
 namespace SmJunction {
 
-//! A basic state machine with a U32 junction
-class BasicU32 final : public BasicU32StateMachineBase {
+//! A basic state machine with a U32 junction sequence
+class SequenceU32 final : public SequenceU32StateMachineBase {
   public:
     //! The history size
     static constexpr FwSizeType historySize = 10;
 
   public:
     //! Constructor
-    BasicU32();
+    SequenceU32();
 
   private:
     //! Implementation of action a
@@ -41,17 +41,24 @@ class BasicU32 final : public BasicU32StateMachineBase {
     void action_b(Signal signal  //!< The signal
                   ) final;
 
-    //! Implementation of guard g
-    bool guard_g(Signal signal,  //!< The signal
-                 U32 value       //!< The value
+    //! Implementation of guard g1
+    bool guard_g1(Signal signal  //!< The signal
+    ) const final;
+
+    //! Implementation of guard g2
+    bool guard_g2(Signal signal,  //!< The signal
+                  U32 value       //!< The value
     ) const final;
 
   public:
-    //! Run the test with the true guard
-    void testTrue();
+    //! Run the test with g1 true
+    void testG1True();
 
-    //! Run the test with the false guard
-    void testFalse();
+    //! Run the test with g1 true and g2 true
+    void testG1FalseG2True();
+
+    //! Run the test with g1 true and g2 false
+    void testG1FalseG2False();
 
   private:
     //! The history associated with action a
@@ -60,8 +67,11 @@ class BasicU32 final : public BasicU32StateMachineBase {
     //! The history associated with action b
     SmHarness::History<Signal, historySize> m_action_b_history;
 
-    //! The guard g
-    SmHarness::Guard<Signal, U32, historySize> m_guard_g;
+    //! The guard g1
+    SmHarness::NoArgGuard<Signal, historySize> m_guard_g1;
+
+    //! The guard g2
+    SmHarness::Guard<Signal, U32, historySize> m_guard_g2;
 };
 
 }  // namespace SmJunction
