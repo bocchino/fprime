@@ -6,6 +6,7 @@
 
 #include "FppTest/state_machine/internal/state/Basic.hpp"
 #include "FppTest/state_machine/internal/state/BasicGuard.hpp"
+#include "FppTest/state_machine/internal/state/BasicGuardString.hpp"
 #include "FppTest/state_machine/internal/state/BasicGuardU32.hpp"
 #include "FppTest/state_machine/internal/state/BasicInternal.hpp"
 #include "FppTest/state_machine/internal/state/BasicSelf.hpp"
@@ -36,6 +37,16 @@ TEST(BasicGuard, False) {
 TEST(BasicGuard, True) {
   FppTest::SmState::BasicGuard basicGuard;
   basicGuard.testTrue();
+}
+
+TEST(BasicGuardString, False) {
+  FppTest::SmState::BasicGuardString basicGuardString;
+  basicGuardString.testFalse();
+}
+
+TEST(BasicGuardString, True) {
+  FppTest::SmState::BasicGuardString basicGuardString;
+  basicGuardString.testTrue();
 }
 
 TEST(BasicGuardU32, False) {

@@ -1,6 +1,7 @@
 set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/Basic.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicGuard.fpp"
+  "${CMAKE_CURRENT_LIST_DIR}/BasicGuardStringStateMachineAc.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicGuardU32.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicInternal.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicSelf.fpp"
@@ -23,6 +24,7 @@ register_fprime_module()
 set(UT_SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/Basic.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicGuard.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/BasicGuardString.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicGuardU32.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicInternal.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicSelf.cpp"
