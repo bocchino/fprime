@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 
 #include "FppTest/state_machine/internal/junction/Basic.hpp"
+#include "FppTest/state_machine/internal/junction/BasicU32.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, True) {
@@ -15,6 +16,16 @@ TEST(Basic, True) {
 TEST(Basic, False) {
   FppTest::SmJunction::Basic basic;
   basic.testFalse();
+}
+
+TEST(BasicU32, True) {
+  FppTest::SmJunction::BasicU32 basicU32;
+  basicU32.testTrue();
+}
+
+TEST(BasicU32, False) {
+  FppTest::SmJunction::BasicU32 basicU32;
+  basicU32.testFalse();
 }
 
 // ----------------------------------------------------------------------
