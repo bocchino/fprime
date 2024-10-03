@@ -2,7 +2,7 @@
 //
 // \title  BasicGuardString.hpp
 // \author R. Bocchino
-// \brief  Test class for basic state machine with guard (implementation)
+// \brief  Test class for basic state machine with string guard (implementation)
 //
 // \copyright
 // Copyright 2024, by the California Institute of Technology.

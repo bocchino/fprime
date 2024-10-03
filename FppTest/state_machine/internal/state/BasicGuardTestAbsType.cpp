@@ -1,8 +1,8 @@
 // ======================================================================
 //
-// \title  BasicGuardU32.hpp
+// \title  BasicGuardTestAbsType.hpp
 // \author R. Bocchino
-// \brief  Test class for basic state machine with U32 guard (implementation)
+// \brief  Test class for basic state machine with TestAbsType guard (implementation)
 //
 // \copyright
 // Copyright 2024, by the California Institute of Technology.
@@ -13,24 +13,25 @@
 
 #include <gtest/gtest.h>
 
-#include "FppTest/state_machine/internal/state/BasicGuardU32.hpp"
+#include "FppTest/state_machine/internal/state/BasicGuardTestAbsType.hpp"
 #include "STest/STest/Pick/Pick.hpp"
 
 namespace FppTest {
 
 namespace SmState {
 
-BasicGuardU32::BasicGuardU32() : BasicGuardU32StateMachineBase(), m_action_a_history(), m_guard_g() {}
+BasicGuardTestAbsType::BasicGuardTestAbsType()
+    : BasicGuardTestAbsTypeStateMachineBase(), m_action_a_history(), m_guard_g() {}
 
-void BasicGuardU32::action_a(Signal signal, U32 value) {
+void BasicGuardTestAbsType::action_a(Signal signal, const SmHarness::TestAbsType& value) {
     this->m_action_a_history.push(signal, value);
 }
 
-bool BasicGuardU32::guard_g(Signal signal, U32 value) const {
+bool BasicGuardTestAbsType::guard_g(Signal signal, const SmHarness::TestAbsType& value) const {
     return this->m_guard_g.call(signal, value);
 }
 
-void BasicGuardU32::testFalse() {
+void BasicGuardTestAbsType::testFalse() {
     this->m_action_a_history.clear();
     this->m_guard_g.reset();
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
@@ -39,7 +40,7 @@ void BasicGuardU32::testFalse() {
     ASSERT_EQ(this->m_state, State::S);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 0);
-    const U32 value = STest::Pick::any();
+    const SmHarness::TestAbsType value = SmHarness::Pick::testAbsType();
     this->sendSignal_s(value);
     ASSERT_EQ(this->m_state, State::S);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 1);
@@ -48,7 +49,7 @@ void BasicGuardU32::testFalse() {
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
 }
 
-void BasicGuardU32::testTrue() {
+void BasicGuardTestAbsType::testTrue() {
     this->m_action_a_history.clear();
     this->m_guard_g.reset();
     this->m_guard_g.setReturnValue(true);
@@ -57,7 +58,7 @@ void BasicGuardU32::testTrue() {
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
-    const U32 value = STest::Pick::any();
+    const SmHarness::TestAbsType value = SmHarness::Pick::testAbsType();
     this->sendSignal_s(value);
     ASSERT_EQ(this->m_state, State::T);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 1);

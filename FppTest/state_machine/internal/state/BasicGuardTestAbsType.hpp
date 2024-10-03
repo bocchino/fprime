@@ -1,8 +1,8 @@
 // ======================================================================
 //
-// \title  BasicGuardU32.hpp
+// \title  BasicGuardTestAbsType.hpp
 // \author R. Bocchino
-// \brief  Test class for basic state machine with U32 guard (header)
+// \brief  Test class for basic state machine with TestAbsType guard (header)
 //
 // \copyright
 // Copyright 2024, by the California Institute of Technology.
@@ -11,35 +11,35 @@
 //
 // ======================================================================
 
-#ifndef FppTest_State_BasicGuardU32_HPP
-#define FppTest_State_BasicGuardU32_HPP
+#ifndef FppTest_State_BasicGuardTestAbsType_HPP
+#define FppTest_State_BasicGuardTestAbsType_HPP
 
 #include "FppTest/state_machine/internal/harness/Harness.hpp"
-#include "FppTest/state_machine/internal/state/BasicGuardU32StateMachineAc.hpp"
+#include "FppTest/state_machine/internal/state/BasicGuardTestAbsTypeStateMachineAc.hpp"
 
 namespace FppTest {
 
 namespace SmState {
 
-//! A basic state machine with a U32 guard
-class BasicGuardU32 final : public BasicGuardU32StateMachineBase {
+//! A basic state machine with a TestAbsType guard
+class BasicGuardTestAbsType final : public BasicGuardTestAbsTypeStateMachineBase {
   public:
     //! The history size
     static constexpr FwSizeType historySize = 10;
 
   public:
     //! Constructor
-    BasicGuardU32();
+    BasicGuardTestAbsType();
 
   private:
     //! Implementation of action a
-    void action_a(Signal signal,  //!< The signal
-                  U32 value       //!< The value
+    void action_a(Signal signal,                       //!< The signal
+                  const SmHarness::TestAbsType& value  //!< The value
                   ) final;
 
     //! Implementation of guard g
-    bool guard_g(Signal signal,  //!< The signal
-                 U32 value       //!< The value
+    bool guard_g(Signal signal,                       //!< The signal
+                 const SmHarness::TestAbsType& value  //!< The value
     ) const;
 
   public:
@@ -51,10 +51,10 @@ class BasicGuardU32 final : public BasicGuardU32StateMachineBase {
 
   private:
     //! The history associated with action a
-    SmHarness::SignalValueHistory<Signal, U32, historySize> m_action_a_history;
+    SmHarness::SignalValueHistory<Signal, SmHarness::TestAbsType, historySize> m_action_a_history;
 
     //! The guard g
-    SmHarness::Guard<Signal, U32, historySize> m_guard_g;
+    SmHarness::Guard<Signal, SmHarness::TestAbsType, historySize> m_guard_g;
 };
 
 }  // namespace SmState
