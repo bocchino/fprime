@@ -7,6 +7,7 @@
 #include "FppTest/state_machine/internal/junction/Basic.hpp"
 #include "FppTest/state_machine/internal/junction/BasicU32.hpp"
 #include "FppTest/state_machine/internal/junction/InputPairU16U32.hpp"
+#include "FppTest/state_machine/internal/junction/JunctionToState.hpp"
 #include "FppTest/state_machine/internal/junction/Sequence.hpp"
 #include "FppTest/state_machine/internal/junction/SequenceU32.hpp"
 #include "STest/STest/Random/Random.hpp"
@@ -49,6 +50,16 @@ TEST(InputPairU16U32, S2True) {
 TEST(InputPairU16U32, S2False) {
   FppTest::SmJunction::InputPairU16U32 inputPair;
   inputPair.testS2False();
+}
+
+TEST(JunctionToState, True) {
+  FppTest::SmJunction::JunctionToState junctionToState;
+  junctionToState.testTrue();
+}
+
+TEST(JunctionToState, False) {
+  FppTest::SmJunction::JunctionToState junctionToState;
+  junctionToState.testFalse();
 }
 
 TEST(Sequence, G1True) {
