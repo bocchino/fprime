@@ -29,7 +29,7 @@ void Internal::action_a(Signal signal) {
 void Internal::testInit() {
     this->m_action_a_history.clear();
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S1_S2);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
@@ -38,7 +38,7 @@ void Internal::testInit() {
 void Internal::testS2_internal() {
     this->m_action_a_history.clear();
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     ASSERT_EQ(this->m_state, State::S1_S2);
     this->sendSignal_S1_internal();
     ASSERT_EQ(this->m_state, State::S1_S2);
@@ -49,7 +49,7 @@ void Internal::testS2_internal() {
 void Internal::testS2_to_S3() {
     this->m_action_a_history.clear();
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     ASSERT_EQ(this->m_state, State::S1_S2);
     this->sendSignal_S2_to_S3();
     ASSERT_EQ(this->m_state, State::S1_S3);
@@ -59,7 +59,7 @@ void Internal::testS2_to_S3() {
 void Internal::testS3_internal() {
     this->m_action_a_history.clear();
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     this->sendSignal_S2_to_S3();
     ASSERT_EQ(this->m_state, State::S1_S3);
     this->sendSignal_S1_internal();

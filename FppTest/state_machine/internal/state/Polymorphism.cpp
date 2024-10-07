@@ -24,14 +24,14 @@ Polymorphism::Polymorphism() : PolymorphismStateMachineBase() {}
 
 void Polymorphism::testInit() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S1_S2);
 }
 
 void Polymorphism::testS2_poly() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     ASSERT_EQ(this->m_state, State::S1_S2);
     this->sendSignal_poly();
     ASSERT_EQ(this->m_state, State::S4);
@@ -39,7 +39,7 @@ void Polymorphism::testS2_poly() {
 
 void Polymorphism::testS2_to_S3() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     ASSERT_EQ(this->m_state, State::S1_S2);
     this->sendSignal_S2_to_S3();
     ASSERT_EQ(this->m_state, State::S1_S3);
@@ -47,7 +47,7 @@ void Polymorphism::testS2_to_S3() {
 
 void Polymorphism::testS3_poly() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     this->sendSignal_S2_to_S3();
     ASSERT_EQ(this->m_state, State::S1_S3);
     this->sendSignal_poly();

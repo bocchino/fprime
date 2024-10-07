@@ -33,7 +33,7 @@ void BasicTestEnum::action_b(Signal signal, const SmHarness::TestEnum& value) {
 void BasicTestEnum::test() {
     this->m_action_a_history.clear();
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);

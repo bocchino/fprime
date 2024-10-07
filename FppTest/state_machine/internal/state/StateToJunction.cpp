@@ -61,7 +61,7 @@ bool StateToJunction::guard_g(Signal signal) const {
 void StateToJunction::testInit() {
     this->m_actionHistory.clear();
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S1_S2);
     const FwSizeType expectedSize = 2;
@@ -80,7 +80,7 @@ void StateToJunction::testS2_to_J() {
     this->m_guard_g.reset();
     this->m_guard_g.setReturnValue(true);
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     this->m_actionHistory.clear();
     this->sendSignal_S1_to_J();
     ASSERT_EQ(this->m_state, State::S4_S5);
@@ -100,7 +100,7 @@ void StateToJunction::testS2_to_J() {
 void StateToJunction::testS2_to_S3() {
     this->m_actionHistory.clear();
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     this->m_actionHistory.clear();
     this->sendSignal_S2_to_S3();
     ASSERT_EQ(this->m_state, State::S1_S3);
@@ -120,7 +120,7 @@ void StateToJunction::testS2_to_S4() {
     this->m_guard_g.reset();
     this->m_guard_g.setReturnValue(true);
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     this->m_actionHistory.clear();
     this->sendSignal_S1_to_S4();
     ASSERT_EQ(this->m_state, State::S4_S5);
@@ -141,7 +141,7 @@ void StateToJunction::testS3_to_J() {
     this->m_actionHistory.clear();
     this->m_guard_g.reset();
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     this->sendSignal_S2_to_S3();
     this->m_actionHistory.clear();
     this->sendSignal_S1_to_J();
@@ -163,7 +163,7 @@ void StateToJunction::testS3_to_S4() {
     this->m_actionHistory.clear();
     this->m_guard_g.reset();
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     this->sendSignal_S2_to_S3();
     this->m_actionHistory.clear();
     this->sendSignal_S1_to_S4();

@@ -49,7 +49,7 @@ void JunctionToJunction::testG1True() {
     this->m_guard_g2.reset();
     this->m_guard_g1.setReturnValue(true);
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S1);
     ASSERT_EQ(this->m_guard_g1.getCallHistory().getSize(), 0);
@@ -78,7 +78,7 @@ void JunctionToJunction::testG1FalseG2True() {
     this->m_guard_g2.reset();
     this->m_guard_g2.setReturnValue(true);
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S1);
     ASSERT_EQ(this->m_guard_g1.getCallHistory().getSize(), 0);
@@ -107,7 +107,7 @@ void JunctionToJunction::testG1FalseG2False() {
     this->m_guard_g1.reset();
     this->m_guard_g2.reset();
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S1);
     ASSERT_EQ(this->m_guard_g1.getCallHistory().getSize(), 0);

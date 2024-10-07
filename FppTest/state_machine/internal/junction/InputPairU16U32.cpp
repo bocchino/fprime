@@ -35,7 +35,7 @@ void InputPairU16U32::testS1True() {
     this->m_guard_g.reset();
     this->m_guard_g.setReturnValue(true);
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S1);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 0);
@@ -55,7 +55,7 @@ void InputPairU16U32::testS1False() {
     this->m_action_a_history.clear();
     this->m_guard_g.reset();
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S1);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 0);
@@ -76,7 +76,7 @@ void InputPairU16U32::testS2True() {
     this->m_guard_g.reset();
     this->m_guard_g.setReturnValue(true);
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S1);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 0);
@@ -96,7 +96,7 @@ void InputPairU16U32::testS2False() {
     this->m_action_a_history.clear();
     this->m_guard_g.reset();
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->init(id);
+    this->initBase(id);
     ASSERT_EQ(this->m_id, id);
     ASSERT_EQ(this->m_state, State::S1);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 0);

@@ -4,6 +4,7 @@ set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/Nested.fpp"
 )
 register_fprime_module()
+set(MOD_DEPS FppTest/state_machine/internal/harness)
 
 set(UT_SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/Basic.cpp"
