@@ -8,7 +8,8 @@
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
-  // TODO
+  FppTest::SmInstanceInitial::Basic basic("Basic");
+  basic.test();
 }
 
 // ----------------------------------------------------------------------

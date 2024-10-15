@@ -7,6 +7,7 @@
 #ifndef FppTest_SmInstanceInitial_Basic_HPP
 #define FppTest_SmInstanceInitial_Basic_HPP
 
+#include "FppTest/state_machine/internal/harness/Harness.hpp"
 #include "FppTest/state_machine/internal_instance/initial/BasicComponentAc.hpp"
 
 namespace FppTest {
@@ -14,6 +15,20 @@ namespace FppTest {
 namespace SmInstanceInitial {
 
 class Basic : public BasicComponentBase {
+  public:
+    // ----------------------------------------------------------------------
+    // Constants
+    // ----------------------------------------------------------------------
+
+    //! The history size
+    static constexpr FwSizeType historySize = 10;
+
+    //! The queue depth
+    static constexpr FwSizeType queueDepth = 10;
+
+    //! The instance ID
+    static constexpr FwEnumStoreType instanceId = 0;
+
   public:
     // ----------------------------------------------------------------------
     // Component construction and destruction
@@ -45,6 +60,25 @@ class Basic : public BasicComponentBase {
         SmId smId,                                            //!< The state machine id
         FppTest_SmInstanceInitial_Basic_Basic::Signal signal  //!< The signal
         ) override;
+
+  public:
+    // ----------------------------------------------------------------------
+    // Tests
+    // ----------------------------------------------------------------------
+
+    //! Run the test
+    void test();
+
+  private:
+    // ----------------------------------------------------------------------
+    // Member variables
+    // ----------------------------------------------------------------------
+
+    //! The history associated with action a of basic
+    SmHarness::History<FppTest_SmInstanceInitial_Basic_Basic::Signal, historySize> m_basic_action_a_history;
+
+    //! The history associated with action a of smInitialBasic
+    SmHarness::History<FppTest_SmInitial_Basic::Signal, historySize> m_smInitialBasic_action_a_history;
 };
 
 }  // namespace SmInstanceInitial
