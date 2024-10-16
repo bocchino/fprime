@@ -71,6 +71,10 @@ void BasicGuard::testTrue() {
     this->checkActionsAndGuards(6, 1);
 }
 
+// ----------------------------------------------------------------------
+// Helper functions
+// ----------------------------------------------------------------------
+
 void BasicGuard::checkActionsAndGuards(FwSizeType expectedActionSize, FwSizeType expectedGuardSize) {
     ASSERT_EQ(this->m_smStateBasicGuard_action_a_history.getSize(), expectedActionSize);
     for (FwSizeType i = 0; i < expectedActionSize; i++) {

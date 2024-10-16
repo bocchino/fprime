@@ -6,6 +6,7 @@
 
 #include "FppTest/state_machine/internal_instance/state/Basic.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicGuard.hpp"
+#include "FppTest/state_machine/internal_instance/state/BasicGuardString.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
@@ -21,6 +22,16 @@ TEST(BasicGuard, False) {
 TEST(BasicGuard, True) {
   FppTest::SmInstanceState::BasicGuard basicGuard("basicGuard");
   basicGuard.testTrue();
+}
+
+TEST(BasicGuardString, False) {
+  FppTest::SmInstanceState::BasicGuardString basicGuardString("basicGuardString");
+  basicGuardString.testFalse();
+}
+
+TEST(BasicGuardString, True) {
+  FppTest::SmInstanceState::BasicGuardString basicGuardString("basicGuardString");
+  basicGuardString.testTrue();
 }
 
 // ----------------------------------------------------------------------

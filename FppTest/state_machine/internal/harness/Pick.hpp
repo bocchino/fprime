@@ -66,10 +66,10 @@ static inline TestStruct testStruct() {
 }
 
 //! Pick a string value
-static inline void string(Fw::String& s  //!< The string value (output)
+static inline void string(Fw::StringBase& s,                           //!< The string value (output)
+                          FwSizeType maxLen = Fw::String::STRING_SIZE  //!< The max string length
 ) {
-    const U32 upper = FW_MIN(Fw::String::STRING_SIZE, std::numeric_limits<U32>::max());
-    const U32 size = STest::Pick::lowerUpper(0, upper);
+    const U32 size = STest::Pick::lowerUpper(0, maxLen);
     s = "";
     for (U32 i = 0; i < size; i++) {
         char c = static_cast<char>(STest::Pick::lowerUpper(32, 126));
