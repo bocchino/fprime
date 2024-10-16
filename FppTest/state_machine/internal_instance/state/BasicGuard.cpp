@@ -52,7 +52,8 @@ void BasicGuard::testFalse() {
     ASSERT_EQ(this->m_smStateBasicGuard_action_a_history.getSize(), 0);
     ASSERT_EQ(this->m_smStateBasicGuard_guard_g.getCallHistory().getSize(), 0);
     this->smStateBasicGuard_sendSignal_s();
-    this->doDispatch();
+    const auto status = this->doDispatch();
+    ASSERT_EQ(status, MSG_DISPATCH_OK);
     ASSERT_EQ(this->smStateBasicGuard_getState(), SmState_BasicGuard::State::S);
     this->checkActionsAndGuards(0, 1);
 }
@@ -66,7 +67,8 @@ void BasicGuard::testTrue() {
     ASSERT_EQ(this->m_smStateBasicGuard_action_a_history.getSize(), 0);
     ASSERT_EQ(this->m_smStateBasicGuard_guard_g.getCallHistory().getSize(), 0);
     this->smStateBasicGuard_sendSignal_s();
-    this->doDispatch();
+    const auto status = this->doDispatch();
+    ASSERT_EQ(status, MSG_DISPATCH_OK);
     ASSERT_EQ(this->smStateBasicGuard_getState(), SmState_BasicGuard::State::T);
     this->checkActionsAndGuards(6, 1);
 }

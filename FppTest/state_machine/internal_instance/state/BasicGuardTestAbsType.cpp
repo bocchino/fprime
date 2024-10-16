@@ -72,7 +72,8 @@ void BasicGuardTestAbsType::testFalse() {
     ASSERT_EQ(this->m_smStateBasicGuardTestAbsType_guard_g.getCallHistory().getSize(), 0);
     this->m_value = SmHarness::Pick::testAbsType();
     this->smStateBasicGuardTestAbsType_sendSignal_s(this->m_value);
-    this->doDispatch();
+    const auto status = this->doDispatch();
+    ASSERT_EQ(status, MSG_DISPATCH_OK);
     ASSERT_EQ(this->smStateBasicGuardTestAbsType_getState(), SmState_BasicGuardTestAbsType::State::S);
     ASSERT_EQ(this->m_smStateBasicGuardTestAbsType_guard_g.getCallHistory().getSize(), 1);
     ASSERT_EQ(this->m_smStateBasicGuardTestAbsType_guard_g.getCallHistory().getSignals().getItemAt(0),
@@ -90,7 +91,8 @@ void BasicGuardTestAbsType::testTrue() {
     ASSERT_EQ(this->m_smStateBasicGuardTestAbsType_action_a_history.getSize(), 0);
     ASSERT_EQ(this->m_smStateBasicGuardTestAbsType_guard_g.getCallHistory().getSize(), 0);
     this->smStateBasicGuardTestAbsType_sendSignal_s(this->m_value);
-    this->doDispatch();
+    const auto status = this->doDispatch();
+    ASSERT_EQ(status, MSG_DISPATCH_OK);
     ASSERT_EQ(this->smStateBasicGuardTestAbsType_getState(), SmState_BasicGuardTestAbsType::State::T);
     ASSERT_EQ(this->m_smStateBasicGuardTestAbsType_guard_g.getCallHistory().getSize(), 1);
     ASSERT_EQ(this->m_smStateBasicGuardTestAbsType_guard_g.getCallHistory().getSignals().getItemAt(0),

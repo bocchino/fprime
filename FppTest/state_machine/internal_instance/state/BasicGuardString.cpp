@@ -61,7 +61,8 @@ void BasicGuardString::testFalse() {
     Fw::String value;
     SmHarness::Pick::string(value, SmState::basicGuardStringSize);
     this->smStateBasicGuardString_sendSignal_s(value);
-    this->doDispatch();
+    const auto status = this->doDispatch();
+    ASSERT_EQ(status, MSG_DISPATCH_OK);
     ASSERT_EQ(this->smStateBasicGuardString_getState(), SmState_BasicGuardString::State::S);
     ASSERT_EQ(this->m_smStateBasicGuardString_guard_g.getCallHistory().getSize(), 1);
     ASSERT_EQ(this->m_smStateBasicGuardString_guard_g.getCallHistory().getSignals().getItemAt(0),
@@ -81,7 +82,8 @@ void BasicGuardString::testTrue() {
     Fw::String value;
     SmHarness::Pick::string(value, SmState::basicGuardStringSize);
     this->smStateBasicGuardString_sendSignal_s(value);
-    this->doDispatch();
+    const auto status = this->doDispatch();
+    ASSERT_EQ(status, MSG_DISPATCH_OK);
     ASSERT_EQ(this->smStateBasicGuardString_getState(), SmState_BasicGuardString::State::T);
     ASSERT_EQ(this->m_smStateBasicGuardString_guard_g.getCallHistory().getSize(), 1);
     ASSERT_EQ(this->m_smStateBasicGuardString_guard_g.getCallHistory().getSignals().getItemAt(0),
