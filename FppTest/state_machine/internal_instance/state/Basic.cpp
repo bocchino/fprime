@@ -41,7 +41,35 @@ void Basic ::FppTest_SmState_Basic_action_a(SmId smId, FppTest_SmState_Basic::Si
 // ----------------------------------------------------------------------
 
 void Basic::test() {
-   // TODO
+    this->m_basic_action_a_history.clear();
+    this->m_smStateBasic_action_a_history.clear();
+    this->init(queueDepth, instanceId);
+    ASSERT_EQ(this->basic_getState(), Basic_Basic::State::S);
+    ASSERT_EQ(this->smStateBasic_getState(), SmState_Basic::State::S);
+    ASSERT_EQ(this->m_basic_action_a_history.getSize(), 0);
+    ASSERT_EQ(this->m_smStateBasic_action_a_history.getSize(), 0);
+    {
+      // Send signal s to basic
+      this->basic_sendSignal_s();
+      this->doDispatch();
+      ASSERT_EQ(this->basic_getState(), Basic_Basic::State::T);
+      const FwSizeType expectedSize = 6;
+      ASSERT_EQ(this->m_basic_action_a_history.getSize(), expectedSize);
+      for (FwSizeType i = 0; i < expectedSize; i++) {
+          ASSERT_EQ(this->m_basic_action_a_history.getItemAt(i), Basic_Basic::Signal::s);
+      }
+    }
+    {
+      // Send signal s to smStateBasic
+      this->smStateBasic_sendSignal_s();
+      this->doDispatch();
+      ASSERT_EQ(this->smStateBasic_getState(), SmState_Basic::State::T);
+      const FwSizeType expectedSize = 6;
+      ASSERT_EQ(this->m_smStateBasic_action_a_history.getSize(), expectedSize);
+      for (FwSizeType i = 0; i < expectedSize; i++) {
+          ASSERT_EQ(this->m_smStateBasic_action_a_history.getItemAt(i), SmState_Basic::Signal::s);
+      }
+    }
 }
 
 }  // namespace SmInstanceState
