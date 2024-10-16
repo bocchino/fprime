@@ -107,6 +107,9 @@ class BasicGuardTestAbsType : public BasicGuardTestAbsTypeComponentBase {
     // Member variables
     // ----------------------------------------------------------------------
 
+    //! The test value
+    SmHarness::TestAbsType m_value;
+
     //! The history associated with action a of smStateBasicGuardTestAbsType
     SmHarness::SignalValueHistory<SmState_BasicGuardTestAbsType::Signal, SmHarness::TestAbsType, historySize>
         m_smStateBasicGuardTestAbsType_action_a_history;
