@@ -110,6 +110,9 @@ class BasicGuardTestAbsType : public BasicGuardTestAbsTypeComponentBase {
     //! The test value
     SmHarness::TestAbsType m_value;
 
+    //! Whether the overflow hook was called
+    bool m_hookCalled = false;
+
     //! The history associated with action a of smStateBasicGuardTestAbsType
     SmHarness::SignalValueHistory<SmState_BasicGuardTestAbsType::Signal, SmHarness::TestAbsType, historySize>
         m_smStateBasicGuardTestAbsType_action_a_history;

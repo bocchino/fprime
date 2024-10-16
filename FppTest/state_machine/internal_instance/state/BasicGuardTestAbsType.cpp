@@ -56,7 +56,14 @@ bool BasicGuardTestAbsType::FppTest_SmState_BasicGuardTestAbsType_guard_g(
 void BasicGuardTestAbsType::smStateBasicGuardTestAbsType_stateMachineOverflowHook(SmId smId,
                                                                                   FwEnumStoreType signal,
                                                                                   Fw::SerializeBufferBase& buffer) {
-    // TODO
+    this->m_hookCalled = true;
+    ASSERT_EQ(smId, SmId::smStateBasicGuardTestAbsType);
+    ASSERT_EQ(static_cast<SmState_BasicGuardTestAbsType::Signal>(signal), SmState_BasicGuardTestAbsType::Signal::s);
+    SmHarness::TestAbsType value;
+    const auto status = buffer.deserialize(value);
+    ASSERT_EQ(status, Fw::FW_SERIALIZE_OK);
+    ASSERT_EQ(buffer.getBuffLeft(), 0);
+    ASSERT_EQ(value, this->m_value);
 }
 
 // ----------------------------------------------------------------------
@@ -72,6 +79,7 @@ void BasicGuardTestAbsType::testFalse() {
     ASSERT_EQ(this->m_smStateBasicGuardTestAbsType_guard_g.getCallHistory().getSize(), 0);
     this->m_value = SmHarness::Pick::testAbsType();
     this->smStateBasicGuardTestAbsType_sendSignal_s(this->m_value);
+    ASSERT_FALSE(this->m_hookCalled);
     const auto status = this->doDispatch();
     ASSERT_EQ(status, MSG_DISPATCH_OK);
     ASSERT_EQ(this->smStateBasicGuardTestAbsType_getState(), SmState_BasicGuardTestAbsType::State::S);
@@ -90,7 +98,9 @@ void BasicGuardTestAbsType::testTrue() {
     ASSERT_EQ(this->smStateBasicGuardTestAbsType_getState(), SmState_BasicGuardTestAbsType::State::S);
     ASSERT_EQ(this->m_smStateBasicGuardTestAbsType_action_a_history.getSize(), 0);
     ASSERT_EQ(this->m_smStateBasicGuardTestAbsType_guard_g.getCallHistory().getSize(), 0);
+    this->m_value = SmHarness::Pick::testAbsType();
     this->smStateBasicGuardTestAbsType_sendSignal_s(this->m_value);
+    ASSERT_FALSE(this->m_hookCalled);
     const auto status = this->doDispatch();
     ASSERT_EQ(status, MSG_DISPATCH_OK);
     ASSERT_EQ(this->smStateBasicGuardTestAbsType_getState(), SmState_BasicGuardTestAbsType::State::T);
@@ -105,7 +115,14 @@ void BasicGuardTestAbsType::testTrue() {
 }
 
 void BasicGuardTestAbsType::testOverflow() {
-    // TODO
+    this->init(queueDepth, instanceId);
+    this->m_value = SmHarness::Pick::testAbsType();
+    for (FwSizeType i = 0; i < queueDepth; i++) {
+        this->smStateBasicGuardTestAbsType_sendSignal_s(this->m_value);
+        ASSERT_FALSE(this->m_hookCalled);
+    }
+    this->smStateBasicGuardTestAbsType_sendSignal_s(this->m_value);
+    ASSERT_TRUE(this->m_hookCalled);
 }
 
 }  // namespace SmInstanceState
