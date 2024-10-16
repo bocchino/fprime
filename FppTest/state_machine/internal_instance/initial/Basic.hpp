@@ -15,7 +15,7 @@ namespace FppTest {
 namespace SmInstanceInitial {
 
 class Basic : public BasicComponentBase {
-  public:
+  private:
     // ----------------------------------------------------------------------
     // Constants
     // ----------------------------------------------------------------------
@@ -28,6 +28,17 @@ class Basic : public BasicComponentBase {
 
     //! The instance ID
     static constexpr FwEnumStoreType instanceId = 0;
+
+  private:
+    // ----------------------------------------------------------------------
+    // Types
+    // ----------------------------------------------------------------------
+
+    //! The type FppTest_SmInstanceInitial_Basic_Basic
+    using Basic_Basic = FppTest_SmInstanceInitial_Basic_Basic;
+
+    //! The type FppTest_SmInitial_Basic
+    using SmInitial_Basic = FppTest_SmInitial_Basic;
 
   public:
     // ----------------------------------------------------------------------
@@ -75,10 +86,10 @@ class Basic : public BasicComponentBase {
     // ----------------------------------------------------------------------
 
     //! The history associated with action a of basic
-    SmHarness::History<FppTest_SmInstanceInitial_Basic_Basic::Signal, historySize> m_basic_action_a_history;
+    SmHarness::History<Basic_Basic::Signal, historySize> m_basic_action_a_history;
 
     //! The history associated with action a of smInitialBasic
-    SmHarness::History<FppTest_SmInitial_Basic::Signal, historySize> m_smInitialBasic_action_a_history;
+    SmHarness::History<SmInitial_Basic::Signal, historySize> m_smInitialBasic_action_a_history;
 };
 
 }  // namespace SmInstanceInitial
