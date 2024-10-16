@@ -105,6 +105,16 @@ class Junction : public JunctionComponentBase {
 
   private:
     // ----------------------------------------------------------------------
+    // Helper functions
+    // ----------------------------------------------------------------------
+
+    //! Helper function for checking actions and guards
+    void checkActionsAndGuards(FwSizeType expectedActionSize,  //!< The expected action size
+                               FwSizeType expectedGuardSize    //!< The expected guard size
+    );
+
+  private:
+    // ----------------------------------------------------------------------
     // Member variables
     // ----------------------------------------------------------------------
 

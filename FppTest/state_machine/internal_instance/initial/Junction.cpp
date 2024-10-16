@@ -63,32 +63,54 @@ bool Junction ::FppTest_SmInstanceInitial_Junction_Junction_guard_g(
 // ----------------------------------------------------------------------
 
 void Junction::testFalse() {
-#if 0
-    this->m_action_a_history.clear();
-    this->m_guard_g.reset();
-    const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->initBase(id);
-    ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::T);
+    this->m_junction_action_a_history.clear();
+    this->m_smInitialJunction_action_a_history.clear();
+    this->m_junction_guard_g.reset();
+    this->m_smInitialJunction_guard_g.reset();
+    this->init(queueDepth, instanceId);
+    ASSERT_EQ(this->junction_getState(), Junction_Junction::State::T);
+    ASSERT_EQ(this->smInitialJunction_getState(), SmInitial_Junction::State::T);
     const FwSizeType expectedActionSize = 5;
     const FwSizeType expectedGuardSize = 1;
     this->checkActionsAndGuards(expectedActionSize, expectedGuardSize);
-#endif
 }
 
 void Junction::testTrue() {
-#if 0
-    this->m_action_a_history.clear();
-    this->m_guard_g.reset();
-    this->m_guard_g.setReturnValue(true);
-    const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
-    this->initBase(id);
-    ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::S);
+    this->m_junction_action_a_history.clear();
+    this->m_smInitialJunction_action_a_history.clear();
+    this->m_junction_guard_g.reset();
+    this->m_smInitialJunction_guard_g.reset();
+    this->m_junction_guard_g.setReturnValue(true);
+    this->m_smInitialJunction_guard_g.setReturnValue(true);
+    this->init(queueDepth, instanceId);
+    ASSERT_EQ(this->junction_getState(), Junction_Junction::State::S);
+    ASSERT_EQ(this->smInitialJunction_getState(), SmInitial_Junction::State::S);
     const FwSizeType expectedActionSize = 3;
     const FwSizeType expectedGuardSize = 1;
     this->checkActionsAndGuards(expectedActionSize, expectedGuardSize);
-#endif
+}
+
+// ----------------------------------------------------------------------
+// Helper functions
+// ----------------------------------------------------------------------
+
+void Junction::checkActionsAndGuards(FwSizeType expectedActionSize, FwSizeType expectedGuardSize) {
+    ASSERT_EQ(this->m_junction_action_a_history.getSize(), expectedActionSize);
+    ASSERT_EQ(this->m_smInitialJunction_action_a_history.getSize(), expectedActionSize);
+    for (FwSizeType i = 0; i < expectedActionSize; i++) {
+        ASSERT_EQ(this->m_junction_action_a_history.getItemAt(i),
+                  Junction_Junction::Signal::__FPRIME_AC_INITIAL_TRANSITION);
+        ASSERT_EQ(this->m_smInitialJunction_action_a_history.getItemAt(i),
+                  SmInitial_Junction::Signal::__FPRIME_AC_INITIAL_TRANSITION);
+    }
+    ASSERT_EQ(this->m_junction_guard_g.getCallHistory().getSize(), expectedGuardSize);
+    ASSERT_EQ(this->m_smInitialJunction_guard_g.getCallHistory().getSize(), expectedGuardSize);
+    for (FwSizeType i = 0; i < expectedGuardSize; i++) {
+        ASSERT_EQ(this->m_junction_guard_g.getCallHistory().getItemAt(i),
+                  Junction_Junction::Signal::__FPRIME_AC_INITIAL_TRANSITION);
+        ASSERT_EQ(this->m_smInitialJunction_guard_g.getCallHistory().getItemAt(i),
+                  SmInitial_Junction::Signal::__FPRIME_AC_INITIAL_TRANSITION);
+    }
 }
 
 }  // namespace SmInstanceInitial
