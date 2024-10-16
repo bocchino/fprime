@@ -60,15 +60,15 @@ class Nested : public NestedComponentBase {
     //! Implementation for action a of state machine FppTest_SmInitial_Nested
     //!
     //! Action a
-    void FppTest_SmInitial_Nested_action_a(SmId smId,                              //!< The state machine id
-                                          FppTest_SmInitial_Nested::Signal signal  //!< The signal
-                                          ) override;
+    void FppTest_SmInitial_Nested_action_a(SmId smId,                               //!< The state machine id
+                                           FppTest_SmInitial_Nested::Signal signal  //!< The signal
+                                           ) override;
 
     //! Implementation for action a of state machine FppTest_SmInstanceInitial_Nested_Nested
     //!
     //! Action a
     void FppTest_SmInstanceInitial_Nested_Nested_action_a(
-        SmId smId,                                            //!< The state machine id
+        SmId smId,                                              //!< The state machine id
         FppTest_SmInstanceInitial_Nested_Nested::Signal signal  //!< The signal
         ) override;
 
@@ -82,6 +82,7 @@ class Nested : public NestedComponentBase {
                                                   FwEnumStoreType signal,          //!< The signal
                                                   Fw::SerializeBufferBase& buffer  //!< The message buffer
                                                   ) override;
+
   public:
     // ----------------------------------------------------------------------
     // Tests
