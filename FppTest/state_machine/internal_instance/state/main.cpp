@@ -4,12 +4,12 @@
 
 #include <gtest/gtest.h>
 
-#include "FppTest/state_machine/internal_instance/initial/Basic.hpp"
+#include "FppTest/state_machine/internal_instance/state/Basic.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
-  //FppTest::SmInstanceInitial::Basic basic("basic");
-  //basic.test();
+  FppTest::SmInstanceState::Basic basic("basic");
+  basic.test();
 }
 
 // ----------------------------------------------------------------------
