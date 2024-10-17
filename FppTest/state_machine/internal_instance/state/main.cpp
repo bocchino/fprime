@@ -22,6 +22,7 @@
 #include "FppTest/state_machine/internal_instance/state/BasicU32.hpp"
 #include "FppTest/state_machine/internal_instance/state/Internal.hpp"
 #include "FppTest/state_machine/internal_instance/state/Polymorphism.hpp"
+#include "FppTest/state_machine/internal_instance/state/StateToChild.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
@@ -182,6 +183,26 @@ TEST(Polymorphism, S2_to_S3) {
 TEST(Polymorphism, S3_poly) {
     FppTest::SmInstanceState::Polymorphism polymorphism("polymorphism");
     polymorphism.testS3_poly();
+}
+
+TEST(StateToChild, Init) {
+    FppTest::SmInstanceState::StateToChild stateToChild("stateToChild");
+    stateToChild.testInit();
+}
+
+TEST(StateToChild, S2_to_S2) {
+    FppTest::SmInstanceState::StateToChild stateToChild("stateToChild");
+    stateToChild.testS2_to_S2();
+}
+
+TEST(StateToChild, S2_to_S3) {
+    FppTest::SmInstanceState::StateToChild stateToChild("stateToChild");
+    stateToChild.testS2_to_S3();
+}
+
+TEST(StateToChild, S3_to_S2) {
+    FppTest::SmInstanceState::StateToChild stateToChild("stateToChild");
+    stateToChild.testS3_to_S2();
 }
 
 // ----------------------------------------------------------------------

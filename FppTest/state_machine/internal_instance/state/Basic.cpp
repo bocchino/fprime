@@ -49,28 +49,28 @@ void Basic::test() {
     ASSERT_EQ(this->m_basic_action_a_history.getSize(), 0);
     ASSERT_EQ(this->m_smStateBasic_action_a_history.getSize(), 0);
     {
-      // Send signal s to basic
-      this->basic_sendSignal_s();
-      const auto status = this->doDispatch();
-      ASSERT_EQ(status, MSG_DISPATCH_OK);
-      ASSERT_EQ(this->basic_getState(), Basic_Basic::State::T);
-      const FwSizeType expectedSize = 6;
-      ASSERT_EQ(this->m_basic_action_a_history.getSize(), expectedSize);
-      for (FwSizeType i = 0; i < expectedSize; i++) {
-          ASSERT_EQ(this->m_basic_action_a_history.getItemAt(i), Basic_Basic::Signal::s);
-      }
+        // Send signal s to basic
+        this->basic_sendSignal_s();
+        const auto status = this->doDispatch();
+        ASSERT_EQ(status, MSG_DISPATCH_OK);
+        ASSERT_EQ(this->basic_getState(), Basic_Basic::State::T);
+        const FwSizeType expectedSize = 6;
+        ASSERT_EQ(this->m_basic_action_a_history.getSize(), expectedSize);
+        for (FwSizeType i = 0; i < expectedSize; i++) {
+            ASSERT_EQ(this->m_basic_action_a_history.getItemAt(i), Basic_Basic::Signal::s);
+        }
     }
     {
-      // Send signal s to smStateBasic
-      this->smStateBasic_sendSignal_s();
-      const auto status = this->doDispatch();
-      ASSERT_EQ(status, MSG_DISPATCH_OK);
-      ASSERT_EQ(this->smStateBasic_getState(), SmState_Basic::State::T);
-      const FwSizeType expectedSize = 6;
-      ASSERT_EQ(this->m_smStateBasic_action_a_history.getSize(), expectedSize);
-      for (FwSizeType i = 0; i < expectedSize; i++) {
-          ASSERT_EQ(this->m_smStateBasic_action_a_history.getItemAt(i), SmState_Basic::Signal::s);
-      }
+        // Send signal s to smStateBasic
+        this->smStateBasic_sendSignal_s();
+        const auto status = this->doDispatch();
+        ASSERT_EQ(status, MSG_DISPATCH_OK);
+        ASSERT_EQ(this->smStateBasic_getState(), SmState_Basic::State::T);
+        const FwSizeType expectedSize = 6;
+        ASSERT_EQ(this->m_smStateBasic_action_a_history.getSize(), expectedSize);
+        for (FwSizeType i = 0; i < expectedSize; i++) {
+            ASSERT_EQ(this->m_smStateBasic_action_a_history.getItemAt(i), SmState_Basic::Signal::s);
+        }
     }
 }
 

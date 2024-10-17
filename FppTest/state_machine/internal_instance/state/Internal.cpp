@@ -26,6 +26,7 @@ Internal::~Internal() {}
 // ----------------------------------------------------------------------
 
 void Internal::FppTest_SmState_Internal_action_a(SmId smId, FppTest_SmState_Internal::Signal signal) {
+    ASSERT_EQ(smId, SmId::smStateInternal);
     this->m_smStateInternal_action_a_history.push(signal);
 }
 
