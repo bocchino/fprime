@@ -18,6 +18,7 @@ set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/Internal.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/Polymorphism.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/StateToChild.fpp"
+  "${CMAKE_CURRENT_LIST_DIR}/StateToJunction.fpp"
 )
 set(MOD_DEPS FppTest/state_machine/internal/harness)
 register_fprime_module()
@@ -42,6 +43,7 @@ set(UT_SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/Internal.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/Polymorphism.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/StateToChild.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/StateToJunction.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
 )
 set(UT_MOD_DEPS STest)
