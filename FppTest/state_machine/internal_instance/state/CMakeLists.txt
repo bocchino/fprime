@@ -11,6 +11,7 @@ set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/BasicSelf.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicString.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicTestAbsType.fpp"
+  "${CMAKE_CURRENT_LIST_DIR}/BasicTestArray.fpp"
 )
 set(MOD_DEPS FppTest/state_machine/internal/harness)
 register_fprime_module()
@@ -28,6 +29,7 @@ set(UT_SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/BasicSelf.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicString.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicTestAbsType.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/BasicTestArray.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
 )
 set(UT_MOD_DEPS STest)

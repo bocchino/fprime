@@ -16,6 +16,7 @@
 #include "FppTest/state_machine/internal_instance/state/BasicSelf.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicString.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicTestAbsType.hpp"
+#include "FppTest/state_machine/internal_instance/state/BasicTestArray.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
@@ -116,6 +117,11 @@ TEST(BasicString, Test) {
 TEST(BasicTestAbsType, Test) {
     FppTest::SmInstanceState::BasicTestAbsType basicTestAbsType("basicTestAbsType");
     basicTestAbsType.test();
+}
+
+TEST(BasicTestArray, Test) {
+    FppTest::SmInstanceState::BasicTestArray basicTestArray("basicTestArray");
+    basicTestArray.test();
 }
 
 // ----------------------------------------------------------------------
