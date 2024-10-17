@@ -10,6 +10,7 @@
 #include "FppTest/state_machine/internal_instance/state/BasicGuardTestAbsType.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicGuardTestArray.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicGuardTestEnum.hpp"
+#include "FppTest/state_machine/internal_instance/state/BasicGuardTestStruct.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
@@ -70,6 +71,16 @@ TEST(BasicGuardTestEnum, False) {
 TEST(BasicGuardTestEnum, True) {
     FppTest::SmInstanceState::BasicGuardTestEnum basicGuardTestEnum("basicGuardTestEnum");
     basicGuardTestEnum.testTrue();
+}
+
+TEST(BasicGuardTestStruct, False) {
+    FppTest::SmInstanceState::BasicGuardTestStruct basicGuardTestStruct("basicGuardTestStruct");
+    basicGuardTestStruct.testFalse();
+}
+
+TEST(BasicGuardTestStruct, True) {
+    FppTest::SmInstanceState::BasicGuardTestStruct basicGuardTestStruct("basicGuardTestStruct");
+    basicGuardTestStruct.testTrue();
 }
 
 // ----------------------------------------------------------------------
