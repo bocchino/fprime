@@ -42,13 +42,12 @@ void BasicInternal::test() {
     ASSERT_EQ(this->m_smStateBasicInternal_action_a_history.getItemAt(0),
               SmState_BasicInternal::Signal::__FPRIME_AC_INITIAL_TRANSITION);
     this->m_smStateBasicInternal_action_a_history.clear();
-    // TODO
-#if 0
-    this->sendSignal_s();
-    ASSERT_EQ(this->m_state, State::S);
-    ASSERT_EQ(this->m_action_a_history.getSize(), 1);
-    ASSERT_EQ(this->m_action_a_history.getItemAt(0), Signal::s);
-#endif
+    this->smStateBasicInternal_sendSignal_s();
+    const auto status = this->doDispatch();
+    ASSERT_EQ(status, MSG_DISPATCH_OK);
+    ASSERT_EQ(this->smStateBasicInternal_getState(), SmState_BasicInternal::State::S);
+    ASSERT_EQ(this->m_smStateBasicInternal_action_a_history.getSize(), 1);
+    ASSERT_EQ(this->m_smStateBasicInternal_action_a_history.getItemAt(0), SmState_BasicInternal::Signal::s);
 }
 
 }  // namespace SmInstanceState
