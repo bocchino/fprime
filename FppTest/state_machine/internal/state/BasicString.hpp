@@ -37,7 +37,7 @@ class BasicString final : public BasicStringStateMachineBase {
                   ) final;
 
     //! Implementation of action b
-    void action_b(Signal signal,                       //!< The signal
+    void action_b(Signal signal,               //!< The signal
                   const Fw::StringBase& value  //!< The value
                   ) final;
 
