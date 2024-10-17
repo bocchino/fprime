@@ -20,6 +20,7 @@
 #include "FppTest/state_machine/internal_instance/state/BasicTestEnum.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicTestStruct.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicU32.hpp"
+#include "FppTest/state_machine/internal_instance/state/Internal.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
@@ -140,6 +141,26 @@ TEST(BasicTestStruct, Test) {
 TEST(BasicU32, Test) {
     FppTest::SmInstanceState::BasicU32 basicU32("basicU32");
     basicU32.test();
+}
+
+TEST(Internal, Init) {
+    FppTest::SmInstanceState::Internal internal("internal");
+    internal.testInit();
+}
+
+TEST(Internal, S2_internal) {
+    FppTest::SmInstanceState::Internal internal("internal");
+    internal.testS2_internal();
+}
+
+TEST(Internal, S2_to_S3) {
+    FppTest::SmInstanceState::Internal internal("internal");
+    internal.testS2_to_S3();
+}
+
+TEST(Internal, S3_internal) {
+    FppTest::SmInstanceState::Internal internal("internal");
+    internal.testS3_internal();
 }
 
 // ----------------------------------------------------------------------

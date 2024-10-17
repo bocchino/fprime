@@ -15,6 +15,7 @@ set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/BasicTestEnum.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicTestStruct.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicU32.fpp"
+  "${CMAKE_CURRENT_LIST_DIR}/Internal.fpp"
 )
 set(MOD_DEPS FppTest/state_machine/internal/harness)
 register_fprime_module()
@@ -36,6 +37,7 @@ set(UT_SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/BasicTestEnum.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicTestStruct.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicU32.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/Internal.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
 )
 set(UT_MOD_DEPS STest)
