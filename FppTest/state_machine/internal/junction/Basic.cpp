@@ -42,7 +42,7 @@ void Basic::testTrue() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
     this->initBase(id);
     ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::S1);
+    ASSERT_EQ(this->getState(), State::S1);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 0);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
     ASSERT_EQ(this->m_action_b_history.getSize(), 0);
@@ -52,7 +52,7 @@ void Basic::testTrue() {
     ASSERT_EQ(this->m_action_a_history.getSize(), 1);
     ASSERT_EQ(this->m_action_a_history.getItemAt(0), Signal::s);
     ASSERT_EQ(this->m_action_b_history.getSize(), 0);
-    ASSERT_EQ(this->m_state, State::S2);
+    ASSERT_EQ(this->getState(), State::S2);
 }
 
 void Basic::testFalse() {
@@ -62,7 +62,7 @@ void Basic::testFalse() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
     this->initBase(id);
     ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::S1);
+    ASSERT_EQ(this->getState(), State::S1);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 0);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
     ASSERT_EQ(this->m_action_b_history.getSize(), 0);
@@ -72,7 +72,7 @@ void Basic::testFalse() {
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
     ASSERT_EQ(this->m_action_b_history.getSize(), 1);
     ASSERT_EQ(this->m_action_b_history.getItemAt(0), Signal::s);
-    ASSERT_EQ(this->m_state, State::S3);
+    ASSERT_EQ(this->getState(), State::S3);
 }
 
 }  // namespace SmJunction

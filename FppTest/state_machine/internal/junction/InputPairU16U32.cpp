@@ -37,7 +37,7 @@ void InputPairU16U32::testS1True() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
     this->initBase(id);
     ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::S1);
+    ASSERT_EQ(this->getState(), State::S1);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 0);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
     const U16 value = static_cast<U16>(STest::Pick::any());
@@ -48,7 +48,7 @@ void InputPairU16U32::testS1True() {
     ASSERT_EQ(this->m_action_a_history.getSize(), 1);
     ASSERT_EQ(this->m_action_a_history.getSignals().getItemAt(0), Signal::s1);
     ASSERT_EQ(this->m_action_a_history.getValues().getItemAt(0), value);
-    ASSERT_EQ(this->m_state, State::S2);
+    ASSERT_EQ(this->getState(), State::S2);
 }
 
 void InputPairU16U32::testS1False() {
@@ -57,7 +57,7 @@ void InputPairU16U32::testS1False() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
     this->initBase(id);
     ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::S1);
+    ASSERT_EQ(this->getState(), State::S1);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 0);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
     const U16 value = static_cast<U16>(STest::Pick::any());
@@ -68,7 +68,7 @@ void InputPairU16U32::testS1False() {
     ASSERT_EQ(this->m_action_a_history.getSize(), 1);
     ASSERT_EQ(this->m_action_a_history.getSignals().getItemAt(0), Signal::s1);
     ASSERT_EQ(this->m_action_a_history.getValues().getItemAt(0), value);
-    ASSERT_EQ(this->m_state, State::S3);
+    ASSERT_EQ(this->getState(), State::S3);
 }
 
 void InputPairU16U32::testS2True() {
@@ -78,7 +78,7 @@ void InputPairU16U32::testS2True() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
     this->initBase(id);
     ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::S1);
+    ASSERT_EQ(this->getState(), State::S1);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 0);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
     const U32 value = STest::Pick::any();
@@ -89,7 +89,7 @@ void InputPairU16U32::testS2True() {
     ASSERT_EQ(this->m_action_a_history.getSize(), 1);
     ASSERT_EQ(this->m_action_a_history.getSignals().getItemAt(0), Signal::s2);
     ASSERT_EQ(this->m_action_a_history.getValues().getItemAt(0), value);
-    ASSERT_EQ(this->m_state, State::S2);
+    ASSERT_EQ(this->getState(), State::S2);
 }
 
 void InputPairU16U32::testS2False() {
@@ -98,7 +98,7 @@ void InputPairU16U32::testS2False() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
     this->initBase(id);
     ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::S1);
+    ASSERT_EQ(this->getState(), State::S1);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 0);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
     const U32 value = STest::Pick::any();
@@ -109,7 +109,7 @@ void InputPairU16U32::testS2False() {
     ASSERT_EQ(this->m_action_a_history.getSize(), 1);
     ASSERT_EQ(this->m_action_a_history.getSignals().getItemAt(0), Signal::s2);
     ASSERT_EQ(this->m_action_a_history.getValues().getItemAt(0), value);
-    ASSERT_EQ(this->m_state, State::S3);
+    ASSERT_EQ(this->getState(), State::S3);
 }
 
 }  // namespace SmJunction

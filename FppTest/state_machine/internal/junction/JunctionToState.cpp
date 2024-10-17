@@ -49,7 +49,7 @@ void JunctionToState::testTrue() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
     this->initBase(id);
     ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::S1);
+    ASSERT_EQ(this->getState(), State::S1);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 0);
     ASSERT_EQ(this->m_actionHistory.getSize(), 0);
     this->sendSignal_s();
@@ -67,7 +67,7 @@ void JunctionToState::testTrue() {
     ASSERT_EQ(values.getItemAt(2), ActionId::ENTER_S2);
     ASSERT_EQ(values.getItemAt(3), ActionId::A);
     ASSERT_EQ(values.getItemAt(4), ActionId::ENTER_S3);
-    ASSERT_EQ(this->m_state, State::S2_S3);
+    ASSERT_EQ(this->getState(), State::S2_S3);
 }
 
 void JunctionToState::testFalse() {
@@ -76,7 +76,7 @@ void JunctionToState::testFalse() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
     this->initBase(id);
     ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::S1);
+    ASSERT_EQ(this->getState(), State::S1);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 0);
     ASSERT_EQ(this->m_actionHistory.getSize(), 0);
     this->sendSignal_s();
@@ -93,7 +93,7 @@ void JunctionToState::testFalse() {
     ASSERT_EQ(values.getItemAt(1), ActionId::A);
     ASSERT_EQ(values.getItemAt(2), ActionId::ENTER_S2);
     ASSERT_EQ(values.getItemAt(3), ActionId::ENTER_S3);
-    ASSERT_EQ(this->m_state, State::S2_S3);
+    ASSERT_EQ(this->getState(), State::S2_S3);
 }
 
 }  // namespace SmJunction

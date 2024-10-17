@@ -35,11 +35,11 @@ void BasicTestAbsType::test() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
     this->initBase(id);
     ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::S);
+    ASSERT_EQ(this->getState(), State::S);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
     const SmHarness::TestAbsType value = SmHarness::Pick::testAbsType();
     this->sendSignal_s(value);
-    ASSERT_EQ(this->m_state, State::T);
+    ASSERT_EQ(this->getState(), State::T);
     const FwSizeType expectedASize = 5;
     ASSERT_EQ(this->m_action_a_history.getSize(), expectedASize);
     for (FwSizeType i = 0; i < expectedASize; i++) {

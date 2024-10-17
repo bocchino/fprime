@@ -47,7 +47,7 @@ void SequenceU32::testG1True() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
     this->initBase(id);
     ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::S1);
+    ASSERT_EQ(this->getState(), State::S1);
     ASSERT_EQ(this->m_guard_g1.getCallHistory().getSize(), 0);
     ASSERT_EQ(this->m_guard_g2.getCallHistory().getSize(), 0);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
@@ -59,7 +59,7 @@ void SequenceU32::testG1True() {
     ASSERT_EQ(this->m_guard_g2.getCallHistory().getSize(), 0);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
     ASSERT_EQ(this->m_action_b_history.getSize(), 0);
-    ASSERT_EQ(this->m_state, State::S2);
+    ASSERT_EQ(this->getState(), State::S2);
 }
 
 void SequenceU32::testG1FalseG2True() {
@@ -71,7 +71,7 @@ void SequenceU32::testG1FalseG2True() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
     this->initBase(id);
     ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::S1);
+    ASSERT_EQ(this->getState(), State::S1);
     ASSERT_EQ(this->m_guard_g1.getCallHistory().getSize(), 0);
     ASSERT_EQ(this->m_guard_g2.getCallHistory().getSize(), 0);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
@@ -87,7 +87,7 @@ void SequenceU32::testG1FalseG2True() {
     ASSERT_EQ(this->m_action_a_history.getSignals().getItemAt(0), Signal::s);
     ASSERT_EQ(this->m_action_a_history.getValues().getItemAt(0), value);
     ASSERT_EQ(this->m_action_b_history.getSize(), 0);
-    ASSERT_EQ(this->m_state, State::S3);
+    ASSERT_EQ(this->getState(), State::S3);
 }
 
 void SequenceU32::testG1FalseG2False() {
@@ -98,7 +98,7 @@ void SequenceU32::testG1FalseG2False() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
     this->initBase(id);
     ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::S1);
+    ASSERT_EQ(this->getState(), State::S1);
     ASSERT_EQ(this->m_guard_g1.getCallHistory().getSize(), 0);
     ASSERT_EQ(this->m_guard_g2.getCallHistory().getSize(), 0);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
@@ -113,7 +113,7 @@ void SequenceU32::testG1FalseG2False() {
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
     ASSERT_EQ(this->m_action_b_history.getSize(), 1);
     ASSERT_EQ(this->m_action_b_history.getItemAt(0), Signal::s);
-    ASSERT_EQ(this->m_state, State::S4);
+    ASSERT_EQ(this->getState(), State::S4);
 }
 
 }  // namespace SmJunction

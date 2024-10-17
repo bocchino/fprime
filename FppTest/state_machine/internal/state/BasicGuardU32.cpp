@@ -36,12 +36,12 @@ void BasicGuardU32::testFalse() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
     this->initBase(id);
     ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::S);
+    ASSERT_EQ(this->getState(), State::S);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 0);
     const U32 value = STest::Pick::any();
     this->sendSignal_s(value);
-    ASSERT_EQ(this->m_state, State::S);
+    ASSERT_EQ(this->getState(), State::S);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 1);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSignals().getItemAt(0), Signal::s);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getValues().getItemAt(0), value);
@@ -55,11 +55,11 @@ void BasicGuardU32::testTrue() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
     this->initBase(id);
     ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::S);
+    ASSERT_EQ(this->getState(), State::S);
     ASSERT_EQ(this->m_action_a_history.getSize(), 0);
     const U32 value = STest::Pick::any();
     this->sendSignal_s(value);
-    ASSERT_EQ(this->m_state, State::T);
+    ASSERT_EQ(this->getState(), State::T);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSize(), 1);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getSignals().getItemAt(0), Signal::s);
     ASSERT_EQ(this->m_guard_g.getCallHistory().getValues().getItemAt(0), value);

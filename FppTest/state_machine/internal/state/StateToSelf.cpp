@@ -55,7 +55,7 @@ void StateToSelf::testInit() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
     this->initBase(id);
     ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::S1_S2);
+    ASSERT_EQ(this->getState(), State::S1_S2);
     const FwSizeType expectedSize = 2;
     ASSERT_EQ(this->m_actionHistory.getSize(), expectedSize);
     const auto& signals = this->m_actionHistory.getSignals();
@@ -73,7 +73,7 @@ void StateToSelf::testS2_to_S1() {
     this->initBase(id);
     this->m_actionHistory.clear();
     this->sendSignal_S1_to_S1();
-    ASSERT_EQ(this->m_state, State::S1_S2);
+    ASSERT_EQ(this->getState(), State::S1_S2);
     const FwSizeType expectedSize = 5;
     ASSERT_EQ(this->m_actionHistory.getSize(), expectedSize);
     const auto& signals = this->m_actionHistory.getSignals();
@@ -94,7 +94,7 @@ void StateToSelf::testS2_to_S3() {
     this->initBase(id);
     this->m_actionHistory.clear();
     this->sendSignal_S2_to_S3();
-    ASSERT_EQ(this->m_state, State::S1_S3);
+    ASSERT_EQ(this->getState(), State::S1_S3);
     const FwSizeType expectedSize = 2;
     ASSERT_EQ(this->m_actionHistory.getSize(), expectedSize);
     const auto& signals = this->m_actionHistory.getSignals();
@@ -113,7 +113,7 @@ void StateToSelf::testS3_to_S1() {
     this->sendSignal_S2_to_S3();
     this->m_actionHistory.clear();
     this->sendSignal_S1_to_S1();
-    ASSERT_EQ(this->m_state, State::S1_S2);
+    ASSERT_EQ(this->getState(), State::S1_S2);
     const FwSizeType expectedSize = 5;
     ASSERT_EQ(this->m_actionHistory.getSize(), expectedSize);
     const auto& signals = this->m_actionHistory.getSignals();
