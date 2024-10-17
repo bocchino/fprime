@@ -31,7 +31,7 @@ void Basic::test() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
     this->initBase(id);
     ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::S);
+    ASSERT_EQ(this->getState(), State::S);
     const FwSizeType expectedSize = 3;
     ASSERT_EQ(this->m_action_a_history.getSize(), expectedSize);
     for (FwSizeType i = 0; i < expectedSize; i++) {

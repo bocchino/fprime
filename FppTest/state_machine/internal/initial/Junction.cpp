@@ -37,7 +37,7 @@ void Junction::testFalse() {
     const FwEnumStoreType id = SmHarness::Pick::stateMachineId();
     this->initBase(id);
     ASSERT_EQ(this->m_id, id);
-    ASSERT_EQ(this->m_state, State::T);
+    ASSERT_EQ(this->getState(), State::T);
     const FwSizeType expectedActionSize = 5;
     const FwSizeType expectedGuardSize = 1;
     this->checkActionsAndGuards(expectedActionSize, expectedGuardSize);
