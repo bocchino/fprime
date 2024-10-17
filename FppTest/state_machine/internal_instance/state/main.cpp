@@ -17,6 +17,7 @@
 #include "FppTest/state_machine/internal_instance/state/BasicString.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicTestAbsType.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicTestArray.hpp"
+#include "FppTest/state_machine/internal_instance/state/BasicTestEnum.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
@@ -122,6 +123,11 @@ TEST(BasicTestAbsType, Test) {
 TEST(BasicTestArray, Test) {
     FppTest::SmInstanceState::BasicTestArray basicTestArray("basicTestArray");
     basicTestArray.test();
+}
+
+TEST(BasicTestEnum, Test) {
+    FppTest::SmInstanceState::BasicTestEnum basicTestEnum("basicTestEnum");
+    basicTestEnum.test();
 }
 
 // ----------------------------------------------------------------------
