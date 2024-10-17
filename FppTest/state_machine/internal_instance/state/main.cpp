@@ -24,6 +24,7 @@
 #include "FppTest/state_machine/internal_instance/state/Polymorphism.hpp"
 #include "FppTest/state_machine/internal_instance/state/StateToChild.hpp"
 #include "FppTest/state_machine/internal_instance/state/StateToJunction.hpp"
+#include "FppTest/state_machine/internal_instance/state/StateToSelf.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
@@ -234,6 +235,26 @@ TEST(StateToJunction, S3_to_J) {
 TEST(StateToJunction, S3_to_S4) {
     FppTest::SmInstanceState::StateToJunction stateToJunction("stateToJunction");
     stateToJunction.testS3_to_S4();
+}
+
+TEST(StateToSelf, Init) {
+    FppTest::SmInstanceState::StateToSelf stateToSelf("stateToSelf");
+    stateToSelf.testInit();
+}
+
+TEST(StateToSelf, S2_to_S1) {
+    FppTest::SmInstanceState::StateToSelf stateToSelf("stateToSelf");
+    stateToSelf.testS2_to_S1();
+}
+
+TEST(StateToSelf, S2_to_S3) {
+    FppTest::SmInstanceState::StateToSelf stateToSelf("stateToSelf");
+    stateToSelf.testS2_to_S3();
+}
+
+TEST(StateToSelf, S3_to_S1) {
+    FppTest::SmInstanceState::StateToSelf stateToSelf("stateToSelf");
+    stateToSelf.testS3_to_S1();
 }
 
 // ----------------------------------------------------------------------
