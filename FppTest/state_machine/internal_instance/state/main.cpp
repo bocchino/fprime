@@ -21,6 +21,7 @@
 #include "FppTest/state_machine/internal_instance/state/BasicTestStruct.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicU32.hpp"
 #include "FppTest/state_machine/internal_instance/state/Internal.hpp"
+#include "FppTest/state_machine/internal_instance/state/Polymorphism.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
@@ -161,6 +162,26 @@ TEST(Internal, S2_to_S3) {
 TEST(Internal, S3_internal) {
     FppTest::SmInstanceState::Internal internal("internal");
     internal.testS3_internal();
+}
+
+TEST(Polymorphism, Init) {
+    FppTest::SmInstanceState::Polymorphism polymorphism("polymorphism");
+    polymorphism.testInit();
+}
+
+TEST(Polymorphism, S2_poly) {
+    FppTest::SmInstanceState::Polymorphism polymorphism("polymorphism");
+    polymorphism.testS2_poly();
+}
+
+TEST(Polymorphism, S2_to_S3) {
+    FppTest::SmInstanceState::Polymorphism polymorphism("polymorphism");
+    polymorphism.testS2_to_S3();
+}
+
+TEST(Polymorphism, S3_poly) {
+    FppTest::SmInstanceState::Polymorphism polymorphism("polymorphism");
+    polymorphism.testS3_poly();
 }
 
 // ----------------------------------------------------------------------
