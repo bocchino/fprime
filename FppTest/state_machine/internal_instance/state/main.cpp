@@ -25,6 +25,7 @@
 #include "FppTest/state_machine/internal_instance/state/StateToChild.hpp"
 #include "FppTest/state_machine/internal_instance/state/StateToJunction.hpp"
 #include "FppTest/state_machine/internal_instance/state/StateToSelf.hpp"
+#include "FppTest/state_machine/internal_instance/state/StateToState.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
@@ -255,6 +256,36 @@ TEST(StateToSelf, S2_to_S3) {
 TEST(StateToSelf, S3_to_S1) {
     FppTest::SmInstanceState::StateToSelf stateToSelf("stateToSelf");
     stateToSelf.testS3_to_S1();
+}
+
+TEST(StateToState, Init) {
+    FppTest::SmInstanceState::StateToState stateToState("stateToState");
+    stateToState.testInit();
+}
+
+TEST(StateToState, S2_to_S3) {
+    FppTest::SmInstanceState::StateToState stateToState("stateToState");
+    stateToState.testS2_to_S3();
+}
+
+TEST(StateToState, S2_to_S4) {
+    FppTest::SmInstanceState::StateToState stateToState("stateToState");
+    stateToState.testS2_to_S4();
+}
+
+TEST(StateToState, S2_to_S5) {
+    FppTest::SmInstanceState::StateToState stateToState("stateToState");
+    stateToState.testS2_to_S5();
+}
+
+TEST(StateToState, S3_to_S4) {
+    FppTest::SmInstanceState::StateToState stateToState("stateToState");
+    stateToState.testS3_to_S4();
+}
+
+TEST(StateToState, S3_to_S5) {
+    FppTest::SmInstanceState::StateToState stateToState("stateToState");
+    stateToState.testS3_to_S5();
 }
 
 // ----------------------------------------------------------------------

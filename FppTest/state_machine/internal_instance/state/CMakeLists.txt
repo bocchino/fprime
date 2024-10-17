@@ -20,6 +20,7 @@ set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/StateToChild.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/StateToJunction.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/StateToSelf.fpp"
+  "${CMAKE_CURRENT_LIST_DIR}/StateToState.fpp"
 )
 set(MOD_DEPS FppTest/state_machine/internal/harness)
 register_fprime_module()
@@ -46,6 +47,7 @@ set(UT_SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/StateToChild.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/StateToJunction.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/StateToSelf.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/StateToState.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
 )
 set(UT_MOD_DEPS STest)
