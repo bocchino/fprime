@@ -8,6 +8,7 @@
 #include "FppTest/state_machine/internal_instance/state/BasicGuard.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicGuardString.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicGuardTestAbsType.hpp"
+#include "FppTest/state_machine/internal_instance/state/BasicGuardTestArray.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
@@ -48,6 +49,16 @@ TEST(BasicGuardTestAbsType, Overflow) {
 TEST(BasicGuardTestAbsType, True) {
     FppTest::SmInstanceState::BasicGuardTestAbsType basicGuardTestAbsType("basicGuardTestAbsType");
     basicGuardTestAbsType.testTrue();
+}
+
+TEST(BasicGuardTestArray, False) {
+    FppTest::SmInstanceState::BasicGuardTestArray basicGuardTestArray("basicGuardTestArray");
+    basicGuardTestArray.testFalse();
+}
+
+TEST(BasicGuardTestArray, True) {
+    FppTest::SmInstanceState::BasicGuardTestArray basicGuardTestArray("basicGuardTestArray");
+    basicGuardTestArray.testTrue();
 }
 
 // ----------------------------------------------------------------------

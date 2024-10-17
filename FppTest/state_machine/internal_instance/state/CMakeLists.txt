@@ -3,6 +3,7 @@ set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/BasicGuard.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicGuardString.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicGuardTestAbsType.fpp"
+  "${CMAKE_CURRENT_LIST_DIR}/BasicGuardTestArray.fpp"
 )
 set(MOD_DEPS FppTest/state_machine/internal/harness)
 register_fprime_module()
@@ -12,6 +13,7 @@ set(UT_SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/BasicGuard.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicGuardString.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicGuardTestAbsType.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/BasicGuardTestArray.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
 )
 set(UT_MOD_DEPS STest)
