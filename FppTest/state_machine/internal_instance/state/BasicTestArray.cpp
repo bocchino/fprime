@@ -34,7 +34,7 @@ void BasicTestArray::FppTest_SmState_BasicTestArray_action_a(SmId smId, FppTest_
 void BasicTestArray::FppTest_SmState_BasicTestArray_action_b(SmId smId,
                                                              FppTest_SmState_BasicTestArray::Signal signal,
                                                              const SmHarness::TestArray& value) {
-    this->m_smStateBasicTestArray_action_b_history.push(signal, SmHarness::TestArray(value));
+    this->m_smStateBasicTestArray_action_b_history.push(signal, value);
 }
 
 // ----------------------------------------------------------------------

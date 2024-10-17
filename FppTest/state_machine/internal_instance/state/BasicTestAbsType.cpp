@@ -35,7 +35,7 @@ void BasicTestAbsType ::FppTest_SmState_BasicTestAbsType_action_a(SmId smId,
 void BasicTestAbsType ::FppTest_SmState_BasicTestAbsType_action_b(SmId smId,
                                                                   FppTest_SmState_BasicTestAbsType::Signal signal,
                                                                   const SmHarness::TestAbsType& value) {
-    this->m_smStateBasicTestAbsType_action_b_history.push(signal, SmHarness::TestAbsType(value));
+    this->m_smStateBasicTestAbsType_action_b_history.push(signal, value);
 }
 
 // ----------------------------------------------------------------------

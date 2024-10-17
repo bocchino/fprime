@@ -34,7 +34,7 @@ void BasicTestEnum::FppTest_SmState_BasicTestEnum_action_a(SmId smId, FppTest_Sm
 void BasicTestEnum::FppTest_SmState_BasicTestEnum_action_b(SmId smId,
                                                            FppTest_SmState_BasicTestEnum::Signal signal,
                                                            const SmHarness::TestEnum& value) {
-    this->m_smStateBasicTestEnum_action_b_history.push(signal, SmHarness::TestEnum(value));
+    this->m_smStateBasicTestEnum_action_b_history.push(signal, value);
 }
 
 // ----------------------------------------------------------------------

@@ -35,7 +35,7 @@ void BasicTestStruct::FppTest_SmState_BasicTestStruct_action_a(SmId smId,
 void BasicTestStruct::FppTest_SmState_BasicTestStruct_action_b(SmId smId,
                                                                FppTest_SmState_BasicTestStruct::Signal signal,
                                                                const SmHarness::TestStruct& value) {
-    this->m_smStateBasicTestStruct_action_b_history.push(signal, SmHarness::TestStruct(value));
+    this->m_smStateBasicTestStruct_action_b_history.push(signal, value);
 }
 
 // ----------------------------------------------------------------------
