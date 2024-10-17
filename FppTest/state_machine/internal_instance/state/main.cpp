@@ -15,6 +15,7 @@
 #include "FppTest/state_machine/internal_instance/state/BasicInternal.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicSelf.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicString.hpp"
+#include "FppTest/state_machine/internal_instance/state/BasicTestAbsType.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
@@ -98,18 +99,23 @@ TEST(BasicGuardU32, True) {
 }
 
 TEST(BasicInternal, Test) {
-  FppTest::SmInstanceState::BasicInternal basicInternal("basicInternal");
-  basicInternal.test();
+    FppTest::SmInstanceState::BasicInternal basicInternal("basicInternal");
+    basicInternal.test();
 }
 
 TEST(BasicSelf, Test) {
-  FppTest::SmInstanceState::BasicSelf basicSelf("basicSelf");
-  basicSelf.test();
+    FppTest::SmInstanceState::BasicSelf basicSelf("basicSelf");
+    basicSelf.test();
 }
 
 TEST(BasicString, Test) {
-  FppTest::SmInstanceState::BasicString basicString("basicString");
-  basicString.test();
+    FppTest::SmInstanceState::BasicString basicString("basicString");
+    basicString.test();
+}
+
+TEST(BasicTestAbsType, Test) {
+    FppTest::SmInstanceState::BasicTestAbsType basicTestAbsType("basicTestAbsType");
+    basicTestAbsType.test();
 }
 
 // ----------------------------------------------------------------------
