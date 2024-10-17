@@ -14,6 +14,7 @@
 #include "FppTest/state_machine/internal_instance/state/BasicGuardU32.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicInternal.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicSelf.hpp"
+#include "FppTest/state_machine/internal_instance/state/BasicString.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
@@ -104,6 +105,11 @@ TEST(BasicInternal, Test) {
 TEST(BasicSelf, Test) {
   FppTest::SmInstanceState::BasicSelf basicSelf("basicSelf");
   basicSelf.test();
+}
+
+TEST(BasicString, Test) {
+  FppTest::SmInstanceState::BasicString basicString("basicString");
+  basicString.test();
 }
 
 // ----------------------------------------------------------------------

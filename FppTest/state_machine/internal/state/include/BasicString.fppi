@@ -1,3 +1,5 @@
+constant basicStringSize = 80
+
 @ A basic state machine with string actions
 state machine BasicString {
 

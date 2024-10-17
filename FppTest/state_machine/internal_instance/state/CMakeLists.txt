@@ -9,6 +9,7 @@ set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/BasicGuardU32.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicInternal.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicSelf.fpp"
+  "${CMAKE_CURRENT_LIST_DIR}/BasicString.fpp"
 )
 set(MOD_DEPS FppTest/state_machine/internal/harness)
 register_fprime_module()
@@ -24,6 +25,7 @@ set(UT_SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/BasicGuardU32.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicInternal.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/BasicSelf.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/BasicString.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
 )
 set(UT_MOD_DEPS STest)
