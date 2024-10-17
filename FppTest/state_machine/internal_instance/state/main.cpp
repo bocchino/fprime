@@ -11,6 +11,7 @@
 #include "FppTest/state_machine/internal_instance/state/BasicGuardTestArray.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicGuardTestEnum.hpp"
 #include "FppTest/state_machine/internal_instance/state/BasicGuardTestStruct.hpp"
+#include "FppTest/state_machine/internal_instance/state/BasicGuardU32.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, Test) {
@@ -81,6 +82,16 @@ TEST(BasicGuardTestStruct, False) {
 TEST(BasicGuardTestStruct, True) {
     FppTest::SmInstanceState::BasicGuardTestStruct basicGuardTestStruct("basicGuardTestStruct");
     basicGuardTestStruct.testTrue();
+}
+
+TEST(BasicGuardU32, False) {
+    FppTest::SmInstanceState::BasicGuardU32 basicGuardU32("basicGuardU32");
+    basicGuardU32.testFalse();
+}
+
+TEST(BasicGuardU32, True) {
+    FppTest::SmInstanceState::BasicGuardU32 basicGuardU32("basicGuardU32");
+    basicGuardU32.testTrue();
 }
 
 // ----------------------------------------------------------------------
