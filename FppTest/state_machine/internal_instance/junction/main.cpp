@@ -7,56 +7,77 @@
 #include "FppTest/state_machine/internal_instance/junction/Basic.hpp"
 #include "FppTest/state_machine/internal_instance/junction/BasicU32.hpp"
 #include "FppTest/state_machine/internal_instance/junction/InputPairU16U32.hpp"
+#include "FppTest/state_machine/internal_instance/junction/JunctionToJunction.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, BasicTrue) {
-  FppTest::SmInstanceJunction::Basic basic("basic");
-  basic.testBasicTrue();
+    FppTest::SmInstanceJunction::Basic basic("basic");
+    basic.testBasicTrue();
 }
 
 TEST(Basic, BasicFalse) {
-  FppTest::SmInstanceJunction::Basic basic("basic");
-  basic.testBasicFalse();
+    FppTest::SmInstanceJunction::Basic basic("basic");
+    basic.testBasicFalse();
 }
 
 TEST(Basic, SmJunctionBasicTrue) {
-  FppTest::SmInstanceJunction::Basic basic("basic");
-  basic.testSmJunctionBasicTrue();
+    FppTest::SmInstanceJunction::Basic basic("basic");
+    basic.testSmJunctionBasicTrue();
 }
 
 TEST(Basic, SmJunctionBasicFalse) {
-  FppTest::SmInstanceJunction::Basic basic("basic");
-  basic.testSmJunctionBasicFalse();
+    FppTest::SmInstanceJunction::Basic basic("basic");
+    basic.testSmJunctionBasicFalse();
 }
 
 TEST(BasicU32, True) {
-  FppTest::SmInstanceJunction::BasicU32 basicU32("basicU32");
-  basicU32.testTrue();
+    FppTest::SmInstanceJunction::BasicU32 basicU32("basicU32");
+    basicU32.testTrue();
 }
 
 TEST(BasicU32, False) {
-  FppTest::SmInstanceJunction::BasicU32 basicU32("basicU32");
-  basicU32.testFalse();
+    FppTest::SmInstanceJunction::BasicU32 basicU32("basicU32");
+    basicU32.testFalse();
 }
 
 TEST(InputPairU16U32, S1True) {
-  FppTest::SmInstanceJunction::InputPairU16U32 inputPair("inputPair");
-  inputPair.testS1True();
+    FppTest::SmInstanceJunction::InputPairU16U32 inputPair("inputPair");
+    inputPair.testS1True();
 }
 
 TEST(InputPairU16U32, S1False) {
-  FppTest::SmInstanceJunction::InputPairU16U32 inputPair("inputPair");
-  inputPair.testS1False();
+    FppTest::SmInstanceJunction::InputPairU16U32 inputPair("inputPair");
+    inputPair.testS1False();
 }
 
 TEST(InputPairU16U32, S2True) {
-  FppTest::SmInstanceJunction::InputPairU16U32 inputPair("inputPair");
-  inputPair.testS2True();
+    FppTest::SmInstanceJunction::InputPairU16U32 inputPair("inputPair");
+    inputPair.testS2True();
 }
 
 TEST(InputPairU16U32, S2False) {
-  FppTest::SmInstanceJunction::InputPairU16U32 inputPair("inputPair");
-  inputPair.testS2False();
+    FppTest::SmInstanceJunction::InputPairU16U32 inputPair("inputPair");
+    inputPair.testS2False();
+}
+
+TEST(JunctionToJunction, G1True) {
+    FppTest::SmInstanceJunction::JunctionToJunction junctionToJunction("junctionToJunction");
+    junctionToJunction.testG1True();
+}
+
+TEST(JunctionToJunction, G1FalseG2True) {
+    FppTest::SmInstanceJunction::JunctionToJunction junctionToJunction("junctionToJunction");
+    junctionToJunction.testG1FalseG2True();
+}
+
+TEST(JunctionToJunction, G1FalseG2False) {
+    FppTest::SmInstanceJunction::JunctionToJunction junctionToJunction("junctionToJunction");
+    junctionToJunction.testG1FalseG2False();
+}
+
+TEST(JunctionToJunction, Overflow) {
+    FppTest::SmInstanceJunction::JunctionToJunction junctionToJunction("junctionToJunction");
+    junctionToJunction.testOverflow();
 }
 
 // ----------------------------------------------------------------------
