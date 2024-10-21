@@ -55,7 +55,7 @@ class Basic final : public BasicStateMachineBase {
     //! The history associated with action a
     SmHarness::History<Signal, historySize> m_action_a_history;
 
-    //! The history associated with action b
+    //! The history associated with action b of Basic
     SmHarness::History<Signal, historySize> m_action_b_history;
 
     //! The guard g
