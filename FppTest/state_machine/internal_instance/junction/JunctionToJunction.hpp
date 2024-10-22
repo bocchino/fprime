@@ -146,10 +146,10 @@ class JunctionToJunction : public JunctionToJunctionComponentBase {
     SmHarness::SignalValueHistory<SmJunction_JunctionToJunction::Signal, ActionId, historySize>
         m_smJunctionJunctionToJunction_actionHistory;
 
-    //! The guard g1
+    //! The guard g1 for smJunctionJunctionToJunction
     SmHarness::NoArgGuard<SmJunction_JunctionToJunction::Signal, historySize> m_smJunctionJunctionToJunction_guard_g1;
 
-    //! The guard g2
+    //! The guard g2 for smJunctionJunctionToJunction
     SmHarness::NoArgGuard<SmJunction_JunctionToJunction::Signal, historySize> m_smJunctionJunctionToJunction_guard_g2;
 };
 
