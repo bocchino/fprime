@@ -17,7 +17,11 @@ namespace SmInstanceJunction {
 // Component construction and destruction
 // ----------------------------------------------------------------------
 
-JunctionToJunction ::JunctionToJunction(const char* const compName) : JunctionToJunctionComponentBase(compName) {}
+JunctionToJunction ::JunctionToJunction(const char* const compName)
+    : JunctionToJunctionComponentBase(compName),
+      m_smJunctionJunctionToJunction_actionHistory(),
+      m_smJunctionJunctionToJunction_guard_g1(),
+      m_smJunctionJunctionToJunction_guard_g2() {}
 
 JunctionToJunction ::~JunctionToJunction() {}
 

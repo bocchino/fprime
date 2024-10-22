@@ -66,23 +66,22 @@ class JunctionToState : public JunctionToStateComponentBase {
     //!
     //! Exit S1
     void FppTest_SmJunction_JunctionToState_action_exitS1(
-        SmId smId,                                            //!< The state machine id
+        SmId smId,                                         //!< The state machine id
         FppTest_SmJunction_JunctionToState::Signal signal  //!< The signal
         ) override;
 
     //! Implementation for action a of state machine FppTest_SmJunction_JunctionToState
     //!
     //! Action a
-    void FppTest_SmJunction_JunctionToState_action_a(
-        SmId smId,                                            //!< The state machine id
-        FppTest_SmJunction_JunctionToState::Signal signal  //!< The signal
-        ) override;
+    void FppTest_SmJunction_JunctionToState_action_a(SmId smId,  //!< The state machine id
+                                                     FppTest_SmJunction_JunctionToState::Signal signal  //!< The signal
+                                                     ) override;
 
     //! Implementation for action enterS2 of state machine FppTest_SmJunction_JunctionToState
     //!
     //! Enter S2
     void FppTest_SmJunction_JunctionToState_action_enterS2(
-        SmId smId,                                            //!< The state machine id
+        SmId smId,                                         //!< The state machine id
         FppTest_SmJunction_JunctionToState::Signal signal  //!< The signal
         ) override;
 
@@ -90,7 +89,7 @@ class JunctionToState : public JunctionToStateComponentBase {
     //!
     //! Enter S3
     void FppTest_SmJunction_JunctionToState_action_enterS3(
-        SmId smId,                                            //!< The state machine id
+        SmId smId,                                         //!< The state machine id
         FppTest_SmJunction_JunctionToState::Signal signal  //!< The signal
         ) override;
 
@@ -102,9 +101,8 @@ class JunctionToState : public JunctionToStateComponentBase {
     //! Implementation for guard g of state machine FppTest_SmJunction_JunctionToState
     //!
     //! Guard g
-    bool FppTest_SmJunction_JunctionToState_guard_g(
-        SmId smId,                                            //!< The state machine id
-        FppTest_SmJunction_JunctionToState::Signal signal  //!< The signal
+    bool FppTest_SmJunction_JunctionToState_guard_g(SmId smId,  //!< The state machine id
+                                                    FppTest_SmJunction_JunctionToState::Signal signal  //!< The signal
     ) const override;
 
   public:
