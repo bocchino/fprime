@@ -8,6 +8,7 @@
 #include "FppTest/state_machine/internal_instance/junction/BasicU32.hpp"
 #include "FppTest/state_machine/internal_instance/junction/InputPairU16U32.hpp"
 #include "FppTest/state_machine/internal_instance/junction/JunctionToJunction.hpp"
+#include "FppTest/state_machine/internal_instance/junction/JunctionToState.hpp"
 #include "STest/STest/Random/Random.hpp"
 
 TEST(Basic, BasicTrue) {
@@ -78,6 +79,16 @@ TEST(JunctionToJunction, G1FalseG2False) {
 TEST(JunctionToJunction, Overflow) {
     FppTest::SmInstanceJunction::JunctionToJunction junctionToJunction("junctionToJunction");
     junctionToJunction.testOverflow();
+}
+
+TEST(JunctionToState, True) {
+  FppTest::SmInstanceJunction::JunctionToState junctionToState("junctionToState");
+  junctionToState.testTrue();
+}
+
+TEST(JunctionToState, False) {
+  FppTest::SmInstanceJunction::JunctionToState junctionToState("junctionToState");
+  junctionToState.testFalse();
 }
 
 // ----------------------------------------------------------------------
