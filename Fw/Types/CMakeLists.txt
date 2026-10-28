@@ -98,5 +98,13 @@ register_fprime_ut(
     Fw_Types
 )
 
+register_fprime_ut(
+    Fw_Types_NumericRange_ut_exe
+  SOURCES
+    "${CMAKE_CURRENT_LIST_DIR}/test/ut/NumericRangeTest.cpp"
+  DEPENDS
+    Fw_Types
+)
+
 # Non-test directory
 add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/GTest")
