@@ -32,17 +32,17 @@ class NumericRange {
     // ----------------------------------------------------------------------
 
     //! Construct a numeric range with a default value
-    NumericRange() {}
+    constexpr NumericRange() {}
 
     //! Construct a numeric range from a value of the base type
-    NumericRange(T value) {
+    constexpr NumericRange(T value) {
         FW_ASSERT(NumericRange::isValid(value), static_cast<FwAssertArgType>(value));
         m_value = value;
     }
 
     //! Copy constructor
     template <typename T1, BoundType LBT1, T LBV1, BoundType UBT1, T UBV1>
-    NumericRange(const NumericRange<T1, LBT1, LBV1, UBT1, UBV1>& range) {
+    constexpr NumericRange(const NumericRange<T1, LBT1, LBV1, UBT1, UBV1>& range) {
         FW_ASSERT(NumericRange::isValid(range.m_value), static_cast<FwAssertArgType>(range.m_value));
         this->m_value = range.m_value;
     }
@@ -71,7 +71,7 @@ class NumericRange {
 
     //! Check whether a value of the base type is valid for the range type
     //! @return The result
-    static bool isValid(T value  //!< The value
+    static constexpr bool isValid(T value  //!< The value
     ) {
         bool result = true;
         if ((LBT == BoundType::INCLUSIVE) && (value < LBV)) {
