@@ -334,7 +334,7 @@ class SerialBufferBase {
             status = Fw::FW_SERIALIZE_FORMAT_ERROR;
         }
         if (status == Fw::FW_SERIALIZE_OK) {
-            // TODO: Assign
+            val = numericVal;
         }
         return status;
     }
