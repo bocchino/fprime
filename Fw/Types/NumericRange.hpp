@@ -24,7 +24,7 @@ enum class BoundType {
 //! A numeric range parameterized by a type, a lower bound, and an upper bound
 template <typename T, BoundType LBT, T LBV, BoundType UBT, T UBV>
 class NumericRange {
-    static_assert(std::is_arithmetic<T>::value, "The type of a numeric range must be a numeric type");
+    static_assert(std::is_arithmetic<T>::value, "The base type of a numeric range must be a numeric type");
 
   public:
     // ----------------------------------------------------------------------
@@ -35,16 +35,12 @@ class NumericRange {
     constexpr NumericRange() {}
 
     //! Construct a numeric range from a value of the base type
-    constexpr NumericRange(T value) {
-        FW_ASSERT(NumericRange::isValid(value), static_cast<FwAssertArgType>(value));
-        m_value = value;
-    }
+    constexpr NumericRange(T numericValue) { *this = numericValue; }
 
     //! Copy constructor
     template <typename T1, BoundType LBT1, T LBV1, BoundType UBT1, T UBV1>
-    constexpr NumericRange(const NumericRange<T1, LBT1, LBV1, UBT1, UBV1>& range) {
-        FW_ASSERT(NumericRange::isValid(range.m_value), static_cast<FwAssertArgType>(range.m_value));
-        this->m_value = range.m_value;
+    constexpr NumericRange(const NumericRange<T1, LBT1, LBV1, UBT1, UBV1>& rangeValue) {
+        *this = rangeValue;
     }
 
   public:
@@ -53,10 +49,23 @@ class NumericRange {
     // ----------------------------------------------------------------------
 
     //! Convert a numeric range to a value of the base type
-    operator T() const { return m_value; }
+    operator T() const { return m_numericValue; }
 
-    //! Assignment
-    // TODO
+    //! Assignment from a numeric value
+    NumericRange& operator=(T numericValue) {
+        FW_ASSERT(NumericRange::isValid(numericValue), static_cast<FwAssertArgType>(numericValue));
+        this->m_numericValue = numericValue;
+        return *this;
+    }
+
+    //! Assignment from a value of the base type
+    template <typename T1, BoundType LBT1, T LBV1, BoundType UBT1, T UBV1>
+    NumericRange& operator=(const NumericRange<T1, LBT1, LBV1, UBT1, UBV1>& rangeValue) {
+        FW_ASSERT(NumericRange::isValid(rangeValue.m_numericValue),
+                  static_cast<FwAssertArgType>(rangeValue.m_numericValue));
+        this->m_numericValue = rangeValue.m_numericValue;
+        return *this;
+    }
 
     //! Equality
     // TODO
@@ -69,18 +78,18 @@ class NumericRange {
     // Static member functions
     // ----------------------------------------------------------------------
 
-    //! Check whether a value of the base type is valid for the range type
+    //! Check whether a numeric value is valid for the range type
     //! @return The result
-    static constexpr bool isValid(T value  //!< The value
+    static constexpr bool isValid(T numericValue  //!< The numeric value
     ) {
         bool result = true;
-        if ((LBT == BoundType::INCLUSIVE) && (value < LBV)) {
+        if ((LBT == BoundType::INCLUSIVE) && (numericValue < LBV)) {
             result = false;
-        } else if ((LBT == BoundType::EXCLUSIVE) && (value <= LBV)) {
+        } else if ((LBT == BoundType::EXCLUSIVE) && (numericValue <= LBV)) {
             result = false;
-        } else if ((UBT == BoundType::INCLUSIVE) && (value > UBV)) {
-            result =  false;
-        } else if ((UBT == BoundType::EXCLUSIVE) && (value >= UBV)) {
+        } else if ((UBT == BoundType::INCLUSIVE) && (numericValue > UBV)) {
+            result = false;
+        } else if ((UBT == BoundType::EXCLUSIVE) && (numericValue >= UBV)) {
             result = false;
         }
         return result;
@@ -91,8 +100,8 @@ class NumericRange {
     // Private member variables
     // ----------------------------------------------------------------------
 
-    //! The value of base type
-    T m_value = {};
+    //! The underlying numeric value
+    T m_numericValue = {};
 };
 
 //! Convenience alias for a range type with lower bound only
