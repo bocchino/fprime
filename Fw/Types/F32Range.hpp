@@ -16,20 +16,22 @@ namespace Fw {
 
 //! \brief An F32 range parameterized by a lower bound and an upper bound
 //!
-//! Each of the lower bound and upper bound is expressed as RANGE_ARG because F32
-//! template parameters are not allowed in C++14
-template <BoundType LBT, RANGE_ARG LBV, BoundType UBT, RANGE_ARG UBV>
+//! Each of the lower bound and upper bound is expressed as F32_RANGE_ARG_TYPE because F32
+//! template parameters are not allowed in C++14. If and when we move to C++20, we
+//! can change F32_RANGE_ARG_TYPE to F32 and change F32_RANGE_ARG_TYPE_TO_F32 to
+//! the identity function.
+template <BoundType LBT, F32_RANGE_ARG_TYPE LBV, BoundType UBT, F32_RANGE_ARG_TYPE UBV>
 class F32Range {
   public:
     // ----------------------------------------------------------------------
-    // Constants 
+    // Constants
     // ----------------------------------------------------------------------
 
     //! The lower bound value
-    static constexpr F32 lowerBoundValue = RANGE_ARG_TO_F32(LBV);
+    static constexpr F32 lowerBoundValue = F32_RANGE_ARG_TYPE_TO_F32(LBV);
 
     //! The upper bound value
-    static constexpr F32 upperBoundValue = RANGE_ARG_TO_F32(UBV);
+    static constexpr F32 upperBoundValue = F32_RANGE_ARG_TYPE_TO_F32(UBV);
 
   public:
     // ----------------------------------------------------------------------
@@ -38,14 +40,15 @@ class F32Range {
 
     //! Construct an F32 range with the default value
     constexpr F32Range() {
-        static_assert(F32Range::isValid(F32Range::getDefaultValue()), "An F32 range must contain at least one valid value");
+        static_assert(F32Range::isValid(F32Range::getDefaultValue()),
+                      "An F32 range must contain at least one valid value");
     }
 
     //! Construct an F32 range from an F32 value
     constexpr F32Range(F32 f32Value) { *this = f32Value; }
 
     //! Copy constructor
-    template <BoundType LBT1, RANGE_ARG LBV1, BoundType UBT1, RANGE_ARG UBV1>
+    template <BoundType LBT1, F32_RANGE_ARG_TYPE LBV1, BoundType UBT1, F32_RANGE_ARG_TYPE UBV1>
     constexpr F32Range(const F32Range<LBT1, LBV1, UBT1, UBV1>& rangeValue) {
         *this = rangeValue;
     }
@@ -97,7 +100,7 @@ class F32Range {
     //! Get the default value for the type.
     //! @return The default value
     static constexpr F32 getDefaultValue() {
-        F32 defaultValue = RANGE_ARG_TO_F32(LBV);
+        F32 defaultValue = F32_RANGE_ARG_TYPE_TO_F32(LBV);
         if (!F32Range::isValid(defaultValue)) {
             defaultValue += 2 * F32_EPSILON;
         }
@@ -113,7 +116,37 @@ class F32Range {
     F32 m_f32Value = getDefaultValue();
 };
 
-// TODO
+//! Convenience alias for an F32Range type with inclusive bounds
+template <F32_RANGE_ARG_TYPE LBV, F32_RANGE_ARG_TYPE UBV>
+using F32RangeInclusive = F32Range<BoundType::INCLUSIVE, LBV, BoundType::INCLUSIVE, UBV>;
+
+//! Convenience alias for an F32Range type with exclusive bounds
+template <F32_RANGE_ARG_TYPE LBV, F32_RANGE_ARG_TYPE UBV>
+using F32RangeExclusive = F32Range<BoundType::EXCLUSIVE, LBV, BoundType::EXCLUSIVE, UBV>;
+
+//! Convenience alias for an F32Range type with inclusive and exclusive bounds
+template <F32_RANGE_ARG_TYPE LBV, F32_RANGE_ARG_TYPE UBV>
+using F32RangeInclusiveExclusive = F32Range<BoundType::INCLUSIVE, LBV, BoundType::EXCLUSIVE, UBV>;
+
+//! Convenience alias for an F32Range type with exclusive and inclusive bounds
+template <F32_RANGE_ARG_TYPE LBV, F32_RANGE_ARG_TYPE UBV>
+using F32RangeExclusiveInclusive = F32Range<BoundType::EXCLUSIVE, LBV, BoundType::INCLUSIVE, UBV>;
+
+//! Convenience alias for an F32Range type with an inclusive lower bound only
+template <F32_RANGE_ARG_TYPE LBV>
+using F32LowerBoundInclusive = F32Range<BoundType::INCLUSIVE, LBV, BoundType::NONE, F32_RANGE_ARG(0.0)>;
+
+//! Convenience alias for an F32Range type with an exclusve lower bound only
+template <F32_RANGE_ARG_TYPE LBV>
+using F32LowerBoundExclusive = F32Range<BoundType::EXCLUSIVE, LBV, BoundType::NONE, F32_RANGE_ARG(0.0)>;
+
+//! Convenience alias for an F32Range type with an inclusive upper bound only
+template <F32_RANGE_ARG_TYPE UBV>
+using F32UpperBoundInclusive = F32Range<BoundType::NONE, F32_RANGE_ARG(0.0), BoundType::INCLUSIVE, UBV>;
+
+//! Convenience alias for an F32Range type with an exclusive upper bound only
+template <F32_RANGE_ARG_TYPE UBV>
+using F32UpperBoundExclusive = F32Range<BoundType::NONE, F32_RANGE_ARG(0.0), BoundType::EXCLUSIVE, UBV>;
 
 }  // namespace Fw
 
