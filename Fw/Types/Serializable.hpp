@@ -117,13 +117,13 @@ class SerialBufferBase {
     //! Ensures proper cleanup of derived classes.
     virtual ~SerialBufferBase();
 
-    //! \brief Serialize a numeric range
+    //! \brief Serialize an integer range
     //!
-    //! \param val The numeric range value
+    //! \param val The integer range value
     //! \param mode Endianness mode for serialization (default is Endianness::BIG)
     //! \return SerializeStatus indicating the result of the operation
     template <typename T, BoundType LBT, T LBV, BoundType UBT, T UBV>
-    SerializeStatus serializeFrom(NumericRange<T, LBT, LBV, UBT, UBV> val, Endianness mode = Endianness::BIG) {
+    SerializeStatus serializeFrom(IntRange<T, LBT, LBV, UBT, UBV> val, Endianness mode = Endianness::BIG) {
         return this->serializeFrom(static_cast<T>(val), mode);
     }
 
@@ -321,13 +321,13 @@ class SerialBufferBase {
     //! \return SerializeStatus indicating the result of the operation
     virtual SerializeStatus serializeSize(const FwSizeType size, Endianness mode = Endianness::BIG) = 0;
 
-    //! \brief Deserialize a numeric range
+    //! \brief Deserialize an integer range
     //!
-    //! \param val The numeric range value
+    //! \param val The integer range value
     //! \param mode Endianness mode for serialization (default is Endianness::BIG)
     //! \return SerializeStatus indicating the result of the operation
     template <typename T, BoundType LBT, T LBV, BoundType UBT, T UBV>
-    SerializeStatus deserializeTo(NumericRange<T, LBT, LBV, UBT, UBV>& val, Endianness mode = Endianness::BIG) {
+    SerializeStatus deserializeTo(IntRange<T, LBT, LBV, UBT, UBV>& val, Endianness mode = Endianness::BIG) {
         T numericVal = {};
         const auto status = this->deserializeTo(numericVal, mode);
         if ((status == Fw::FW_SERIALIZE_OK) && !decltype(val)::isValid(numericVal)) {

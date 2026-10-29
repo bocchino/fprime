@@ -21,25 +21,25 @@ enum class BoundType {
     EXCLUSIVE   //!< An exclusive bound
 };
 
-//! A numeric range parameterized by a type, a lower bound, and an upper bound
+//! An integer range parameterized by a type, a lower bound, and an upper bound
 template <typename T, BoundType LBT, T LBV, BoundType UBT, T UBV>
-class NumericRange {
-    static_assert(std::is_arithmetic<T>::value, "The base type of a numeric range must be a numeric type");
+class IntRange {
+    static_assert(std::is_integral<T>::value, "The base type of an integer range must be an integral type");
 
   public:
     // ----------------------------------------------------------------------
     // Constructors and destructors
     // ----------------------------------------------------------------------
 
-    //! Construct a numeric range with a default value
-    constexpr NumericRange() {}
+    //! Construct an integer range with a default value
+    constexpr IntRange() { *this = LBV; }
 
-    //! Construct a numeric range from a numeric value
-    constexpr NumericRange(T numericValue) { *this = numericValue; }
+    //! Construct an integer range from a numeric value
+    constexpr IntRange(T intValue) { *this = intValue; }
 
     //! Copy constructor
     template <typename T1, BoundType LBT1, T LBV1, BoundType UBT1, T UBV1>
-    constexpr NumericRange(const NumericRange<T1, LBT1, LBV1, UBT1, UBV1>& rangeValue) {
+    constexpr IntRange(const IntRange<T1, LBT1, LBV1, UBT1, UBV1>& rangeValue) {
         *this = rangeValue;
     }
 
@@ -49,45 +49,39 @@ class NumericRange {
     // ----------------------------------------------------------------------
 
     //! Convert a numeric range to a numeric value
-    operator T() const { return m_numericValue; }
+    operator T() const { return m_intValue; }
 
     //! Assignment from a value of the base type
-    NumericRange& operator=(T numericValue) {
-        FW_ASSERT(NumericRange::isValid(numericValue), static_cast<FwAssertArgType>(numericValue));
-        this->m_numericValue = numericValue;
+    IntRange& operator=(T intValue) {
+        FW_ASSERT(IntRange::isValid(intValue), static_cast<FwAssertArgType>(intValue));
+        this->m_intValue = intValue;
         return *this;
     }
 
-    //! Assignment from a numeric range
+    //! Assignment from an integer range
     template <typename T1, BoundType LBT1, T LBV1, BoundType UBT1, T UBV1>
-    NumericRange& operator=(const NumericRange<T1, LBT1, LBV1, UBT1, UBV1>& rangeValue) {
-        *this = rangeValue.m_numericValue;
+    IntRange& operator=(const IntRange<T1, LBT1, LBV1, UBT1, UBV1>& rangeValue) {
+        *this = static_cast<T>(rangeValue);
         return *this;
     }
-
-    //! Equality
-    // TODO
-
-    //! Inequality
-    // TODO
 
   public:
     // ----------------------------------------------------------------------
     // Static member functions
     // ----------------------------------------------------------------------
 
-    //! Check whether a numeric value is valid for the range
+    //! Check whether an integer value is valid for the range
     //! @return The result
-    static constexpr bool isValid(T numericValue  //!< The numeric value
+    static constexpr bool isValid(T intValue  //!< The numeric value
     ) {
         bool result = true;
-        if ((LBT == BoundType::INCLUSIVE) && (numericValue < LBV)) {
+        if ((LBT == BoundType::INCLUSIVE) && (intValue < LBV)) {
             result = false;
-        } else if ((LBT == BoundType::EXCLUSIVE) && (numericValue <= LBV)) {
+        } else if ((LBT == BoundType::EXCLUSIVE) && (intValue <= LBV)) {
             result = false;
-        } else if ((UBT == BoundType::INCLUSIVE) && (numericValue > UBV)) {
+        } else if ((UBT == BoundType::INCLUSIVE) && (intValue > UBV)) {
             result = false;
-        } else if ((UBT == BoundType::EXCLUSIVE) && (numericValue >= UBV)) {
+        } else if ((UBT == BoundType::EXCLUSIVE) && (intValue >= UBV)) {
             result = false;
         }
         return result;
@@ -98,17 +92,17 @@ class NumericRange {
     // Private member variables
     // ----------------------------------------------------------------------
 
-    //! The numeric value within the range
-    T m_numericValue = {};
+    //! The integer value within the range
+    T m_intValue = {};
 };
 
-//! Convenience alias for a range type with lower bound only
+//! Convenience alias for an IntRange range type with lower bound only
 template <typename T, BoundType LBT, T LB>
-using NumericRangeLower = NumericRange<T, LBT, LB, BoundType::NONE, T{}>;
+using IntRangeLower = IntRange<T, LBT, LB, BoundType::NONE, T{}>;
 
-//! Convenience alias for a range type with upper bound only
+//! Convenience alias for an IntRange type with upper bound only
 template <typename T, BoundType UBT, T UB>
-using NumericRangeUpper = NumericRange<T, BoundType::NONE, T{}, UBT, UB>;
+using IntRangeUpper = IntRange<T, BoundType::NONE, T{}, UBT, UB>;
 
 }  // namespace Fw
 
