@@ -28,7 +28,8 @@ class IntRange {
 
     //! Construct an integer range with the default value
     constexpr IntRange() {
-        static_assert(IntRange::isValid(IntRange::getDefaultValue()), "An integer range must contain at least one valid value");
+        static_assert(IntRange::isValid(IntRange::getDefaultValue()),
+                      "An integer range must contain at least one valid value");
     }
 
     //! Construct an integer range from a numeric value
