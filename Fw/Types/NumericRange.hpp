@@ -34,7 +34,7 @@ class NumericRange {
     //! Construct a numeric range with a default value
     constexpr NumericRange() {}
 
-    //! Construct a numeric range from a value of the base type
+    //! Construct a numeric range from a numeric value
     constexpr NumericRange(T numericValue) { *this = numericValue; }
 
     //! Copy constructor
@@ -48,22 +48,20 @@ class NumericRange {
     // User-defined operators
     // ----------------------------------------------------------------------
 
-    //! Convert a numeric range to a value of the base type
+    //! Convert a numeric range to a numeric value
     operator T() const { return m_numericValue; }
 
-    //! Assignment from a numeric value
+    //! Assignment from a value of the base type
     NumericRange& operator=(T numericValue) {
         FW_ASSERT(NumericRange::isValid(numericValue), static_cast<FwAssertArgType>(numericValue));
         this->m_numericValue = numericValue;
         return *this;
     }
 
-    //! Assignment from a value of the base type
+    //! Assignment from a numeric range
     template <typename T1, BoundType LBT1, T LBV1, BoundType UBT1, T UBV1>
     NumericRange& operator=(const NumericRange<T1, LBT1, LBV1, UBT1, UBV1>& rangeValue) {
-        FW_ASSERT(NumericRange::isValid(rangeValue.m_numericValue),
-                  static_cast<FwAssertArgType>(rangeValue.m_numericValue));
-        this->m_numericValue = rangeValue.m_numericValue;
+        *this = rangeValue.m_numericValue;
         return *this;
     }
 
@@ -78,7 +76,7 @@ class NumericRange {
     // Static member functions
     // ----------------------------------------------------------------------
 
-    //! Check whether a numeric value is valid for the range type
+    //! Check whether a numeric value is valid for the range
     //! @return The result
     static constexpr bool isValid(T numericValue  //!< The numeric value
     ) {
@@ -100,7 +98,7 @@ class NumericRange {
     // Private member variables
     // ----------------------------------------------------------------------
 
-    //! The underlying numeric value
+    //! The numeric value within the range
     T m_numericValue = {};
 };
 
