@@ -69,16 +69,17 @@ class IntRange {
         return result;
     }
 
-    //! Get the default value for the type, checking that the range is
-    //! non-empty. This check is run by every constructor, because every
-    //! constructor initializes the member variable below with this function.
-    //!
-    //! The default value is chosen as follows:
-    //! 1. If the range has neither a lower bound nor an upper bound, then zero.
-    //! 2. Otherwise, if the range has a lower bound, then the lower bound if it
-    //!    is valid, and otherwise the next greater value.
-    //! 3. Otherwise, the range has only an upper bound. Then the upper bound
-    //!    if it is valid, and otherwise the next lesser value.
+    //! Get the default value for the type, and statically check
+    //! that the value is valid. Choose the default value as follows:
+    //! 1. If the range has no lower bound and no upper bound, then use zero.
+    //! 2. Otherwise, if the range has a lower bound, then
+    //!    a. If the lower bound is in range or is the maximum value of the
+    //!       base numeric type, then use it.
+    //!    b. Otherwise use the lower bound plus one.
+    //! 3. Otherwise, the range has only an upper bound. In this case
+    //!    a. If the upper bound is in range or is the minimum value of the
+    //!       base numeric type, then use it.
+    //!    b. Otherwise use the upper bound minus one.
     //!
     //! @return The default value
     static constexpr T getDefaultValue() {
@@ -92,7 +93,7 @@ class IntRange {
     // Private helper functions
     // ----------------------------------------------------------------------
 
-    //! Compute the default value for the type, without checking that it is valid
+    //! Compute the default value for the range type.
     //! @return The default value
     static constexpr T computeDefaultValue() {
         T defaultVal{};
