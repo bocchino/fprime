@@ -82,9 +82,9 @@ class IntRange {
     //!
     //! @return The default value
     static constexpr T getDefaultValue() {
-        static_assert(IntRange::isValid(IntRange::computeDefaultValue()),
-                      "An integer range must contain at least one valid value");
-        return computeDefaultValue();
+        constexpr T defaultValue = computeDefaultValue();
+        static_assert(IntRange::isValid(defaultValue), "An integer range must contain at least one valid value");
+        return defaultValue;
     }
 
   private:
