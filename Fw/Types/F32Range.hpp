@@ -171,11 +171,15 @@ class F32Range {
     // ----------------------------------------------------------------------
 
     //! Convert an F32 range to an F32 value
-    operator F32() const { return m_f32Value; }
+    constexpr operator F32() const { return m_f32Value; }
 
-    //! Assignment from a value of the base type
-    F32Range& operator=(F32 f32Value) {
-        FW_ASSERT(F32Range::isValid(f32Value), static_cast<FwAssertArgType>(f32Value));
+    //! Assignment from a value of the base type. If the assertion fails, the
+    //! argument reported is the bit pattern of the value, not the value
+    //! converted to an integer: that conversion is undefined for a value that
+    //! is out of the integer range, NaN, or infinite, and those are the values
+    //! that are likely to fail the assertion.
+    constexpr F32Range& operator=(F32 f32Value) {
+        FW_ASSERT(F32Range::isValid(f32Value), static_cast<FwAssertArgType>(F32_RANGE_ARG(f32Value)));
         this->m_f32Value = f32Value;
         return *this;
     }
@@ -185,21 +189,21 @@ class F32Range {
     // Static member functions
     // ----------------------------------------------------------------------
 
-    //! Check whether an F32 value is valid for the range
+    //! Check whether an F32 value is valid for the range. Each bound is
+    //! checked by requiring that the comparison with the bound is true,
+    //! not by rejecting a value for which the opposite comparison is true.
+    //! So NaN, for which every comparison is false, is never valid for a
+    //! range that has a lower bound or an upper bound.
     //! @return The result
     static constexpr bool isValid(F32 f32Value  //!< The F32 value
     ) {
-        bool result = true;
-        if ((LBT == BoundType::INCLUSIVE) && (f32Value < lowerBoundValue)) {
-            result = false;
-        } else if ((LBT == BoundType::EXCLUSIVE) && (f32Value <= lowerBoundValue)) {
-            result = false;
-        } else if ((UBT == BoundType::INCLUSIVE) && (f32Value > upperBoundValue)) {
-            result = false;
-        } else if ((UBT == BoundType::EXCLUSIVE) && (f32Value >= upperBoundValue)) {
-            result = false;
-        }
-        return result;
+        const bool lowerOK = (LBT == BoundType::NONE) ||
+                             ((LBT == BoundType::INCLUSIVE) && (f32Value >= lowerBoundValue)) ||
+                             ((LBT == BoundType::EXCLUSIVE) && (f32Value > lowerBoundValue));
+        const bool upperOK = (UBT == BoundType::NONE) ||
+                             ((UBT == BoundType::INCLUSIVE) && (f32Value <= upperBoundValue)) ||
+                             ((UBT == BoundType::EXCLUSIVE) && (f32Value < upperBoundValue));
+        return lowerOK && upperOK;
     }
 
     //! Get the default value for the type.
@@ -249,56 +253,58 @@ template <F32_RANGE_ARG_TYPE LBV, F32_RANGE_ARG_TYPE UBV>
 using F32RangeInclusive = F32Range<BoundType::INCLUSIVE, LBV, BoundType::INCLUSIVE, UBV>;
 
 // Convenience macro that hides F32_RANGE_ARG_TYPE
-#define FW_F32_RANGE_INCLUSIVE(LBV, UBV) F32RangeInclusive<F32_RANGE_ARG(LBV), F32_RANGE_ARG(UBV)>
+#define FW_F32_RANGE_INCLUSIVE(LBV, UBV) Fw::F32RangeInclusive<Fw::F32_RANGE_ARG(LBV), Fw::F32_RANGE_ARG(UBV)>
 
 //! Convenience alias for an F32Range type with exclusive bounds
 template <F32_RANGE_ARG_TYPE LBV, F32_RANGE_ARG_TYPE UBV>
 using F32RangeExclusive = F32Range<BoundType::EXCLUSIVE, LBV, BoundType::EXCLUSIVE, UBV>;
 
 // Convenience macro that hides F32_RANGE_ARG_TYPE
-#define FW_F32_RANGE_EXCLUSIVE(LBV, UBV) F32RangeExclusive<F32_RANGE_ARG(LBV), F32_RANGE_ARG(UBV)>
+#define FW_F32_RANGE_EXCLUSIVE(LBV, UBV) Fw::F32RangeExclusive<Fw::F32_RANGE_ARG(LBV), Fw::F32_RANGE_ARG(UBV)>
 
 //! Convenience alias for an F32Range type with inclusive and exclusive bounds
 template <F32_RANGE_ARG_TYPE LBV, F32_RANGE_ARG_TYPE UBV>
 using F32RangeInclusiveExclusive = F32Range<BoundType::INCLUSIVE, LBV, BoundType::EXCLUSIVE, UBV>;
 
 // Convenience macro that hides F32_RANGE_ARG_TYPE
-#define FW_F32_RANGE_INCLUSIVE_EXCLUSIVE(LBV, UBV) F32RangeInclusiveExclusive<F32_RANGE_ARG(LBV), F32_RANGE_ARG(UBV)>
+#define FW_F32_RANGE_INCLUSIVE_EXCLUSIVE(LBV, UBV) \
+    Fw::F32RangeInclusiveExclusive<Fw::F32_RANGE_ARG(LBV), Fw::F32_RANGE_ARG(UBV)>
 
 //! Convenience alias for an F32Range type with exclusive and inclusive bounds
 template <F32_RANGE_ARG_TYPE LBV, F32_RANGE_ARG_TYPE UBV>
 using F32RangeExclusiveInclusive = F32Range<BoundType::EXCLUSIVE, LBV, BoundType::INCLUSIVE, UBV>;
 
 // Convenience macro that hides F32_RANGE_ARG_TYPE
-#define FW_F32_RANGE_EXCLUSIVE_INCLUSIVE(LBV, UBV) F32RangeExclusiveInclusive<F32_RANGE_ARG(LBV), F32_RANGE_ARG(UBV)>
+#define FW_F32_RANGE_EXCLUSIVE_INCLUSIVE(LBV, UBV) \
+    Fw::F32RangeExclusiveInclusive<Fw::F32_RANGE_ARG(LBV), Fw::F32_RANGE_ARG(UBV)>
 
 //! Convenience alias for an F32Range type with an inclusive lower bound only
 template <F32_RANGE_ARG_TYPE LBV>
 using F32LowerBoundInclusive = F32Range<BoundType::INCLUSIVE, LBV, BoundType::NONE, F32_RANGE_ARG(0.0)>;
 
 // Convenience macro that hides F32_RANGE_ARG_TYPE
-#define FW_F32_LOWER_BOUND_INCLUSIVE(LBV) F32LowerBoundInclusive<F32_RANGE_ARG(LBV)>
+#define FW_F32_LOWER_BOUND_INCLUSIVE(LBV) Fw::F32LowerBoundInclusive<Fw::F32_RANGE_ARG(LBV)>
 
 //! Convenience alias for an F32Range type with an exclusive lower bound only
 template <F32_RANGE_ARG_TYPE LBV>
 using F32LowerBoundExclusive = F32Range<BoundType::EXCLUSIVE, LBV, BoundType::NONE, F32_RANGE_ARG(0.0)>;
 
 // Convenience macro that hides F32_RANGE_ARG_TYPE
-#define FW_F32_LOWER_BOUND_EXCLUSIVE(LBV) F32LowerBoundExclusive<F32_RANGE_ARG(LBV)>
+#define FW_F32_LOWER_BOUND_EXCLUSIVE(LBV) Fw::F32LowerBoundExclusive<Fw::F32_RANGE_ARG(LBV)>
 
 //! Convenience alias for an F32Range type with an inclusive upper bound only
 template <F32_RANGE_ARG_TYPE UBV>
 using F32UpperBoundInclusive = F32Range<BoundType::NONE, F32_RANGE_ARG(0.0), BoundType::INCLUSIVE, UBV>;
 
 // Convenience macro that hides F32_RANGE_ARG_TYPE
-#define FW_F32_UPPER_BOUND_INCLUSIVE(UBV) F32UpperBoundInclusive<F32_RANGE_ARG(UBV)>
+#define FW_F32_UPPER_BOUND_INCLUSIVE(UBV) Fw::F32UpperBoundInclusive<Fw::F32_RANGE_ARG(UBV)>
 
 //! Convenience alias for an F32Range type with an exclusive upper bound only
 template <F32_RANGE_ARG_TYPE UBV>
 using F32UpperBoundExclusive = F32Range<BoundType::NONE, F32_RANGE_ARG(0.0), BoundType::EXCLUSIVE, UBV>;
 
 // Convenience macro that hides F32_RANGE_ARG_TYPE
-#define FW_F32_UPPER_BOUND_EXCLUSIVE(UBV) F32UpperBoundExclusive<F32_RANGE_ARG(UBV)>
+#define FW_F32_UPPER_BOUND_EXCLUSIVE(UBV) Fw::F32UpperBoundExclusive<Fw::F32_RANGE_ARG(UBV)>
 
 }  // namespace Fw
 

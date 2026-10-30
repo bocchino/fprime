@@ -2,12 +2,22 @@
 // @file   F32RangeTest.cpp
 // @brief  Unit tests for the F32 range types
 //
-// So far this file tests only the constexpr bit-cast functions F32_RANGE_ARG
-// and F32_RANGE_ARG_TYPE_TO_F32. At run time, std::memcpy provides the
-// reference result. The constexpr property is tested with static_assert.
+// This file tests two things:
+// 1. The constexpr bit-cast functions F32_RANGE_ARG and
+//    F32_RANGE_ARG_TYPE_TO_F32. At run time, std::memcpy provides the
+//    reference result. The constexpr property is tested with static_assert.
+// 2. The F32Range class and its aliases and macros.
+//
+// Not covered here: rejection of empty ranges, e.g., F32RangeInclusive with
+// a lower bound greater than the upper bound. That check is a static_assert,
+// so a violation is a compile error, which a gtest test cannot observe.
+// The tests also do not cover the default value of a range with an exclusive
+// bound, and they avoid reading the public bound constants
+// lowerBoundValue and upperBoundValue directly.
 // ======================================================================
 
 #include <gtest/gtest.h>
+#include <cmath>
 #include <cstring>
 #include <limits>
 #include <type_traits>
@@ -105,6 +115,34 @@ static_assert(f32Is(0x7F800000U, std::numeric_limits<F32>::infinity()),
 // The result is usable as a template argument, which is what the F32 range types need
 static_assert(std::integral_constant<U32, Fw::F32_RANGE_ARG(1.5f)>::value == 0x3FC00000U,
               "F32_RANGE_ARG must be usable as a template argument");
+
+constexpr F32 INF = std::numeric_limits<F32>::infinity();
+constexpr F32 NAN_VALUE = std::numeric_limits<F32>::quiet_NaN();
+
+//! The next representable F32 value above x
+F32 nextAbove(F32 x) {
+    return std::nextafter(x, INF);
+}
+
+//! The next representable F32 value below x
+F32 nextBelow(F32 x) {
+    return std::nextafter(x, -INF);
+}
+
+//! Construct a range of type R from a value, discarding the result
+template <typename R, typename T>
+void constructFrom(T value) {
+    R range(value);
+    (void)range;
+}
+
+//! Assign to a range in a constant expression
+using AssignRange = FW_F32_RANGE_INCLUSIVE(1.0f, 2.0f);
+constexpr F32 assignAndRead() {
+    AssignRange range;
+    range = 1.5f;
+    return range;
+}
 
 }  // namespace
 
@@ -233,6 +271,315 @@ TEST(F32RangeTest, RoundTrip) {
         ASSERT_EQ(bitsOf(result), bitsOf(value)) << "value = " << value;
     }
 }
+
+// ----------------------------------------------------------------------
+// F32Range: construction and default values
+// ----------------------------------------------------------------------
+
+TEST(F32RangeTest, Construction) {
+    using Range = FW_F32_RANGE_INCLUSIVE(1.0f, 2.0f);
+    Range rangeDefault;
+    ASSERT_EQ(static_cast<F32>(rangeDefault), 1.0f);
+    Range range(1.5f);
+    ASSERT_EQ(static_cast<F32>(range), 1.5f);
+    range = 2.0f;
+    ASSERT_EQ(static_cast<F32>(range), 2.0f);
+    // The conversion to F32 is implicit
+    const F32 value = range;
+    ASSERT_EQ(value, 2.0f);
+}
+
+TEST(F32RangeTest, DefaultValueWithLowerBound) {
+    // The lower bound, if it is inclusive
+    using Inclusive = FW_F32_RANGE_INCLUSIVE(1.0f, 2.0f);
+    ASSERT_EQ(static_cast<F32>(Inclusive()), 1.0f);
+    using InclusiveExclusive = FW_F32_RANGE_INCLUSIVE_EXCLUSIVE(1.0f, 2.0f);
+    ASSERT_EQ(static_cast<F32>(InclusiveExclusive()), 1.0f);
+    using NegativeLowerBound = FW_F32_LOWER_BOUND_INCLUSIVE(-3.5f);
+    ASSERT_EQ(static_cast<F32>(NegativeLowerBound()), -3.5f);
+    using ZeroLowerBound = FW_F32_LOWER_BOUND_INCLUSIVE(0.0f);
+    ASSERT_EQ(static_cast<F32>(ZeroLowerBound()), 0.0f);
+    using InfiniteLowerBound = FW_F32_RANGE_INCLUSIVE(-INF, INF);
+    ASSERT_EQ(static_cast<F32>(InfiniteLowerBound()), -INF);
+}
+
+TEST(F32RangeTest, DefaultValueWithUpperBoundOnly) {
+    // The upper bound, if it is inclusive
+    using Positive = FW_F32_UPPER_BOUND_INCLUSIVE(7.25f);
+    ASSERT_EQ(static_cast<F32>(Positive()), 7.25f);
+    using Negative = FW_F32_UPPER_BOUND_INCLUSIVE(-5.0f);
+    ASSERT_EQ(static_cast<F32>(Negative()), -5.0f);
+}
+
+TEST(F32RangeTest, DefaultValueWithoutBounds) {
+    // Zero, whatever the placeholder values of the bounds are
+    using NoBounds = Fw::F32Range<Fw::BoundType::NONE, 0, Fw::BoundType::NONE, 0>;
+    ASSERT_EQ(static_cast<F32>(NoBounds()), 0.0f);
+    using WithPlaceholders =
+        Fw::F32Range<Fw::BoundType::NONE, Fw::F32_RANGE_ARG(5.0f), Fw::BoundType::NONE, Fw::F32_RANGE_ARG(-5.0f)>;
+    ASSERT_EQ(static_cast<F32>(WithPlaceholders()), 0.0f);
+}
+
+// ----------------------------------------------------------------------
+// F32Range: constant expressions
+// ----------------------------------------------------------------------
+
+TEST(F32RangeTest, Constexpr) {
+    using Range = FW_F32_RANGE_INCLUSIVE(1.0f, 2.0f);
+    constexpr Range defaultValue = Range();
+    static_assert(static_cast<F32>(defaultValue) == 1.0f, "The default value must be a constant expression");
+    constexpr Range value(1.5f);
+    static_assert(static_cast<F32>(value) == 1.5f, "Construction must be a constant expression");
+    static_assert(assignAndRead() == 1.5f, "Assignment must be usable in a constant expression");
+}
+
+// ----------------------------------------------------------------------
+// F32Range: isValid
+// ----------------------------------------------------------------------
+
+TEST(F32RangeTest, IsValidBounds) {
+    // The values on either side of each bound, and the bounds themselves
+    const F32 belowLower = nextBelow(1.0f);
+    const F32 aboveLower = nextAbove(1.0f);
+    const F32 belowUpper = nextBelow(2.0f);
+    const F32 aboveUpper = nextAbove(2.0f);
+
+    using Inclusive = FW_F32_RANGE_INCLUSIVE(1.0f, 2.0f);
+    ASSERT_FALSE(Inclusive::isValid(belowLower));
+    ASSERT_TRUE(Inclusive::isValid(1.0f));
+    ASSERT_TRUE(Inclusive::isValid(aboveLower));
+    ASSERT_TRUE(Inclusive::isValid(1.5f));
+    ASSERT_TRUE(Inclusive::isValid(belowUpper));
+    ASSERT_TRUE(Inclusive::isValid(2.0f));
+    ASSERT_FALSE(Inclusive::isValid(aboveUpper));
+
+    using Exclusive = FW_F32_RANGE_EXCLUSIVE(1.0f, 2.0f);
+    ASSERT_FALSE(Exclusive::isValid(belowLower));
+    ASSERT_FALSE(Exclusive::isValid(1.0f));
+    ASSERT_TRUE(Exclusive::isValid(aboveLower));
+    ASSERT_TRUE(Exclusive::isValid(belowUpper));
+    ASSERT_FALSE(Exclusive::isValid(2.0f));
+    ASSERT_FALSE(Exclusive::isValid(aboveUpper));
+
+    using InclusiveExclusive = FW_F32_RANGE_INCLUSIVE_EXCLUSIVE(1.0f, 2.0f);
+    ASSERT_FALSE(InclusiveExclusive::isValid(belowLower));
+    ASSERT_TRUE(InclusiveExclusive::isValid(1.0f));
+    ASSERT_TRUE(InclusiveExclusive::isValid(belowUpper));
+    ASSERT_FALSE(InclusiveExclusive::isValid(2.0f));
+
+    using ExclusiveInclusive = FW_F32_RANGE_EXCLUSIVE_INCLUSIVE(1.0f, 2.0f);
+    ASSERT_FALSE(ExclusiveInclusive::isValid(1.0f));
+    ASSERT_TRUE(ExclusiveInclusive::isValid(aboveLower));
+    ASSERT_TRUE(ExclusiveInclusive::isValid(2.0f));
+    ASSERT_FALSE(ExclusiveInclusive::isValid(aboveUpper));
+}
+
+TEST(F32RangeTest, IsValidOneSidedBounds) {
+    constexpr F32 lowest = std::numeric_limits<F32>::lowest();
+    constexpr F32 highest = std::numeric_limits<F32>::max();
+
+    using LowerInclusive = FW_F32_LOWER_BOUND_INCLUSIVE(-5.0f);
+    ASSERT_FALSE(LowerInclusive::isValid(nextBelow(-5.0f)));
+    ASSERT_TRUE(LowerInclusive::isValid(-5.0f));
+    ASSERT_TRUE(LowerInclusive::isValid(highest));
+
+    using LowerExclusive = FW_F32_LOWER_BOUND_EXCLUSIVE(-5.0f);
+    ASSERT_FALSE(LowerExclusive::isValid(-5.0f));
+    ASSERT_TRUE(LowerExclusive::isValid(nextAbove(-5.0f)));
+    ASSERT_TRUE(LowerExclusive::isValid(highest));
+
+    using UpperInclusive = FW_F32_UPPER_BOUND_INCLUSIVE(5.0f);
+    ASSERT_TRUE(UpperInclusive::isValid(lowest));
+    ASSERT_TRUE(UpperInclusive::isValid(5.0f));
+    ASSERT_FALSE(UpperInclusive::isValid(nextAbove(5.0f)));
+
+    using UpperExclusive = FW_F32_UPPER_BOUND_EXCLUSIVE(5.0f);
+    ASSERT_TRUE(UpperExclusive::isValid(lowest));
+    ASSERT_TRUE(UpperExclusive::isValid(nextBelow(5.0f)));
+    ASSERT_FALSE(UpperExclusive::isValid(5.0f));
+}
+
+TEST(F32RangeTest, IsValidSignedZero) {
+    // Negative zero compares equal to zero, so it is on the same side of a
+    // bound at zero as positive zero is
+    constexpr F32 negativeZero = -0.0f;
+    const F32 smallest = std::numeric_limits<F32>::denorm_min();
+
+    using Inclusive = FW_F32_RANGE_INCLUSIVE(0.0f, 1.0f);
+    ASSERT_TRUE(Inclusive::isValid(negativeZero));
+    ASSERT_TRUE(Inclusive::isValid(0.0f));
+    ASSERT_FALSE(Inclusive::isValid(-smallest));
+
+    using Exclusive = FW_F32_RANGE_EXCLUSIVE(0.0f, 1.0f);
+    ASSERT_FALSE(Exclusive::isValid(negativeZero));
+    ASSERT_FALSE(Exclusive::isValid(0.0f));
+    ASSERT_TRUE(Exclusive::isValid(smallest));
+}
+
+TEST(F32RangeTest, IsValidInfinity) {
+    constexpr F32 highest = std::numeric_limits<F32>::max();
+
+    // Finite bounds exclude both infinities, and a bound on one side excludes
+    // only the infinity on that side
+    using Finite = FW_F32_RANGE_INCLUSIVE(-1.0f, 1.0f);
+    ASSERT_FALSE(Finite::isValid(INF));
+    ASSERT_FALSE(Finite::isValid(-INF));
+    using LowerOnly = FW_F32_LOWER_BOUND_INCLUSIVE(0.0f);
+    ASSERT_TRUE(LowerOnly::isValid(INF));
+    ASSERT_FALSE(LowerOnly::isValid(-INF));
+    using UpperOnly = FW_F32_UPPER_BOUND_INCLUSIVE(0.0f);
+    ASSERT_FALSE(UpperOnly::isValid(INF));
+    ASSERT_TRUE(UpperOnly::isValid(-INF));
+
+    // Bounds at infinity
+    using InclusiveInfinite = FW_F32_RANGE_INCLUSIVE(-INF, INF);
+    ASSERT_TRUE(InclusiveInfinite::isValid(-INF));
+    ASSERT_TRUE(InclusiveInfinite::isValid(0.0f));
+    ASSERT_TRUE(InclusiveInfinite::isValid(INF));
+    using ExclusiveUpperInfinite = FW_F32_RANGE_INCLUSIVE_EXCLUSIVE(-INF, INF);
+    ASSERT_TRUE(ExclusiveUpperInfinite::isValid(-INF));
+    ASSERT_TRUE(ExclusiveUpperInfinite::isValid(highest));
+    ASSERT_FALSE(ExclusiveUpperInfinite::isValid(INF));
+}
+
+TEST(F32RangeTest, IsValidNaN) {
+    // NaN is not valid for a range that has a bound, whatever kind of bound.
+    // Each type is named with an alias first, because a macro that expands to
+    // a template with more than one argument can't be an argument to ASSERT_FALSE.
+    using Inclusive = FW_F32_RANGE_INCLUSIVE(1.0f, 2.0f);
+    using Exclusive = FW_F32_RANGE_EXCLUSIVE(1.0f, 2.0f);
+    using InclusiveExclusive = FW_F32_RANGE_INCLUSIVE_EXCLUSIVE(1.0f, 2.0f);
+    using ExclusiveInclusive = FW_F32_RANGE_EXCLUSIVE_INCLUSIVE(1.0f, 2.0f);
+    ASSERT_FALSE(Inclusive::isValid(NAN_VALUE));
+    ASSERT_FALSE(Exclusive::isValid(NAN_VALUE));
+    ASSERT_FALSE(InclusiveExclusive::isValid(NAN_VALUE));
+    ASSERT_FALSE(ExclusiveInclusive::isValid(NAN_VALUE));
+    ASSERT_FALSE(FW_F32_LOWER_BOUND_INCLUSIVE(1.0f)::isValid(NAN_VALUE));
+    ASSERT_FALSE(FW_F32_LOWER_BOUND_EXCLUSIVE(1.0f)::isValid(NAN_VALUE));
+    ASSERT_FALSE(FW_F32_UPPER_BOUND_INCLUSIVE(1.0f)::isValid(NAN_VALUE));
+    ASSERT_FALSE(FW_F32_UPPER_BOUND_EXCLUSIVE(1.0f)::isValid(NAN_VALUE));
+    // Including a NaN with a different sign or payload
+    ASSERT_FALSE(Inclusive::isValid(floatOf(0xFFC00000U)));
+    ASSERT_FALSE(Inclusive::isValid(floatOf(0x7F800001U)));
+}
+
+// ----------------------------------------------------------------------
+// F32Range: the macros and aliases
+// ----------------------------------------------------------------------
+
+TEST(F32RangeTest, MacrosAreUsableOutsideNamespaceFw) {
+    // These tests are in the global namespace, so each macro must qualify
+    // every name it uses. Each macro must also give the same type as the alias.
+    static_assert(std::is_same<FW_F32_RANGE_INCLUSIVE(1.0f, 2.0f),
+                               Fw::F32RangeInclusive<Fw::F32_RANGE_ARG(1.0f), Fw::F32_RANGE_ARG(2.0f)>>::value,
+                  "FW_F32_RANGE_INCLUSIVE must name F32RangeInclusive");
+    static_assert(std::is_same<FW_F32_RANGE_EXCLUSIVE(1.0f, 2.0f),
+                               Fw::F32RangeExclusive<Fw::F32_RANGE_ARG(1.0f), Fw::F32_RANGE_ARG(2.0f)>>::value,
+                  "FW_F32_RANGE_EXCLUSIVE must name F32RangeExclusive");
+    static_assert(std::is_same<FW_F32_RANGE_INCLUSIVE_EXCLUSIVE(1.0f, 2.0f),
+                               Fw::F32RangeInclusiveExclusive<Fw::F32_RANGE_ARG(1.0f), Fw::F32_RANGE_ARG(2.0f)>>::value,
+                  "FW_F32_RANGE_INCLUSIVE_EXCLUSIVE must name F32RangeInclusiveExclusive");
+    static_assert(std::is_same<FW_F32_RANGE_EXCLUSIVE_INCLUSIVE(1.0f, 2.0f),
+                               Fw::F32RangeExclusiveInclusive<Fw::F32_RANGE_ARG(1.0f), Fw::F32_RANGE_ARG(2.0f)>>::value,
+                  "FW_F32_RANGE_EXCLUSIVE_INCLUSIVE must name F32RangeExclusiveInclusive");
+    static_assert(
+        std::is_same<FW_F32_LOWER_BOUND_INCLUSIVE(1.0f), Fw::F32LowerBoundInclusive<Fw::F32_RANGE_ARG(1.0f)>>::value,
+        "FW_F32_LOWER_BOUND_INCLUSIVE must name F32LowerBoundInclusive");
+    static_assert(
+        std::is_same<FW_F32_LOWER_BOUND_EXCLUSIVE(1.0f), Fw::F32LowerBoundExclusive<Fw::F32_RANGE_ARG(1.0f)>>::value,
+        "FW_F32_LOWER_BOUND_EXCLUSIVE must name F32LowerBoundExclusive");
+    static_assert(
+        std::is_same<FW_F32_UPPER_BOUND_INCLUSIVE(1.0f), Fw::F32UpperBoundInclusive<Fw::F32_RANGE_ARG(1.0f)>>::value,
+        "FW_F32_UPPER_BOUND_INCLUSIVE must name F32UpperBoundInclusive");
+    static_assert(
+        std::is_same<FW_F32_UPPER_BOUND_EXCLUSIVE(1.0f), Fw::F32UpperBoundExclusive<Fw::F32_RANGE_ARG(1.0f)>>::value,
+        "FW_F32_UPPER_BOUND_EXCLUSIVE must name F32UpperBoundExclusive");
+}
+
+#if FW_ASSERT_LEVEL != FW_NO_ASSERT
+
+// ----------------------------------------------------------------------
+// F32Range: assertions
+// ----------------------------------------------------------------------
+
+// In the tests below, a value that is out of range must cause an assertion
+// failure, and the assertion failure aborts the process. The statement inside
+// each ASSERT_DEATH contains only the operation under test. Any other values
+// are computed outside the statement, so that they cannot cause the death.
+
+TEST(F32RangeTest, ValueOutOfRange) {
+    const F32 belowLower = nextBelow(1.0f);
+    const F32 aboveUpper = nextAbove(2.0f);
+
+    using Inclusive = FW_F32_RANGE_INCLUSIVE(1.0f, 2.0f);
+    ASSERT_DEATH(constructFrom<Inclusive>(belowLower), ".*");
+    ASSERT_EQ(static_cast<F32>(Inclusive(1.0f)), 1.0f);
+    ASSERT_EQ(static_cast<F32>(Inclusive(2.0f)), 2.0f);
+    ASSERT_DEATH(constructFrom<Inclusive>(aboveUpper), ".*");
+
+    using Exclusive = FW_F32_RANGE_EXCLUSIVE(1.0f, 2.0f);
+    ASSERT_DEATH(constructFrom<Exclusive>(1.0f), ".*");
+    ASSERT_EQ(static_cast<F32>(Exclusive(1.5f)), 1.5f);
+    ASSERT_DEATH(constructFrom<Exclusive>(2.0f), ".*");
+
+    using InclusiveExclusive = FW_F32_RANGE_INCLUSIVE_EXCLUSIVE(1.0f, 2.0f);
+    ASSERT_EQ(static_cast<F32>(InclusiveExclusive(1.0f)), 1.0f);
+    ASSERT_DEATH(constructFrom<InclusiveExclusive>(2.0f), ".*");
+
+    using ExclusiveInclusive = FW_F32_RANGE_EXCLUSIVE_INCLUSIVE(1.0f, 2.0f);
+    ASSERT_DEATH(constructFrom<ExclusiveInclusive>(1.0f), ".*");
+    ASSERT_EQ(static_cast<F32>(ExclusiveInclusive(2.0f)), 2.0f);
+
+    using LowerInclusive = FW_F32_LOWER_BOUND_INCLUSIVE(-5.0f);
+    ASSERT_DEATH(constructFrom<LowerInclusive>(-6.0f), ".*");
+    ASSERT_EQ(static_cast<F32>(LowerInclusive(-5.0f)), -5.0f);
+
+    using LowerExclusive = FW_F32_LOWER_BOUND_EXCLUSIVE(-5.0f);
+    ASSERT_DEATH(constructFrom<LowerExclusive>(-5.0f), ".*");
+    ASSERT_EQ(static_cast<F32>(LowerExclusive(-4.0f)), -4.0f);
+
+    using UpperInclusive = FW_F32_UPPER_BOUND_INCLUSIVE(5.0f);
+    ASSERT_EQ(static_cast<F32>(UpperInclusive(5.0f)), 5.0f);
+    ASSERT_DEATH(constructFrom<UpperInclusive>(6.0f), ".*");
+
+    using UpperExclusive = FW_F32_UPPER_BOUND_EXCLUSIVE(5.0f);
+    ASSERT_EQ(static_cast<F32>(UpperExclusive(4.0f)), 4.0f);
+    ASSERT_DEATH(constructFrom<UpperExclusive>(5.0f), ".*");
+}
+
+TEST(F32RangeTest, AssignmentOutOfRange) {
+    using Inclusive = FW_F32_RANGE_INCLUSIVE(1.0f, 2.0f);
+    Inclusive range;
+    range = 1.5f;
+    ASSERT_EQ(static_cast<F32>(range), 1.5f);
+    ASSERT_DEATH(range = 0.5f, ".*");
+    ASSERT_DEATH(range = 2.5f, ".*");
+}
+
+TEST(F32RangeTest, NaNAndInfinityOutOfRange) {
+    // NaN is not valid for a range that has a bound
+    using Inclusive = FW_F32_RANGE_INCLUSIVE(1.0f, 2.0f);
+    ASSERT_DEATH(constructFrom<Inclusive>(NAN_VALUE), ".*");
+    using LowerOnly = FW_F32_LOWER_BOUND_INCLUSIVE(1.0f);
+    ASSERT_DEATH(constructFrom<LowerOnly>(NAN_VALUE), ".*");
+    using UpperOnly = FW_F32_UPPER_BOUND_EXCLUSIVE(1.0f);
+    ASSERT_DEATH(constructFrom<UpperOnly>(NAN_VALUE), ".*");
+    // The value reported by the assertion is computed without converting the
+    // value to an integer, which is undefined for NaN and infinity, so these
+    // values must fail the assertion and not do anything else
+    ASSERT_DEATH(constructFrom<Inclusive>(INF), ".*");
+    ASSERT_DEATH(constructFrom<Inclusive>(-INF), ".*");
+    ASSERT_DEATH(constructFrom<Inclusive>(std::numeric_limits<F32>::max()), ".*");
+    // The same holds for assignment
+    Inclusive range;
+    ASSERT_DEATH(range = NAN_VALUE, ".*");
+    ASSERT_DEATH(range = INF, ".*");
+    // An infinity that is within the range is accepted
+    using LowerInfinite = FW_F32_LOWER_BOUND_INCLUSIVE(0.0f);
+    ASSERT_EQ(static_cast<F32>(LowerInfinite(INF)), INF);
+}
+
+#endif
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
