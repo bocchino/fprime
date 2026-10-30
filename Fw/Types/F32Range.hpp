@@ -7,8 +7,6 @@
 #ifndef FW_F32_RANGE
 #define FW_F32_RANGE
 
-#include <type_traits>
-
 #include <Fw/Types/Assert.hpp>
 #include <Fw/Types/BoundType.hpp>
 
