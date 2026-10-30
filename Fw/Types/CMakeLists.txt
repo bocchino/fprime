@@ -106,5 +106,13 @@ register_fprime_ut(
     Fw_Types
 )
 
+register_fprime_ut(
+    Fw_Types_F32Range_ut_exe
+  SOURCES
+    "${CMAKE_CURRENT_LIST_DIR}/test/ut/F32RangeTest.cpp"
+  DEPENDS
+    Fw_Types
+)
+
 # Non-test directory
 add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/GTest")
