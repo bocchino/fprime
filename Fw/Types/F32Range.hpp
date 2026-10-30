@@ -151,7 +151,7 @@ using F32LowerBoundInclusive = F32Range<BoundType::INCLUSIVE, LBV, BoundType::NO
 // Convenience macro that hides F32_RANGE_ARG_TYPE
 #define FW_F32_LOWER_BOUND_INCLUSIVE(LBV) F32LowerBoundInclusive<F32_RANGE_ARG(LBV)>
 
-//! Convenience alias for an F32Range type with an exclusve lower bound only
+//! Convenience alias for an F32Range type with an exclusive lower bound only
 template <F32_RANGE_ARG_TYPE LBV>
 using F32LowerBoundExclusive = F32Range<BoundType::EXCLUSIVE, LBV, BoundType::NONE, F32_RANGE_ARG(0.0)>;
 
