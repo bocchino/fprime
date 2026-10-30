@@ -1,6 +1,6 @@
 // ======================================================================
-// @file   NumericRangeTest.cpp
-// @brief  Unit tests for the numeric range types
+// @file   IntRangeTest.cpp
+// @brief  Unit tests for the integer range types
 //
 // Not covered here: rejection of empty ranges, e.g., IntRangeInclusive<U32, 1, 0>.
 // That check is a static_assert, so a violation is a compile error, which a
@@ -11,7 +11,7 @@
 #include <limits>
 
 #include <Fw/Types/Assert.hpp>
-#include <Fw/Types/NumericRange.hpp>
+#include <Fw/Types/IntRange.hpp>
 
 namespace {
 
@@ -91,7 +91,7 @@ void checkRangesAtMaximum() {
 
 }  // namespace
 
-TEST(NumericRangeTest, Construction) {
+TEST(IntRangeTest, Construction) {
     Fw::IntRangeExclusiveInclusive<U32, 0, 10> rangeDefault;
     ASSERT_EQ(rangeDefault, 1U);
     Fw::IntRangeInclusiveExclusive<U32, 0, 10> range(1);

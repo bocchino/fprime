@@ -99,9 +99,9 @@ register_fprime_ut(
 )
 
 register_fprime_ut(
-    Fw_Types_NumericRange_ut_exe
+    Fw_Types_IntRange_ut_exe
   SOURCES
-    "${CMAKE_CURRENT_LIST_DIR}/test/ut/NumericRangeTest.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/test/ut/IntRangeTest.cpp"
   DEPENDS
     Fw_Types
 )
