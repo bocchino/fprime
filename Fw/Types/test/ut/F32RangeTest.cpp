@@ -669,8 +669,6 @@ TEST(F32RangeTest, MacrosAreUsableOutsideNamespaceFw) {
         "FW_F32_UPPER_BOUND_EXCLUSIVE must name F32UpperBoundExclusive");
 }
 
-#if FW_ASSERT_LEVEL != FW_NO_ASSERT
-
 // ----------------------------------------------------------------------
 // F32Range: assertions
 // ----------------------------------------------------------------------
@@ -751,8 +749,6 @@ TEST(F32RangeTest, NaNAndInfinityOutOfRange) {
     using LowerInfinite = FW_F32_LOWER_BOUND_INCLUSIVE(0.0f);
     ASSERT_EQ(static_cast<F32>(LowerInfinite(INF)), INF);
 }
-
-#endif
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);

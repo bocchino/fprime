@@ -187,8 +187,6 @@ TEST(IntRangeTest, IsValidOneSidedBounds) {
     ASSERT_FALSE(UpperExclusive::isValid(5));
 }
 
-#if FW_ASSERT_LEVEL != FW_NO_ASSERT
-
 // ----------------------------------------------------------------------
 // Assertions
 // ----------------------------------------------------------------------
@@ -245,5 +243,3 @@ TEST(IntRangeTest, AssignmentOutOfRange) {
     ASSERT_DEATH(range = 2U, ".*");
     ASSERT_DEATH(range = 6U, ".*");
 }
-
-#endif
