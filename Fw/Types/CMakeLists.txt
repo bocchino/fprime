@@ -112,6 +112,7 @@ register_fprime_ut(
     "${CMAKE_CURRENT_LIST_DIR}/test/ut/F32RangeTest.cpp"
   DEPENDS
     Fw_Types
+    STest
 )
 
 # Non-test directory

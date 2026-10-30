@@ -13,6 +13,8 @@
 #include <type_traits>
 
 #include <Fw/Types/F32Range.hpp>
+#include "STest/Pick/Pick.hpp"
+#include "STest/Random/Random.hpp"
 
 namespace {
 
@@ -55,12 +57,14 @@ bool conversionsMatchReference(U32 bits) {
     return result;
 }
 
-//! A simple deterministic generator, so that the test is repeatable
-U32 nextRandom(U32 state) {
-    state ^= state << 13;
-    state ^= state >> 17;
-    state ^= state << 5;
-    return state;
+//! Pick an arbitrary U32 value, with all 32 bits independent.
+//! STest::Pick::any() is not suitable: it scales a 31-bit random number up to
+//! 32 bits, so its lowest bit is nearly always equal to its highest bit.
+//! Instead, pick the two halves separately.
+U32 pickBits() {
+    const U32 high = STest::Pick::lowerUpper(0, 0xFFFFU);
+    const U32 low = STest::Pick::lowerUpper(0, 0xFFFFU);
+    return (high << 16) | low;
 }
 
 // Constant expression checks. Each function is evaluated at compile time.
@@ -200,11 +204,13 @@ TEST(F32RangeTest, ExponentAndMantissaPatterns) {
     }
 }
 
-TEST(F32RangeTest, PseudoRandomBitPatterns) {
-    U32 state = 0x2545F491U;
+TEST(F32RangeTest, RandomBitPatterns) {
+    // Every 32-bit pattern is a valid F32 bit pattern, so any picked value is
+    // allowed. The seed is printed when the test starts (see main below). To
+    // repeat a failing run, put the seed in a file called "seed".
     for (U32 i = 0; i < 100000; i++) {
-        state = nextRandom(state);
-        ASSERT_TRUE(conversionsMatchReference(state)) << "bits = 0x" << std::hex << state;
+        const U32 bits = pickBits();
+        ASSERT_TRUE(conversionsMatchReference(bits)) << "bits = 0x" << std::hex << bits;
     }
 }
 
@@ -226,4 +232,10 @@ TEST(F32RangeTest, RoundTrip) {
         const F32 result = Fw::F32_RANGE_ARG_TYPE_TO_F32(Fw::F32_RANGE_ARG(value));
         ASSERT_EQ(bitsOf(result), bitsOf(value)) << "value = " << value;
     }
+}
+
+int main(int argc, char** argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    STest::Random::seed();
+    return RUN_ALL_TESTS();
 }
