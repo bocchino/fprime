@@ -17,9 +17,6 @@ namespace Fw {
 //! The type of an F32 range argument. The real type is not supported by C++14.
 using F32_RANGE_ARG_TYPE = U32;
 
-//! The epsilon value for F32
-constexpr F32 FW_F32_EPSILON = 10e-6f;
-
 static_assert(std::numeric_limits<F32>::is_iec559 && (std::numeric_limits<F32>::digits == 24) &&
                   (sizeof(F32) == sizeof(F32_RANGE_ARG_TYPE)),
               "F32 must be an IEEE 754 binary32 type, and F32_RANGE_ARG_TYPE must have the same size");
@@ -135,6 +132,46 @@ constexpr F32 F32_RANGE_ARG_TYPE_TO_F32(F32_RANGE_ARG_TYPE f32_range_arg) {
     return ((f32_range_arg & SIGN_BIT) != 0) ? -magnitude : magnitude;
 }
 
+//! \brief Get the next F32 value above a given value
+//!
+//! This function is constexpr and does not depend on std::nextafter, which is
+//! not constexpr in C++14. It steps the bit pattern of the value by one. The
+//! result is intended to be the same as std::nextafter(f32, +infinity).
+//!
+//! The next value above zero (of either sign) is the smallest positive
+//! subnormal value. The next value above the largest finite value is
+//! +infinity. There is no next value above +infinity or NaN, so the result is
+//! the argument.
+//!
+//! @return The next value above f32
+constexpr F32 f32NextAbove(F32 f32) {
+    F32 result = f32;
+    if (f32 == f32) {
+        // Not NaN
+        if (f32 == 0.0f) {
+            // The smallest positive subnormal value has the bit pattern 1
+            result = F32_RANGE_ARG_TYPE_TO_F32(1U);
+        } else if (f32 < 0.0f) {
+            // For a negative value, the magnitude decreases as the bit pattern decreases
+            result = F32_RANGE_ARG_TYPE_TO_F32(F32_RANGE_ARG(f32) - 1U);
+        } else if (f32 < std::numeric_limits<F32>::infinity()) {
+            // For a finite positive value, the magnitude increases as the bit pattern increases
+            result = F32_RANGE_ARG_TYPE_TO_F32(F32_RANGE_ARG(f32) + 1U);
+        }
+    }
+    return result;
+}
+
+//! \brief Get the next F32 value below a given value
+//!
+//! This function is the mirror image of f32NextAbove. There is no next value
+//! below -infinity or NaN, so the result is the argument.
+//!
+//! @return The next value below f32
+constexpr F32 f32NextBelow(F32 f32) {
+    return -f32NextAbove(-f32);
+}
+
 //! \brief An F32 range parameterized by a lower bound and an upper bound
 //!
 //! Each of the lower bound and upper bound is expressed as F32_RANGE_ARG_TYPE because F32
@@ -143,17 +180,6 @@ constexpr F32 F32_RANGE_ARG_TYPE_TO_F32(F32_RANGE_ARG_TYPE f32_range_arg) {
 //! the identity function.
 template <BoundType LBT, F32_RANGE_ARG_TYPE LBV, BoundType UBT, F32_RANGE_ARG_TYPE UBV>
 class F32Range {
-  public:
-    // ----------------------------------------------------------------------
-    // Constants
-    // ----------------------------------------------------------------------
-
-    //! The lower bound value
-    static constexpr F32 lowerBoundValue = F32_RANGE_ARG_TYPE_TO_F32(LBV);
-
-    //! The upper bound value
-    static constexpr F32 upperBoundValue = F32_RANGE_ARG_TYPE_TO_F32(UBV);
-
   public:
     // ----------------------------------------------------------------------
     // Constructors and destructors
@@ -198,15 +224,39 @@ class F32Range {
     static constexpr bool isValid(F32 f32Value  //!< The F32 value
     ) {
         const bool lowerOK = (LBT == BoundType::NONE) ||
-                             ((LBT == BoundType::INCLUSIVE) && (f32Value >= lowerBoundValue)) ||
-                             ((LBT == BoundType::EXCLUSIVE) && (f32Value > lowerBoundValue));
+                             ((LBT == BoundType::INCLUSIVE) && (f32Value >= getLowerBoundValue())) ||
+                             ((LBT == BoundType::EXCLUSIVE) && (f32Value > getLowerBoundValue()));
         const bool upperOK = (UBT == BoundType::NONE) ||
-                             ((UBT == BoundType::INCLUSIVE) && (f32Value <= upperBoundValue)) ||
-                             ((UBT == BoundType::EXCLUSIVE) && (f32Value < upperBoundValue));
+                             ((UBT == BoundType::INCLUSIVE) && (f32Value <= getUpperBoundValue())) ||
+                             ((UBT == BoundType::EXCLUSIVE) && (f32Value < getUpperBoundValue()));
         return lowerOK && upperOK;
     }
 
-    //! Get the default value for the type.
+    //! Get the lower bound value. If the range has no lower bound, the
+    //! value is a placeholder and should be ignored.
+    //! @return The lower bound value
+    static constexpr F32 getLowerBoundValue() { return F32_RANGE_ARG_TYPE_TO_F32(LBV); }
+
+    //! Get the upper bound value. If the range has no upper bound, the
+    //! value is a placeholder and should be ignored.
+    //! @return The upper bound value
+    static constexpr F32 getUpperBoundValue() { return F32_RANGE_ARG_TYPE_TO_F32(UBV); }
+
+    //! Get the default value for the type, and statically check
+    //! that the value is valid. Choose the default value as follows:
+    //! 1. If the range has no lower bound and no upper bound, then use zero.
+    //! 2. Otherwise, if the range has a lower bound, then
+    //!    a. If the lower bound is in range, then use it.
+    //!    b. Otherwise use the next F32 value above the lower bound.
+    //! 3. Otherwise, the range has only an upper bound. In this case
+    //!    a. If the upper bound is in range, then use it.
+    //!    b. Otherwise use the next F32 value below the upper bound.
+    //!
+    //! If the lower bound is +infinity, then there is no next value above it,
+    //! and the default value is the lower bound, which is not in range. Likewise
+    //! if the upper bound is -infinity. In either case the range is empty and
+    //! the static assertion fails.
+    //!
     //! @return The default value
     static constexpr F32 getDefaultValue() {
         constexpr F32 defaultValue = computeDefaultValue();
@@ -224,16 +274,23 @@ class F32Range {
     static constexpr F32 computeDefaultValue() {
         F32 defaultVal{};
         if (LBT != BoundType::NONE) {
-            if (F32Range::isValid(F32Range::lowerBoundValue)) {
-                defaultVal = F32Range::lowerBoundValue;
+            if (F32Range::isValid(getLowerBoundValue())) {
+                defaultVal = getLowerBoundValue();
             } else {
-                defaultVal = F32Range::lowerBoundValue + FW_F32_EPSILON;
+                // The lower bound is not valid, so try the next value above it.
+                // If the lower bound is +infinity, the next value is the lower
+                // bound, so the range is reported as empty.
+                defaultVal = f32NextAbove(getLowerBoundValue());
             }
         } else if (UBT != BoundType::NONE) {
-            if (F32Range::isValid(upperBoundValue)) {
-                defaultVal = F32Range::upperBoundValue;
+            // There is only an upper bound (the placeholder LBV is ignored)
+            if (F32Range::isValid(getUpperBoundValue())) {
+                defaultVal = getUpperBoundValue();
             } else {
-                defaultVal = F32Range::upperBoundValue - FW_F32_EPSILON;
+                // The upper bound is not valid, so try the next value below it.
+                // If the upper bound is -infinity, the next value is the upper
+                // bound, so the range is reported as empty.
+                defaultVal = f32NextBelow(getUpperBoundValue());
             }
         }
         return defaultVal;

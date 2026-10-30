@@ -2,18 +2,17 @@
 // @file   F32RangeTest.cpp
 // @brief  Unit tests for the F32 range types
 //
-// This file tests two things:
+// This file tests three things:
 // 1. The constexpr bit-cast functions F32_RANGE_ARG and
 //    F32_RANGE_ARG_TYPE_TO_F32. At run time, std::memcpy provides the
 //    reference result. The constexpr property is tested with static_assert.
-// 2. The F32Range class and its aliases and macros.
+// 2. The constexpr functions f32NextAbove and f32NextBelow. At run time,
+//    std::nextafter provides the reference result.
+// 3. The F32Range class and its aliases and macros.
 //
 // Not covered here: rejection of empty ranges, e.g., F32RangeInclusive with
 // a lower bound greater than the upper bound. That check is a static_assert,
 // so a violation is a compile error, which a gtest test cannot observe.
-// The tests also do not cover the default value of a range with an exclusive
-// bound, and they avoid reading the public bound constants
-// lowerBoundValue and upperBoundValue directly.
 // ======================================================================
 
 #include <gtest/gtest.h>
@@ -290,7 +289,7 @@ TEST(F32RangeTest, Construction) {
 }
 
 TEST(F32RangeTest, DefaultValueWithLowerBound) {
-    // The lower bound, if it is inclusive
+    // The lower bound, if it is in range
     using Inclusive = FW_F32_RANGE_INCLUSIVE(1.0f, 2.0f);
     ASSERT_EQ(static_cast<F32>(Inclusive()), 1.0f);
     using InclusiveExclusive = FW_F32_RANGE_INCLUSIVE_EXCLUSIVE(1.0f, 2.0f);
@@ -301,14 +300,57 @@ TEST(F32RangeTest, DefaultValueWithLowerBound) {
     ASSERT_EQ(static_cast<F32>(ZeroLowerBound()), 0.0f);
     using InfiniteLowerBound = FW_F32_RANGE_INCLUSIVE(-INF, INF);
     ASSERT_EQ(static_cast<F32>(InfiniteLowerBound()), -INF);
+
+    // Otherwise the next value above it
+    using Exclusive = FW_F32_RANGE_EXCLUSIVE(1.0f, 2.0f);
+    ASSERT_EQ(static_cast<F32>(Exclusive()), nextAbove(1.0f));
+    using ExclusiveInclusive = FW_F32_RANGE_EXCLUSIVE_INCLUSIVE(1.0f, 2.0f);
+    ASSERT_EQ(static_cast<F32>(ExclusiveInclusive()), nextAbove(1.0f));
+    using LowerExclusive = FW_F32_LOWER_BOUND_EXCLUSIVE(-3.5f);
+    ASSERT_EQ(static_cast<F32>(LowerExclusive()), nextAbove(-3.5f));
+    // A lower bound at zero: the next value is the smallest subnormal
+    using ZeroExclusive = FW_F32_LOWER_BOUND_EXCLUSIVE(0.0f);
+    ASSERT_EQ(static_cast<F32>(ZeroExclusive()), std::numeric_limits<F32>::denorm_min());
+    // A lower bound at -infinity: the next value is the lowest finite value
+    using InfiniteExclusive = FW_F32_LOWER_BOUND_EXCLUSIVE(-INF);
+    ASSERT_EQ(static_cast<F32>(InfiniteExclusive()), std::numeric_limits<F32>::lowest());
+}
+
+TEST(F32RangeTest, DefaultValueWithLowerBoundWhereEpsilonFails) {
+    // A large bound: adding a fixed epsilon would give back the bound
+    using Large = FW_F32_LOWER_BOUND_EXCLUSIVE(1.0e10f);
+    ASSERT_GT(static_cast<F32>(Large()), 1.0e10f);
+    ASSERT_EQ(static_cast<F32>(Large()), nextAbove(1.0e10f));
+    // A narrow range: adding a fixed epsilon would go past the upper bound
+    using Narrow = FW_F32_RANGE_EXCLUSIVE_INCLUSIVE(0.0f, 5.0e-6f);
+    ASSERT_EQ(static_cast<F32>(Narrow()), std::numeric_limits<F32>::denorm_min());
+    // A range with one valid value, between two adjacent F32 values
+    using OneValue = FW_F32_RANGE_EXCLUSIVE(1.0f, Fw::f32NextAbove(Fw::f32NextAbove(1.0f)));
+    ASSERT_EQ(static_cast<F32>(OneValue()), nextAbove(1.0f));
 }
 
 TEST(F32RangeTest, DefaultValueWithUpperBoundOnly) {
-    // The upper bound, if it is inclusive
+    // The upper bound, if it is in range
     using Positive = FW_F32_UPPER_BOUND_INCLUSIVE(7.25f);
     ASSERT_EQ(static_cast<F32>(Positive()), 7.25f);
     using Negative = FW_F32_UPPER_BOUND_INCLUSIVE(-5.0f);
     ASSERT_EQ(static_cast<F32>(Negative()), -5.0f);
+
+    // Otherwise the next value below it
+    using Exclusive = FW_F32_UPPER_BOUND_EXCLUSIVE(7.25f);
+    ASSERT_EQ(static_cast<F32>(Exclusive()), nextBelow(7.25f));
+    using NegativeExclusive = FW_F32_UPPER_BOUND_EXCLUSIVE(-5.0f);
+    ASSERT_EQ(static_cast<F32>(NegativeExclusive()), nextBelow(-5.0f));
+    // An upper bound at zero: the next value is the negative of the smallest subnormal
+    using ZeroExclusive = FW_F32_UPPER_BOUND_EXCLUSIVE(0.0f);
+    ASSERT_EQ(static_cast<F32>(ZeroExclusive()), -std::numeric_limits<F32>::denorm_min());
+    // An upper bound at +infinity: the next value is the largest finite value
+    using InfiniteExclusive = FW_F32_UPPER_BOUND_EXCLUSIVE(INF);
+    ASSERT_EQ(static_cast<F32>(InfiniteExclusive()), std::numeric_limits<F32>::max());
+    // A large bound
+    using Large = FW_F32_UPPER_BOUND_EXCLUSIVE(-1.0e10f);
+    ASSERT_LT(static_cast<F32>(Large()), -1.0e10f);
+    ASSERT_EQ(static_cast<F32>(Large()), nextBelow(-1.0e10f));
 }
 
 TEST(F32RangeTest, DefaultValueWithoutBounds) {
@@ -318,6 +360,137 @@ TEST(F32RangeTest, DefaultValueWithoutBounds) {
     using WithPlaceholders =
         Fw::F32Range<Fw::BoundType::NONE, Fw::F32_RANGE_ARG(5.0f), Fw::BoundType::NONE, Fw::F32_RANGE_ARG(-5.0f)>;
     ASSERT_EQ(static_cast<F32>(WithPlaceholders()), 0.0f);
+}
+
+TEST(F32RangeTest, NoBoundsAcceptsAnyValue) {
+    // With no bounds, there is nothing for a value to fail, so every value is
+    // valid, including NaN and the infinities
+    using NoBounds = Fw::F32Range<Fw::BoundType::NONE, 0, Fw::BoundType::NONE, 0>;
+    ASSERT_TRUE(NoBounds::isValid(NAN_VALUE));
+    ASSERT_TRUE(NoBounds::isValid(INF));
+    ASSERT_TRUE(NoBounds::isValid(-INF));
+    ASSERT_TRUE(NoBounds::isValid(0.0f));
+    NoBounds range(NAN_VALUE);
+    ASSERT_TRUE(isNaN(range));
+    range = INF;
+    ASSERT_EQ(static_cast<F32>(range), INF);
+}
+
+TEST(F32RangeTest, BoundValues) {
+    using Range = FW_F32_RANGE_INCLUSIVE(-1.5f, 2.25f);
+    ASSERT_EQ(Range::getLowerBoundValue(), -1.5f);
+    ASSERT_EQ(Range::getUpperBoundValue(), 2.25f);
+    static_assert(Range::getLowerBoundValue() == -1.5f, "The lower bound must be a constant expression");
+    static_assert(Range::getUpperBoundValue() == 2.25f, "The upper bound must be a constant expression");
+    // For a range with one bound, the other bound is a placeholder: zero
+    using LowerOnly = FW_F32_LOWER_BOUND_EXCLUSIVE(3.0f);
+    ASSERT_EQ(LowerOnly::getLowerBoundValue(), 3.0f);
+    ASSERT_EQ(LowerOnly::getUpperBoundValue(), 0.0f);
+    using UpperOnly = FW_F32_UPPER_BOUND_EXCLUSIVE(4.0f);
+    ASSERT_EQ(UpperOnly::getUpperBoundValue(), 4.0f);
+    ASSERT_EQ(UpperOnly::getLowerBoundValue(), 0.0f);
+}
+
+// ----------------------------------------------------------------------
+// f32NextAbove and f32NextBelow
+// ----------------------------------------------------------------------
+
+namespace {
+
+static_assert(Fw::f32NextAbove(1.0f) == 1.00000012f, "f32NextAbove must be a constant expression");
+static_assert(Fw::f32NextBelow(1.0f) == 0.999999940f, "f32NextBelow must be a constant expression");
+static_assert(Fw::f32NextAbove(0.0f) == std::numeric_limits<F32>::denorm_min(),
+              "The next value above zero is the smallest subnormal");
+static_assert(Fw::f32NextBelow(0.0f) == -std::numeric_limits<F32>::denorm_min(),
+              "The next value below zero is the negative of the smallest subnormal");
+
+//! Check f32NextAbove and f32NextBelow for one value against std::nextafter.
+//! NaN is excluded: the result for NaN is the argument, which is NaN, and
+//! NaN does not compare equal to itself.
+//! @return Whether the results are as expected
+bool nextValuesMatchReference(F32 value) {
+    bool result = true;
+    if (!isNaN(value)) {
+        // The two zeros compare equal, so this does not distinguish them
+        result = (Fw::f32NextAbove(value) == std::nextafter(value, INF)) &&
+                 (Fw::f32NextBelow(value) == std::nextafter(value, -INF));
+    }
+    return result;
+}
+
+}  // namespace
+
+TEST(F32RangeTest, NextValuesKnownValues) {
+    ASSERT_EQ(Fw::f32NextAbove(1.0f), nextAbove(1.0f));
+    ASSERT_EQ(Fw::f32NextBelow(1.0f), nextBelow(1.0f));
+    ASSERT_EQ(Fw::f32NextAbove(-1.0f), nextAbove(-1.0f));
+    ASSERT_EQ(Fw::f32NextBelow(-1.0f), nextBelow(-1.0f));
+    // The step crosses a power of two, where the exponent changes
+    ASSERT_EQ(Fw::f32NextAbove(nextBelow(2.0f)), 2.0f);
+    ASSERT_EQ(Fw::f32NextBelow(2.0f), nextBelow(2.0f));
+    ASSERT_EQ(Fw::f32NextAbove(-2.0f), nextAbove(-2.0f));
+    // Zero, of either sign
+    ASSERT_EQ(Fw::f32NextAbove(0.0f), std::numeric_limits<F32>::denorm_min());
+    ASSERT_EQ(Fw::f32NextAbove(-0.0f), std::numeric_limits<F32>::denorm_min());
+    ASSERT_EQ(Fw::f32NextBelow(0.0f), -std::numeric_limits<F32>::denorm_min());
+    ASSERT_EQ(Fw::f32NextBelow(-0.0f), -std::numeric_limits<F32>::denorm_min());
+    // Crossing zero
+    ASSERT_EQ(Fw::f32NextAbove(-std::numeric_limits<F32>::denorm_min()), 0.0f);
+    ASSERT_EQ(Fw::f32NextBelow(std::numeric_limits<F32>::denorm_min()), 0.0f);
+    // The boundary between subnormal and normal values
+    ASSERT_EQ(Fw::f32NextAbove(nextBelow(std::numeric_limits<F32>::min())), std::numeric_limits<F32>::min());
+}
+
+TEST(F32RangeTest, NextValuesAtLimits) {
+    constexpr F32 highest = std::numeric_limits<F32>::max();
+    constexpr F32 lowest = std::numeric_limits<F32>::lowest();
+    // Out of the finite values and into infinity
+    ASSERT_EQ(Fw::f32NextAbove(highest), INF);
+    ASSERT_EQ(Fw::f32NextBelow(lowest), -INF);
+    // Out of infinity and into the finite values
+    ASSERT_EQ(Fw::f32NextAbove(-INF), lowest);
+    ASSERT_EQ(Fw::f32NextBelow(INF), highest);
+    // There is no next value past infinity
+    ASSERT_EQ(Fw::f32NextAbove(INF), INF);
+    ASSERT_EQ(Fw::f32NextBelow(-INF), -INF);
+}
+
+TEST(F32RangeTest, NextValuesOfNaN) {
+    ASSERT_TRUE(isNaN(Fw::f32NextAbove(NAN_VALUE)));
+    ASSERT_TRUE(isNaN(Fw::f32NextBelow(NAN_VALUE)));
+}
+
+TEST(F32RangeTest, NextValuesExponentAndMantissaPatterns) {
+    // Every exponent field, crossed with mantissas that are at and next to the
+    // edges of the field and that set each bit, for both signs
+    const U32 mantissas[] = {0x000000U, 0x000001U, 0x000002U, 0x400000U, 0x7FFFFEU, 0x7FFFFFU, 0x555555U, 0x2AAAAAU};
+    for (U32 sign = 0; sign <= 1; sign++) {
+        for (U32 exponentField = 0; exponentField <= 0xFF; exponentField++) {
+            for (const U32 mantissa : mantissas) {
+                const U32 bits = (sign << 31) | (exponentField << 23) | mantissa;
+                ASSERT_TRUE(nextValuesMatchReference(floatOf(bits))) << "bits = 0x" << std::hex << bits;
+            }
+        }
+    }
+}
+
+TEST(F32RangeTest, NextValuesRandomBitPatterns) {
+    // Every 32-bit pattern is a valid F32 bit pattern, so any picked value is
+    // allowed. The seed is printed when the test starts (see main below).
+    for (U32 i = 0; i < 100000; i++) {
+        const U32 bits = pickBits();
+        ASSERT_TRUE(nextValuesMatchReference(floatOf(bits))) << "bits = 0x" << std::hex << bits;
+    }
+}
+
+TEST(F32RangeTest, NextValuesRoundTrip) {
+    // Stepping up and then down gives the original value, except at the ends
+    // and at zero, where the step goes across the two zeros
+    const F32 values[] = {1.0f, -1.0f, 0.1f, -0.1f, 1.0e-30f, 1.0e30f, 1.0e-40f, -1.0e-40f, 3.0e38f, -3.0e38f};
+    for (const F32 value : values) {
+        ASSERT_EQ(Fw::f32NextBelow(Fw::f32NextAbove(value)), value) << "value = " << value;
+        ASSERT_EQ(Fw::f32NextAbove(Fw::f32NextBelow(value)), value) << "value = " << value;
+    }
 }
 
 // ----------------------------------------------------------------------
