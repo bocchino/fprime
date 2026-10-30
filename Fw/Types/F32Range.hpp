@@ -10,9 +10,27 @@
 #include <type_traits>
 
 #include <Fw/Types/Assert.hpp>
-#include <Fw/Types/RangeUtils.hpp>
+#include <Fw/Types/BoundType.hpp>
 
 namespace Fw {
+
+//! The type of an F32 range argument. The real type is not supported by C++14.
+using F32_RANGE_ARG_TYPE = U32;
+
+//! The epsilon value for F32
+constexpr F32 FW_F32_EPSILON = 10e-6f;
+
+//! Bit cast F32 to F32_RANGE_ARG_TYPE
+constexpr F32_RANGE_ARG_TYPE F32_RANGE_ARG(F32 f32) {
+    // TODO
+    return 0;
+}
+
+//! Bit cast F32_RANGE_ARG_TYPE to F32
+constexpr F32 F32_RANGE_ARG_TYPE_TO_F32(F32_RANGE_ARG_TYPE f32_range_arg) {
+    // TODO
+    return 0.0;
+}
 
 //! \brief An F32 range parameterized by a lower bound and an upper bound
 //!
@@ -39,19 +57,11 @@ class F32Range {
     // ----------------------------------------------------------------------
 
     //! Construct an F32 range with the default value
-    constexpr F32Range() {
-        static_assert(F32Range::isValid(F32Range::getDefaultValue()),
-                      "An F32 range must contain at least one valid value");
-    }
+    constexpr F32Range() {}
 
     //! Construct an F32 range from an F32 value
     constexpr F32Range(F32 f32Value) { *this = f32Value; }
 
-    //! Copy constructor
-    template <BoundType LBT1, F32_RANGE_ARG_TYPE LBV1, BoundType UBT1, F32_RANGE_ARG_TYPE UBV1>
-    constexpr F32Range(const F32Range<LBT1, LBV1, UBT1, UBV1>& rangeValue) {
-        *this = rangeValue;
-    }
 
   public:
     // ----------------------------------------------------------------------
@@ -100,11 +110,34 @@ class F32Range {
     //! Get the default value for the type.
     //! @return The default value
     static constexpr F32 getDefaultValue() {
-        F32 defaultValue = F32_RANGE_ARG_TYPE_TO_F32(LBV);
-        if (!F32Range::isValid(defaultValue)) {
-            defaultValue += 2 * F32_EPSILON;
-        }
+        constexpr F32 defaultValue = computeDefaultValue();
+        static_assert(F32Range::isValid(defaultValue), "An F32 range must contain at least one valid value");
         return defaultValue;
+    }
+
+  private:
+    // ----------------------------------------------------------------------
+    // Private helper functions
+    // ----------------------------------------------------------------------
+
+    //! Compute the default value for the range type.
+    //! @return The default value
+    static constexpr F32 computeDefaultValue() {
+        F32 defaultVal{};
+        if (LBT != BoundType::NONE) {
+            if (F32Range::isValid(F32Range::lowerBoundValue)) {
+                defaultVal = F32Range::lowerBoundValue;
+            } else {
+                defaultVal = F32Range::lowerBoundValue + FW_F32_EPSILON;
+            }
+        } else if (UBT != BoundType::NONE) {
+            if (F32Range::isValid(upperBoundValue)) {
+                defaultVal = F32Range::upperBoundValue;
+            } else {
+                defaultVal = F32Range::upperBoundValue - FW_F32_EPSILON;
+            }
+        }
+        return defaultVal;
     }
 
   private:

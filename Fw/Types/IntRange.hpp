@@ -11,7 +11,7 @@
 #include <type_traits>
 
 #include <Fw/Types/Assert.hpp>
-#include <Fw/Types/RangeUtils.hpp>
+#include <Fw/Types/BoundType.hpp>
 
 namespace Fw {
 
@@ -97,11 +97,7 @@ class IntRange {
     //! @return The default value
     static constexpr T computeDefaultValue() {
         T defaultVal{};
-        if ((LBT == BoundType::NONE) && (UBT == BoundType::NONE)) {
-            // There are no bounds (the placeholder values LBV and UBV are
-            // ignored): use zero
-            defaultVal = T{};
-        } else if (LBT != BoundType::NONE) {
+        if (LBT != BoundType::NONE) {
             if (IntRange::isValid(LBV)) {
                 defaultVal = LBV;
             } else {
@@ -112,7 +108,7 @@ class IntRange {
                 // cast avoids a narrowing warning for types smaller than int.
                 defaultVal = static_cast<T>(LBV + ((LBV < std::numeric_limits<T>::max()) ? 1 : 0));
             }
-        } else {
+        } else if (UBT != BoundType::NONE) {
             // There is only an upper bound (the placeholder LBV is ignored)
             if (IntRange::isValid(UBV)) {
                 defaultVal = UBV;
