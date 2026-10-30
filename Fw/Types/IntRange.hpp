@@ -15,39 +15,6 @@
 
 namespace Fw {
 
-namespace IntRangeDetail {
-
-//! Exact comparison a < b for two integers of the same signedness
-template <typename A, typename B, bool IS_SIGNED>
-constexpr bool lessThanImpl(A a,
-                            B b,
-                            std::integral_constant<bool, IS_SIGNED>,
-                            std::integral_constant<bool, IS_SIGNED>) {
-    return a < b;
-}
-
-//! Exact comparison a < b for a signed integer a and an unsigned integer b
-template <typename A, typename B>
-constexpr bool lessThanImpl(A a, B b, std::true_type, std::false_type) {
-    return (a < 0) || (static_cast<typename std::make_unsigned<A>::type>(a) < b);
-}
-
-//! Exact comparison a < b for an unsigned integer a and a signed integer b
-template <typename A, typename B>
-constexpr bool lessThanImpl(A a, B b, std::false_type, std::true_type) {
-    return (b >= 0) && (a < static_cast<typename std::make_unsigned<B>::type>(b));
-}
-
-//! Exact comparison a < b for two integers of any widths and signedness.
-//! The comparison is performed on the mathematical values, so the result is
-//! never affected by wraparound or sign conversion.
-template <typename A, typename B>
-constexpr bool lessThan(A a, B b) {
-    return lessThanImpl(a, b, std::is_signed<A>(), std::is_signed<B>());
-}
-
-}  // namespace IntRangeDetail
-
 //! An integer range parameterized by an integral type, a lower bound, and an
 //! upper bound
 template <typename T, BoundType LBT, T LBV, BoundType UBT, T UBV>
@@ -65,13 +32,6 @@ class IntRange {
     //! Construct an integer range from an integer value
     constexpr IntRange(T intValue) { *this = intValue; }
 
-    //! Construct an integer range from another integer range, which may have
-    //! a different base type and different bounds
-    template <typename T1, BoundType LBT1, T1 LBV1, BoundType UBT1, T1 UBV1>
-    constexpr IntRange(const IntRange<T1, LBT1, LBV1, UBT1, UBV1>& rangeValue) {
-        *this = rangeValue;
-    }
-
   public:
     // ----------------------------------------------------------------------
     // User-defined operators
@@ -87,40 +47,23 @@ class IntRange {
         return *this;
     }
 
-    //! Assignment from an integer range. The source value is checked against
-    //! the bounds of this range at the width and signedness of the source
-    //! base type, and only then converted to the base type of this range.
-    //! So a value that is out of range is never truncated into range.
-    template <typename T1, BoundType LBT1, T1 LBV1, BoundType UBT1, T1 UBV1>
-    constexpr IntRange& operator=(const IntRange<T1, LBT1, LBV1, UBT1, UBV1>& rangeValue) {
-        const T1 intValue = static_cast<T1>(rangeValue);
-        FW_ASSERT(IntRange::isValid(intValue), static_cast<FwAssertArgType>(intValue));
-        this->m_intValue = static_cast<T>(intValue);
-        return *this;
-    }
-
   public:
     // ----------------------------------------------------------------------
     // Static member functions
     // ----------------------------------------------------------------------
 
-    //! Check whether an integer value is valid for the range. The value may
-    //! have any integral type. It is compared with the bounds as a
-    //! mathematical integer, so the result does not depend on the width or
-    //! signedness of the value type.
+    //! Check whether an integer value is valid for the range
     //! @return The result
-    template <typename U>
-    static constexpr bool isValid(U intValue  //!< The integer value
+    static constexpr bool isValid(T intValue  //!< The integer value
     ) {
-        static_assert(std::is_integral<U>::value, "The value checked against an integer range must be an integer");
         bool result = true;
-        if ((LBT == BoundType::INCLUSIVE) && IntRangeDetail::lessThan(intValue, LBV)) {
+        if ((LBT == BoundType::INCLUSIVE) && (intValue < LBV)) {
             result = false;
-        } else if ((LBT == BoundType::EXCLUSIVE) && !IntRangeDetail::lessThan(LBV, intValue)) {
+        } else if ((LBT == BoundType::EXCLUSIVE) && (intValue <= LBV)) {
             result = false;
-        } else if ((UBT == BoundType::INCLUSIVE) && IntRangeDetail::lessThan(UBV, intValue)) {
+        } else if ((UBT == BoundType::INCLUSIVE) && (intValue > UBV)) {
             result = false;
-        } else if ((UBT == BoundType::EXCLUSIVE) && !IntRangeDetail::lessThan(intValue, UBV)) {
+        } else if ((UBT == BoundType::EXCLUSIVE) && (intValue >= UBV)) {
             result = false;
         }
         return result;

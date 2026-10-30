@@ -22,13 +22,6 @@ void constructFrom(T value) {
     (void)range;
 }
 
-//! Convert a range of type S to a range of type R, discarding the result
-template <typename R, typename S>
-void convertTo(const S& source) {
-    R range = source;
-    (void)range;
-}
-
 //! Check the default value of a range that contains only the maximum value of T
 //! and of a range with an exclusive lower bound just below it. These are the
 //! cases in which computing the default value must not overflow.
@@ -142,10 +135,6 @@ TEST(IntRangeTest, Constexpr) {
     static_assert(static_cast<U32>(defaultValue) == 5, "The default value must be a constant expression");
     constexpr Range value(7);
     static_assert(static_cast<U32>(value) == 7, "Construction must be a constant expression");
-    // Conversion from a range with a different base type and different bounds
-    constexpr Fw::IntRangeInclusive<U8, 0, 9> narrow(1);
-    constexpr Fw::IntRangeInclusive<U32, 0, 20> wide = narrow;
-    static_assert(static_cast<U32>(wide) == 1, "Conversion must be a constant expression");
 }
 
 // ----------------------------------------------------------------------
@@ -196,69 +185,6 @@ TEST(IntRangeTest, IsValidOneSidedBounds) {
     ASSERT_TRUE(UpperExclusive::isValid(minValue));
     ASSERT_TRUE(UpperExclusive::isValid(4));
     ASSERT_FALSE(UpperExclusive::isValid(5));
-}
-
-TEST(IntRangeTest, IsValidMixedTypes) {
-    // The value is compared with the bounds as a mathematical integer, so
-    // wraparound and sign conversion cannot make an invalid value look valid
-    using U8Range = Fw::IntRangeInclusive<U8, 3, 5>;
-    ASSERT_TRUE(U8Range::isValid(static_cast<I8>(4)));
-    ASSERT_FALSE(U8Range::isValid(static_cast<U16>(259)));   // 259 mod 256 == 3
-    ASSERT_FALSE(U8Range::isValid(static_cast<I32>(-253)));  // -253 mod 256 == 3
-    ASSERT_FALSE(U8Range::isValid(std::numeric_limits<I64>::min()));
-
-    using I8Range = Fw::IntRangeInclusive<I8, -5, 5>;
-    ASSERT_TRUE(I8Range::isValid(static_cast<U32>(4)));
-    ASSERT_FALSE(I8Range::isValid(std::numeric_limits<U32>::max()));
-    ASSERT_FALSE(I8Range::isValid(static_cast<I64>(-6)));
-    ASSERT_FALSE(I8Range::isValid(std::numeric_limits<U64>::max()));
-
-    using FullU64Range = Fw::IntRangeInclusive<U64, 0, std::numeric_limits<U64>::max()>;
-    ASSERT_FALSE(FullU64Range::isValid(static_cast<I64>(-1)));
-    ASSERT_TRUE(FullU64Range::isValid(std::numeric_limits<I64>::max()));
-
-    using FullI64Range = Fw::IntRangeInclusive<I64, std::numeric_limits<I64>::min(), std::numeric_limits<I64>::max()>;
-    ASSERT_FALSE(FullI64Range::isValid(std::numeric_limits<U64>::max()));
-    ASSERT_TRUE(FullI64Range::isValid(static_cast<U64>(std::numeric_limits<I64>::max())));
-}
-
-// ----------------------------------------------------------------------
-// Conversion between ranges
-// ----------------------------------------------------------------------
-
-TEST(IntRangeTest, ConversionInRange) {
-    // Widening, by copy initialization
-    Fw::IntRangeInclusive<U8, 0, 9> narrow(4);
-    Fw::IntRangeInclusive<U32, 0, 20> wide = narrow;
-    ASSERT_EQ(wide, 4U);
-
-    // Narrowing: the value is in range if it is in the bounds of the target
-    using U16Range = Fw::IntRangeInclusive<U16, 0, std::numeric_limits<U16>::max()>;
-    using U8Range = Fw::IntRangeInclusive<U8, 3, 5>;
-    for (U16 value = 3; value <= 5; value++) {
-        U16Range source(value);
-        U8Range target = source;
-        ASSERT_EQ(target, static_cast<U8>(value));
-        U8Range assigned;
-        assigned = source;
-        ASSERT_EQ(assigned, static_cast<U8>(value));
-    }
-
-    // Signed to unsigned
-    using I16Range = Fw::IntRangeInclusive<I16, std::numeric_limits<I16>::min(), std::numeric_limits<I16>::max()>;
-    using U8NonNegativeRange = Fw::IntRangeInclusive<U8, 0, 5>;
-    I16Range signedSource(2);
-    U8NonNegativeRange unsignedTarget = signedSource;
-    ASSERT_EQ(unsignedTarget, static_cast<U8>(2));
-
-    // Unsigned to signed, and negative values
-    using I8Range = Fw::IntRangeInclusive<I8, -5, 5>;
-    U16Range unsignedSource(3);
-    I8Range signedTarget = unsignedSource;
-    ASSERT_EQ(signedTarget, static_cast<I8>(3));
-    I16Range negativeSource(-3);
-    I8Range negativeTarget = negativeSource;
-    ASSERT_EQ(negativeTarget, static_cast<I8>(-3));
 }
 
 #if FW_ASSERT_LEVEL != FW_NO_ASSERT
@@ -318,37 +244,6 @@ TEST(IntRangeTest, AssignmentOutOfRange) {
     ASSERT_EQ(range, 4U);
     ASSERT_DEATH(range = 2U, ".*");
     ASSERT_DEATH(range = 6U, ".*");
-}
-
-TEST(IntRangeTest, ConversionOutOfRange) {
-    using U16Range = Fw::IntRangeInclusive<U16, 0, std::numeric_limits<U16>::max()>;
-    using I16Range = Fw::IntRangeInclusive<I16, std::numeric_limits<I16>::min(), std::numeric_limits<I16>::max()>;
-    using U8Range = Fw::IntRangeInclusive<U8, 3, 5>;
-    using U8NonNegativeRange = Fw::IntRangeInclusive<U8, 0, 5>;
-    using I8Range = Fw::IntRangeInclusive<I8, -5, 5>;
-
-    // The source values. All of them are valid for the source type.
-    const U16Range u16Value6(6);
-    const U16Range u16Value256(256);
-    const U16Range u16Value259(259);
-    const U16Range u16Value65531(65531);
-    const I16Range i16ValueMinus1(-1);
-    const I16Range i16ValueMinus253(-253);
-
-    // The check uses the width of the source type, so a value that is out of
-    // range is not truncated into range
-    ASSERT_DEATH(convertTo<U8Range>(u16Value6), ".*");
-    ASSERT_DEATH(convertTo<U8Range>(u16Value256), ".*");  // 256 mod 256 == 0
-    ASSERT_DEATH(convertTo<U8Range>(u16Value259), ".*");  // 259 mod 256 == 3
-
-    // The check accounts for signedness
-    ASSERT_DEATH(convertTo<U8NonNegativeRange>(i16ValueMinus1), ".*");
-    ASSERT_DEATH(convertTo<U8NonNegativeRange>(i16ValueMinus253), ".*");  // -253 mod 256 == 3
-    ASSERT_DEATH(convertTo<I8Range>(u16Value65531), ".*");                // 65531 as I8 is -5
-
-    // Assignment as well as construction
-    U8Range target;
-    ASSERT_DEATH(target = u16Value256, ".*");
 }
 
 #endif
