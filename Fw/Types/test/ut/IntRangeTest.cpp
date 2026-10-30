@@ -15,66 +15,18 @@
 
 namespace {
 
-//! An assert hook that counts failed assertions instead of aborting.
-//! The hook is registered for the lifetime of the object.
-class AssertCounter final : public Fw::AssertHook {
-  public:
-    AssertCounter() { this->registerHook(); }
-
-    ~AssertCounter() override { this->deregisterHook(); }
-
-    void reportAssert(FILE_NAME_ARG file,
-                      FwSizeType lineNo,
-                      FwSizeType numArgs,
-                      FwAssertArgType arg1,
-                      FwAssertArgType arg2,
-                      FwAssertArgType arg3,
-                      FwAssertArgType arg4,
-                      FwAssertArgType arg5,
-                      FwAssertArgType arg6) override {
-        this->m_arg1 = arg1;
-    }
-
-    void doAssert() override { this->m_count++; }
-
-    //! Get the number of failed assertions
-    U32 getCount() const { return this->m_count; }
-
-    //! Get the first argument of the most recent failed assertion
-    FwAssertArgType getArg1() const { return this->m_arg1; }
-
-  private:
-    U32 m_count = 0;
-    FwAssertArgType m_arg1 = 0;
-};
-
-//! Count the assertions triggered by constructing a range R from a value.
-//! The type T must be the base type of R, so that no conversion occurs.
+//! Construct a range of type R from a value, discarding the result
 template <typename R, typename T>
-U32 constructAsserts(T value) {
-    AssertCounter counter;
+void constructFrom(T value) {
     R range(value);
     (void)range;
-    return counter.getCount();
 }
 
-//! Count the assertions triggered by assigning a value to a range R.
-//! The type T must be the base type of R, so that no conversion occurs.
-template <typename R, typename T>
-U32 assignAsserts(T value) {
-    R range;
-    AssertCounter counter;
-    range = value;
-    return counter.getCount();
-}
-
-//! Count the assertions triggered by converting a range of type S to a range of type R
+//! Convert a range of type S to a range of type R, discarding the result
 template <typename R, typename S>
-U32 convertAsserts(const S& source) {
-    AssertCounter counter;
+void convertTo(const S& source) {
     R range = source;
     (void)range;
-    return counter.getCount();
 }
 
 //! Check the default value of a range that contains only the maximum value of T
@@ -275,8 +227,6 @@ TEST(IntRangeTest, IsValidMixedTypes) {
 // ----------------------------------------------------------------------
 
 TEST(IntRangeTest, ConversionInRange) {
-    AssertCounter counter;
-
     // Widening, by copy initialization
     Fw::IntRangeInclusive<U8, 0, 9> narrow(4);
     Fw::IntRangeInclusive<U32, 0, 20> wide = narrow;
@@ -309,8 +259,6 @@ TEST(IntRangeTest, ConversionInRange) {
     I16Range negativeSource(-3);
     I8Range negativeTarget = negativeSource;
     ASSERT_EQ(negativeTarget, static_cast<I8>(-3));
-
-    ASSERT_EQ(counter.getCount(), 0U);
 }
 
 #if FW_ASSERT_LEVEL != FW_NO_ASSERT
@@ -319,57 +267,57 @@ TEST(IntRangeTest, ConversionInRange) {
 // Assertions
 // ----------------------------------------------------------------------
 
+// In the tests below, a value that is out of range must cause an assertion
+// failure, and the assertion failure aborts the process. The statement inside
+// each ASSERT_DEATH contains only the operation under test. Any other values
+// are constructed outside the statement, so that they cannot cause the death.
+
 TEST(IntRangeTest, ValueOutOfRange) {
     using Inclusive = Fw::IntRangeInclusive<U32, 3, 5>;
-    ASSERT_EQ(constructAsserts<Inclusive>(2U), 1U);
-    ASSERT_EQ(constructAsserts<Inclusive>(3U), 0U);
-    ASSERT_EQ(constructAsserts<Inclusive>(5U), 0U);
-    ASSERT_EQ(constructAsserts<Inclusive>(6U), 1U);
+    ASSERT_DEATH(constructFrom<Inclusive>(2U), ".*");
+    ASSERT_EQ(Inclusive(3U), 3U);
+    ASSERT_EQ(Inclusive(5U), 5U);
+    ASSERT_DEATH(constructFrom<Inclusive>(6U), ".*");
 
     using Exclusive = Fw::IntRangeExclusive<U32, 3, 5>;
-    ASSERT_EQ(constructAsserts<Exclusive>(3U), 1U);
-    ASSERT_EQ(constructAsserts<Exclusive>(4U), 0U);
-    ASSERT_EQ(constructAsserts<Exclusive>(5U), 1U);
+    ASSERT_DEATH(constructFrom<Exclusive>(3U), ".*");
+    ASSERT_EQ(Exclusive(4U), 4U);
+    ASSERT_DEATH(constructFrom<Exclusive>(5U), ".*");
 
     using InclusiveExclusive = Fw::IntRangeInclusiveExclusive<U32, 3, 5>;
-    ASSERT_EQ(constructAsserts<InclusiveExclusive>(3U), 0U);
-    ASSERT_EQ(constructAsserts<InclusiveExclusive>(5U), 1U);
+    ASSERT_EQ(InclusiveExclusive(3U), 3U);
+    ASSERT_DEATH(constructFrom<InclusiveExclusive>(5U), ".*");
 
     using ExclusiveInclusive = Fw::IntRangeExclusiveInclusive<U32, 3, 5>;
-    ASSERT_EQ(constructAsserts<ExclusiveInclusive>(3U), 1U);
-    ASSERT_EQ(constructAsserts<ExclusiveInclusive>(5U), 0U);
+    ASSERT_DEATH(constructFrom<ExclusiveInclusive>(3U), ".*");
+    ASSERT_EQ(ExclusiveInclusive(5U), 5U);
 
     using LowerInclusive = Fw::IntLowerBoundInclusive<I32, -5>;
-    ASSERT_EQ(constructAsserts<LowerInclusive>(-6), 1U);
-    ASSERT_EQ(constructAsserts<LowerInclusive>(-5), 0U);
-    ASSERT_EQ(constructAsserts<LowerInclusive>(std::numeric_limits<I32>::max()), 0U);
+    ASSERT_DEATH(constructFrom<LowerInclusive>(-6), ".*");
+    ASSERT_EQ(LowerInclusive(-5), -5);
+    ASSERT_EQ(LowerInclusive(std::numeric_limits<I32>::max()), std::numeric_limits<I32>::max());
 
     using LowerExclusive = Fw::IntLowerBoundExclusive<I32, -5>;
-    ASSERT_EQ(constructAsserts<LowerExclusive>(-5), 1U);
-    ASSERT_EQ(constructAsserts<LowerExclusive>(-4), 0U);
+    ASSERT_DEATH(constructFrom<LowerExclusive>(-5), ".*");
+    ASSERT_EQ(LowerExclusive(-4), -4);
 
     using UpperInclusive = Fw::IntUpperBoundInclusive<I32, 5>;
-    ASSERT_EQ(constructAsserts<UpperInclusive>(std::numeric_limits<I32>::min()), 0U);
-    ASSERT_EQ(constructAsserts<UpperInclusive>(5), 0U);
-    ASSERT_EQ(constructAsserts<UpperInclusive>(6), 1U);
+    ASSERT_EQ(UpperInclusive(std::numeric_limits<I32>::min()), std::numeric_limits<I32>::min());
+    ASSERT_EQ(UpperInclusive(5), 5);
+    ASSERT_DEATH(constructFrom<UpperInclusive>(6), ".*");
 
     using UpperExclusive = Fw::IntUpperBoundExclusive<I32, 5>;
-    ASSERT_EQ(constructAsserts<UpperExclusive>(4), 0U);
-    ASSERT_EQ(constructAsserts<UpperExclusive>(5), 1U);
+    ASSERT_EQ(UpperExclusive(4), 4);
+    ASSERT_DEATH(constructFrom<UpperExclusive>(5), ".*");
 }
 
 TEST(IntRangeTest, AssignmentOutOfRange) {
     using Inclusive = Fw::IntRangeInclusive<U32, 3, 5>;
-    ASSERT_EQ(assignAsserts<Inclusive>(4U), 0U);
-    ASSERT_EQ(assignAsserts<Inclusive>(2U), 1U);
-    ASSERT_EQ(assignAsserts<Inclusive>(6U), 1U);
-}
-
-TEST(IntRangeTest, AssertionReportsValue) {
-    AssertCounter counter;
-    Fw::IntRangeInclusive<U32, 3, 5> range(6);
-    ASSERT_EQ(counter.getCount(), 1U);
-    ASSERT_EQ(counter.getArg1(), static_cast<FwAssertArgType>(6));
+    Inclusive range;
+    range = 4U;
+    ASSERT_EQ(range, 4U);
+    ASSERT_DEATH(range = 2U, ".*");
+    ASSERT_DEATH(range = 6U, ".*");
 }
 
 TEST(IntRangeTest, ConversionOutOfRange) {
@@ -379,35 +327,28 @@ TEST(IntRangeTest, ConversionOutOfRange) {
     using U8NonNegativeRange = Fw::IntRangeInclusive<U8, 0, 5>;
     using I8Range = Fw::IntRangeInclusive<I8, -5, 5>;
 
+    // The source values. All of them are valid for the source type.
+    const U16Range u16Value6(6);
+    const U16Range u16Value256(256);
+    const U16Range u16Value259(259);
+    const U16Range u16Value65531(65531);
+    const I16Range i16ValueMinus1(-1);
+    const I16Range i16ValueMinus253(-253);
+
     // The check uses the width of the source type, so a value that is out of
     // range is not truncated into range
-    ASSERT_EQ(convertAsserts<U8Range>(U16Range(256)), 1U);  // 256 mod 256 == 0
-    ASSERT_EQ(convertAsserts<U8Range>(U16Range(259)), 1U);  // 259 mod 256 == 3
-    ASSERT_EQ(convertAsserts<U8Range>(U16Range(6)), 1U);
+    ASSERT_DEATH(convertTo<U8Range>(u16Value6), ".*");
+    ASSERT_DEATH(convertTo<U8Range>(u16Value256), ".*");  // 256 mod 256 == 0
+    ASSERT_DEATH(convertTo<U8Range>(u16Value259), ".*");  // 259 mod 256 == 3
 
     // The check accounts for signedness
-    ASSERT_EQ(convertAsserts<U8NonNegativeRange>(I16Range(-253)), 1U);  // -253 mod 256 == 3
-    ASSERT_EQ(convertAsserts<U8NonNegativeRange>(I16Range(-1)), 1U);
-    ASSERT_EQ(convertAsserts<I8Range>(U16Range(65531)), 1U);  // 65531 as I8 is -5
-
-    // The assertion reports the value in the source type, not the truncated value
-    {
-        AssertCounter counter;
-        U16Range source(256);
-        U8Range target = source;
-        (void)target;
-        ASSERT_EQ(counter.getCount(), 1U);
-        ASSERT_EQ(counter.getArg1(), static_cast<FwAssertArgType>(256));
-    }
+    ASSERT_DEATH(convertTo<U8NonNegativeRange>(i16ValueMinus1), ".*");
+    ASSERT_DEATH(convertTo<U8NonNegativeRange>(i16ValueMinus253), ".*");  // -253 mod 256 == 3
+    ASSERT_DEATH(convertTo<I8Range>(u16Value65531), ".*");                // 65531 as I8 is -5
 
     // Assignment as well as construction
-    {
-        AssertCounter counter;
-        U16Range source(256);
-        U8Range target;
-        target = source;
-        ASSERT_EQ(counter.getCount(), 1U);
-    }
+    U8Range target;
+    ASSERT_DEATH(target = u16Value256, ".*");
 }
 
 #endif
