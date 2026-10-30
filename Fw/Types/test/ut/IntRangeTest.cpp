@@ -89,6 +89,20 @@ void checkRangesAtMaximum() {
     ASSERT_EQ(static_cast<T>(exclusive), maxValue);
 }
 
+//! Check the default value of a range that contains only the minimum value of T
+//! and of a range with an exclusive upper bound just above it. These are the
+//! cases in which computing the default value must not underflow.
+template <typename T>
+void checkRangesAtMinimum() {
+    constexpr T minValue = std::numeric_limits<T>::min();
+    Fw::IntRangeInclusive<T, minValue, minValue> single;
+    ASSERT_EQ(static_cast<T>(single), minValue);
+    Fw::IntUpperBoundInclusive<T, minValue> upperInclusive;
+    ASSERT_EQ(static_cast<T>(upperInclusive), minValue);
+    Fw::IntUpperBoundExclusive<T, static_cast<T>(minValue + 1)> upperExclusive;
+    ASSERT_EQ(static_cast<T>(upperExclusive), minValue);
+}
+
 }  // namespace
 
 TEST(IntRangeTest, Construction) {
@@ -119,16 +133,29 @@ TEST(IntRangeTest, DefaultValueWithLowerBound) {
     ASSERT_EQ(ExclusiveAtMaxMinusOne(), std::numeric_limits<U8>::max());
 }
 
-TEST(IntRangeTest, DefaultValueWithoutLowerBound) {
-    // The smallest value of the base type
+TEST(IntRangeTest, DefaultValueWithUpperBoundOnly) {
+    // The upper bound, if it is valid
     using SignedInclusive = Fw::IntUpperBoundInclusive<I32, -5>;
-    ASSERT_EQ(SignedInclusive(), std::numeric_limits<I32>::min());
+    ASSERT_EQ(SignedInclusive(), -5);
+    using UnsignedInclusive = Fw::IntUpperBoundInclusive<U32, 7>;
+    ASSERT_EQ(UnsignedInclusive(), 7U);
+    // Otherwise the previous value
     using SignedExclusive = Fw::IntUpperBoundExclusive<I32, 0>;
-    ASSERT_EQ(SignedExclusive(), std::numeric_limits<I32>::min());
-    using SignedExclusiveAtMinPlusOne = Fw::IntUpperBoundExclusive<I8, -127>;
-    ASSERT_EQ(SignedExclusiveAtMinPlusOne(), std::numeric_limits<I8>::min());
-    using Unsigned = Fw::IntUpperBoundExclusive<U32, 7>;
+    ASSERT_EQ(SignedExclusive(), -1);
+    using UnsignedExclusive = Fw::IntUpperBoundExclusive<U32, 7>;
+    ASSERT_EQ(UnsignedExclusive(), 6U);
+    using ExclusiveAtMinPlusOne = Fw::IntUpperBoundExclusive<I8, -127>;
+    ASSERT_EQ(ExclusiveAtMinPlusOne(), std::numeric_limits<I8>::min());
+}
+
+TEST(IntRangeTest, DefaultValueWithoutBounds) {
+    // Zero, whatever the placeholder values of the bounds are
+    using Unsigned = Fw::IntRange<U32, Fw::BoundType::NONE, 0, Fw::BoundType::NONE, 0>;
     ASSERT_EQ(Unsigned(), 0U);
+    using Signed = Fw::IntRange<I32, Fw::BoundType::NONE, 0, Fw::BoundType::NONE, 0>;
+    ASSERT_EQ(Signed(), 0);
+    using SignedWithPlaceholders = Fw::IntRange<I32, Fw::BoundType::NONE, 5, Fw::BoundType::NONE, -5>;
+    ASSERT_EQ(SignedWithPlaceholders(), 0);
 }
 
 TEST(IntRangeTest, DefaultValueAtMaximum) {
@@ -140,6 +167,17 @@ TEST(IntRangeTest, DefaultValueAtMaximum) {
     checkRangesAtMaximum<I32>();
     checkRangesAtMaximum<U64>();
     checkRangesAtMaximum<I64>();
+}
+
+TEST(IntRangeTest, DefaultValueAtMinimum) {
+    checkRangesAtMinimum<U8>();
+    checkRangesAtMinimum<I8>();
+    checkRangesAtMinimum<U16>();
+    checkRangesAtMinimum<I16>();
+    checkRangesAtMinimum<U32>();
+    checkRangesAtMinimum<I32>();
+    checkRangesAtMinimum<U64>();
+    checkRangesAtMinimum<I64>();
 }
 
 // ----------------------------------------------------------------------

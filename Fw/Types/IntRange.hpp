@@ -129,6 +129,14 @@ class IntRange {
     //! Get the default value for the type, checking that the range is
     //! non-empty. This check is run by every constructor, because every
     //! constructor initializes the member variable below with this function.
+    //!
+    //! The default value is chosen as follows:
+    //! 1. If the range has neither a lower bound nor an upper bound, then zero.
+    //! 2. Otherwise, if the range has a lower bound, then the lower bound if it
+    //!    is valid, and otherwise the next greater value.
+    //! 3. Otherwise, the range has only an upper bound. Then the upper bound
+    //!    if it is valid, and otherwise the next lesser value.
+    //!
     //! @return The default value
     static constexpr T getDefaultValue() {
         static_assert(IntRange::isValid(IntRange::computeDefaultValue()),
@@ -145,19 +153,32 @@ class IntRange {
     //! @return The default value
     static constexpr T computeDefaultValue() {
         T defaultVal{};
-        if (LBT == BoundType::NONE) {
-            // There is no lower bound (the placeholder LBV is ignored): use the
-            // smallest value of the base type
-            defaultVal = std::numeric_limits<T>::min();
-        } else if (IntRange::isValid(LBV)) {
-            defaultVal = LBV;
+        if ((LBT == BoundType::NONE) && (UBT == BoundType::NONE)) {
+            // There are no bounds (the placeholder values LBV and UBV are
+            // ignored): use zero
+            defaultVal = T{};
+        } else if (LBT != BoundType::NONE) {
+            if (IntRange::isValid(LBV)) {
+                defaultVal = LBV;
+            } else {
+                // LBV is not valid, so try the next value. If LBV is the
+                // maximum value of T, there is no next value: stay at LBV, so
+                // that the range is reported as empty. The conditional is what
+                // prevents overflow, so do not replace it with LBV + 1. The
+                // cast avoids a narrowing warning for types smaller than int.
+                defaultVal = static_cast<T>(LBV + ((LBV < std::numeric_limits<T>::max()) ? 1 : 0));
+            }
         } else {
-            // LBV is not valid, so try the next value. If LBV is the maximum
-            // value of T, there is no next value: stay at LBV, so that the
-            // range is reported as empty. The conditional is what prevents
-            // overflow, so do not replace it with LBV + 1. The cast avoids a
-            // narrowing warning for types smaller than int.
-            defaultVal = static_cast<T>(LBV + ((LBV < std::numeric_limits<T>::max()) ? 1 : 0));
+            // There is only an upper bound (the placeholder LBV is ignored)
+            if (IntRange::isValid(UBV)) {
+                defaultVal = UBV;
+            } else {
+                // UBV is not valid, so try the previous value. If UBV is the
+                // minimum value of T, there is no previous value: stay at UBV,
+                // so that the range is reported as empty. As above, the
+                // conditional is what prevents overflow.
+                defaultVal = static_cast<T>(UBV - ((UBV > std::numeric_limits<T>::min()) ? 1 : 0));
+            }
         }
         return defaultVal;
     }
