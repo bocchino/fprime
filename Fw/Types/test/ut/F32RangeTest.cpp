@@ -677,45 +677,50 @@ TEST(F32RangeTest, MacrosAreUsableOutsideNamespaceFw) {
 // failure, and the assertion failure aborts the process. The statement inside
 // each ASSERT_DEATH contains only the operation under test. Any other values
 // are computed outside the statement, so that they cannot cause the death.
+//
+// The pattern "Assert: " is the start of the message that the default assertion
+// handler prints to stderr, so a process that dies for another reason does not
+// pass. These tests assume that assertions are enabled, as they should be in a
+// unit test build. If they are not, the tests fail.
 
 TEST(F32RangeTest, ValueOutOfRange) {
     const F32 belowLower = nextBelow(1.0f);
     const F32 aboveUpper = nextAbove(2.0f);
 
     using Inclusive = FW_F32_RANGE_INCLUSIVE(1.0f, 2.0f);
-    ASSERT_DEATH(constructFrom<Inclusive>(belowLower), ".*");
+    ASSERT_DEATH(constructFrom<Inclusive>(belowLower), "Assert: ");
     ASSERT_EQ(static_cast<F32>(Inclusive(1.0f)), 1.0f);
     ASSERT_EQ(static_cast<F32>(Inclusive(2.0f)), 2.0f);
-    ASSERT_DEATH(constructFrom<Inclusive>(aboveUpper), ".*");
+    ASSERT_DEATH(constructFrom<Inclusive>(aboveUpper), "Assert: ");
 
     using Exclusive = FW_F32_RANGE_EXCLUSIVE(1.0f, 2.0f);
-    ASSERT_DEATH(constructFrom<Exclusive>(1.0f), ".*");
+    ASSERT_DEATH(constructFrom<Exclusive>(1.0f), "Assert: ");
     ASSERT_EQ(static_cast<F32>(Exclusive(1.5f)), 1.5f);
-    ASSERT_DEATH(constructFrom<Exclusive>(2.0f), ".*");
+    ASSERT_DEATH(constructFrom<Exclusive>(2.0f), "Assert: ");
 
     using InclusiveExclusive = FW_F32_RANGE_INCLUSIVE_EXCLUSIVE(1.0f, 2.0f);
     ASSERT_EQ(static_cast<F32>(InclusiveExclusive(1.0f)), 1.0f);
-    ASSERT_DEATH(constructFrom<InclusiveExclusive>(2.0f), ".*");
+    ASSERT_DEATH(constructFrom<InclusiveExclusive>(2.0f), "Assert: ");
 
     using ExclusiveInclusive = FW_F32_RANGE_EXCLUSIVE_INCLUSIVE(1.0f, 2.0f);
-    ASSERT_DEATH(constructFrom<ExclusiveInclusive>(1.0f), ".*");
+    ASSERT_DEATH(constructFrom<ExclusiveInclusive>(1.0f), "Assert: ");
     ASSERT_EQ(static_cast<F32>(ExclusiveInclusive(2.0f)), 2.0f);
 
     using LowerInclusive = FW_F32_LOWER_BOUND_INCLUSIVE(-5.0f);
-    ASSERT_DEATH(constructFrom<LowerInclusive>(-6.0f), ".*");
+    ASSERT_DEATH(constructFrom<LowerInclusive>(-6.0f), "Assert: ");
     ASSERT_EQ(static_cast<F32>(LowerInclusive(-5.0f)), -5.0f);
 
     using LowerExclusive = FW_F32_LOWER_BOUND_EXCLUSIVE(-5.0f);
-    ASSERT_DEATH(constructFrom<LowerExclusive>(-5.0f), ".*");
+    ASSERT_DEATH(constructFrom<LowerExclusive>(-5.0f), "Assert: ");
     ASSERT_EQ(static_cast<F32>(LowerExclusive(-4.0f)), -4.0f);
 
     using UpperInclusive = FW_F32_UPPER_BOUND_INCLUSIVE(5.0f);
     ASSERT_EQ(static_cast<F32>(UpperInclusive(5.0f)), 5.0f);
-    ASSERT_DEATH(constructFrom<UpperInclusive>(6.0f), ".*");
+    ASSERT_DEATH(constructFrom<UpperInclusive>(6.0f), "Assert: ");
 
     using UpperExclusive = FW_F32_UPPER_BOUND_EXCLUSIVE(5.0f);
     ASSERT_EQ(static_cast<F32>(UpperExclusive(4.0f)), 4.0f);
-    ASSERT_DEATH(constructFrom<UpperExclusive>(5.0f), ".*");
+    ASSERT_DEATH(constructFrom<UpperExclusive>(5.0f), "Assert: ");
 }
 
 TEST(F32RangeTest, AssignmentOutOfRange) {
@@ -723,28 +728,28 @@ TEST(F32RangeTest, AssignmentOutOfRange) {
     Inclusive range;
     range = 1.5f;
     ASSERT_EQ(static_cast<F32>(range), 1.5f);
-    ASSERT_DEATH(range = 0.5f, ".*");
-    ASSERT_DEATH(range = 2.5f, ".*");
+    ASSERT_DEATH(range = 0.5f, "Assert: ");
+    ASSERT_DEATH(range = 2.5f, "Assert: ");
 }
 
 TEST(F32RangeTest, NaNAndInfinityOutOfRange) {
     // NaN is not valid for a range that has a bound
     using Inclusive = FW_F32_RANGE_INCLUSIVE(1.0f, 2.0f);
-    ASSERT_DEATH(constructFrom<Inclusive>(NAN_VALUE), ".*");
+    ASSERT_DEATH(constructFrom<Inclusive>(NAN_VALUE), "Assert: ");
     using LowerOnly = FW_F32_LOWER_BOUND_INCLUSIVE(1.0f);
-    ASSERT_DEATH(constructFrom<LowerOnly>(NAN_VALUE), ".*");
+    ASSERT_DEATH(constructFrom<LowerOnly>(NAN_VALUE), "Assert: ");
     using UpperOnly = FW_F32_UPPER_BOUND_EXCLUSIVE(1.0f);
-    ASSERT_DEATH(constructFrom<UpperOnly>(NAN_VALUE), ".*");
+    ASSERT_DEATH(constructFrom<UpperOnly>(NAN_VALUE), "Assert: ");
     // The value reported by the assertion is computed without converting the
     // value to an integer, which is undefined for NaN and infinity, so these
     // values must fail the assertion and not do anything else
-    ASSERT_DEATH(constructFrom<Inclusive>(INF), ".*");
-    ASSERT_DEATH(constructFrom<Inclusive>(-INF), ".*");
-    ASSERT_DEATH(constructFrom<Inclusive>(std::numeric_limits<F32>::max()), ".*");
+    ASSERT_DEATH(constructFrom<Inclusive>(INF), "Assert: ");
+    ASSERT_DEATH(constructFrom<Inclusive>(-INF), "Assert: ");
+    ASSERT_DEATH(constructFrom<Inclusive>(std::numeric_limits<F32>::max()), "Assert: ");
     // The same holds for assignment
     Inclusive range;
-    ASSERT_DEATH(range = NAN_VALUE, ".*");
-    ASSERT_DEATH(range = INF, ".*");
+    ASSERT_DEATH(range = NAN_VALUE, "Assert: ");
+    ASSERT_DEATH(range = INF, "Assert: ");
     // An infinity that is within the range is accepted
     using LowerInfinite = FW_F32_LOWER_BOUND_INCLUSIVE(0.0f);
     ASSERT_EQ(static_cast<F32>(LowerInfinite(INF)), INF);

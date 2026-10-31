@@ -195,44 +195,49 @@ TEST(IntRangeTest, IsValidOneSidedBounds) {
 // failure, and the assertion failure aborts the process. The statement inside
 // each ASSERT_DEATH contains only the operation under test. Any other values
 // are constructed outside the statement, so that they cannot cause the death.
+//
+// The pattern "Assert: " is the start of the message that the default assertion
+// handler prints to stderr, so a process that dies for another reason does not
+// pass. These tests assume that assertions are enabled, as they should be in a
+// unit test build. If they are not, the tests fail.
 
 TEST(IntRangeTest, ValueOutOfRange) {
     using Inclusive = Fw::IntRangeInclusive<U32, 3, 5>;
-    ASSERT_DEATH(constructFrom<Inclusive>(2U), ".*");
+    ASSERT_DEATH(constructFrom<Inclusive>(2U), "Assert: ");
     ASSERT_EQ(Inclusive(3U), 3U);
     ASSERT_EQ(Inclusive(5U), 5U);
-    ASSERT_DEATH(constructFrom<Inclusive>(6U), ".*");
+    ASSERT_DEATH(constructFrom<Inclusive>(6U), "Assert: ");
 
     using Exclusive = Fw::IntRangeExclusive<U32, 3, 5>;
-    ASSERT_DEATH(constructFrom<Exclusive>(3U), ".*");
+    ASSERT_DEATH(constructFrom<Exclusive>(3U), "Assert: ");
     ASSERT_EQ(Exclusive(4U), 4U);
-    ASSERT_DEATH(constructFrom<Exclusive>(5U), ".*");
+    ASSERT_DEATH(constructFrom<Exclusive>(5U), "Assert: ");
 
     using InclusiveExclusive = Fw::IntRangeInclusiveExclusive<U32, 3, 5>;
     ASSERT_EQ(InclusiveExclusive(3U), 3U);
-    ASSERT_DEATH(constructFrom<InclusiveExclusive>(5U), ".*");
+    ASSERT_DEATH(constructFrom<InclusiveExclusive>(5U), "Assert: ");
 
     using ExclusiveInclusive = Fw::IntRangeExclusiveInclusive<U32, 3, 5>;
-    ASSERT_DEATH(constructFrom<ExclusiveInclusive>(3U), ".*");
+    ASSERT_DEATH(constructFrom<ExclusiveInclusive>(3U), "Assert: ");
     ASSERT_EQ(ExclusiveInclusive(5U), 5U);
 
     using LowerInclusive = Fw::IntLowerBoundInclusive<I32, -5>;
-    ASSERT_DEATH(constructFrom<LowerInclusive>(-6), ".*");
+    ASSERT_DEATH(constructFrom<LowerInclusive>(-6), "Assert: ");
     ASSERT_EQ(LowerInclusive(-5), -5);
     ASSERT_EQ(LowerInclusive(std::numeric_limits<I32>::max()), std::numeric_limits<I32>::max());
 
     using LowerExclusive = Fw::IntLowerBoundExclusive<I32, -5>;
-    ASSERT_DEATH(constructFrom<LowerExclusive>(-5), ".*");
+    ASSERT_DEATH(constructFrom<LowerExclusive>(-5), "Assert: ");
     ASSERT_EQ(LowerExclusive(-4), -4);
 
     using UpperInclusive = Fw::IntUpperBoundInclusive<I32, 5>;
     ASSERT_EQ(UpperInclusive(std::numeric_limits<I32>::min()), std::numeric_limits<I32>::min());
     ASSERT_EQ(UpperInclusive(5), 5);
-    ASSERT_DEATH(constructFrom<UpperInclusive>(6), ".*");
+    ASSERT_DEATH(constructFrom<UpperInclusive>(6), "Assert: ");
 
     using UpperExclusive = Fw::IntUpperBoundExclusive<I32, 5>;
     ASSERT_EQ(UpperExclusive(4), 4);
-    ASSERT_DEATH(constructFrom<UpperExclusive>(5), ".*");
+    ASSERT_DEATH(constructFrom<UpperExclusive>(5), "Assert: ");
 }
 
 TEST(IntRangeTest, AssignmentOutOfRange) {
@@ -240,6 +245,6 @@ TEST(IntRangeTest, AssignmentOutOfRange) {
     Inclusive range;
     range = 4U;
     ASSERT_EQ(range, 4U);
-    ASSERT_DEATH(range = 2U, ".*");
-    ASSERT_DEATH(range = 6U, ".*");
+    ASSERT_DEATH(range = 2U, "Assert: ");
+    ASSERT_DEATH(range = 6U, "Assert: ");
 }
