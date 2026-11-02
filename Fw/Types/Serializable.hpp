@@ -117,19 +117,16 @@ class SerialBufferBase {
     //! Ensures proper cleanup of derived classes.
     virtual ~SerialBufferBase();
 
-    //! \brief Serialize an integer range
-    //!
-    //! This method serializes the value of an integer range as a value of the
-    //! base type of the range. The serialized form is the same as the serialized
-    //! form of the base type.
-    //!
-    //! \param val The integer range value to serialize
-    //! \param mode Endianness mode for serialization (default is Endianness::BIG)
-    //! \return SerializeStatus indicating the result of the operation
-    template <typename T, BoundType LBT, T LBV, BoundType UBT, T UBV>
-    SerializeStatus serializeFrom(IntRange<T, LBT, LBV, UBT, UBV> val, Endianness mode = Endianness::BIG) {
-        return this->serializeFrom(static_cast<T>(val), mode);
-    }
+    // Serialization of an integer range (IntRange)
+    //
+    // There is no serializeFrom overload for an integer range. None is needed:
+    // an integer range converts implicitly to its base type T, so a call
+    // serializeFrom(range) resolves to the overload for T below. The serialized
+    // form is therefore the serialized form of T. This holds when the call is
+    // made on a SerialBufferBase and when it is made on a LinearBufferBase,
+    // which declares the same overloads. Deserialization is different:
+    // deserializeTo takes a non-const reference, to which a range does not
+    // convert, so it has a template overload for integer ranges (see below).
 
     // Serialization for built-in types
 
@@ -733,12 +730,12 @@ class LinearBufferBase : public SerialBufferBase {
     //! that allows proper cleanup of derived classes.
     virtual ~LinearBufferBase();
 
-    // The overloads declared below hide the overloads of the same names in
-    // SerialBufferBase, including the templates for integer ranges. Bring
-    // them back into scope, so that they can be called on a LinearBufferBase
-    // and on the classes derived from it.
+    // The deserializeTo overloads declared below hide the template for integer
+    // ranges in SerialBufferBase. Bring it back into scope, so that it can be
+    // called on a LinearBufferBase and on the classes derived from it. This is
+    // not needed for serializeFrom: an integer range converts implicitly to its
+    // base type, so a call with a range resolves to the overload for that type.
     using SerialBufferBase::deserializeTo;
-    using SerialBufferBase::serializeFrom;
 
     // Serialization for built-in types
 

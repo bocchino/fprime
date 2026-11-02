@@ -29,9 +29,12 @@ template <typename T>
 using FullRange = Fw::IntRangeInclusive<T, std::numeric_limits<T>::min(), std::numeric_limits<T>::max()>;
 
 //! Serialize a range into a buffer and deserialize it back, checking the
-//! result. The buffer type B is either the concrete buffer class, which
-//! checks that the range overloads are visible there, or the base class
-//! Fw::SerialBufferBase, which is how generated code uses a buffer.
+//! result. The buffer type B is either a concrete buffer class or the base
+//! class Fw::SerialBufferBase, which is how generated code uses a buffer.
+//! Serialization works on both because a range converts to its base type, so
+//! the call resolves to the overload for that type. Deserialization works on
+//! both because of the template for integer ranges in Fw::SerialBufferBase,
+//! which Fw::LinearBufferBase brings into scope with a using declaration.
 template <typename B, typename T>
 void roundTripThrough(B& buffer, T value, Fw::Endianness mode) {
     using Range = FullRange<T>;
