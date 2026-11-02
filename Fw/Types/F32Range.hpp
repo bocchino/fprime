@@ -12,14 +12,21 @@
 #include <Fw/Types/Assert.hpp>
 #include <Fw/Types/BoundType.hpp>
 
+// This header depends on IEEE 754 binary32 floating point. F Prime checks for
+// IEEE 754 compliance unless SKIP_FLOAT_IEEE_754_COMPLIANCE is set (see
+// Fw/Types/BasicTypes.hpp), so require that the check is enabled.
+#if defined(SKIP_FLOAT_IEEE_754_COMPLIANCE) && SKIP_FLOAT_IEEE_754_COMPLIANCE
+#error "F32Range requires IEEE 754 floating point: SKIP_FLOAT_IEEE_754_COMPLIANCE must be 0"
+#endif
+
 namespace Fw {
 
 //! The type of an F32 range argument. The real type is not supported by C++14.
 using F32_RANGE_ARG_TYPE = U32;
 
-static_assert(std::numeric_limits<F32>::is_iec559 && (std::numeric_limits<F32>::digits == 24) &&
-                  (sizeof(F32) == sizeof(F32_RANGE_ARG_TYPE)),
-              "F32 must be an IEEE 754 binary32 type, and F32_RANGE_ARG_TYPE must have the same size");
+// The bit-cast functions below depend on F32 and the range argument type
+// having the same size. IEEE 754 compliance is checked in BasicTypes.hpp.
+static_assert(sizeof(F32) == sizeof(F32_RANGE_ARG_TYPE), "F32 and F32_RANGE_ARG_TYPE must have the same size");
 
 //! \brief Bit cast F32 to F32_RANGE_ARG_TYPE
 //!
