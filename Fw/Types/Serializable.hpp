@@ -119,7 +119,11 @@ class SerialBufferBase {
 
     //! \brief Serialize an integer range
     //!
-    //! \param val The integer range value
+    //! This method serializes the value of an integer range as a value of the
+    //! base type of the range. The serialized form is the same as the serialized
+    //! form of the base type.
+    //!
+    //! \param val The integer range value to serialize
     //! \param mode Endianness mode for serialization (default is Endianness::BIG)
     //! \return SerializeStatus indicating the result of the operation
     template <typename T, BoundType LBT, T LBV, BoundType UBT, T UBV>
@@ -323,15 +327,22 @@ class SerialBufferBase {
 
     //! \brief Deserialize an integer range
     //!
-    //! \param val The integer range value
-    //! \param mode Endianness mode for serialization (default is Endianness::BIG)
+    //! This method reads a value of the base type of the range from the buffer.
+    //! If the value is not in the range, then the method returns
+    //! FW_DESERIALIZE_FORMAT_ERROR and leaves val unchanged. In this case the
+    //! value is still consumed, so that the next deserialization starts after
+    //! it: the bits are a valid value of the base type, and reading them as
+    //! something else would not be meaningful.
+    //!
+    //! \param val Reference to store the deserialized integer range value
+    //! \param mode Endianness mode for deserialization (default is Endianness::BIG)
     //! \return SerializeStatus indicating the result of the operation
     template <typename T, BoundType LBT, T LBV, BoundType UBT, T UBV>
     SerializeStatus deserializeTo(IntRange<T, LBT, LBV, UBT, UBV>& val, Endianness mode = Endianness::BIG) {
         T numericVal = {};
-        const auto status = this->deserializeTo(numericVal, mode);
-        if ((status == Fw::FW_SERIALIZE_OK) && !decltype(val)::isValid(numericVal)) {
-            status = Fw::FW_SERIALIZE_FORMAT_ERROR;
+        SerializeStatus status = this->deserializeTo(numericVal, mode);
+        if ((status == Fw::FW_SERIALIZE_OK) && !IntRange<T, LBT, LBV, UBT, UBV>::isValid(numericVal)) {
+            status = Fw::FW_DESERIALIZE_FORMAT_ERROR;
         }
         if (status == Fw::FW_SERIALIZE_OK) {
             val = numericVal;
@@ -721,6 +732,13 @@ class LinearBufferBase : public SerialBufferBase {
     //! Destroys a LinearBufferBase instance. This is a virtual destructor
     //! that allows proper cleanup of derived classes.
     virtual ~LinearBufferBase();
+
+    // The overloads declared below hide the overloads of the same names in
+    // SerialBufferBase, including the templates for integer ranges. Bring
+    // them back into scope, so that they can be called on a LinearBufferBase
+    // and on the classes derived from it.
+    using SerialBufferBase::deserializeTo;
+    using SerialBufferBase::serializeFrom;
 
     // Serialization for built-in types
 
