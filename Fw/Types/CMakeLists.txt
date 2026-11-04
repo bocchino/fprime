@@ -140,5 +140,13 @@ register_fprime_ut(
     STest
 )
 
+register_fprime_ut(
+    Fw_Types_F64RangeSerial_ut_exe
+  SOURCES
+    "${CMAKE_CURRENT_LIST_DIR}/test/ut/F64RangeSerialTest.cpp"
+  DEPENDS
+    Fw_Types
+)
+
 # Non-test directory
 add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/GTest")

@@ -117,11 +117,11 @@ class SerialBufferBase {
     //! Ensures proper cleanup of derived classes.
     virtual ~SerialBufferBase();
 
-    // Serialization of a numeric range (IntRange, F32Range)
+    // Serialization of a numeric range (IntRange, F32Range, F64Range)
     //
     // There is no serializeFrom overload for a numeric range. None is needed:
     // a numeric range converts implicitly to its base type T (an integer type
-    // for IntRange, F32 for F32Range), so a call serializeFrom(range) resolves
+    // for IntRange, F32 for F32Range, F64 for F64Range), so a call serializeFrom(range) resolves
     // to the overload for T below. The serialized form is therefore the
     // serialized form of T. This holds when the call is made on a
     // SerialBufferBase and when it is made on a LinearBufferBase, which
@@ -370,6 +370,33 @@ class SerialBufferBase {
         }
         if (status == Fw::FW_SERIALIZE_OK) {
             val = f32Val;
+        }
+        return status;
+    }
+#endif
+
+#if FW_HAS_F64_RANGE
+    //! \brief Deserialize an F64 range
+    //!
+    //! This method reads an F64 value from the buffer. If the value is not in
+    //! the range, then the method returns FW_DESERIALIZE_FORMAT_ERROR and
+    //! leaves val unchanged. As for an integer range, the value is still
+    //! consumed, so that the next deserialization starts after it. NaN is not
+    //! in any range that has a bound, so for such a range a NaN in the buffer
+    //! gives FW_DESERIALIZE_FORMAT_ERROR.
+    //!
+    //! \param val Reference to store the deserialized F64 range value
+    //! \param mode Endianness mode for deserialization (default is Endianness::BIG)
+    //! \return SerializeStatus indicating the result of the operation
+    template <BoundType LBT, F64_RANGE_ARG_TYPE LBV, BoundType UBT, F64_RANGE_ARG_TYPE UBV>
+    SerializeStatus deserializeTo(F64Range<LBT, LBV, UBT, UBV>& val, Endianness mode = Endianness::BIG) {
+        F64 f64Val = 0.0;
+        SerializeStatus status = this->deserializeTo(f64Val, mode);
+        if ((status == Fw::FW_SERIALIZE_OK) && !F64Range<LBT, LBV, UBT, UBV>::isValid(f64Val)) {
+            status = Fw::FW_DESERIALIZE_FORMAT_ERROR;
+        }
+        if (status == Fw::FW_SERIALIZE_OK) {
+            val = f64Val;
         }
         return status;
     }
