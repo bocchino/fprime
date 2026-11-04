@@ -117,16 +117,17 @@ class SerialBufferBase {
     //! Ensures proper cleanup of derived classes.
     virtual ~SerialBufferBase();
 
-    // Serialization of an integer range (IntRange)
+    // Serialization of a numeric range (IntRange, F32Range)
     //
-    // There is no serializeFrom overload for an integer range. None is needed:
-    // an integer range converts implicitly to its base type T, so a call
-    // serializeFrom(range) resolves to the overload for T below. The serialized
-    // form is therefore the serialized form of T. This holds when the call is
-    // made on a SerialBufferBase and when it is made on a LinearBufferBase,
-    // which declares the same overloads. Deserialization is different:
-    // deserializeTo takes a non-const reference, to which a range does not
-    // convert, so it has a template overload for integer ranges (see below).
+    // There is no serializeFrom overload for a numeric range. None is needed:
+    // a numeric range converts implicitly to its base type T (an integer type
+    // for IntRange, F32 for F32Range), so a call serializeFrom(range) resolves
+    // to the overload for T below. The serialized form is therefore the
+    // serialized form of T. This holds when the call is made on a
+    // SerialBufferBase and when it is made on a LinearBufferBase, which
+    // declares the same overloads. Deserialization is different: deserializeTo
+    // takes a non-const reference, to which a range does not convert, so it has
+    // a template overload for each kind of numeric range (see below).
 
     // Serialization for built-in types
 
@@ -346,6 +347,33 @@ class SerialBufferBase {
         }
         return status;
     }
+
+#if FW_HAS_F32_RANGE
+    //! \brief Deserialize an F32 range
+    //!
+    //! This method reads an F32 value from the buffer. If the value is not in
+    //! the range, then the method returns FW_DESERIALIZE_FORMAT_ERROR and
+    //! leaves val unchanged. As for an integer range, the value is still
+    //! consumed, so that the next deserialization starts after it. NaN is not
+    //! in any range that has a bound, so for such a range a NaN in the buffer
+    //! gives FW_DESERIALIZE_FORMAT_ERROR.
+    //!
+    //! \param val Reference to store the deserialized F32 range value
+    //! \param mode Endianness mode for deserialization (default is Endianness::BIG)
+    //! \return SerializeStatus indicating the result of the operation
+    template <BoundType LBT, F32_RANGE_ARG_TYPE LBV, BoundType UBT, F32_RANGE_ARG_TYPE UBV>
+    SerializeStatus deserializeTo(F32Range<LBT, LBV, UBT, UBV>& val, Endianness mode = Endianness::BIG) {
+        F32 f32Val = 0.0f;
+        SerializeStatus status = this->deserializeTo(f32Val, mode);
+        if ((status == Fw::FW_SERIALIZE_OK) && !F32Range<LBT, LBV, UBT, UBV>::isValid(f32Val)) {
+            status = Fw::FW_DESERIALIZE_FORMAT_ERROR;
+        }
+        if (status == Fw::FW_SERIALIZE_OK) {
+            val = f32Val;
+        }
+        return status;
+    }
+#endif
 
     // Deserialization for built-in types
 
@@ -730,11 +758,12 @@ class LinearBufferBase : public SerialBufferBase {
     //! that allows proper cleanup of derived classes.
     virtual ~LinearBufferBase();
 
-    // The deserializeTo overloads declared below hide the template for integer
-    // ranges in SerialBufferBase. Bring it back into scope, so that it can be
-    // called on a LinearBufferBase and on the classes derived from it. This is
-    // not needed for serializeFrom: an integer range converts implicitly to its
-    // base type, so a call with a range resolves to the overload for that type.
+    // The deserializeTo overloads declared below hide the templates for numeric
+    // ranges in SerialBufferBase. Bring them back into scope, so that they can
+    // be called on a LinearBufferBase and on the classes derived from it. This
+    // is not needed for serializeFrom: a numeric range converts implicitly to
+    // its base type, so a call with a range resolves to the overload for that
+    // type.
     using SerialBufferBase::deserializeTo;
 
     // Serialization for built-in types

@@ -124,6 +124,14 @@ register_fprime_ut(
 )
 
 register_fprime_ut(
+    Fw_Types_F32RangeSerial_ut_exe
+  SOURCES
+    "${CMAKE_CURRENT_LIST_DIR}/test/ut/F32RangeSerialTest.cpp"
+  DEPENDS
+    Fw_Types
+)
+
+register_fprime_ut(
     Fw_Types_F64Range_ut_exe
   SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/test/ut/F64RangeTest.cpp"

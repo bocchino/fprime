@@ -21,9 +21,12 @@
 #include <limits>
 #include <type_traits>
 
-#include <Fw/Types/F32Range.hpp>
+#include <Fw/Types/NumericRange.hpp>
 #include "STest/Pick/Pick.hpp"
 #include "STest/Random/Random.hpp"
+
+// F32Range is not available in every configuration (see NumericRange.hpp)
+#if FW_HAS_F32_RANGE
 
 namespace {
 
@@ -754,6 +757,8 @@ TEST(F32RangeTest, NaNAndInfinityOutOfRange) {
     using LowerInfinite = FW_F32_LOWER_BOUND_INCLUSIVE(0.0f);
     ASSERT_EQ(static_cast<F32>(LowerInfinite(INF)), INF);
 }
+
+#endif  // FW_HAS_F32_RANGE
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);

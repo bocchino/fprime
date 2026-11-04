@@ -21,9 +21,12 @@
 #include <limits>
 #include <type_traits>
 
-#include <Fw/Types/F64Range.hpp>
+#include <Fw/Types/NumericRange.hpp>
 #include "STest/Pick/Pick.hpp"
 #include "STest/Random/Random.hpp"
+
+// F64Range is not available in every configuration (see NumericRange.hpp)
+#if FW_HAS_F64_RANGE
 
 namespace {
 
@@ -765,6 +768,8 @@ TEST(F64RangeTest, NaNAndInfinityOutOfRange) {
     using LowerInfinite = FW_F64_LOWER_BOUND_INCLUSIVE(0.0);
     ASSERT_EQ(static_cast<F64>(LowerInfinite(INF)), INF);
 }
+
+#endif  // FW_HAS_F64_RANGE
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
