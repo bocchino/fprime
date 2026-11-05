@@ -13,6 +13,11 @@
 // Not covered here: rejection of empty ranges, e.g., F32RangeInclusive with
 // a lower bound greater than the upper bound. That check is a static_assert,
 // so a violation is a compile error, which a gtest test cannot observe.
+//
+// For the same reason, there are no tests of a range with a NaN bound. Every
+// comparison with NaN is false, so no value is valid for such a range, and
+// the range is empty. Likewise, a range with an exclusive lower bound at
+// +infinity, or an exclusive upper bound at -infinity, is empty.
 // ======================================================================
 
 #include <gtest/gtest.h>
@@ -616,6 +621,29 @@ TEST(F32RangeTest, IsValidInfinity) {
     ASSERT_TRUE(ExclusiveUpperInfinite::isValid(-INF));
     ASSERT_TRUE(ExclusiveUpperInfinite::isValid(highest));
     ASSERT_FALSE(ExclusiveUpperInfinite::isValid(INF));
+}
+
+TEST(F32RangeTest, InfinityAsTheOnlyValue) {
+    // An inclusive lower bound at +infinity, or an inclusive upper bound at
+    // -infinity, gives a range whose only valid value is that infinity. So
+    // the infinity is valid, it is the default value, and the largest finite
+    // value of the same sign is not valid.
+    constexpr F32 highest = std::numeric_limits<F32>::max();
+    constexpr F32 lowest = std::numeric_limits<F32>::lowest();
+
+    using PositiveInfinity = FW_F32_LOWER_BOUND_INCLUSIVE(INF);
+    ASSERT_EQ(static_cast<F32>(PositiveInfinity()), INF);
+    ASSERT_TRUE(PositiveInfinity::isValid(INF));
+    ASSERT_FALSE(PositiveInfinity::isValid(highest));
+    ASSERT_FALSE(PositiveInfinity::isValid(-INF));
+    ASSERT_FALSE(PositiveInfinity::isValid(NAN_VALUE));
+
+    using NegativeInfinity = FW_F32_UPPER_BOUND_INCLUSIVE(-INF);
+    ASSERT_EQ(static_cast<F32>(NegativeInfinity()), -INF);
+    ASSERT_TRUE(NegativeInfinity::isValid(-INF));
+    ASSERT_FALSE(NegativeInfinity::isValid(lowest));
+    ASSERT_FALSE(NegativeInfinity::isValid(INF));
+    ASSERT_FALSE(NegativeInfinity::isValid(NAN_VALUE));
 }
 
 TEST(F32RangeTest, IsValidNaN) {
